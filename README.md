@@ -26,6 +26,10 @@ Then open:
 http://localhost:8000
 ```
 
+## Search visibility
+
+The public site is published with GitHub Pages. Submit `https://joshuawayzwright.github.io/ai-download-center/sitemap.xml` to Google Search Console and Bing Webmaster Tools to request indexing. Search rankings and traffic are not guaranteed; keep the catalog current and share useful pages to improve discovery.
+
 ## Notes
 
 This directory combines a curated catalog with on-demand search of Hugging Face's public model API. Live search requires an internet connection and returns up to 100 relevant results per page; use Load more to continue through the registry's matching public results. Private or unlisted models and models outside Hugging Face are not included. Always confirm licensing, usage terms, and platform policies on each model card before using or hosting a model.
