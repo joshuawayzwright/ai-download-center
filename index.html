@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Download Center</title>
+    <meta
+      name="description"
+      content="Discover official AI tools, models, and open-source downloads in one catalog."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <div class="brand-mark">AI</div>
+          <div>
+            <div class="brand-name">AI Download Center</div>
+            <div class="brand-subtitle">Official tools & models</div>
+          </div>
+        </div>
+        <nav class="topnav" aria-label="Main navigation">
+          <a href="#catalog">Catalog</a>
+          <a href="#featured">Featured</a>
+          <a href="#about">About</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <span class="eyebrow">Curated AI resources</span>
+            <h1>Find trusted AI tools, models, and downloads.</h1>
+            <p>
+              Browse a growing library of official releases, open-source AI repositories,
+              and community-backed resources in one clean directory.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-btn" href="#catalog">Explore catalog</a>
+              <a class="secondary-btn" href="#featured">View featured</a>
+            </div>
+            <ul class="hero-stats" aria-label="Catalog stats">
+              <li><strong id="count-models">0</strong><span>models</span></li>
+              <li><strong id="count-categories">0</strong><span>categories</span></li>
+              <li><strong>Live</strong><span>official links</span></li>
+            </ul>
+          </div>
+          <div class="hero-panel" id="featured">
+            <div class="panel-header">
+              <span>Featured</span>
+              <span class="badge success">Updated</span>
+            </div>
+            <div class="featured-card">
+              <div>
+                <p class="mini-label">Most popular</p>
+                <h2>Gemini 2.0 Flash</h2>
+              </div>
+              <div class="featured-meta">
+                <span>Multimodal</span>
+                <span>Google</span>
+              </div>
+              <a href="https://ai.google.dev/" target="_blank" rel="noreferrer">Official source</a>
+            </div>
+            <div class="featured-card small">
+              <div>
+                <p class="mini-label">Open source</p>
+                <h3>Llama 3.1</h3>
+              </div>
+              <div class="featured-meta">
+                <span>LLM</span>
+                <span>Meta</span>
+              </div>
+              <a href="https://www.llama.com/" target="_blank" rel="noreferrer">Official source</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="catalog-toolbar" id="catalog">
+          <label class="search-box" for="searchInput">
+            <span>Search</span>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search models, tags, or platform..."
+              aria-label="Search catalog"
+            />
+          </label>
+
+          <div class="filter-group" aria-label="Filter AI tools by category">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="llm">LLM</button>
+            <button class="filter-btn" data-filter="multimodal">Multimodal</button>
+            <button class="filter-btn" data-filter="vision">Vision</button>
+            <button class="filter-btn" data-filter="image">Image</button>
+            <button class="filter-btn" data-filter="audio">Audio</button>
+            <button class="filter-btn" data-filter="open-source">Open Source</button>
+          </div>
+        </section>
+
+        <section class="results-row">
+          <p id="resultsText">Showing 0 entries</p>
+        </section>
+
+        <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
+
+        <section class="about" id="about">
+          <div class="about-card">
+            <h2>About the catalog</h2>
+            <p>
+              This directory is designed to help users discover official releases, open-source
+              repositories, and community-maintained links. We prioritize transparent, reputable,
+              and verified sources.
+            </p>
+            <p>
+              Please review each provider’s licensing, usage terms, and deployment policies before
+              downloading, hosting, or integrating a model into your projects.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
