@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Download Center</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta
       name="description"
       content="Discover official AI tools, models, and open-source downloads in one catalog."
@@ -20,8 +21,10 @@
     <div class="page-shell">
       <header class="topbar">
         <div class="brand-wrap">
-          <div class="brand-mark">AI</div>
-          <div>
+          <div class="brand-mark" aria-label="AI Download Center logo">
+            <span class="brand-mark-core">A</span>
+          </div>
+          <div class="brand-lockup">
             <div class="brand-name">AI Download Center</div>
             <div class="brand-subtitle">Official tools & models</div>
           </div>
@@ -30,6 +33,7 @@
           <a href="#catalog">Catalog</a>
           <a href="#featured">Featured</a>
           <a href="#about">About</a>
+          <a href="#top-picks" class="nav-cta">Top picks</a>
         </nav>
       </header>
 
@@ -37,10 +41,12 @@
         <section class="hero">
           <div class="hero-copy">
             <span class="eyebrow">Curated AI resources</span>
-            <h1>Find trusted AI tools, models, and downloads.</h1>
+            <h1>The AI directory for builders, researchers, and curious teams.</h1>
             <p>
-              Browse a growing library of official releases, open-source AI repositories,
-              and community-backed resources in one clean directory.
+              Explore a fast-growing catalog of official AI models, assistant tools,
+              open-source releases, and productivity apps from the companies and communities
+              shaping the future of intelligence. Everything is organized to help you discover,
+              compare, and test the right tools without losing time in the noise.
             </p>
             <div class="hero-actions">
               <a class="primary-btn" href="#catalog">Explore catalog</a>
@@ -53,6 +59,14 @@
             </ul>
           </div>
           <div class="hero-panel" id="featured">
+            <div class="hero-art">
+              <img
+                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=85"
+                alt="Abstract visualization of an artificial neural network"
+                loading="eager"
+              />
+              <span class="hero-art-caption">Intelligence, mapped</span>
+            </div>
             <div class="panel-header">
               <span>Featured</span>
               <span class="badge success">Updated</span>
@@ -82,46 +96,171 @@
           </div>
         </section>
 
-        <section class="catalog-toolbar" id="catalog">
-          <label class="search-box" for="searchInput">
-            <span>Search</span>
-            <input
-              id="searchInput"
-              type="search"
-              placeholder="Search models, tags, or platform..."
-              aria-label="Search catalog"
-            />
-          </label>
-
-          <div class="filter-group" aria-label="Filter AI tools by category">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="llm">LLM</button>
-            <button class="filter-btn" data-filter="multimodal">Multimodal</button>
-            <button class="filter-btn" data-filter="vision">Vision</button>
-            <button class="filter-btn" data-filter="image">Image</button>
-            <button class="filter-btn" data-filter="audio">Audio</button>
-            <button class="filter-btn" data-filter="open-source">Open Source</button>
+        <section class="brand-strip" aria-label="AI ecosystem partners">
+          <div class="brand-strip-header">
+            <span>Built around the AI ecosystem</span>
+          </div>
+          <div class="brand-grid">
+            <span class="brand-chip">OpenAI</span>
+            <span class="brand-chip">Google</span>
+            <span class="brand-chip">Anthropic</span>
+            <span class="brand-chip">Meta</span>
+            <span class="brand-chip">Mistral</span>
+            <span class="brand-chip">Hugging Face</span>
+            <span class="brand-chip">Runway</span>
+            <span class="brand-chip">Stability</span>
           </div>
         </section>
 
-        <section class="results-row">
-          <p id="resultsText">Showing 0 entries</p>
+        <section class="metrics-row" aria-label="Directory key stats">
+          <article class="metric-card">
+            <span class="metric-number">87</span>
+            <span class="metric-label">curated listings</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-number">10</span>
+            <span class="metric-label">AI categories</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-number">24/7</span>
+            <span class="metric-label">discovery flow</span>
+          </article>
         </section>
 
-        <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
+        <section class="spotlight-panel" id="top-picks" aria-label="AI spotlight and rankings">
+          <div class="spotlight-main">
+            <div class="section-label">Spotlight</div>
+            <p class="spotlight-intro">Trending right now</p>
+            <h2 id="spotlightName">Loading spotlight...</h2>
+            <p id="spotlightDescription" class="spotlight-copy">Loading description...</p>
+            <div class="spotlight-meta">
+              <span id="spotlightCategory">LLM</span>
+              <span id="spotlightCompany">OpenAI</span>
+            </div>
+            <a id="spotlightLink" class="spotlight-link" href="#" target="_blank" rel="noreferrer">Official source</a>
+          </div>
+
+          <div class="ranking-panel">
+            <div class="section-label">Top picks</div>
+            <ol id="rankList" class="rank-list"></ol>
+          </div>
+        </section>
+
+        <section class="collections" aria-label="Featured collections">
+          <div class="section-header-row">
+            <div>
+              <span class="section-label">Featured collections</span>
+              <h2>Browse by the work you want to do.</h2>
+            </div>
+          </div>
+
+          <div class="collection-grid">
+            <article class="collection-card accent-blue">
+              <span class="collection-kicker">Research</span>
+              <h3>Model intelligence</h3>
+              <p>Large language models, reasoning systems, coding copilots, and multimodal research tools.</p>
+            </article>
+            <article class="collection-card accent-purple">
+              <span class="collection-kicker">Creator tools</span>
+              <h3>Image & video</h3>
+              <p>Generative systems for art, motion, design workflows, and media experimentation.</p>
+            </article>
+            <article class="collection-card accent-green">
+              <span class="collection-kicker">Automation</span>
+              <h3>Assistants</h3>
+              <p>Agentic products, workflow copilots, task automations, and productivity helpers.</p>
+            </article>
+            <article class="collection-card accent-gold">
+              <span class="collection-kicker">Local setup</span>
+              <h3>Self-hosted AI</h3>
+              <p>Private deployment options for teams who want control, privacy, and custom stacks.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="cta-band">
+          <div class="cta-copy">
+            <span class="section-label">Built for exploration</span>
+            <h2>Find the right AI stack faster.</h2>
+          </div>
+          <div class="cta-actions">
+            <a class="primary-btn" href="#catalog">Start exploring</a>
+            <a class="secondary-btn" href="#about">Learn more</a>
+          </div>
+        </section>
+
+        <section class="catalog-layout" id="catalog">
+          <aside class="catalog-sidebar">
+            <div class="sidebar-header">
+              <span class="section-label">Directory</span>
+              <h3>Explore AI</h3>
+            </div>
+
+            <div class="filter-group" aria-label="Filter AI tools by category">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="llm">LLM</button>
+              <button class="filter-btn" data-filter="chatbot">Chatbots</button>
+              <button class="filter-btn" data-filter="assistant">Assistants</button>
+              <button class="filter-btn" data-filter="self-hosted">Self-hosted</button>
+              <button class="filter-btn" data-filter="vision">Vision</button>
+              <button class="filter-btn" data-filter="image">Image</button>
+              <button class="filter-btn" data-filter="audio">Audio</button>
+              <button class="filter-btn" data-filter="code">Code</button>
+              <button class="filter-btn" data-filter="video">Video</button>
+              <button class="filter-btn" data-filter="utility">Utility</button>
+            </div>
+          </aside>
+
+          <div class="catalog-main">
+            <label class="search-box" for="searchInput">
+              <span>Search</span>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Search models, tags, or platform..."
+                aria-label="Search catalog"
+              />
+            </label>
+
+            <div class="results-row">
+              <p id="resultsText">Showing 0 entries</p>
+            </div>
+
+            <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
+          </div>
+        </section>
 
         <section class="about" id="about">
           <div class="about-card">
-            <h2>About the catalog</h2>
-            <p>
-              This directory is designed to help users discover official releases, open-source
-              repositories, and community-maintained links. We prioritize transparent, reputable,
-              and verified sources.
-            </p>
-            <p>
-              Please review each provider’s licensing, usage terms, and deployment policies before
-              downloading, hosting, or integrating a model into your projects.
-            </p>
+            <div class="about-copy">
+              <span class="section-label">About the catalog</span>
+              <h2>A practical home for AI discovery.</h2>
+              <p>
+                AI Download Center is a curated explorer for people who want to understand the
+                landscape quickly. It brings together official model releases, practical assistants,
+                self-hosted tools, image and video systems, and trusted community references in one
+                organized catalog.
+              </p>
+              <p>
+                The goal is simple: make it easier to compare options, find reliable sources, and
+                learn what is available across the wider AI ecosystem without digging through dozens
+                of scattered links and fragmented directories.
+              </p>
+            </div>
+            <div class="about-features">
+              <div class="feature-box">
+                <strong>Verified sources</strong>
+                <span>Official pages, docs, and trusted repositories.</span>
+              </div>
+              <div class="feature-box">
+                <strong>Fast discovery</strong>
+                <span>Search by category, tool type, or platform.</span>
+              </div>
+              <div class="feature-box">
+                <strong>Built for real work</strong>
+                <span>Tools for coding, media generation, research, and automation.</span>
+              </div>
+            </div>
           </div>
         </section>
       </main>
