@@ -34,7 +34,7 @@
           <a href="#catalog">Catalog</a>
           <a href="#featured">Featured</a>
           <a href="#about">About</a>
-          <a href="#top-picks" class="nav-cta">Top picks</a>
+          <a href="#list-your-tool" class="nav-cta">List your tool</a>
         </nav>
       </header>
 
@@ -75,7 +75,7 @@
             <div class="featured-card">
               <div>
                 <p class="mini-label">Most popular</p>
-                <h2>Gemini 2.0 Flash</h2>
+                <h2>Gemini 3.1 Pro</h2>
               </div>
               <div class="featured-meta">
                 <span>Multimodal</span>
@@ -86,7 +86,7 @@
             <div class="featured-card small">
               <div>
                 <p class="mini-label">Open source</p>
-                <h3>Llama 3.1</h3>
+                <h3>Llama 4</h3>
               </div>
               <div class="featured-meta">
                 <span>LLM</span>
@@ -115,11 +115,11 @@
 
         <section class="metrics-row" aria-label="Directory key stats">
           <article class="metric-card">
-            <span class="metric-number">87</span>
+            <span class="metric-number" id="metric-listings">0</span>
             <span class="metric-label">curated listings</span>
           </article>
           <article class="metric-card">
-            <span class="metric-number">10</span>
+            <span class="metric-number" id="metric-categories">0</span>
             <span class="metric-label">AI categories</span>
           </article>
           <article class="metric-card">
@@ -235,6 +235,37 @@
           </div>
         </section>
 
+        <section class="list-tool" id="list-your-tool" aria-label="List your tool">
+          <div class="section-header-row">
+            <div>
+              <span class="section-label">For AI makers</span>
+              <h2>Put your tool in front of people choosing AI.</h2>
+            </div>
+          </div>
+          <div class="plan-grid">
+            <article class="plan-card">
+              <span class="collection-kicker">Free listing</span>
+              <p class="plan-price">$0</p>
+              <ul class="plan-list">
+                <li>A card in the catalog and in search</li>
+                <li>Link to your official site</li>
+                <li>Reviewed by hand, usually within a week</li>
+              </ul>
+              <a class="secondary-btn" id="submitToolLink" href="#" target="_blank" rel="noopener">Submit a tool</a>
+            </article>
+            <article class="plan-card plan-card-featured">
+              <span class="collection-kicker">Featured listing</span>
+              <p class="plan-price"><span id="featuredPrice">$99</span> <small id="featuredPeriod">per month</small></p>
+              <ul class="plan-list">
+                <li>Pinned to the top of the catalog</li>
+                <li>Shown first in every matching search</li>
+                <li>Clearly labeled as Sponsored</li>
+              </ul>
+              <a class="primary-btn" id="featuredLink" href="#" target="_blank" rel="noopener">Get featured</a>
+            </article>
+          </div>
+        </section>
+
         <section class="about" id="about">
           <div class="about-card">
             <div class="about-copy">
@@ -278,9 +309,11 @@
         <span>AI Download Center</span>
         <span>Concept and design direction: <a href="https://github.com/joshuawayzwright">@joshuawayzwright</a></span>
         <a href="https://github.com/joshuawayzwright/ai-download-center">View source on GitHub</a>
+        <p class="disclosure">Listings marked Sponsored are paid placements. Some outbound links are affiliate links, and we may earn a commission if you sign up, at no cost to you.</p>
       </footer>
     </div>
 
+    <script src="config.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

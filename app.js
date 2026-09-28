@@ -141,11 +141,16 @@ function getNextModelPage(linkHeader) {
 async function loadTools() {
   const response = await fetch('./data/tools.json');
   const data = await response.json();
-  curatedTools = data.tools;
+  // Sponsored listings always come first; the sort is stable, so the rest keep their order.
+  curatedTools = [...data.tools].sort((a, b) => Number(Boolean(b.sponsored)) - Number(Boolean(a.sponsored)));
   tools = [...curatedTools, ...liveTools];
 
-  countModels.textContent = tools.length;
-  countCategories.textContent = new Set(tools.map((tool) => tool.category)).size;
+  const listingCount = curatedTools.length;
+  const categoryCount = new Set(curatedTools.map((tool) => tool.category)).size;
+  countModels.textContent = listingCount;
+  countCategories.textContent = categoryCount;
+  document.getElementById('metric-listings').textContent = listingCount;
+  document.getElementById('metric-categories').textContent = categoryCount;
   renderSpotlightAndRanking();
   renderTools();
 }
@@ -196,9 +201,12 @@ function renderTools() {
   toolGrid.innerHTML = filtered
     .map(
       (tool) => `
-        <article class="tool-card">
+        <article class="tool-card${tool.sponsored ? ' is-sponsored' : ''}">
           <div class="card-top">
-            <span class="tool-badge">${escapeHtml(tool.category)}</span>
+            <span class="card-badges">
+              <span class="tool-badge">${escapeHtml(tool.category)}</span>
+              ${tool.sponsored ? '<span class="sponsored-badge">Sponsored</span>' : ''}
+            </span>
             <span class="tool-price">${escapeHtml(tool.price)}</span>
           </div>
 
@@ -223,7 +231,7 @@ function renderTools() {
 
           <div class="card-footer">
             <span>${escapeHtml(tool.version)}</span>
-            <a class="card-link" href="${escapeHtml(tool.url)}" target="_blank" rel="noreferrer">${tool.source === 'hugging-face' ? 'Model card' : 'Official source'}</a>
+            <a class="card-link" href="${escapeHtml(tool.affiliateUrl || tool.url)}" target="_blank" rel="${tool.affiliateUrl ? 'sponsored noopener' : 'noreferrer'}">${tool.source === 'hugging-face' ? 'Model card' : 'Official source'}</a>
           </div>
         </article>
       `
@@ -313,7 +321,7 @@ function renderSpotlightAndRanking() {
   spotlightDescription.textContent = spotlight.description;
   spotlightCategory.textContent = spotlight.category;
   spotlightCompany.textContent = spotlight.company;
-  spotlightLink.href = spotlight.url;
+  spotlightLink.href = spotlight.affiliateUrl || spotlight.url;
 
   rankList.innerHTML = topItems
     .map(
@@ -321,15 +329,25 @@ function renderSpotlightAndRanking() {
         <li class="rank-item">
           <div class="rank-label">
             <strong>${index + 1}</strong>
-            <span class="rank-name">${tool.name}</span>
+            <span class="rank-name">${escapeHtml(tool.name)}</span>
           </div>
-          <span>${tool.company}</span>
+          <span>${escapeHtml(tool.company)}</span>
         </li>
       `
     )
     .join('');
 }
 
+function setupListingLinks() {
+  const config = window.SITE_CONFIG || {};
+  const repoUrl = config.repoUrl || 'https://github.com/joshuawayzwright/ai-download-center';
+  document.getElementById('submitToolLink').href = `${repoUrl}/issues/new?template=submit-tool.yml`;
+  document.getElementById('featuredLink').href = config.featuredCheckoutUrl || `${repoUrl}/issues/new?template=featured-listing.yml`;
+  if (config.featuredPrice) document.getElementById('featuredPrice').textContent = config.featuredPrice;
+  if (config.featuredPeriod) document.getElementById('featuredPeriod').textContent = config.featuredPeriod;
+}
+
+setupListingLinks();
 searchInput.addEventListener('input', handleSearchInput);
 loadMoreModels.addEventListener('click', () => {
   if (liveSearchQuery && liveNextPageUrl) {
