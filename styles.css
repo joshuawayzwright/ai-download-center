@@ -723,6 +723,12 @@ input {
   box-shadow: 0 0 0 3px rgba(94, 199, 255, 0.14);
 }
 
+.live-search-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .filter-group {
   display: flex;
   flex-direction: column;
@@ -923,6 +929,34 @@ input {
 .feature-box span {
   color: var(--muted);
   line-height: 1.6;
+}
+
+.owner-credit {
+  font-size: 0.9rem;
+}
+
+.owner-credit a,
+.site-footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.owner-credit a:hover,
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 28px;
+  padding: 20px 4px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 
 .empty-state {

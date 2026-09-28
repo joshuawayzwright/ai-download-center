@@ -7,6 +7,7 @@ A GitHub-ready directory for discovering major AI models, assistants, self-hoste
 - Search across AI models, chatbot tools, and utilities
 - Filter by category such as LLM, chatbot, assistant, self-hosted, image, video, and audio
 - Showcase official website and project links
+- Search live public Hugging Face models alongside the curated listings
 - Mobile-friendly landing page and catalog layout
 - Easy extension through the JSON-based catalog
 
@@ -27,7 +28,11 @@ http://localhost:8000
 
 ## Notes
 
-This directory is meant to help users explore official sources and major AI tools in one place. Always confirm licensing, usage terms, and platform policies before using or hosting any model or tool.
+This directory combines a curated catalog with on-demand search of Hugging Face's public model API. Live search requires an internet connection and returns up to 100 relevant results per query; it cannot represent private or unlisted models or every match for broad queries. Always confirm licensing, usage terms, and platform policies on each model card before using or hosting a model.
+
+## Project ownership
+
+AI Download Center is created and maintained by [@joshuawayzwright](https://github.com/joshuawayzwright). The original project code and site design are covered by the MIT license in [LICENSE](LICENSE). Provider names, model names, logos, and linked resources belong to their respective owners.
 
 ## License
 

@@ -4,14 +4,137 @@ const resultsText = document.getElementById('resultsText');
 const countModels = document.getElementById('count-models');
 const countCategories = document.getElementById('count-categories');
 const filterButtons = document.querySelectorAll('.filter-btn');
+const liveSearchStatus = document.getElementById('liveSearchStatus');
 
 let currentFilter = 'all';
 let tools = [];
+let curatedTools = [];
+let liveTools = [];
+let liveSearchTimer;
+let liveSearchController;
+let liveSearchRequest = 0;
+
+const taskCategories = {
+  'automatic-speech-recognition': 'audio',
+  'audio-classification': 'audio',
+  'audio-to-audio': 'audio',
+  'text-to-audio': 'audio',
+  'text-to-speech': 'audio',
+  'text-to-video': 'video',
+  'image-to-video': 'video',
+  'text-to-image': 'image',
+  'image-to-image': 'image',
+  'unconditional-image-generation': 'image',
+  'image-classification': 'vision',
+  'image-segmentation': 'vision',
+  'object-detection': 'vision',
+  'depth-estimation': 'vision',
+  'visual-question-answering': 'vision',
+  'image-to-text': 'vision',
+  conversational: 'chatbot',
+};
+
+const taskDescriptions = {
+  'automatic-speech-recognition': 'Speech recognition model',
+  'audio-classification': 'Audio classification model',
+  'audio-to-audio': 'Audio transformation model',
+  'text-to-audio': 'Text-to-audio generation model',
+  'text-to-speech': 'Speech generation model',
+  'text-to-video': 'Text-to-video generation model',
+  'image-to-video': 'Image-to-video generation model',
+  'text-to-image': 'Text-to-image generation model',
+  'image-to-image': 'Image transformation model',
+  'unconditional-image-generation': 'Image generation model',
+  'image-classification': 'Image classification model',
+  'image-segmentation': 'Image segmentation model',
+  'object-detection': 'Object detection model',
+  'depth-estimation': 'Depth estimation model',
+  'visual-question-answering': 'Visual question answering model',
+  'image-to-text': 'Image captioning model',
+  conversational: 'Conversational model',
+  'text-generation': 'Text generation model',
+  'text2text-generation': 'Text-to-text generation model',
+  'sentence-similarity': 'Text embedding and similarity model',
+  'feature-extraction': 'Feature extraction model',
+};
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character]);
+}
+
+function normalizeSearchText(value) {
+  return String(value ?? '').toLowerCase().replace(/[-_./]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function toCommunityModel(model) {
+  const modelTags = Array.isArray(model.tags) ? model.tags : [];
+  const modelId = String(model.id || 'Unknown model');
+  const company = String(model.author || modelId.split('/')[0] || 'Hugging Face');
+  const taggedTask = modelTags.find((tag) => taskCategories[tag]);
+  const modelTask = model.pipeline_tag || taggedTask;
+  const searchableMetadata = `${modelId} ${modelTags.join(' ')}`.toLowerCase();
+  let category = taskCategories[modelTask] || 'llm';
+
+  if (!taskCategories[modelTask]) {
+    if (searchableMetadata.includes('diffusion') || searchableMetadata.includes('text-to-image') || searchableMetadata.includes('flux')) {
+      category = 'image';
+    } else if (searchableMetadata.includes('text-to-video') || searchableMetadata.includes('video')) {
+      category = 'video';
+    } else if (searchableMetadata.includes('speech') || searchableMetadata.includes('audio') || searchableMetadata.includes('whisper')) {
+      category = 'audio';
+    } else if (searchableMetadata.includes('object-detection') || searchableMetadata.includes('segmentation') || searchableMetadata.includes('vision')) {
+      category = 'vision';
+    } else if (searchableMetadata.includes('code') || searchableMetadata.includes('coder')) {
+      category = 'code';
+    }
+  }
+
+  const task = modelTask || category;
+  const licenseTag = modelTags.find((tag) => tag.startsWith('license:'));
+  const tags = [...new Set(['community', 'hugging-face', task, ...modelTags.slice(0, 3)])].slice(0, 6);
+  const modelPath = modelId.split('/').map((part) => encodeURIComponent(part)).join('/');
+  const downloads = Number(model.downloads || 0).toLocaleString();
+  const categoryDescriptions = {
+    audio: 'Audio model',
+    chatbot: 'Conversational model',
+    code: 'Code model',
+    image: 'Image generation model',
+    llm: 'Text generation model',
+    video: 'Video generation model',
+    vision: 'Computer vision model',
+  };
+
+  return {
+    name: modelId,
+    company,
+    category,
+    platform: 'Hugging Face',
+    version: model.lastModified ? `Updated ${model.lastModified.slice(0, 10)}` : 'Community model',
+    price: licenseTag ? licenseTag.slice('license:'.length) : 'Review license',
+    tags,
+    description: `${taskDescriptions[modelTask] || categoryDescriptions[category] || `${task.replaceAll('-', ' ')} model`}. ${downloads} downloads on Hugging Face.`,
+    url: `https://huggingface.co/${modelPath}`,
+    source: 'hugging-face',
+  };
+}
+
+function setLiveSearchStatus(message) {
+  if (!liveSearchStatus) return;
+  liveSearchStatus.textContent = message;
+  liveSearchStatus.hidden = !message;
+}
 
 async function loadTools() {
   const response = await fetch('./data/tools.json');
   const data = await response.json();
-  tools = data.tools;
+  curatedTools = data.tools;
+  tools = [...curatedTools, ...liveTools];
 
   countModels.textContent = tools.length;
   countCategories.textContent = new Set(tools.map((tool) => tool.category)).size;
@@ -20,25 +143,26 @@ async function loadTools() {
 }
 
 function renderTools() {
-  const searchTerm = searchInput.value.trim().toLowerCase();
+  const searchTerm = normalizeSearchText(searchInput.value);
   const filtered = tools.filter((tool) => {
-    const matchesFilter = currentFilter === 'all' || tool.category === currentFilter || tool.tags.includes(currentFilter);
+    const matchesFilter = currentFilter === 'all' || tool.category === currentFilter || (tool.tags || []).includes(currentFilter);
     const haystack = [
       tool.name,
       tool.company,
       tool.category,
       tool.description,
       tool.platform,
-      tool.tags.join(' '),
+      (tool.tags || []).join(' '),
     ]
       .join(' ')
       .toLowerCase();
 
-    const matchesSearch = haystack.includes(searchTerm);
+    const matchesSearch = normalizeSearchText(haystack).includes(searchTerm);
     return matchesFilter && matchesSearch;
   });
 
-  resultsText.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}`;
+  const liveCount = filtered.filter((tool) => tool.source === 'hugging-face').length;
+  resultsText.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}${liveCount ? `, including ${liveCount} live models` : ''}`;
 
   if (!filtered.length) {
     toolGrid.innerHTML = `
@@ -51,14 +175,14 @@ function renderTools() {
   }
 
   const makeLogo = (company) => {
-    const initials = company
+    const initials = String(company)
       .split(/\s+|[\-&]/)
       .filter(Boolean)
       .slice(0, 2)
       .map((part) => part[0]?.toUpperCase() || '')
       .join('') || 'AI';
 
-    return `<span class="company-logo" aria-label="${company} logo">${initials}</span>`;
+    return `<span class="company-logo" aria-label="${escapeHtml(company)} logo">${escapeHtml(initials)}</span>`;
   };
 
   toolGrid.innerHTML = filtered
@@ -66,37 +190,78 @@ function renderTools() {
       (tool) => `
         <article class="tool-card">
           <div class="card-top">
-            <span class="tool-badge">${tool.category}</span>
-            <span class="tool-price">${tool.price}</span>
+            <span class="tool-badge">${escapeHtml(tool.category)}</span>
+            <span class="tool-price">${escapeHtml(tool.price)}</span>
           </div>
 
           <div>
             <div class="company-row">
               ${makeLogo(tool.company)}
               <div>
-                <h3 class="tool-name">${tool.name}</h3>
+                <h3 class="tool-name">${escapeHtml(tool.name)}</h3>
                 <div class="tool-meta">
-                  <span>${tool.company}</span>
-                  <span>${tool.platform}</span>
+                  <span>${escapeHtml(tool.company)}</span>
+                  <span>${escapeHtml(tool.platform)}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <p class="tool-description">${tool.description}</p>
+          <p class="tool-description">${escapeHtml(tool.description)}</p>
 
           <div class="tool-meta">
-            ${(tool.tags || []).map((tag) => `<span>${tag}</span>`).join('')}
+            ${(tool.tags || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}
           </div>
 
           <div class="card-footer">
-            <span>${tool.version}</span>
-            <a class="card-link" href="${tool.url}" target="_blank" rel="noreferrer">Official source</a>
+            <span>${escapeHtml(tool.version)}</span>
+            <a class="card-link" href="${escapeHtml(tool.url)}" target="_blank" rel="noreferrer">${tool.source === 'hugging-face' ? 'Model card' : 'Official source'}</a>
           </div>
         </article>
       `
     )
     .join('');
+}
+
+async function searchLiveModels(query) {
+  const requestId = ++liveSearchRequest;
+  liveSearchController?.abort();
+  liveSearchController = new AbortController();
+  setLiveSearchStatus('Searching live community models...');
+
+  try {
+    const parameters = new URLSearchParams({ search: query, sort: 'downloads', direction: '-1', limit: '100' });
+    const response = await fetch(`https://huggingface.co/api/models?${parameters}`, { signal: liveSearchController.signal });
+    if (!response.ok) throw new Error(`Model registry returned ${response.status}`);
+
+    const models = await response.json();
+    if (requestId !== liveSearchRequest || searchInput.value.trim() !== query) return;
+
+    const curatedNames = new Set(curatedTools.map((tool) => tool.name.toLowerCase()));
+    liveTools = models
+      .filter((model) => !curatedNames.has(String(model.id).toLowerCase()))
+      .map(toCommunityModel);
+    tools = [...curatedTools, ...liveTools];
+    renderTools();
+    setLiveSearchStatus(`Live model index: ${liveTools.length} matching models from Hugging Face.`);
+  } catch (error) {
+    if (error.name === 'AbortError' || requestId !== liveSearchRequest) return;
+    setLiveSearchStatus('Live model search is unavailable; curated results are still shown.');
+  }
+}
+
+function handleSearchInput() {
+  clearTimeout(liveSearchTimer);
+  liveSearchController?.abort();
+  liveSearchRequest += 1;
+  liveTools = [];
+  tools = [...curatedTools];
+  setLiveSearchStatus('');
+  renderTools();
+
+  const query = searchInput.value.trim();
+  if (query.length < 2) return;
+  liveSearchTimer = setTimeout(() => searchLiveModels(query), 350);
 }
 
 function renderSpotlightAndRanking() {
@@ -135,7 +300,7 @@ function renderSpotlightAndRanking() {
     .join('');
 }
 
-searchInput.addEventListener('input', renderTools);
+searchInput.addEventListener('input', handleSearchInput);
 
 filterButtons.forEach((button) => {
   button.addEventListener('click', () => {

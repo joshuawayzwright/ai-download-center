@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Download Center</title>
+    <meta name="author" content="joshuawayzwright" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta
       name="description"
@@ -53,7 +54,7 @@
               <a class="secondary-btn" href="#featured">View featured</a>
             </div>
             <ul class="hero-stats" aria-label="Catalog stats">
-              <li><strong id="count-models">0</strong><span>models</span></li>
+              <li><strong id="count-models">0</strong><span>curated listings</span></li>
               <li><strong id="count-categories">0</strong><span>categories</span></li>
               <li><strong>Live</strong><span>official links</span></li>
             </ul>
@@ -217,10 +218,11 @@
               <input
                 id="searchInput"
                 type="search"
-                placeholder="Search models, tags, or platform..."
+                placeholder="Search tools and the live public model registry..."
                 aria-label="Search catalog"
               />
             </label>
+            <p id="liveSearchStatus" class="live-search-status" aria-live="polite" hidden></p>
 
             <div class="results-row">
               <p id="resultsText">Showing 0 entries</p>
@@ -246,6 +248,10 @@
                 learn what is available across the wider AI ecosystem without digging through dozens
                 of scattered links and fragmented directories.
               </p>
+              <p class="owner-credit">
+                Created and maintained by
+                <a href="https://github.com/joshuawayzwright">@joshuawayzwright</a>.
+              </p>
             </div>
             <div class="about-features">
               <div class="feature-box">
@@ -264,6 +270,11 @@
           </div>
         </section>
       </main>
+      <footer class="site-footer">
+        <span>AI Download Center</span>
+        <span>Project owner: <a href="https://github.com/joshuawayzwright">@joshuawayzwright</a></span>
+        <a href="https://github.com/joshuawayzwright/ai-download-center">View source on GitHub</a>
+      </footer>
     </div>
 
     <script src="app.js"></script>
