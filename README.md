@@ -32,7 +32,7 @@ This directory combines a curated catalog with on-demand search of Hugging Face'
 
 ## Project ownership
 
-AI Download Center is created and maintained by [@joshuawayzwright](https://github.com/joshuawayzwright). The original project code and site design are covered by the MIT license in [LICENSE](LICENSE). Provider names, model names, logos, and linked resources belong to their respective owners.
+AI Download Center's concept, design direction, and curation are credited to [@joshuawayzwright](https://github.com/joshuawayzwright). The site implementation was developed with GitHub Copilot. The original project code is covered by the MIT license in [LICENSE](LICENSE). Provider names, model names, logos, and linked resources belong to their respective owners.
 
 ## License
 
