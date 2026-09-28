@@ -5,6 +5,7 @@ const countModels = document.getElementById('count-models');
 const countCategories = document.getElementById('count-categories');
 const filterButtons = document.querySelectorAll('.filter-btn');
 const liveSearchStatus = document.getElementById('liveSearchStatus');
+const loadMoreModels = document.getElementById('loadMoreModels');
 
 let currentFilter = 'all';
 let tools = [];
@@ -13,6 +14,8 @@ let liveTools = [];
 let liveSearchTimer;
 let liveSearchController;
 let liveSearchRequest = 0;
+let liveSearchQuery = '';
+let liveNextPageUrl = null;
 
 const taskCategories = {
   'automatic-speech-recognition': 'audio',
@@ -130,6 +133,11 @@ function setLiveSearchStatus(message) {
   liveSearchStatus.hidden = !message;
 }
 
+function getNextModelPage(linkHeader) {
+  const nextLink = linkHeader?.match(/<([^>]+)>\s*;\s*rel="next"/);
+  return nextLink?.[1] || null;
+}
+
 async function loadTools() {
   const response = await fetch('./data/tools.json');
   const data = await response.json();
@@ -223,30 +231,47 @@ function renderTools() {
     .join('');
 }
 
-async function searchLiveModels(query) {
+async function searchLiveModels(query, pageUrl = null) {
   const requestId = ++liveSearchRequest;
   liveSearchController?.abort();
   liveSearchController = new AbortController();
-  setLiveSearchStatus('Searching live community models...');
+  const loadingNextPage = Boolean(pageUrl);
+  loadMoreModels.disabled = true;
+  setLiveSearchStatus(loadingNextPage ? 'Loading more community models...' : 'Searching live community models...');
 
   try {
     const parameters = new URLSearchParams({ search: query, sort: 'downloads', direction: '-1', limit: '100' });
-    const response = await fetch(`https://huggingface.co/api/models?${parameters}`, { signal: liveSearchController.signal });
+    const requestUrl = pageUrl || `https://huggingface.co/api/models?${parameters}`;
+    const response = await fetch(requestUrl, { signal: liveSearchController.signal });
     if (!response.ok) throw new Error(`Model registry returned ${response.status}`);
 
     const models = await response.json();
     if (requestId !== liveSearchRequest || searchInput.value.trim() !== query) return;
 
     const curatedNames = new Set(curatedTools.map((tool) => tool.name.toLowerCase()));
-    liveTools = models
+    const knownNames = new Set([...curatedNames, ...liveTools.map((tool) => tool.name.toLowerCase())]);
+    const pageTools = models
       .filter((model) => !curatedNames.has(String(model.id).toLowerCase()))
       .map(toCommunityModel);
+    const uniquePageTools = pageTools.filter((tool) => {
+      const key = tool.name.toLowerCase();
+      if (knownNames.has(key)) return false;
+      knownNames.add(key);
+      return true;
+    });
+    liveTools = loadingNextPage ? [...liveTools, ...uniquePageTools] : uniquePageTools;
+    liveNextPageUrl = getNextModelPage(response.headers.get('Link'));
     tools = [...curatedTools, ...liveTools];
     renderTools();
-    setLiveSearchStatus(`Live model index: ${liveTools.length} matching models from Hugging Face.`);
+    loadMoreModels.hidden = !liveNextPageUrl;
+    setLiveSearchStatus(`Loaded ${liveTools.length} live models from Hugging Face.`);
   } catch (error) {
     if (error.name === 'AbortError' || requestId !== liveSearchRequest) return;
-    setLiveSearchStatus('Live model search is unavailable; curated results are still shown.');
+    setLiveSearchStatus(loadingNextPage
+      ? 'Could not load more live models. You can retry.'
+      : 'Live model search is unavailable; curated results are still shown.');
+  } finally {
+    if (requestId === liveSearchRequest) loadMoreModels.disabled = false;
   }
 }
 
@@ -255,12 +280,17 @@ function handleSearchInput() {
   liveSearchController?.abort();
   liveSearchRequest += 1;
   liveTools = [];
+  liveSearchQuery = '';
+  liveNextPageUrl = null;
+  loadMoreModels.hidden = true;
+  loadMoreModels.disabled = false;
   tools = [...curatedTools];
   setLiveSearchStatus('');
   renderTools();
 
   const query = searchInput.value.trim();
   if (query.length < 2) return;
+  liveSearchQuery = query;
   liveSearchTimer = setTimeout(() => searchLiveModels(query), 350);
 }
 
@@ -301,6 +331,11 @@ function renderSpotlightAndRanking() {
 }
 
 searchInput.addEventListener('input', handleSearchInput);
+loadMoreModels.addEventListener('click', () => {
+  if (liveSearchQuery && liveNextPageUrl) {
+    searchLiveModels(liveSearchQuery, liveNextPageUrl);
+  }
+});
 
 filterButtons.forEach((button) => {
   button.addEventListener('click', () => {

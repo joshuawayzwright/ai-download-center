@@ -729,6 +729,32 @@ input {
   font-size: 0.8rem;
 }
 
+.load-more-btn {
+  justify-self: center;
+  margin: 8px auto 0;
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.load-more-btn:hover:not(:disabled) {
+  border-color: rgba(94, 199, 255, 0.5);
+  background: rgba(94, 199, 255, 0.08);
+}
+
+.load-more-btn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.load-more-btn[hidden] {
+  display: none;
+}
+
 .filter-group {
   display: flex;
   flex-direction: column;
@@ -803,6 +829,11 @@ input {
   gap: 12px;
 }
 
+.company-row > div {
+  flex: 1;
+  min-width: 0;
+}
+
 .company-logo {
   position: relative;
   width: 40px;
@@ -830,6 +861,7 @@ input {
 .tool-name {
   margin: 0;
   font-size: 1.2rem;
+  overflow-wrap: anywhere;
 }
 
 .tool-meta {
@@ -841,10 +873,12 @@ input {
 }
 
 .tool-meta span {
+  max-width: 100%;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 5px 9px;
+  overflow-wrap: anywhere;
 }
 
 .tool-description {

@@ -28,7 +28,7 @@ http://localhost:8000
 
 ## Notes
 
-This directory combines a curated catalog with on-demand search of Hugging Face's public model API. Live search requires an internet connection and returns up to 100 relevant results per query; it cannot represent private or unlisted models or every match for broad queries. Always confirm licensing, usage terms, and platform policies on each model card before using or hosting a model.
+This directory combines a curated catalog with on-demand search of Hugging Face's public model API. Live search requires an internet connection and returns up to 100 relevant results per page; use Load more to continue through the registry's matching public results. Private or unlisted models and models outside Hugging Face are not included. Always confirm licensing, usage terms, and platform policies on each model card before using or hosting a model.
 
 ## Project ownership
 
