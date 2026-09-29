@@ -1,0 +1,42 @@
+name: Request a featured listing
+description: Pin your tool to the top of the directory with a Sponsored badge.
+title: "[Featured] "
+labels: ["featured-request"]
+body:
+  - type: markdown
+    attributes:
+      value: Featured listings appear first in the catalog and are clearly labeled as sponsored. We'll reply on this issue with pricing and payment details.
+  - type: input
+    id: name
+    attributes:
+      label: Tool name
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Official website
+      placeholder: https://
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact email
+      description: This issue is public, so use a business address. It's used only to arrange payment and the listing.
+    validations:
+      required: true
+  - type: dropdown
+    id: duration
+    attributes:
+      label: How long?
+      options: [1 month, 3 months, 6 months]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Listing text
+      description: One sentence for the card, under 150 characters.
+    validations:
+      required: true

@@ -1,0 +1,56 @@
+name: Submit a tool
+description: Suggest an AI tool or model for the free directory listing.
+title: "[Submit] "
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: Free listings are reviewed by hand. Tools that are live, publicly available, and have an official website are accepted.
+  - type: input
+    id: name
+    attributes:
+      label: Tool name
+      placeholder: e.g. Ollama
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Official website
+      placeholder: https://
+    validations:
+      required: true
+  - type: input
+    id: company
+    attributes:
+      label: Company or maker
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options: [llm, chatbot, assistant, self-hosted, vision, image, audio, code, video, utility]
+    validations:
+      required: true
+  - type: dropdown
+    id: price
+    attributes:
+      label: Pricing
+      options: [Free, Freemium, Paid, Open source]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: One-sentence description
+      description: What it does and who it is for, in under 150 characters.
+    validations:
+      required: true
+  - type: dropdown
+    id: relationship
+    attributes:
+      label: Are you affiliated with this tool?
+      options: ["Yes, I work on it", "No, I'm a user"]
+    validations:
+      required: true

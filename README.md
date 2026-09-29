@@ -26,9 +26,23 @@ Then open:
 http://localhost:8000
 ```
 
+## Search visibility
+
+The public site is published with GitHub Pages. Submit `https://joshuawayzwright.github.io/ai-download-center/sitemap.xml` to Google Search Console and Bing Webmaster Tools to request indexing. Search rankings and traffic are not guaranteed; keep the catalog current and share useful pages to improve discovery.
+
 ## Notes
 
 This directory combines a curated catalog with on-demand search of Hugging Face's public model API. Live search requires an internet connection and returns up to 100 relevant results per page; use Load more to continue through the registry's matching public results. Private or unlisted models and models outside Hugging Face are not included. Always confirm licensing, usage terms, and platform policies on each model card before using or hosting a model.
+
+## Listings and revenue
+
+Settings live in [config.js](config.js).
+
+- **Free submissions:** the "Submit a tool" button opens a GitHub issue form ([submit-tool.yml](.github/ISSUE_TEMPLATE/submit-tool.yml)). To accept a submission, add an entry to `data/tools.json`.
+- **Featured listings:** add `"sponsored": true` to an entry in `data/tools.json`. It moves to the top of the catalog with a Sponsored badge. The "Get featured" button opens a request form until you set `featuredCheckoutUrl` to a Stripe Payment Link, Gumroad or Lemon Squeezy checkout URL.
+- **Affiliate links:** add `"affiliateUrl": "https://..."` to an entry. The card's link uses it (marked `rel="sponsored"`) instead of the plain `url`.
+
+The footer tells visitors that sponsored placements are paid and that some links are affiliate links. Keep it there: advertising rules in most countries require that disclosure.
 
 ## Project ownership
 
