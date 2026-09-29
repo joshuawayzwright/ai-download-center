@@ -1,0 +1,42 @@
+name: Bug report
+description: Report an issue with the catalog or the GitHub Pages site.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve the project.
+  - type: input
+    id: summary
+    attributes:
+      label: Short summary
+      placeholder: What is broken?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: 1. Open the site...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: Chrome, Firefox, Safari, etc.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
