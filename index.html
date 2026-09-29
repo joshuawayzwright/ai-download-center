@@ -70,19 +70,18 @@
             <span class="eyebrow">Curated AI resources</span>
             <h1>The AI directory for builders, researchers, and curious teams.</h1>
             <p>
-              Explore a fast-growing catalog of official AI models, assistant tools,
-              open-source releases, and productivity apps from the companies and communities
-              shaping the future of intelligence. Everything is organized to help you discover,
-              compare, and test the right tools without losing time in the noise.
+              Compare AI models, assistants, self-hosted apps, and creative tools in one place.
+              Every listing links to the official source, and search also covers public models
+              on Hugging Face.
             </p>
             <div class="hero-actions">
               <a class="primary-btn" href="#catalog">Explore catalog</a>
-              <a class="secondary-btn" href="#featured">View featured</a>
+              <a class="secondary-btn" href="#list-your-tool">List your tool</a>
             </div>
             <ul class="hero-stats" aria-label="Catalog stats">
-              <li><strong id="count-models">0</strong><span>curated listings</span></li>
-              <li><strong id="count-categories">0</strong><span>categories</span></li>
-              <li><strong>Live</strong><span>official links</span></li>
+              <li><strong id="count-models">86</strong><span>curated listings</span></li>
+              <li><strong id="count-categories">10</strong><span>categories</span></li>
+              <li><strong>Live</strong><span>Hugging Face search</span></li>
             </ul>
           </div>
           <div class="hero-panel" id="featured">
@@ -96,11 +95,10 @@
             </div>
             <div class="panel-header">
               <span>Featured</span>
-              <span class="badge success">Updated</span>
             </div>
             <div class="featured-card">
               <div>
-                <p class="mini-label">Most popular</p>
+                <p class="mini-label">Flagship model</p>
                 <h2>Gemini 3.1 Pro</h2>
               </div>
               <div class="featured-meta">
@@ -118,14 +116,14 @@
                 <span>LLM</span>
                 <span>Meta</span>
               </div>
-              <a href="https://www.llama.com/" target="_blank" rel="noreferrer">Official source</a>
+              <a href="https://developer.meta.com/ai/" target="_blank" rel="noreferrer">Official source</a>
             </div>
           </div>
         </section>
 
-        <section class="brand-strip" aria-label="AI ecosystem partners">
+        <section class="brand-strip" aria-label="Companies in the catalog">
           <div class="brand-strip-header">
-            <span>Built around the AI ecosystem</span>
+            <span>Listings include tools from</span>
           </div>
           <div class="brand-grid">
             <span class="brand-chip">OpenAI</span>
@@ -139,25 +137,10 @@
           </div>
         </section>
 
-        <section class="metrics-row" aria-label="Directory key stats">
-          <article class="metric-card">
-            <span class="metric-number" id="metric-listings">0</span>
-            <span class="metric-label">curated listings</span>
-          </article>
-          <article class="metric-card">
-            <span class="metric-number" id="metric-categories">0</span>
-            <span class="metric-label">AI categories</span>
-          </article>
-          <article class="metric-card">
-            <span class="metric-number">24/7</span>
-            <span class="metric-label">discovery flow</span>
-          </article>
-        </section>
-
         <section class="spotlight-panel" id="top-picks" aria-label="AI spotlight and rankings">
           <div class="spotlight-main">
             <div class="section-label">Spotlight</div>
-            <p class="spotlight-intro">Trending right now</p>
+            <p class="spotlight-intro">Editor's pick</p>
             <h2 id="spotlightName">Loading spotlight...</h2>
             <p id="spotlightDescription" class="spotlight-copy">Loading description...</p>
             <div class="spotlight-meta">
@@ -182,37 +165,30 @@
           </div>
 
           <div class="collection-grid">
-            <article class="collection-card accent-blue">
+            <a class="collection-card accent-blue" href="#catalog" data-collection="llm">
               <span class="collection-kicker">Research</span>
-              <h3>Model intelligence</h3>
-              <p>Large language models, reasoning systems, coding copilots, and multimodal research tools.</p>
-            </article>
-            <article class="collection-card accent-purple">
+              <h3>Language models</h3>
+              <p>Frontier and open-weights models for reasoning, writing, and multimodal work.</p>
+              <span class="collection-count" data-count-for="llm"></span>
+            </a>
+            <a class="collection-card accent-purple" href="#catalog" data-collection="image video">
               <span class="collection-kicker">Creator tools</span>
               <h3>Image & video</h3>
-              <p>Generative systems for art, motion, design workflows, and media experimentation.</p>
-            </article>
-            <article class="collection-card accent-green">
+              <p>Generators and editors for images, motion, avatars, and design.</p>
+              <span class="collection-count" data-count-for="image video"></span>
+            </a>
+            <a class="collection-card accent-green" href="#catalog" data-collection="assistant">
               <span class="collection-kicker">Automation</span>
               <h3>Assistants</h3>
-              <p>Agentic products, workflow copilots, task automations, and productivity helpers.</p>
-            </article>
-            <article class="collection-card accent-gold">
+              <p>Agents, workflow builders, coding helpers, and productivity copilots.</p>
+              <span class="collection-count" data-count-for="assistant"></span>
+            </a>
+            <a class="collection-card accent-gold" href="#catalog" data-collection="self-hosted">
               <span class="collection-kicker">Local setup</span>
               <h3>Self-hosted AI</h3>
-              <p>Private deployment options for teams who want control, privacy, and custom stacks.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="cta-band">
-          <div class="cta-copy">
-            <span class="section-label">Built for exploration</span>
-            <h2>Find the right AI stack faster.</h2>
-          </div>
-          <div class="cta-actions">
-            <a class="primary-btn" href="#catalog">Start exploring</a>
-            <a class="secondary-btn" href="#about">Learn more</a>
+              <p>Apps and runners that keep models and data on your own hardware.</p>
+              <span class="collection-count" data-count-for="self-hosted"></span>
+            </a>
           </div>
         </section>
 
@@ -224,17 +200,17 @@
             </div>
 
             <div class="filter-group" aria-label="Filter AI tools by category">
-              <button class="filter-btn active" data-filter="all">All</button>
-              <button class="filter-btn" data-filter="llm">LLM</button>
-              <button class="filter-btn" data-filter="chatbot">Chatbots</button>
-              <button class="filter-btn" data-filter="assistant">Assistants</button>
-              <button class="filter-btn" data-filter="self-hosted">Self-hosted</button>
-              <button class="filter-btn" data-filter="vision">Vision</button>
-              <button class="filter-btn" data-filter="image">Image</button>
-              <button class="filter-btn" data-filter="audio">Audio</button>
-              <button class="filter-btn" data-filter="code">Code</button>
-              <button class="filter-btn" data-filter="video">Video</button>
-              <button class="filter-btn" data-filter="utility">Utility</button>
+              <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+              <button class="filter-btn" data-filter="llm" aria-pressed="false">LLM</button>
+              <button class="filter-btn" data-filter="chatbot" aria-pressed="false">Chatbots</button>
+              <button class="filter-btn" data-filter="assistant" aria-pressed="false">Assistants</button>
+              <button class="filter-btn" data-filter="self-hosted" aria-pressed="false">Self-hosted</button>
+              <button class="filter-btn" data-filter="vision" aria-pressed="false">Vision</button>
+              <button class="filter-btn" data-filter="image" aria-pressed="false">Image</button>
+              <button class="filter-btn" data-filter="audio" aria-pressed="false">Audio</button>
+              <button class="filter-btn" data-filter="code" aria-pressed="false">Code</button>
+              <button class="filter-btn" data-filter="video" aria-pressed="false">Video</button>
+              <button class="filter-btn" data-filter="utility" aria-pressed="false">Utility</button>
             </div>
           </aside>
 

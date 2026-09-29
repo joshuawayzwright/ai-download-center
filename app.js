@@ -145,20 +145,36 @@ async function loadTools() {
   curatedTools = [...data.tools].sort((a, b) => Number(Boolean(b.sponsored)) - Number(Boolean(a.sponsored)));
   tools = [...curatedTools, ...liveTools];
 
-  const listingCount = curatedTools.length;
-  const categoryCount = new Set(curatedTools.map((tool) => tool.category)).size;
-  countModels.textContent = listingCount;
-  countCategories.textContent = categoryCount;
-  document.getElementById('metric-listings').textContent = listingCount;
-  document.getElementById('metric-categories').textContent = categoryCount;
+  countModels.textContent = curatedTools.length;
+  countCategories.textContent = new Set(curatedTools.map((tool) => tool.category)).size;
+  document.querySelectorAll('[data-count-for]').forEach((element) => {
+    const count = curatedTools.filter((tool) => matchesFilter(tool, element.dataset.countFor)).length;
+    element.textContent = `${count} listings`;
+  });
   renderSpotlightAndRanking();
+  renderTools();
+}
+
+// A filter is 'all' or a space-separated list of categories/tags; a tool matches if it has any of them.
+function matchesFilter(tool, filter) {
+  if (filter === 'all') return true;
+  return filter.split(' ').some((value) => tool.category === value || (tool.tags || []).includes(value));
+}
+
+function setFilter(filter) {
+  currentFilter = filter;
+  filterButtons.forEach((button) => {
+    const selected = button.dataset.filter === filter;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
   renderTools();
 }
 
 function renderTools() {
   const searchTerm = normalizeSearchText(searchInput.value);
   const filtered = tools.filter((tool) => {
-    const matchesFilter = currentFilter === 'all' || tool.category === currentFilter || (tool.tags || []).includes(currentFilter);
+    const matchesCategory = matchesFilter(tool, currentFilter);
     const haystack = [
       tool.name,
       tool.company,
@@ -171,7 +187,7 @@ function renderTools() {
       .toLowerCase();
 
     const matchesSearch = normalizeSearchText(haystack).includes(searchTerm);
-    return matchesFilter && matchesSearch;
+    return matchesCategory && matchesSearch;
   });
 
   const liveCount = filtered.filter((tool) => tool.source === 'hugging-face').length;
@@ -231,7 +247,7 @@ function renderTools() {
 
           <div class="card-footer">
             <span>${escapeHtml(tool.version)}</span>
-            <a class="card-link" href="${escapeHtml(tool.affiliateUrl || tool.url)}" target="_blank" rel="${tool.affiliateUrl ? 'sponsored noopener' : 'noreferrer'}">${tool.source === 'hugging-face' ? 'Model card' : 'Official source'}</a>
+            <a class="card-link" href="${escapeHtml(tool.affiliateUrl || tool.url)}" target="_blank" rel="${tool.affiliateUrl ? 'sponsored noopener' : 'noreferrer'}" aria-label="${escapeHtml(tool.name)} ${tool.source === 'hugging-face' ? 'model card' : 'official site'} (opens in a new tab)">${tool.source === 'hugging-face' ? 'Model card' : 'Official source'}</a>
           </div>
         </article>
       `
@@ -314,8 +330,10 @@ function renderSpotlightAndRanking() {
     return;
   }
 
-  const spotlight = tools.find((tool) => tool.category === 'llm') || tools[0];
-  const topItems = tools.slice(0, 5);
+  // Editorial picks are never paid placements.
+  const editorial = curatedTools.filter((tool) => !tool.sponsored);
+  const spotlight = editorial.find((tool) => tool.category === 'llm') || editorial[0];
+  const topItems = editorial.slice(0, 5);
 
   spotlightName.textContent = spotlight.name;
   spotlightDescription.textContent = spotlight.description;
@@ -356,11 +374,11 @@ loadMoreModels.addEventListener('click', () => {
 });
 
 filterButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    filterButtons.forEach((btn) => btn.classList.toggle('active', btn === button));
-    currentFilter = button.dataset.filter;
-    renderTools();
-  });
+  button.addEventListener('click', () => setFilter(button.dataset.filter));
+});
+
+document.querySelectorAll('[data-collection]').forEach((card) => {
+  card.addEventListener('click', () => setFilter(card.dataset.collection));
 });
 
 loadTools();
