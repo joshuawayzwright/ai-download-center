@@ -8,7 +8,7 @@ A GitHub-ready directory for discovering major AI models, assistants, self-hoste
 - Filter by category such as LLM, chatbot, assistant, self-hosted, image, video, and audio
 - Showcase official website and project links
 - Search live public Hugging Face models alongside the curated listings
-- 336 validated listings, including community model cards from Hugging Face
+- 500 validated listings, including community model cards from Hugging Face
 - Mobile-friendly landing page and catalog layout
 - Easy extension through the JSON-based catalog
 - AI Field Notes channel launch kit and in-browser video brief builder

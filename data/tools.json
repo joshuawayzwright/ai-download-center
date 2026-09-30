@@ -6036,6 +6036,3109 @@
       "description": "Computer vision model from the public Hugging Face registry with 1,809,351 downloads.",
       "url": "https://huggingface.co/google/vit-base-patch16-224-in21k",
       "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2.5-14B-Instruct",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-09-25",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen2"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,805,423 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-14B-Instruct",
+      "source": "hugging-face"
+    },
+    {
+      "name": "HuggingFaceTB/SmolLM2-135M",
+      "company": "HuggingFaceTB",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-02-06",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "llama"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,800,382 downloads.",
+      "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M",
+      "source": "hugging-face"
+    },
+    {
+      "name": "handy-computer/nemotron-3.5-asr-streaming-0.6b-gguf",
+      "company": "handy-computer",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-15",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transcribe.cpp",
+        "gguf",
+        "asr"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,794,564 downloads.",
+      "url": "https://huggingface.co/handy-computer/nemotron-3.5-asr-streaming-0.6b-gguf",
+      "source": "hugging-face"
+    },
+    {
+      "name": "DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP-GGUF",
+      "company": "DavidAU",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-25",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "unsloth",
+        "fine tune"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,777,756 downloads.",
+      "url": "https://huggingface.co/DavidAU/Qwen3.8-27B-TURBO-Fable-Cold-Fusion-735-882-Heretic-Uncensored-NEO-CODER-MAX-MTP-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "autogluon/chronos-bolt-base",
+      "company": "autogluon",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-10-30",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "time-series-forecasting",
+        "safetensors",
+        "t5",
+        "time series"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,767,538 downloads.",
+      "url": "https://huggingface.co/autogluon/chronos-bolt-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Helsinki-NLP/opus-mt-nl-en",
+      "company": "Helsinki-NLP",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-08-16",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "translation",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,765,547 downloads.",
+      "url": "https://huggingface.co/Helsinki-NLP/opus-mt-nl-en",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google-bert/bert-base-multilingual-cased",
+      "company": "google-bert",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-02-19",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "fill-mask",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,756,306 downloads.",
+      "url": "https://huggingface.co/google-bert/bert-base-multilingual-cased",
+      "source": "hugging-face"
+    },
+    {
+      "name": "sentence-transformers/paraphrase-mpnet-base-v2",
+      "company": "sentence-transformers",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-08-19",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,749,001 downloads.",
+      "url": "https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2.5-VL-7B-Instruct-AWQ",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-04-06",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen2_5_vl"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,747,554 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct-AWQ",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2-VL-2B-Instruct",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-01-12",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen2_vl"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,726,736 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2-VL-2B-Instruct",
+      "source": "hugging-face"
+    },
+    {
+      "name": "ornith-ai/Ornith-1.0-35B-GGUF",
+      "company": "ornith-ai",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-18",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "gguf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,713,373 downloads.",
+      "url": "https://huggingface.co/ornith-ai/Ornith-1.0-35B-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3-ASR-1.7B",
+      "company": "Qwen",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-01-30",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "safetensors",
+        "qwen3_asr"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,702,288 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3-ASR-1.7B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "ResembleAI/chatterbox",
+      "company": "ResembleAI",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-06-10",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-to-speech",
+        "chatterbox",
+        "speech"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,699,526 downloads.",
+      "url": "https://huggingface.co/ResembleAI/chatterbox",
+      "source": "hugging-face"
+    },
+    {
+      "name": "docling-project/docling-layout-heron",
+      "company": "docling-project",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-02-09",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "safetensors",
+        "rt_detr_v2",
+        "arxiv:2509.11720"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,693,316 downloads.",
+      "url": "https://huggingface.co/docling-project/docling-layout-heron",
+      "source": "hugging-face"
+    },
+    {
+      "name": "ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF",
+      "company": "ISTA-DASLab",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-02",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "gsq",
+        "rco"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,679,903 downloads.",
+      "url": "https://huggingface.co/ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+      "company": "stable-diffusion-v1-5",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-09-07",
+      "price": "creativeml-openrail-m",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-to-image",
+        "diffusers",
+        "safetensors",
+        "stable-diffusion"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,678,624 downloads.",
+      "url": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2.5-Coder-14B-Instruct",
+      "company": "Qwen",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-01-12",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen2"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,677,206 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3-Reranker-0.6B",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-16",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-ranking",
+        "transformers",
+        "safetensors",
+        "qwen3"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,672,965 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3-Reranker-0.6B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Systran/faster-whisper-base",
+      "company": "Systran",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-11-23",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "ctranslate2",
+        "audio"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,672,571 downloads.",
+      "url": "https://huggingface.co/Systran/faster-whisper-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "dropbox-dash/faster-whisper-large-v3-turbo",
+      "company": "dropbox-dash",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-11-05",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "license:mit",
+        "region:us"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,666,789 downloads.",
+      "url": "https://huggingface.co/dropbox-dash/faster-whisper-large-v3-turbo",
+      "source": "hugging-face"
+    },
+    {
+      "name": "sentence-transformers-testing/stsb-bert-tiny-safetensors",
+      "company": "sentence-transformers-testing",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-01-17",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,665,780 downloads.",
+      "url": "https://huggingface.co/sentence-transformers-testing/stsb-bert-tiny-safetensors",
+      "source": "hugging-face"
+    },
+    {
+      "name": "microsoft/TRELLIS.2-4B",
+      "company": "microsoft",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-12-27",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-to-3d",
+        "trellis2",
+        "en"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,660,116 downloads.",
+      "url": "https://huggingface.co/microsoft/TRELLIS.2-4B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "mistralai/Mistral-7B-Instruct-v0.2",
+      "company": "mistralai",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-07-24",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,658,803 downloads.",
+      "url": "https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Comfy-Org/Qwen-Image-Edit_ComfyUI",
+      "company": "Comfy-Org",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-23",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "diffusion-single-file",
+        "comfyui",
+        "base_model:FireRedTeam/FireRed-Image-Edit-1.0"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,650,450 downloads.",
+      "url": "https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI",
+      "source": "hugging-face"
+    },
+    {
+      "name": "facebook/wav2vec2-base-960h",
+      "company": "facebook",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-11-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,641,804 downloads.",
+      "url": "https://huggingface.co/facebook/wav2vec2-base-960h",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3.5-35B-A3B",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-24",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen3_5_moe"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,638,494 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/Qwen3.8-Flash-Next-GGUF",
+      "company": "unsloth",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-02",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "unsloth"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,618,160 downloads.",
+      "url": "https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2-VL-7B-Instruct-AWQ",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-09-25",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen2_vl"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,617,563 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct-AWQ",
+      "source": "hugging-face"
+    },
+    {
+      "name": "antirez/deepseek-v4-gguf",
+      "company": "antirez",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-31",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "gguf",
+        "quantized",
+        "deepseek"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,610,873 downloads.",
+      "url": "https://huggingface.co/antirez/deepseek-v4-gguf",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Lightricks/LTX-2.5",
+      "company": "Lightricks",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-01",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-to-video",
+        "diffusion-single-file",
+        "text-to-video"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,602,348 downloads.",
+      "url": "https://huggingface.co/Lightricks/LTX-2.5",
+      "source": "hugging-face"
+    },
+    {
+      "name": "timm/resnet50.a1_in1k",
+      "company": "timm",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-07-11",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-classification",
+        "timm",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,599,841 downloads.",
+      "url": "https://huggingface.co/timm/resnet50.a1_in1k",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/Gemma-4-31B-IT-NVFP4",
+      "company": "nvidia",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-13",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "Model Optimizer",
+        "safetensors",
+        "gemma4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,597,974 downloads.",
+      "url": "https://huggingface.co/nvidia/Gemma-4-31B-IT-NVFP4",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Salesforce/blip-image-captioning-base",
+      "company": "Salesforce",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-02-03",
+      "price": "bsd-3-clause",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-to-text",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,596,069 downloads.",
+      "url": "https://huggingface.co/Salesforce/blip-image-captioning-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "llava-hf/llava-1.5-7b-hf",
+      "company": "llava-hf",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-06-06",
+      "price": "llama2",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "llava"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,582,874 downloads.",
+      "url": "https://huggingface.co/llava-hf/llava-1.5-7b-hf",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/siglip2-base-patch16-224",
+      "company": "google",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-02-21",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "zero-shot-image-classification",
+        "transformers",
+        "safetensors",
+        "siglip"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,580,617 downloads.",
+      "url": "https://huggingface.co/google/siglip2-base-patch16-224",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/timesfm-2.5-200m-pytorch",
+      "company": "google",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-10-02",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "time-series-forecasting",
+        "timesfm",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,577,935 downloads.",
+      "url": "https://huggingface.co/google/timesfm-2.5-200m-pytorch",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3-30B-A3B",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-07-26",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen3_moe"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,569,481 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3-30B-A3B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "baidu/Unlimited-OCR",
+      "company": "baidu",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-29",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "unlimited-ocr"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,562,838 downloads.",
+      "url": "https://huggingface.co/baidu/Unlimited-OCR",
+      "source": "hugging-face"
+    },
+    {
+      "name": "handy-computer/parakeet-unified-en-0.6b-gguf",
+      "company": "handy-computer",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-15",
+      "price": "cc-by-4.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transcribe.cpp",
+        "gguf",
+        "asr"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,556,109 downloads.",
+      "url": "https://huggingface.co/handy-computer/parakeet-unified-en-0.6b-gguf",
+      "source": "hugging-face"
+    },
+    {
+      "name": "lightx2v/Minimax-h3-Turbo",
+      "company": "lightx2v",
+      "category": "video",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-10",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-to-video",
+        "diffusers",
+        "t2v",
+        "i2v"
+      ],
+      "description": "Video model from the public Hugging Face registry with 1,538,470 downloads.",
+      "url": "https://huggingface.co/lightx2v/Minimax-h3-Turbo",
+      "source": "hugging-face"
+    },
+    {
+      "name": "IDEA-Research/grounding-dino-base",
+      "company": "IDEA-Research",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-05-12",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "zero-shot-object-detection",
+        "transformers",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,531,546 downloads.",
+      "url": "https://huggingface.co/IDEA-Research/grounding-dino-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "meta-llama/Llama-3.2-3B-Instruct",
+      "company": "meta-llama",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-10-24",
+      "price": "llama3.2",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "llama"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,531,492 downloads.",
+      "url": "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",
+      "source": "hugging-face"
+    },
+    {
+      "name": "ornith-ai/Ornith-1.0-35B",
+      "company": "ornith-ai",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-06-25",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen3_5_moe"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,519,375 downloads.",
+      "url": "https://huggingface.co/ornith-ai/Ornith-1.0-35B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "docling-project/docling-models",
+      "company": "docling-project",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-12-03",
+      "price": "cdla-permissive-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "arxiv:2408.09869",
+        "arxiv:2206.01062"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,516,078 downloads.",
+      "url": "https://huggingface.co/docling-project/docling-models",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Alibaba-NLP/gte-multilingual-base",
+      "company": "Alibaba-NLP",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-07-05",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "safetensors",
+        "new"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,512,101 downloads.",
+      "url": "https://huggingface.co/Alibaba-NLP/gte-multilingual-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2.5-0.5B",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-09-25",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen2"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,505,377 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "trl-internal-testing/tiny-Qwen2ForSequenceClassification-2.5",
+      "company": "trl-internal-testing",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-12-19",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-classification",
+        "transformers",
+        "safetensors",
+        "qwen2"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,503,959 downloads.",
+      "url": "https://huggingface.co/trl-internal-testing/tiny-Qwen2ForSequenceClassification-2.5",
+      "source": "hugging-face"
+    },
+    {
+      "name": "cambridgeltl/SapBERT-from-PubMedBERT-fulltext",
+      "company": "cambridgeltl",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-06-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "feature-extraction",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,489,733 downloads.",
+      "url": "https://huggingface.co/cambridgeltl/SapBERT-from-PubMedBERT-fulltext",
+      "source": "hugging-face"
+    },
+    {
+      "name": "RadixArk/Qwen3.8-27B-NVFP4",
+      "company": "RadixArk",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-22",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "Model Optimizer",
+        "safetensors",
+        "qwen3_5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,472,711 downloads.",
+      "url": "https://huggingface.co/RadixArk/Qwen3.8-27B-NVFP4",
+      "source": "hugging-face"
+    },
+    {
+      "name": "deepseek-ai/DeepSeek-V3-0324",
+      "company": "deepseek-ai",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-03-27",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "deepseek_v3"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,472,139 downloads.",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3-0324",
+      "source": "hugging-face"
+    },
+    {
+      "name": "dslim/bert-base-NER",
+      "company": "dslim",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-10-08",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "token-classification",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,470,880 downloads.",
+      "url": "https://huggingface.co/dslim/bert-base-NER",
+      "source": "hugging-face"
+    },
+    {
+      "name": "0bserverx/Qwen3.8-27B-Heretic-Abliterated-Uncensored-GGUF",
+      "company": "0bserverx",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-20",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "gguf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,470,006 downloads.",
+      "url": "https://huggingface.co/0bserverx/Qwen3.8-27B-Heretic-Abliterated-Uncensored-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "distilbert/distilroberta-base",
+      "company": "distilbert",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-02-19",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "fill-mask",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,469,664 downloads.",
+      "url": "https://huggingface.co/distilbert/distilroberta-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+      "company": "jonatasgrosman",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-12-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "jax"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,461,372 downloads.",
+      "url": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/gemma-4-12b-it-GGUF",
+      "company": "unsloth",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-17",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "gemma4",
+        "unsloth"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,457,385 downloads.",
+      "url": "https://huggingface.co/unsloth/gemma-4-12b-it-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+      "company": "sentence-transformers",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-08-19",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "pytorch",
+        "onnx"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,439,784 downloads.",
+      "url": "https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1",
+      "source": "hugging-face"
+    },
+    {
+      "name": "peculiar-ragdoll/Tiel-Coder-35B-A3B-GGUF-MTP",
+      "company": "peculiar-ragdoll",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-10",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "llama.cpp",
+        "qwen35moe"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,438,470 downloads.",
+      "url": "https://huggingface.co/peculiar-ragdoll/Tiel-Coder-35B-A3B-GGUF-MTP",
+      "source": "hugging-face"
+    },
+    {
+      "name": "gigant/romanian-wav2vec2",
+      "company": "gigant",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-09-13",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,436,904 downloads.",
+      "url": "https://huggingface.co/gigant/romanian-wav2vec2",
+      "source": "hugging-face"
+    },
+    {
+      "name": "timm/vit_small_patch14_dinov2.lvd142m",
+      "company": "timm",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-01-21",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-feature-extraction",
+        "timm",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,434,378 downloads.",
+      "url": "https://huggingface.co/timm/vit_small_patch14_dinov2.lvd142m",
+      "source": "hugging-face"
+    },
+    {
+      "name": "openai/whisper-tiny",
+      "company": "openai",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-02-29",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,432,498 downloads.",
+      "url": "https://huggingface.co/openai/whisper-tiny",
+      "source": "hugging-face"
+    },
+    {
+      "name": "k2-fsa/OmniVoice",
+      "company": "k2-fsa",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-03",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-to-speech",
+        "omnivoice",
+        "safetensors",
+        "zero-shot"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,431,614 downloads.",
+      "url": "https://huggingface.co/k2-fsa/OmniVoice",
+      "source": "hugging-face"
+    },
+    {
+      "name": "biohub/ESMC-6B",
+      "company": "biohub",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-16",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "fill-mask",
+        "transformers",
+        "safetensors",
+        "esmc"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,431,420 downloads.",
+      "url": "https://huggingface.co/biohub/ESMC-6B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "anuragshas/wav2vec2-large-xlsr-53-telugu",
+      "company": "anuragshas",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2021-07-05",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "jax"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,409,687 downloads.",
+      "url": "https://huggingface.co/anuragshas/wav2vec2-large-xlsr-53-telugu",
+      "source": "hugging-face"
+    },
+    {
+      "name": "laion/clap-htsat-unfused",
+      "company": "laion",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-04-24",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "feature-extraction",
+        "transformers",
+        "pytorch",
+        "clap"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,407,023 downloads.",
+      "url": "https://huggingface.co/laion/clap-htsat-unfused",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3.5-35B-A3B-FP8",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-24",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen3_5_moe"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,405,187 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B-FP8",
+      "source": "hugging-face"
+    },
+    {
+      "name": "rizvandwiki/gender-classification",
+      "company": "rizvandwiki",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-05-18",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-classification",
+        "transformers",
+        "pytorch",
+        "tensorboard"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,399,947 downloads.",
+      "url": "https://huggingface.co/rizvandwiki/gender-classification",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/gemma-3-4b-it",
+      "company": "google",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-03-21",
+      "price": "gemma",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "gemma3"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,398,241 downloads.",
+      "url": "https://huggingface.co/google/gemma-3-4b-it",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/timesfm-3.0-pytorch",
+      "company": "google",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-02",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "time-series-forecasting",
+        "safetensors",
+        "time-series",
+        "forecasting"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,393,262 downloads.",
+      "url": "https://huggingface.co/google/timesfm-3.0-pytorch",
+      "source": "hugging-face"
+    },
+    {
+      "name": "openai/clip-vit-base-patch16",
+      "company": "openai",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-10-04",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "zero-shot-image-classification",
+        "transformers",
+        "pytorch",
+        "jax"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,390,081 downloads.",
+      "url": "https://huggingface.co/openai/clip-vit-base-patch16",
+      "source": "hugging-face"
+    },
+    {
+      "name": "StanfordAIMI/stanford-deidentifier-base",
+      "company": "StanfordAIMI",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-10-09",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "token-classification",
+        "transformers",
+        "pytorch",
+        "bert"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,389,180 downloads.",
+      "url": "https://huggingface.co/StanfordAIMI/stanford-deidentifier-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "company": "TinyLlama",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-03-17",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "llama"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,387,647 downloads.",
+      "url": "https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/siglip-so400m-patch14-384",
+      "company": "google",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-09-26",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "zero-shot-image-classification",
+        "transformers",
+        "safetensors",
+        "siglip"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,385,542 downloads.",
+      "url": "https://huggingface.co/google/siglip-so400m-patch14-384",
+      "source": "hugging-face"
+    },
+    {
+      "name": "laion/CLIP-convnext_base_w-laion2B-s13B-b82K-augreg",
+      "company": "laion",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-04-18",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "zero-shot-image-classification",
+        "open_clip",
+        "tensorboard",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,380,740 downloads.",
+      "url": "https://huggingface.co/laion/CLIP-convnext_base_w-laion2B-s13B-b82K-augreg",
+      "source": "hugging-face"
+    },
+    {
+      "name": "facebook/bart-large-cnn",
+      "company": "facebook",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-02-13",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "summarization",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,378,411 downloads.",
+      "url": "https://huggingface.co/facebook/bart-large-cnn",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qdrant/bge-small-en-v1.5-onnx-Q",
+      "company": "Qdrant",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-24",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "transformers",
+        "onnx",
+        "bert"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,375,586 downloads.",
+      "url": "https://huggingface.co/Qdrant/bge-small-en-v1.5-onnx-Q",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/Gemma-4-26B-A4B-NVFP4",
+      "company": "nvidia",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-05-11",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "Model Optimizer",
+        "safetensors",
+        "gemma4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,374,216 downloads.",
+      "url": "https://huggingface.co/nvidia/Gemma-4-26B-A4B-NVFP4",
+      "source": "hugging-face"
+    },
+    {
+      "name": "zai-org/GLM-5.3",
+      "company": "zai-org",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-04",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "glm_moe_dsa"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,372,510 downloads.",
+      "url": "https://huggingface.co/zai-org/GLM-5.3",
+      "source": "hugging-face"
+    },
+    {
+      "name": "lmstudio-community/Qwen3.8-27B-GGUF",
+      "company": "lmstudio-community",
+      "category": "chatbot",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "conversational",
+        "gguf",
+        "base_model:Qwen/Qwen3.8-27B",
+        "base_model:quantized:Qwen/Qwen3.8-27B"
+      ],
+      "description": "Conversational model from the public Hugging Face registry with 1,370,621 downloads.",
+      "url": "https://huggingface.co/lmstudio-community/Qwen3.8-27B-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "intfloat/multilingual-e5-large-instruct",
+      "company": "intfloat",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-07-10",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "feature-extraction",
+        "sentence-transformers",
+        "onnx",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,365,887 downloads.",
+      "url": "https://huggingface.co/intfloat/multilingual-e5-large-instruct",
+      "source": "hugging-face"
+    },
+    {
+      "name": "prithivida/parrot_paraphraser_on_T5",
+      "company": "prithivida",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2021-05-18",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text2text-generation",
+        "transformers",
+        "pytorch",
+        "t5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,364,392 downloads.",
+      "url": "https://huggingface.co/prithivida/parrot_paraphraser_on_T5",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Kijai/WanVideo_comfy",
+      "company": "Kijai",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-06-13",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "diffusion-single-file",
+        "comfyui",
+        "base_model:Wan-AI/Wan2.1-VACE-1.3B"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,363,406 downloads.",
+      "url": "https://huggingface.co/Kijai/WanVideo_comfy",
+      "source": "hugging-face"
+    },
+    {
+      "name": "datalab-to/surya-ocr-2",
+      "company": "datalab-to",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-05-27",
+      "price": "openrail",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen3_5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,360,345 downloads.",
+      "url": "https://huggingface.co/datalab-to/surya-ocr-2",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Bingsu/yolo-world-mirror",
+      "company": "Bingsu",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-03-16",
+      "price": "agpl-3.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "ultralytics",
+        "license:agpl-3.0",
+        "region:us"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,356,989 downloads.",
+      "url": "https://huggingface.co/Bingsu/yolo-world-mirror",
+      "source": "hugging-face"
+    },
+    {
+      "name": "sentence-transformers/paraphrase-MiniLM-L6-v2",
+      "company": "sentence-transformers",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-03-06",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,355,978 downloads.",
+      "url": "https://huggingface.co/sentence-transformers/paraphrase-MiniLM-L6-v2",
+      "source": "hugging-face"
+    },
+    {
+      "name": "KBLab/wav2vec2-large-voxrex-swedish",
+      "company": "KBLab",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-05-22",
+      "price": "cc0-1.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,355,595 downloads.",
+      "url": "https://huggingface.co/KBLab/wav2vec2-large-voxrex-swedish",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/bigvgan_v2_22khz_80band_256x",
+      "company": "nvidia",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-09-05",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "audio-to-audio",
+        "PyTorch",
+        "neural-vocoder",
+        "audio-generation"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,350,366 downloads.",
+      "url": "https://huggingface.co/nvidia/bigvgan_v2_22khz_80band_256x",
+      "source": "hugging-face"
+    },
+    {
+      "name": "litert-community/gemma-4-E2B-it-litert-lm",
+      "company": "litert-community",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-31",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "litert-lm",
+        "base_model:google/gemma-4-E2B-it",
+        "base_model:finetune:google/gemma-4-E2B-it"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,347,016 downloads.",
+      "url": "https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Khalsuu/filipino-wav2vec2-l-xls-r-300m-official",
+      "company": "Khalsuu",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-05-13",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "tensorboard"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,346,352 downloads.",
+      "url": "https://huggingface.co/Khalsuu/filipino-wav2vec2-l-xls-r-300m-official",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/MiniMax-H3-GGUF",
+      "company": "unsloth",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-14",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-video",
+        "gguf",
+        "text-to-video",
+        "image-to-video"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,335,287 downloads.",
+      "url": "https://huggingface.co/unsloth/MiniMax-H3-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "EleutherAI/pythia-70m-deduped",
+      "company": "EleutherAI",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-07-09",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,330,448 downloads.",
+      "url": "https://huggingface.co/EleutherAI/pythia-70m-deduped",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Inferact/Qwen3.8-27B-NVFP4",
+      "company": "Inferact",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen3_5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,325,433 downloads.",
+      "url": "https://huggingface.co/Inferact/Qwen3.8-27B-NVFP4",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/Qwen3.5-9B-GGUF",
+      "company": "unsloth",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-03-02",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "gguf",
+        "unsloth"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,324,558 downloads.",
+      "url": "https://huggingface.co/unsloth/Qwen3.5-9B-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/Qwen3.5-122B-A10B-NVFP4",
+      "company": "nvidia",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-06-02",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "Model Optimizer",
+        "safetensors",
+        "qwen3_5_moe"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,312,320 downloads.",
+      "url": "https://huggingface.co/nvidia/Qwen3.5-122B-A10B-NVFP4",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/Qwen3.6-35B-A3B-GGUF",
+      "company": "unsloth",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-20",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "gguf",
+        "unsloth"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,307,031 downloads.",
+      "url": "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "ggml-org/gemma-4-E4B-it-GGUF",
+      "company": "ggml-org",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-26",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "any-to-any",
+        "gguf",
+        "quantized"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,303,066 downloads.",
+      "url": "https://huggingface.co/ggml-org/gemma-4-E4B-it-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "moonshotai/Kimi-K3",
+      "company": "moonshotai",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-02",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "kimi_k3"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,302,723 downloads.",
+      "url": "https://huggingface.co/moonshotai/Kimi-K3",
+      "source": "hugging-face"
+    },
+    {
+      "name": "HauhauCS/Gemma-4-E4B-Uncensored-HauhauCS-Aggressive",
+      "company": "HauhauCS",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-06",
+      "price": "gemma",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "uncensored",
+        "gemma4"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,300,655 downloads.",
+      "url": "https://huggingface.co/HauhauCS/Gemma-4-E4B-Uncensored-HauhauCS-Aggressive",
+      "source": "hugging-face"
+    },
+    {
+      "name": "dbmdz/bert-large-cased-finetuned-conll03-english",
+      "company": "dbmdz",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-09-06",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "token-classification",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,296,119 downloads.",
+      "url": "https://huggingface.co/dbmdz/bert-large-cased-finetuned-conll03-english",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3-VL-Embedding-8B",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-16",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "safetensors",
+        "qwen3_vl"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,295,548 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3-VL-Embedding-8B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "ornith-ai/Ornith-1.5-397B-GGUF",
+      "company": "ornith-ai",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-24",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "gguf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,286,224 downloads.",
+      "url": "https://huggingface.co/ornith-ai/Ornith-1.5-397B-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "intfloat/e5-large-v2",
+      "company": "intfloat",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-02-17",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "pytorch",
+        "onnx"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,278,648 downloads.",
+      "url": "https://huggingface.co/intfloat/e5-large-v2",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nomic-ai/nomic-embed-text-v2-moe",
+      "company": "nomic-ai",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-04-01",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "safetensors",
+        "nomic_bert"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,277,564 downloads.",
+      "url": "https://huggingface.co/nomic-ai/nomic-embed-text-v2-moe",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/flan-t5-base",
+      "company": "google",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-07-17",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text2text-generation",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,273,269 downloads.",
+      "url": "https://huggingface.co/google/flan-t5-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2.5-Coder-32B-Instruct-AWQ",
+      "company": "Qwen",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-11-18",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen2"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,264,152 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct-AWQ",
+      "source": "hugging-face"
+    },
+    {
+      "name": "sshleifer/tiny-gpt2",
+      "company": "sshleifer",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2021-05-23",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,262,299 downloads.",
+      "url": "https://huggingface.co/sshleifer/tiny-gpt2",
+      "source": "hugging-face"
+    },
+    {
+      "name": "kingabzpro/wav2vec2-large-xls-r-300m-Urdu",
+      "company": "kingabzpro",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-06-24",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "safetensors",
+        "wav2vec2"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,249,447 downloads.",
+      "url": "https://huggingface.co/kingabzpro/wav2vec2-large-xls-r-300m-Urdu",
+      "source": "hugging-face"
+    },
+    {
+      "name": "jonatasgrosman/wav2vec2-large-xlsr-53-persian",
+      "company": "jonatasgrosman",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-12-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "jax"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,245,200 downloads.",
+      "url": "https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-persian",
+      "source": "hugging-face"
+    },
+    {
+      "name": "abenzerps/Qwen-Image-2.1-Uncensored-GGUF",
+      "company": "abenzerps",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-28",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-to-image",
+        "gguf",
+        "qwen",
+        "image-generation"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,232,685 downloads.",
+      "url": "https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "circlestone-labs/Anima",
+      "company": "circlestone-labs",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-24",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "diffusion-single-file",
+        "comfyui",
+        "base_model:nvidia/Cosmos-Predict2-2B-Text2Image"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,228,812 downloads.",
+      "url": "https://huggingface.co/circlestone-labs/Anima",
+      "source": "hugging-face"
+    },
+    {
+      "name": "openai-community/gpt2-large",
+      "company": "openai-community",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-02-19",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,217,718 downloads.",
+      "url": "https://huggingface.co/openai-community/gpt2-large",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-10-09",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen2"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,217,186 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-32B-Instruct-AWQ",
+      "source": "hugging-face"
+    },
+    {
+      "name": "deepseek-ai/DeepSeek-V3",
+      "company": "deepseek-ai",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-03-27",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "deepseek_v3"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,216,847 downloads.",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Xenova/whisper-tiny",
+      "company": "Xenova",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-12-16",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers.js",
+        "onnx",
+        "whisper"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,214,298 downloads.",
+      "url": "https://huggingface.co/Xenova/whisper-tiny",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3.8-Flash-Next",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-27",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen4_exp"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,206,728 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next",
+      "source": "hugging-face"
+    },
+    {
+      "name": "airesearch/wav2vec2-large-xlsr-53-th",
+      "company": "airesearch",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-03-23",
+      "price": "cc-by-sa-4.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "transformers",
+        "pytorch",
+        "wav2vec2"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,206,450 downloads.",
+      "url": "https://huggingface.co/airesearch/wav2vec2-large-xlsr-53-th",
+      "source": "hugging-face"
+    },
+    {
+      "name": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+      "company": "HuggingFaceTB",
+      "category": "video",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-04-08",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "onnx",
+        "safetensors"
+      ],
+      "description": "Video model from the public Hugging Face registry with 1,205,555 downloads.",
+      "url": "https://huggingface.co/HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+      "company": "nvidia",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-25",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "nemotron_h"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,203,035 downloads.",
+      "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+      "source": "hugging-face"
+    },
+    {
+      "name": "deepseek-ai/DeepSeek-V4-Flash",
+      "company": "deepseek-ai",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-06-22",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "deepseek_v4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,195,181 downloads.",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+      "source": "hugging-face"
+    },
+    {
+      "name": "antirez/deepseek-v4.1-flash-gguf",
+      "company": "antirez",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-12",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "gguf",
+        "deepseek",
+        "metal"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,193,974 downloads.",
+      "url": "https://huggingface.co/antirez/deepseek-v4.1-flash-gguf",
+      "source": "hugging-face"
+    },
+    {
+      "name": "sentence-transformers/distiluse-base-multilingual-cased-v1",
+      "company": "sentence-transformers",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-03-06",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,185,592 downloads.",
+      "url": "https://huggingface.co/sentence-transformers/distiluse-base-multilingual-cased-v1",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Comfy-Org/flux2-dev",
+      "company": "Comfy-Org",
+      "category": "image",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-23",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "diffusion-single-file",
+        "comfyui",
+        "base_model:ByteZSzn/Flux.2-Turbo-ComfyUI"
+      ],
+      "description": "Image generation model from the public Hugging Face registry with 1,185,339 downloads.",
+      "url": "https://huggingface.co/Comfy-Org/flux2-dev",
+      "source": "hugging-face"
+    },
+    {
+      "name": "yiyanghkust/finbert-tone",
+      "company": "yiyanghkust",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-10-17",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-classification",
+        "transformers",
+        "pytorch",
+        "tf"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,184,923 downloads.",
+      "url": "https://huggingface.co/yiyanghkust/finbert-tone",
+      "source": "hugging-face"
+    },
+    {
+      "name": "peculiar-ragdoll/Dirk-Qwen3.8-27B-GGUF",
+      "company": "peculiar-ragdoll",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-02",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "llama.cpp",
+        "qwen3_5"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,184,149 downloads.",
+      "url": "https://huggingface.co/peculiar-ragdoll/Dirk-Qwen3.8-27B-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "trl-internal-testing/tiny-Qwen3ForCausalLM",
+      "company": "trl-internal-testing",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-08",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen3"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,183,446 downloads.",
+      "url": "https://huggingface.co/trl-internal-testing/tiny-Qwen3ForCausalLM",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/Cosmos3-Edge",
+      "company": "nvidia",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-16",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "cosmos",
+        "diffusers",
+        "safetensors"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,171,589 downloads.",
+      "url": "https://huggingface.co/nvidia/Cosmos3-Edge",
+      "source": "hugging-face"
+    },
+    {
+      "name": "sahilchachra/Unlimited-OCR-AWQ",
+      "company": "sahilchachra",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-06-23",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "unlimited-ocr"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,168,585 downloads.",
+      "url": "https://huggingface.co/sahilchachra/Unlimited-OCR-AWQ",
+      "source": "hugging-face"
+    },
+    {
+      "name": "MiniMaxAI/MiniMax-M2.7",
+      "company": "MiniMaxAI",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-20",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "minimax_m2"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,148,708 downloads.",
+      "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7",
+      "source": "hugging-face"
+    },
+    {
+      "name": "mudler/KAT-Coder-V2.5-Dev-APEX-GGUF",
+      "company": "mudler",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-17",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "conversational",
+        "gguf",
+        "quantized",
+        "apex"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,145,748 downloads.",
+      "url": "https://huggingface.co/mudler/KAT-Coder-V2.5-Dev-APEX-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qdrant/all-MiniLM-L6-v2-onnx",
+      "company": "Qdrant",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-30",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "transformers",
+        "onnx",
+        "bert"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,142,993 downloads.",
+      "url": "https://huggingface.co/Qdrant/all-MiniLM-L6-v2-onnx",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "company": "nvidia",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-10",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "automatic-speech-recognition",
+        "nemo",
+        "safetensors",
+        "gguf"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,138,565 downloads.",
+      "url": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Octen/Octen-Embedding-8B",
+      "company": "Octen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-02-09",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "safetensors",
+        "qwen3"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,135,165 downloads.",
+      "url": "https://huggingface.co/Octen/Octen-Embedding-8B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "kha-white/manga-ocr-base",
+      "company": "kha-white",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2022-06-22",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-to-text",
+        "transformers",
+        "pytorch",
+        "vision-encoder-decoder"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,134,204 downloads.",
+      "url": "https://huggingface.co/kha-white/manga-ocr-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4",
+      "company": "nvidia",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-24",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "nemotron_h"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,134,143 downloads.",
+      "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3-VL-Embedding-2B",
+      "company": "Qwen",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-04-16",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "sentence-transformers",
+        "safetensors",
+        "qwen3_vl"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,127,350 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3-VL-Embedding-2B",
+      "source": "hugging-face"
+    },
+    {
+      "name": "cyankiwi/gemma-4-26B-A4B-it-AWQ-4bit",
+      "company": "cyankiwi",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-10",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "gemma4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,127,271 downloads.",
+      "url": "https://huggingface.co/cyankiwi/gemma-4-26B-A4B-it-AWQ-4bit",
+      "source": "hugging-face"
+    },
+    {
+      "name": "gaunernst/gemma-3-27b-it-int4-awq",
+      "company": "gaunernst",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-04-06",
+      "price": "gemma",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "gemma3"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,126,088 downloads.",
+      "url": "https://huggingface.co/gaunernst/gemma-3-27b-it-int4-awq",
+      "source": "hugging-face"
+    },
+    {
+      "name": "lmstudio-community/gemma-4-E4B-it-MLX-4bit",
+      "company": "lmstudio-community",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-23",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "any-to-any",
+        "transformers",
+        "safetensors",
+        "gemma4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,125,362 downloads.",
+      "url": "https://huggingface.co/lmstudio-community/gemma-4-E4B-it-MLX-4bit",
+      "source": "hugging-face"
+    },
+    {
+      "name": "peft-internal-testing/tiny-random-OPTForCausalLM",
+      "company": "peft-internal-testing",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-11-17",
+      "price": "Review license",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "opt"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,125,078 downloads.",
+      "url": "https://huggingface.co/peft-internal-testing/tiny-random-OPTForCausalLM",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/gemma-2-9b-it",
+      "company": "google",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-08-27",
+      "price": "gemma",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "gemma2"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,123,436 downloads.",
+      "url": "https://huggingface.co/google/gemma-2-9b-it",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/dragon-multiturn-query-encoder",
+      "company": "nvidia",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-05-24",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "feature-extraction",
+        "transformers",
+        "pytorch",
+        "bert"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,115,976 downloads.",
+      "url": "https://huggingface.co/nvidia/dragon-multiturn-query-encoder",
+      "source": "hugging-face"
+    },
+    {
+      "name": "nvidia/dragon-multiturn-context-encoder",
+      "company": "nvidia",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-05-24",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "feature-extraction",
+        "transformers",
+        "pytorch",
+        "bert"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,114,408 downloads.",
+      "url": "https://huggingface.co/nvidia/dragon-multiturn-context-encoder",
+      "source": "hugging-face"
+    },
+    {
+      "name": "amazon/chronos-t5-small",
+      "company": "amazon",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-11-21",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "time-series-forecasting",
+        "chronos-forecasting",
+        "safetensors",
+        "t5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,113,412 downloads.",
+      "url": "https://huggingface.co/amazon/chronos-t5-small",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8",
+      "company": "Qwen",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-12-03",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen3_moe"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,107,585 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8",
+      "source": "hugging-face"
+    },
+    {
+      "name": "livekit/turn-detector",
+      "company": "livekit",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-02-11",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-classification",
+        "transformers",
+        "onnx",
+        "safetensors"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,107,022 downloads.",
+      "url": "https://huggingface.co/livekit/turn-detector",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/Qwen3.6-27B-NVFP4",
+      "company": "unsloth",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-12",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "safetensors",
+        "qwen3_5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,105,068 downloads.",
+      "url": "https://huggingface.co/unsloth/Qwen3.6-27B-NVFP4",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/Inkling-Small-GGUF",
+      "company": "unsloth",
+      "category": "audio",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-31",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "gguf",
+        "conversational"
+      ],
+      "description": "Audio model from the public Hugging Face registry with 1,103,517 downloads.",
+      "url": "https://huggingface.co/unsloth/Inkling-Small-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "amazon/chronos-bolt-base",
+      "company": "amazon",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-11-21",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "time-series-forecasting",
+        "chronos-forecasting",
+        "safetensors",
+        "t5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,099,007 downloads.",
+      "url": "https://huggingface.co/amazon/chronos-bolt-base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "bigscience/bloomz-560m",
+      "company": "bigscience",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-05-27",
+      "price": "bigscience-bloom-rail-1.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "pytorch",
+        "tensorboard"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,098,743 downloads.",
+      "url": "https://huggingface.co/bigscience/bloomz-560m",
+      "source": "hugging-face"
+    },
+    {
+      "name": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "company": "unsloth",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-05-20",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-text-to-text",
+        "transformers",
+        "gguf",
+        "unsloth"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,098,507 downloads.",
+      "url": "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "lmstudio-community/gemma-4-E4B-it-MLX-8bit",
+      "company": "lmstudio-community",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-23",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "any-to-any",
+        "transformers",
+        "safetensors",
+        "gemma4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,095,313 downloads.",
+      "url": "https://huggingface.co/lmstudio-community/gemma-4-E4B-it-MLX-8bit",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/siglip2-so400m-patch14-384",
+      "company": "google",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-02-21",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "zero-shot-image-classification",
+        "transformers",
+        "safetensors",
+        "siglip"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,093,664 downloads.",
+      "url": "https://huggingface.co/google/siglip2-so400m-patch14-384",
+      "source": "hugging-face"
+    },
+    {
+      "name": "timm/efficientnet_b3.ra2_in1k",
+      "company": "timm",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-01-21",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-classification",
+        "timm",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,092,735 downloads.",
+      "url": "https://huggingface.co/timm/efficientnet_b3.ra2_in1k",
+      "source": "hugging-face"
+    },
+    {
+      "name": "lmstudio-community/gemma-4-E4B-it-MLX-6bit",
+      "company": "lmstudio-community",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-23",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "any-to-any",
+        "transformers",
+        "safetensors",
+        "gemma4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,091,404 downloads.",
+      "url": "https://huggingface.co/lmstudio-community/gemma-4-E4B-it-MLX-6bit",
+      "source": "hugging-face"
+    },
+    {
+      "name": "lmstudio-community/gemma-4-E4B-it-MLX-5bit",
+      "company": "lmstudio-community",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-23",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "any-to-any",
+        "transformers",
+        "safetensors",
+        "gemma4"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,091,316 downloads.",
+      "url": "https://huggingface.co/lmstudio-community/gemma-4-E4B-it-MLX-5bit",
+      "source": "hugging-face"
+    },
+    {
+      "name": "prism-ml/Ternary-Bonsai-27B-mlx-2bit",
+      "company": "prism-ml",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "mlx",
+        "safetensors",
+        "qwen3_5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,090,524 downloads.",
+      "url": "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-mlx-2bit",
+      "source": "hugging-face"
+    },
+    {
+      "name": "LiquidAI/LFM2.5-2.6B-GGUF",
+      "company": "LiquidAI",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-22",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "gguf",
+        "safetensors",
+        "liquid"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,090,173 downloads.",
+      "url": "https://huggingface.co/LiquidAI/LFM2.5-2.6B-GGUF",
+      "source": "hugging-face"
+    },
+    {
+      "name": "allenai/specter2_base",
+      "company": "allenai",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-12-04",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "feature-extraction",
+        "transformers",
+        "pytorch",
+        "bert"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,089,221 downloads.",
+      "url": "https://huggingface.co/allenai/specter2_base",
+      "source": "hugging-face"
+    },
+    {
+      "name": "google/siglip2-base-patch16-naflex",
+      "company": "google",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2025-02-21",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "zero-shot-image-classification",
+        "transformers",
+        "safetensors",
+        "siglip2"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,088,207 downloads.",
+      "url": "https://huggingface.co/google/siglip2-base-patch16-naflex",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Qwen/Qwen3-Coder-Next-FP8",
+      "company": "Qwen",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-02-03",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "transformers",
+        "safetensors",
+        "qwen3_next"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,084,245 downloads.",
+      "url": "https://huggingface.co/Qwen/Qwen3-Coder-Next-FP8",
+      "source": "hugging-face"
+    },
+    {
+      "name": "microsoft/table-transformer-structure-recognition",
+      "company": "microsoft",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2023-09-06",
+      "price": "mit",
+      "tags": [
+        "community",
+        "hugging-face",
+        "object-detection",
+        "transformers",
+        "pytorch",
+        "safetensors"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,083,101 downloads.",
+      "url": "https://huggingface.co/microsoft/table-transformer-structure-recognition",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Lightricks/LTX-2.3",
+      "company": "Lightricks",
+      "category": "video",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-08-27",
+      "price": "other",
+      "tags": [
+        "community",
+        "hugging-face",
+        "image-to-video",
+        "diffusers",
+        "text-to-video"
+      ],
+      "description": "Video model from the public Hugging Face registry with 1,082,240 downloads.",
+      "url": "https://huggingface.co/Lightricks/LTX-2.3",
+      "source": "hugging-face"
+    },
+    {
+      "name": "prism-ml/Bonsai-27B-mlx-1bit",
+      "company": "prism-ml",
+      "category": "llm",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-07-14",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "text-generation",
+        "mlx",
+        "safetensors",
+        "qwen3_5"
+      ],
+      "description": "Text generation model from the public Hugging Face registry with 1,079,338 downloads.",
+      "url": "https://huggingface.co/prism-ml/Bonsai-27B-mlx-1bit",
+      "source": "hugging-face"
+    },
+    {
+      "name": "Alibaba-NLP/gte-large-en-v1.5",
+      "company": "Alibaba-NLP",
+      "category": "code",
+      "platform": "Hugging Face model",
+      "version": "Updated 2024-08-09",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "sentence-similarity",
+        "transformers",
+        "onnx",
+        "safetensors"
+      ],
+      "description": "Code model from the public Hugging Face registry with 1,077,895 downloads.",
+      "url": "https://huggingface.co/Alibaba-NLP/gte-large-en-v1.5",
+      "source": "hugging-face"
+    },
+    {
+      "name": "PaddlePaddle/PP-DocLayoutV3_safetensors",
+      "company": "PaddlePaddle",
+      "category": "vision",
+      "platform": "Hugging Face model",
+      "version": "Updated 2026-09-30",
+      "price": "apache-2.0",
+      "tags": [
+        "community",
+        "hugging-face",
+        "object-detection",
+        "transformers",
+        "safetensors",
+        "pp_doclayout_v3"
+      ],
+      "description": "Computer vision model from the public Hugging Face registry with 1,075,736 downloads.",
+      "url": "https://huggingface.co/PaddlePaddle/PP-DocLayoutV3_safetensors",
+      "source": "hugging-face"
     }
   ]
 }
