@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Best Local LLM Apps: 9 Self-Hosted Tools, One List</title>
+    <meta
+      name="description"
+      content="Ollama, LM Studio, Jan, GPT4All, Open WebUI and 4 more self-hosted AI apps: what each is for, its price type, and a link to the official source."
+    />
+    <link rel="canonical" href="https://joshuawayzwright.github.io/ai-download-center/local-ai-apps.html" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="AI Download Center" />
+    <meta property="og:title" content="Best Local LLM Apps: 9 Self-Hosted Tools, One List" />
+    <meta property="og:description" content="The self-hosted AI apps in one list, grouped by the job they do, each linked to its official source." />
+    <meta property="og:url" content="https://joshuawayzwright.github.io/ai-download-center/local-ai-apps.html" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Local LLM apps you can self-host",
+        "url": "https://joshuawayzwright.github.io/ai-download-center/local-ai-apps.html",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Ollama", "url": "https://ollama.com/" },
+          { "@type": "ListItem", "position": 2, "name": "LocalAI", "url": "https://localai.io/" },
+          { "@type": "ListItem", "position": 3, "name": "LM Studio", "url": "https://lmstudio.ai/" },
+          { "@type": "ListItem", "position": 4, "name": "Jan", "url": "https://www.jan.ai/" },
+          { "@type": "ListItem", "position": 5, "name": "GPT4All", "url": "https://www.nomic.ai/gpt4all" },
+          { "@type": "ListItem", "position": 6, "name": "Open WebUI", "url": "https://openwebui.com/" },
+          { "@type": "ListItem", "position": 7, "name": "Text Generation WebUI", "url": "https://github.com/oobabooga/textgen" },
+          { "@type": "ListItem", "position": 8, "name": "AnythingLLM", "url": "https://anythingllm.com/" },
+          { "@type": "ListItem", "position": 9, "name": "PrivateGPT", "url": "https://github.com/zylon-ai/private-gpt" }
+        ]
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .brand-lockup {
+        display: grid;
+      }
+      .guide {
+        max-width: 780px;
+        margin: 8px auto 0;
+        line-height: 1.7;
+      }
+      .guide h1 {
+        margin: 12px 0 18px;
+        font-size: clamp(2rem, 4.5vw, 3.1rem);
+        line-height: 1.08;
+        letter-spacing: -0.05em;
+        text-wrap: balance;
+      }
+      .guide h2 {
+        margin: 44px 0 12px;
+        font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+        letter-spacing: -0.03em;
+      }
+      .guide h3 {
+        margin: 0 0 6px;
+        font-size: 1.15rem;
+      }
+      .guide p,
+      .guide li {
+        color: var(--muted);
+      }
+      .guide a {
+        color: var(--primary);
+      }
+      .guide strong {
+        color: var(--text);
+      }
+      .guide .lede {
+        font-size: 1.1rem;
+        color: var(--text);
+      }
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(17, 31, 44, 0.9);
+      }
+      .guide table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+        min-width: 560px;
+      }
+      .guide th,
+      .guide td {
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      .guide th {
+        color: var(--text);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .guide tr:last-child td {
+        border-bottom: 0;
+      }
+      .app-list {
+        display: grid;
+        gap: 14px;
+      }
+      .app {
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(17, 31, 44, 0.9);
+      }
+      .app p {
+        margin: 0 0 10px;
+      }
+      .app-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        font-size: 0.85rem;
+      }
+      .app-meta span {
+        color: var(--success);
+        font-weight: 600;
+      }
+      .guide-cta {
+        margin-top: 44px;
+        padding: 24px;
+        border: 1px solid rgba(94, 199, 255, 0.35);
+        border-radius: 20px;
+        background: linear-gradient(135deg, rgba(94, 199, 255, 0.1), rgba(122, 140, 255, 0.1));
+      }
+      .guide-cta h2 {
+        margin-top: 0;
+      }
+      .guide-cta .primary-btn {
+        color: #07111f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand-wrap" href="index.html" aria-label="AI Download Center home" style="text-decoration: none; color: inherit">
+          <span class="brand-mark" aria-hidden="true"><span class="brand-mark-core">A</span></span>
+          <span class="brand-lockup">
+            <span class="brand-name">AI Download Center</span>
+            <span class="brand-subtitle">Official tools &amp; models</span>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="Main navigation">
+          <a href="index.html#catalog">Catalog</a>
+          <a href="index.html?filter=self-hosted#catalog">Self-hosted</a>
+          <a href="index.html#list-your-tool" class="nav-cta">List your tool</a>
+        </nav>
+      </header>
+
+      <main class="guide">
+        <span class="eyebrow">Guide · Self-hosted AI</span>
+        <h1>Best local LLM apps: 9 self-hosted tools in one list</h1>
+
+        <p class="lede">
+          If you want to run a large language model on your own machine, these are the nine
+          self-hosted apps in the AI Download Center catalog: Ollama, LM Studio, Jan, GPT4All,
+          LocalAI, Open WebUI, AnythingLLM, Text Generation WebUI and PrivateGPT. Eight are open
+          source and one (LM Studio) is free, and each entry links to its official site so you can
+          download it from the source.
+        </p>
+        <p>
+          This list isn't ranked, and we haven't benchmarked these apps. It groups them by the job
+          they do, so you can find the one that fits how you work: some run models, some give you a
+          chat interface, and some focus on chatting with your own documents.
+        </p>
+
+        <h2>Quick overview</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>App</th><th>Type</th><th>Price type</th><th>Best fit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><a href="https://ollama.com/" target="_blank" rel="noreferrer">Ollama</a></td><td>Local app</td><td>Open source</td><td>Pulling and serving models on your own machine</td></tr>
+              <tr><td><a href="https://lmstudio.ai/" target="_blank" rel="noreferrer">LM Studio</a></td><td>Desktop app</td><td>Free</td><td>Downloading and testing models in a desktop UI</td></tr>
+              <tr><td><a href="https://www.jan.ai/" target="_blank" rel="noreferrer">Jan</a></td><td>Desktop app</td><td>Open source</td><td>An open-source desktop app for chat and agents</td></tr>
+              <tr><td><a href="https://www.nomic.ai/gpt4all" target="_blank" rel="noreferrer">GPT4All</a></td><td>Desktop app</td><td>Open source</td><td>Private, offline chat in a desktop app</td></tr>
+              <tr><td><a href="https://localai.io/" target="_blank" rel="noreferrer">LocalAI</a></td><td>Local server</td><td>Open source</td><td>An OpenAI-compatible API on your own hardware</td></tr>
+              <tr><td><a href="https://openwebui.com/" target="_blank" rel="noreferrer">Open WebUI</a></td><td>Self-hosted web app</td><td>Open source</td><td>A browser-based chat front end for local models</td></tr>
+              <tr><td><a href="https://anythingllm.com/" target="_blank" rel="noreferrer">AnythingLLM</a></td><td>Self-hosted web app</td><td>Open source</td><td>A workspace for chatting with your documents</td></tr>
+              <tr><td><a href="https://github.com/oobabooga/textgen" target="_blank" rel="noreferrer">Text Generation WebUI</a></td><td>Local web app</td><td>Open source</td><td>An extensible interface for experimenting with many models</td></tr>
+              <tr><td><a href="https://github.com/zylon-ai/private-gpt" target="_blank" rel="noreferrer">PrivateGPT</a></td><td>Local app</td><td>Open source</td><td>Retrieval-augmented chat over private files</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Model runners and local APIs</h2>
+        <div class="app-list">
+          <article class="app">
+            <h3>Ollama</h3>
+            <p>A local model runner for pulling and serving open-source LLMs on your own machine. It suits developers who want to download a model, serve it locally, and connect other tools to it.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://ollama.com/" target="_blank" rel="noreferrer">Official site</a></div>
+          </article>
+          <article class="app">
+            <h3>LocalAI</h3>
+            <p>An open-source local inference stack that exposes an OpenAI-compatible API. It suits developers whose code already talks to the OpenAI API and who want to point it at a server they run themselves.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://localai.io/" target="_blank" rel="noreferrer">Official site</a></div>
+          </article>
+        </div>
+
+        <h2>Desktop apps</h2>
+        <div class="app-list">
+          <article class="app">
+            <h3>LM Studio</h3>
+            <p>A desktop tool for downloading, running and testing local models offline. It suits people who would rather browse and try models in a desktop app than work in a terminal.</p>
+            <div class="app-meta"><span>Free</span><a href="https://lmstudio.ai/" target="_blank" rel="noreferrer">Official site</a></div>
+          </article>
+          <article class="app">
+            <h3>Jan</h3>
+            <p>A local AI app for running LLMs, agents and productivity workflows without cloud dependencies. It suits people who want an open-source desktop app that keeps their work off the cloud.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://www.jan.ai/" target="_blank" rel="noreferrer">Official site</a></div>
+          </article>
+          <article class="app">
+            <h3>GPT4All</h3>
+            <p>An open-source local AI application from Nomic AI for offline models and private chat. It suits people who want a desktop chat app that runs offline, with conversations kept on their own machine.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://www.nomic.ai/gpt4all" target="_blank" rel="noreferrer">Official site</a></div>
+          </article>
+        </div>
+
+        <h2>Web interfaces you host yourself</h2>
+        <div class="app-list">
+          <article class="app">
+            <h3>Open WebUI</h3>
+            <p>A feature-rich chat interface for self-hosted local model workflows and AI assistants. It suits people who already run models locally and want a chat interface they can open in a browser.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://openwebui.com/" target="_blank" rel="noreferrer">Official site</a></div>
+          </article>
+          <article class="app">
+            <h3>Text Generation WebUI</h3>
+            <p>An extensible local web interface, by Oobabooga, for running many transformer-based language models. It suits tinkerers who want to try many different models and extend the interface.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://github.com/oobabooga/textgen" target="_blank" rel="noreferrer">Official repository</a></div>
+          </article>
+        </div>
+
+        <h2>Chat with your own documents</h2>
+        <div class="app-list">
+          <article class="app">
+            <h3>AnythingLLM</h3>
+            <p>A self-hosted AI workspace from Mintplex Labs for chat, document ingestion and local knowledge-base workflows. It suits individuals or teams who want to load their own documents into a workspace and ask questions about them.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://anythingllm.com/" target="_blank" rel="noreferrer">Official site</a></div>
+          </article>
+          <article class="app">
+            <h3>PrivateGPT</h3>
+            <p>A local retrieval-augmented chat application for private, file-based AI work. It suits people who need to query sensitive files without sending them to a hosted service.</p>
+            <div class="app-meta"><span>Open source</span><a href="https://github.com/zylon-ai/private-gpt" target="_blank" rel="noreferrer">Official repository</a></div>
+          </article>
+        </div>
+
+        <h2>Open models to run in them</h2>
+        <p>Each of these apps needs a model. The catalog lists these open-weight models, and each links to its maker's official page:</p>
+        <ul>
+          <li><a href="https://dev.meta.ai/" target="_blank" rel="noreferrer">Llama 4</a> (Meta): a natively multimodal mixture-of-experts open model family for local and private AI.</li>
+          <li><a href="https://dev.meta.ai/" target="_blank" rel="noreferrer">Llama 3.2</a> (Meta): a small open model family (1B and 3B) suited to on-device and lightweight local inference.</li>
+          <li><a href="https://qwenlm.github.io/" target="_blank" rel="noreferrer">Qwen3</a> (Alibaba Cloud): a multilingual open model family for reasoning, chat, coding and agents.</li>
+          <li><a href="https://deepmind.google/models/gemma" target="_blank" rel="noreferrer">Gemma 4</a> (Google): a compact open model family with vision support across sizes, built for local and edge use.</li>
+          <li><a href="https://azure.microsoft.com/en-us/products/phi" target="_blank" rel="noreferrer">Phi-4</a> (Microsoft): a small model optimized for on-device and low-resource use.</li>
+          <li><a href="https://www.deepseek.com/" target="_blank" rel="noreferrer">DeepSeek V4</a> (DeepSeek): an open mixture-of-experts model for reasoning and coding.</li>
+          <li><a href="https://mistral.ai/" target="_blank" rel="noreferrer">Mistral Large 3</a> (Mistral AI): an open-weights frontier model released under Apache 2.0.</li>
+        </ul>
+        <p>Which model works in which app, and what hardware it needs, depends on the app and the model. Check both official pages before you download.</p>
+
+        <h2>Local coding assistants</h2>
+        <p>If you're running models locally for code, the catalog also lists three open-source coding assistants:</p>
+        <ul>
+          <li><a href="https://continue.dev/" target="_blank" rel="noreferrer">Continue</a>: a coding assistant for VS Code and JetBrains that works with local or hosted models.</li>
+          <li><a href="https://aider.chat/" target="_blank" rel="noreferrer">Aider</a>: a terminal-based coding assistant for local workflows and code changes across repositories.</li>
+          <li><a href="https://github.com/OpenHands/OpenHands" target="_blank" rel="noreferrer">OpenHands</a>: a coding agent for autonomous task execution and local development automation.</li>
+        </ul>
+
+        <h2>How to choose</h2>
+        <ul>
+          <li><strong>Want a desktop app with no terminal?</strong> Start with LM Studio, Jan or GPT4All.</li>
+          <li><strong>Want to serve a model to other tools or your own code?</strong> Look at Ollama or LocalAI.</li>
+          <li><strong>Want a browser chat interface for models you already run?</strong> Look at Open WebUI or Text Generation WebUI.</li>
+          <li><strong>Want to ask questions about your own files?</strong> Look at AnythingLLM or PrivateGPT.</li>
+        </ul>
+        <p>Many setups combine a runner with a separate interface. Before you pair two tools, check each one's official documentation to confirm they work together.</p>
+
+        <h2>How we chose</h2>
+        <p>
+          Every app on this page comes from the curated AI Download Center catalog, which is a
+          hand-maintained list, not a test lab. We haven't benchmarked or ranked these tools. The
+          descriptions, price types and links come from our catalog entries, and each link goes to
+          the project's official site or repository. No listing on this page is sponsored.
+        </p>
+
+        <section class="guide-cta">
+          <h2>See the full directory</h2>
+          <p>Browse all the self-hosted apps, open models and coding assistants, each linked to its official source.</p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="index.html?filter=self-hosted#catalog">Browse self-hosted apps</a>
+            <a class="secondary-btn" href="index.html#catalog">Full catalog</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>AI Download Center</span>
+        <span>Last reviewed 30 September 2026</span>
+        <a href="index.html">Back to the directory</a>
+        <p class="disclosure">Listings marked Sponsored are paid placements. Some outbound links may be affiliate links, and we may earn a commission if you sign up, at no cost to you.</p>
+      </footer>
+    </div>
+  </body>
+</html>
