@@ -145,7 +145,7 @@ async function loadTools() {
   let usingCachedCatalog = false;
 
   try {
-    const response = await fetch('./data/tools.json?v=20260930-catalog500');
+    const response = await fetch('./data/tools.json?v=20260930-catalog1000');
     if (!response.ok) throw new Error(`Catalog request returned ${response.status}`);
     data = await response.json();
     try {
