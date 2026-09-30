@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
-const TARGET_SIZE = 500;
+const TARGET_SIZE = 1000;
 const CATALOG_URL = 'https://huggingface.co/api/models?sort=downloads&direction=-1&limit=1000&full=true';
 const taskCategories = {
   'automatic-speech-recognition': 'audio',
