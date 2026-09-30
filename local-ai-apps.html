@@ -39,110 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      .brand-lockup {
-        display: grid;
-      }
-      .guide {
-        max-width: 780px;
-        margin: 8px auto 0;
-        line-height: 1.7;
-      }
-      .guide h1 {
-        margin: 12px 0 18px;
-        font-size: clamp(2rem, 4.5vw, 3.1rem);
-        line-height: 1.08;
-        letter-spacing: -0.05em;
-        text-wrap: balance;
-      }
-      .guide h2 {
-        margin: 44px 0 12px;
-        font-size: clamp(1.4rem, 2.6vw, 1.8rem);
-        letter-spacing: -0.03em;
-      }
-      .guide h3 {
-        margin: 0 0 6px;
-        font-size: 1.15rem;
-      }
-      .guide p,
-      .guide li {
-        color: var(--muted);
-      }
-      .guide a {
-        color: var(--primary);
-      }
-      .guide strong {
-        color: var(--text);
-      }
-      .guide .lede {
-        font-size: 1.1rem;
-        color: var(--text);
-      }
-      .table-wrap {
-        overflow-x: auto;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        background: rgba(17, 31, 44, 0.9);
-      }
-      .guide table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.92rem;
-        min-width: 560px;
-      }
-      .guide th,
-      .guide td {
-        padding: 12px 14px;
-        text-align: left;
-        border-bottom: 1px solid var(--line);
-        vertical-align: top;
-      }
-      .guide th {
-        color: var(--text);
-        font-size: 0.72rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-      .guide tr:last-child td {
-        border-bottom: 0;
-      }
-      .app-list {
-        display: grid;
-        gap: 14px;
-      }
-      .app {
-        padding: 18px 20px;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        background: rgba(17, 31, 44, 0.9);
-      }
-      .app p {
-        margin: 0 0 10px;
-      }
-      .app-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px 16px;
-        font-size: 0.85rem;
-      }
-      .app-meta span {
-        color: var(--success);
-        font-weight: 600;
-      }
-      .guide-cta {
-        margin-top: 44px;
-        padding: 24px;
-        border: 1px solid rgba(94, 199, 255, 0.35);
-        border-radius: 20px;
-        background: linear-gradient(135deg, rgba(94, 199, 255, 0.1), rgba(122, 140, 255, 0.1));
-      }
-      .guide-cta h2 {
-        margin-top: 0;
-      }
-      .guide-cta .primary-btn {
-        color: #07111f;
-      }
-    </style>
+    <link rel="stylesheet" href="guide.css" />
   </head>
   <body>
     <div class="page-shell">
@@ -273,11 +170,12 @@
         <p>Which model works in which app, and what hardware it needs, depends on the app and the model. Check both official pages before you download.</p>
 
         <h2>Local coding assistants</h2>
-        <p>If you're running models locally for code, the catalog also lists three open-source coding assistants:</p>
+        <p>If you're running models locally for code, the catalog also lists these open-source coding assistants:</p>
         <ul>
-          <li><a href="https://continue.dev/" target="_blank" rel="noreferrer">Continue</a>: a coding assistant for VS Code and JetBrains that works with local or hosted models.</li>
           <li><a href="https://aider.chat/" target="_blank" rel="noreferrer">Aider</a>: a terminal-based coding assistant for local workflows and code changes across repositories.</li>
           <li><a href="https://github.com/OpenHands/OpenHands" target="_blank" rel="noreferrer">OpenHands</a>: a coding agent for autonomous task execution and local development automation.</li>
+          <li><a href="https://cline.bot/" target="_blank" rel="noreferrer">Cline</a>: an autonomous coding agent for VS Code and JetBrains, also available as a CLI.</li>
+          <li><a href="https://github.com/continuedev/continue" target="_blank" rel="noreferrer">Continue</a>: a coding assistant for VS Code and JetBrains. It's no longer maintained after joining Cursor, but the final 2.0.0 release is still available under Apache 2.0.</li>
         </ul>
 
         <h2>How to choose</h2>
