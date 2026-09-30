@@ -141,6 +141,15 @@ function getNextModelPage(linkHeader) {
 async function loadTools() {
   const response = await fetch('./data/tools.json?v=20260930-apk20b');
   const data = await response.json();
+  const params = new URLSearchParams(window.location.search);
+  const requestedFilter = params.get('filter');
+  const requestedSearch = params.get('q') || '';
+
+  if (requestedFilter && [...filterButtons].some((button) => button.dataset.filter === requestedFilter)) {
+    currentFilter = requestedFilter;
+  }
+  searchInput.value = requestedSearch;
+
   // Sponsored listings always come first; the sort is stable, so the rest keep their order.
   curatedTools = [...data.tools].sort((a, b) => Number(Boolean(b.sponsored)) - Number(Boolean(a.sponsored)));
   tools = [...curatedTools, ...liveTools];
@@ -151,8 +160,18 @@ async function loadTools() {
     const count = curatedTools.filter((tool) => matchesFilter(tool, element.dataset.countFor)).length;
     element.textContent = `${count} listings`;
   });
+  filterButtons.forEach((button) => {
+    const selected = button.dataset.filter === currentFilter;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
   renderSpotlightAndRanking();
   renderTools();
+
+  if (requestedSearch.trim().length >= 2) {
+    liveSearchQuery = requestedSearch.trim();
+    liveSearchTimer = setTimeout(() => searchLiveModels(liveSearchQuery), 350);
+  }
 }
 
 // A filter is 'all' or a space-separated list of categories/tags; a tool matches if it has any of them.
@@ -161,7 +180,16 @@ function matchesFilter(tool, filter) {
   return filter.split(' ').some((value) => tool.category === value || (tool.tags || []).includes(value));
 }
 
-function setFilter(filter) {
+function syncUrlState({ replace = false } = {}) {
+  const params = new URLSearchParams();
+  if (currentFilter !== 'all') params.set('filter', currentFilter);
+  if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
+  const query = params.toString();
+  const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash || ''}`;
+  window.history[replace ? 'replaceState' : 'pushState']({}, '', url);
+}
+
+function setFilter(filter, options = {}) {
   currentFilter = filter;
   filterButtons.forEach((button) => {
     const selected = button.dataset.filter === filter;
@@ -169,6 +197,7 @@ function setFilter(filter) {
     button.setAttribute('aria-pressed', String(selected));
   });
   renderTools();
+  syncUrlState(options);
 }
 
 function renderTools() {
@@ -311,11 +340,30 @@ function handleSearchInput() {
   tools = [...curatedTools];
   setLiveSearchStatus('');
   renderTools();
+  syncUrlState({ replace: true });
 
   const query = searchInput.value.trim();
   if (query.length < 2) return;
   liveSearchQuery = query;
   liveSearchTimer = setTimeout(() => searchLiveModels(query), 350);
+}
+
+function restoreUrlState() {
+  const params = new URLSearchParams(window.location.search);
+  const requestedFilter = params.get('filter');
+  const requestedSearch = params.get('q') || '';
+  if (requestedFilter && [...filterButtons].some((button) => button.dataset.filter === requestedFilter)) {
+    currentFilter = requestedFilter;
+  } else {
+    currentFilter = 'all';
+  }
+  searchInput.value = requestedSearch;
+  filterButtons.forEach((button) => {
+    const selected = button.dataset.filter === currentFilter;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+  renderTools();
 }
 
 function renderSpotlightAndRanking() {
@@ -380,5 +428,7 @@ filterButtons.forEach((button) => {
 document.querySelectorAll('[data-collection]').forEach((card) => {
   card.addEventListener('click', () => setFilter(card.dataset.collection));
 });
+
+window.addEventListener('popstate', restoreUrlState);
 
 loadTools();
