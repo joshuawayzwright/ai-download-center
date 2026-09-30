@@ -7,4 +7,12 @@ window.SITE_CONFIG = {
   featuredCheckoutUrl: 'https://buy.stripe.com/dRmfZh7L4edt6gg1XpeAg04',
   featuredPrice: '$99 USD',
   featuredPeriod: 'per month',
+
+  // Where sponsors manage or cancel their subscription. Paste the Stripe customer portal login link
+  // (Stripe Dashboard > Settings > Billing > Customer portal > "Login link"), e.g. https://billing.stripe.com/p/login/...
+  billingPortalUrl: '',
+  // A public contact address for sponsors (shown on the confirmation page). Leave empty to hide it.
+  supportEmail: '',
+  // The business name customers see on Stripe checkout and their card statement.
+  merchantName: 'The Solo Service Provider',
 };
