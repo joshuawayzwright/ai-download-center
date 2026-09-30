@@ -139,7 +139,7 @@ function getNextModelPage(linkHeader) {
 }
 
 async function loadTools() {
-  const response = await fetch('./data/tools.json?v=20260930-apk20b');
+  const response = await fetch('./data/tools.json?v=20260930-shareable1');
   const data = await response.json();
   const params = new URLSearchParams(window.location.search);
   const requestedFilter = params.get('filter');
