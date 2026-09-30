@@ -317,7 +317,7 @@ function renderTools() {
 
           <div class="card-footer">
             <span>${escapeHtml(tool.version)}</span>
-              <a class="card-link" href="${escapeHtml(tool.affiliateUrl || tool.url)}" target="_blank" rel="${tool.affiliateUrl ? 'sponsored noopener' : 'noreferrer'}" aria-label="${escapeHtml(tool.name)} ${tool.source === 'hugging-face' ? 'model card' : tool.category === 'android' ? 'APK download page' : 'official site'} (opens in a new tab)">${tool.source === 'hugging-face' ? 'Model card' : tool.category === 'android' ? 'Download APK' : 'Official source'}</a>
+              <a class="card-link" href="${escapeHtml(tool.affiliateUrl || tool.url)}" target="_blank" rel="${tool.affiliateUrl || tool.sponsored ? 'sponsored noopener' : 'noopener'}" aria-label="${escapeHtml(tool.name)} ${tool.source === 'hugging-face' ? 'model card' : tool.category === 'android' ? 'APK download page' : 'official site'} (opens in a new tab)">${tool.source === 'hugging-face' ? 'Model card' : tool.category === 'android' ? 'Download APK' : 'Official source'}</a>
           </div>
         </article>
       `
