@@ -15,7 +15,7 @@ Write one brief to `marketing/drafts/briefs/YYYY-MM-DD-<slug>.md` (today's date)
 2. **Audience:** visitors or sponsors, and the specific segment (e.g. "developers running models locally").
 3. **Hook:** the one angle the campaign is built on. It must come from real catalog content, e.g. "every self-hosted runner compared in one list".
 4. **Channel plan:** a table with columns agent | deliverable | why this channel | posting day. Use only these agents: seo-writer, x-writer, linkedin-writer, reddit-writer, newsletter-writer, sponsor-outreach, launch-writer, video-scriptwriter. Choose 3–5 per campaign, not all of them.
-5. **What to track:** the UTM tags for each link, in the form `?utm_source=<channel>&utm_medium=social&utm_campaign=<slug>`.
+5. **What to track:** the UTM tags for each link, in the form `?utm_source=<channel>&utm_medium=<medium>&utm_campaign=<slug>`. Use the medium each channel agent already uses: `organic` (seo), `social` (x, linkedin, reddit), `email` (newsletter), `launch` (launch sites, except Hacker News, which gets no tags), and `video` (youtube).
 6. **Final step:** always end the plan with compliance-reviewer checking every draft.
 
 Keep the brief under 400 words. Follow the hard rules in `marketing/brand.md`.
