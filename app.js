@@ -139,8 +139,26 @@ function getNextModelPage(linkHeader) {
 }
 
 async function loadTools() {
-  const response = await fetch('./data/tools.json?v=20260930-shareable1');
-  const data = await response.json();
+  toolGrid.setAttribute('aria-busy', 'true');
+  let data;
+
+  try {
+    const response = await fetch('./data/tools.json?v=20260930-shareable1');
+    if (!response.ok) throw new Error(`Catalog request returned ${response.status}`);
+    data = await response.json();
+  } catch (error) {
+    console.error('Catalog failed to load:', error);
+    resultsText.textContent = 'Catalog unavailable';
+    toolGrid.innerHTML = `
+      <div class="empty-state">
+        <h3>Catalog temporarily unavailable</h3>
+        <p>Check your connection and refresh the page to try again.</p>
+      </div>
+    `;
+    toolGrid.removeAttribute('aria-busy');
+    return;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const requestedFilter = params.get('filter');
   const requestedSearch = params.get('q') || '';
@@ -167,6 +185,7 @@ async function loadTools() {
   });
   renderSpotlightAndRanking();
   renderTools();
+  toolGrid.removeAttribute('aria-busy');
 
   if (requestedSearch.trim().length >= 2) {
     liveSearchQuery = requestedSearch.trim();
