@@ -139,7 +139,7 @@ function getNextModelPage(linkHeader) {
 }
 
 async function loadTools() {
-  const response = await fetch('./data/tools.json');
+  const response = await fetch('./data/tools.json?v=20260930-apk20');
   const data = await response.json();
   // Sponsored listings always come first; the sort is stable, so the rest keep their order.
   curatedTools = [...data.tools].sort((a, b) => Number(Boolean(b.sponsored)) - Number(Boolean(a.sponsored)));
