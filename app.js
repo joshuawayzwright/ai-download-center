@@ -16,6 +16,7 @@ let liveSearchController;
 let liveSearchRequest = 0;
 let liveSearchQuery = '';
 let liveNextPageUrl = null;
+const catalogCacheKey = 'ai-download-center:catalog:v1';
 
 const taskCategories = {
   'automatic-speech-recognition': 'audio',
@@ -141,22 +142,42 @@ function getNextModelPage(linkHeader) {
 async function loadTools() {
   toolGrid.setAttribute('aria-busy', 'true');
   let data;
+  let usingCachedCatalog = false;
 
   try {
     const response = await fetch('./data/tools.json?v=20260930-shareable1');
     if (!response.ok) throw new Error(`Catalog request returned ${response.status}`);
     data = await response.json();
+    try {
+      localStorage.setItem(catalogCacheKey, JSON.stringify(data));
+    } catch (cacheError) {
+      console.warn('Catalog cache could not be saved:', cacheError);
+    }
   } catch (error) {
     console.error('Catalog failed to load:', error);
-    resultsText.textContent = 'Catalog unavailable';
-    toolGrid.innerHTML = `
-      <div class="empty-state">
-        <h3>Catalog temporarily unavailable</h3>
-        <p>Check your connection and refresh the page to try again.</p>
-      </div>
-    `;
-    toolGrid.removeAttribute('aria-busy');
-    return;
+    try {
+      const cachedData = JSON.parse(localStorage.getItem(catalogCacheKey) || 'null');
+      if (Array.isArray(cachedData?.tools) && cachedData.tools.length) {
+        data = cachedData;
+        usingCachedCatalog = true;
+      }
+    } catch (cacheError) {
+      console.warn('Cached catalog is unavailable:', cacheError);
+    }
+
+    if (!data) {
+      resultsText.textContent = 'Catalog unavailable';
+      toolGrid.innerHTML = `
+        <div class="empty-state">
+          <h3>Catalog temporarily unavailable</h3>
+          <p>Check your connection and try again.</p>
+          <button class="secondary-btn" id="retryCatalog" type="button">Retry catalog</button>
+        </div>
+      `;
+      document.getElementById('retryCatalog')?.addEventListener('click', () => loadTools(), { once: true });
+      toolGrid.removeAttribute('aria-busy');
+      return;
+    }
   }
 
   const params = new URLSearchParams(window.location.search);
@@ -186,6 +207,7 @@ async function loadTools() {
   renderSpotlightAndRanking();
   renderTools();
   toolGrid.removeAttribute('aria-busy');
+  if (usingCachedCatalog) setLiveSearchStatus('Offline mode: showing the last saved catalog.');
 
   if (requestedSearch.trim().length >= 2) {
     liveSearchQuery = requestedSearch.trim();
