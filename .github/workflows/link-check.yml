@@ -1,0 +1,39 @@
+name: Weekly link check
+
+on:
+  schedule:
+    - cron: '0 22 * * 0' # Sundays 22:00 UTC (Monday morning in Australia)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check every catalog link
+        run: node scripts/check-links.mjs
+      - name: Open or update the broken-links issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat link-report.md >> "$GITHUB_STEP_SUMMARY"
+          existing=$(gh issue list --label broken-links --state open --json number --jq '.[0].number')
+          if head -1 link-report.md | grep -q '^\*\*0 broken\*\*'; then
+            if [ -n "$existing" ]; then
+              gh issue close "$existing" --comment "All catalog links work again as of $(date -u +%F)."
+            fi
+            exit 0
+          fi
+          gh label create broken-links --color d73a4a --description "Catalog links that no longer work" --force
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file link-report.md
+          else
+            gh issue create --title "Broken catalog links" --label broken-links --body-file link-report.md
+          fi
