@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="joshuawayzwright" />
+    <title>Creator Studio | AI Field Notes</title>
+    <meta name="description" content="Plan AI model explainers, practical reviews, and tutorials for the proposed AI Field Notes YouTube channel." />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="creator-studio.css" />
+  </head>
+  <body>
+    <div class="page-shell studio-shell">
+      <header class="topbar">
+        <a class="brand-wrap studio-brand" href="index.html" aria-label="AI Download Center home">
+          <span class="brand-mark" aria-hidden="true"><span class="brand-mark-core">A</span></span>
+          <span class="brand-lockup">
+            <span class="brand-name">AI Download Center</span>
+            <span class="brand-subtitle">Creator workspace</span>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="Creator studio navigation">
+          <a href="index.html#catalog">Model catalog</a>
+          <a href="youtube-channel-kit.md">Launch kit</a>
+          <a href="https://github.com/joshuawayzwright" target="_blank" rel="noopener noreferrer" class="nav-cta">@joshuawayzwright</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="studio-hero">
+          <div class="studio-hero-copy">
+            <span class="eyebrow">Proposed YouTube channel</span>
+            <p class="studio-overline">Independent AI coverage</p>
+            <h1>AI Field Notes</h1>
+            <p class="studio-tagline">AI tools without the hype.</p>
+            <p class="studio-intro">A creator workspace for clear model explainers, hands-on tool reviews, and practical AI workflows. Choose your format and turn a topic into a production-ready first draft.</p>
+            <a class="studio-kit-link" href="youtube-channel-kit.md">Open the channel launch kit <span aria-hidden="true">&#8594;</span></a>
+          </div>
+          <figure class="studio-visual">
+            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=85" alt="Abstract neural network visualization for AI Field Notes" />
+            <figcaption><span>Field note 001</span><span>Research, then explain</span></figcaption>
+          </figure>
+        </section>
+
+        <section class="studio-workbench" aria-label="Video brief builder">
+          <form class="studio-controls" id="briefForm">
+            <div class="studio-section-heading">
+              <span class="section-label">Episode planner</span>
+              <h2>Shape the next video</h2>
+            </div>
+
+            <label class="studio-field" for="videoTopic">
+              <span>Topic or working title</span>
+              <input id="videoTopic" name="topic" type="text" maxlength="140" value="How to choose a local AI model for your laptop" required />
+            </label>
+
+            <fieldset class="format-fieldset">
+              <legend>Presentation format</legend>
+              <div class="format-switch" role="group" aria-label="Choose presentation format">
+                <button type="button" class="format-option active" data-format="faceless" aria-pressed="true">Faceless</button>
+                <button type="button" class="format-option" data-format="on-camera" aria-pressed="false">On camera</button>
+                <button type="button" class="format-option" data-format="screen-demo" aria-pressed="false">Screen demo</button>
+              </div>
+            </fieldset>
+
+            <label class="studio-field" for="videoLength">
+              <span>Target length</span>
+              <select id="videoLength" name="length">
+                <option value="3">3 minutes</option>
+                <option value="6" selected>6 minutes</option>
+                <option value="9">9 minutes</option>
+              </select>
+            </label>
+
+            <label class="studio-field" for="videoGoal">
+              <span>Viewer takeaway</span>
+              <input id="videoGoal" name="goal" type="text" maxlength="120" value="Leave with a simple way to shortlist models." />
+            </label>
+
+            <button class="primary-btn studio-submit" type="submit">Build video package</button>
+            <p class="studio-privacy">Drafts are generated in this browser. No AI service is called.</p>
+          </form>
+
+          <section class="studio-results" aria-labelledby="packageHeading" aria-live="polite">
+            <div class="studio-results-header">
+              <div>
+                <span class="section-label">Ready to develop</span>
+                <h2 id="packageHeading">Production package</h2>
+              </div>
+              <div class="result-actions">
+                <button class="icon-text-btn" id="copyPackage" type="button" title="Copy the complete package">Copy package</button>
+                <button class="icon-text-btn" id="downloadPackage" type="button" title="Download the package as Markdown">Download .md</button>
+              </div>
+            </div>
+
+            <div class="package-section">
+              <h3>Title options</h3>
+              <ol class="title-options" id="titleOptions"></ol>
+            </div>
+            <div class="package-section">
+              <h3>Opening hook</h3>
+              <p id="openingHook" class="hook-line"></p>
+            </div>
+            <div class="package-section">
+              <h3>Run of show</h3>
+              <ol class="run-of-show" id="runOfShow"></ol>
+            </div>
+            <div class="package-section">
+              <h3>Script draft</h3>
+              <pre id="scriptDraft" class="script-draft"></pre>
+            </div>
+            <div class="package-section">
+              <h3>Visual plan</h3>
+              <ul class="visual-plan" id="visualPlan"></ul>
+            </div>
+            <div class="package-section">
+              <h3>Upload copy</h3>
+              <pre id="uploadCopy" class="upload-copy"></pre>
+            </div>
+            <div class="package-section">
+              <h3>Prompt for your AI writing assistant</h3>
+              <pre id="writerPrompt" class="writer-prompt"></pre>
+              <button class="text-action" id="copyPrompt" type="button">Copy writing prompt</button>
+            </div>
+            <p id="copyStatus" class="copy-status" aria-live="polite" hidden></p>
+          </section>
+        </section>
+
+        <section class="production-notes" aria-label="Publishing standards">
+          <div>
+            <span class="section-label">Publishing standard</span>
+            <h2>Make every claim earn its place.</h2>
+          </div>
+          <p>Verify model names, release dates, pricing, licensing, and benchmark claims against primary sources. Label sponsorships and affiliate links clearly, and show the actual workflow behind every recommendation.</p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>AI Field Notes is a proposed channel concept.</span>
+        <span>Concept and design direction: <a href="https://github.com/joshuawayzwright">@joshuawayzwright</a></span>
+        <a href="index.html">AI Download Center</a>
+      </footer>
+    </div>
+    <script src="creator-studio.js"></script>
+  </body>
+</html>

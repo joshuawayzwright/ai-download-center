@@ -10,6 +10,13 @@ A GitHub-ready directory for discovering major AI models, assistants, self-hoste
 - Search live public Hugging Face models alongside the curated listings
 - Mobile-friendly landing page and catalog layout
 - Easy extension through the JSON-based catalog
+- AI Field Notes channel launch kit and in-browser video brief builder
+
+## YouTube channel workspace
+
+Open [Creator Studio](creator-studio.html) to plan videos for the proposed AI Field Notes channel. The browser-based planner drafts scripts and upload assets for faceless narration, on-camera, or screen-demo formats. The complete positioning, bio, content pillars, first-video plan, and launch checklist are in [youtube-channel-kit.md](youtube-channel-kit.md).
+
+The planner is a template-based production aid. It does not generate footage, call an AI model, create a YouTube account, or publish videos. Verify facts and cite primary sources before publishing.
 
 ## Local development
 
