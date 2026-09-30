@@ -6,7 +6,7 @@ Every marketing agent reads this file before writing. If a fact you need isn't h
 
 - **Name:** AI Download Center
 - **URL:** https://joshuawayzwright.github.io/ai-download-center/
-- **What it is:** a free, searchable directory of AI models, chatbots, assistants, self-hosted apps, and creative tools. Every listing links to the official source. Search also covers public models on Hugging Face.
+- **What it is:** a free, searchable directory of AI models, chatbots, assistants, self-hosted apps, and creative tools, plus a curated set of open-source Android apps (APKs) linked to their official download pages. Every listing links to the official source. Search also covers public models on Hugging Face.
 - **Catalog facts:** read `data/tools.json` for the current count, categories, and entries. Never quote a number without checking it there.
 - **Maker:** @joshuawayzwright (https://github.com/joshuawayzwright)
 - **Source code:** public on GitHub, MIT licensed.

@@ -2,10 +2,10 @@ name: Validate catalog
 
 on:
   pull_request:
-    paths: ['data/**', 'scripts/validate-catalog.mjs']
+    paths: ['data/**', 'index.html', 'scripts/validate-catalog.mjs']
   push:
     branches: [main]
-    paths: ['data/**', 'scripts/validate-catalog.mjs']
+    paths: ['data/**', 'index.html', 'scripts/validate-catalog.mjs']
 
 permissions:
   contents: read
