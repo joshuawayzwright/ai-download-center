@@ -44,6 +44,17 @@ Settings live in [config.js](config.js).
 
 The footer tells visitors that sponsored placements are paid and that some links are affiliate links. Keep it there: advertising rules in most countries require that disclosure.
 
+## Marketing agents
+
+Ten Claude Code agents in [.claude/agents/](.claude/agents/) draft advertising for the directory: campaign plans, SEO pages, X, LinkedIn, Reddit, newsletter, sponsor outreach, launch posts, video scripts, and a compliance review. Run `/ad-campaign <goal>` in Claude Code to run a full campaign. Drafts land in `marketing/drafts/` for review, and nothing is posted automatically. See [marketing/README.md](marketing/README.md).
+
+## Automations
+
+These GitHub Actions run free on this public repository:
+
+- **Validate catalog** ([validate-catalog.yml](.github/workflows/validate-catalog.yml)): checks `data/tools.json` on every pull request and every push to main (required fields, allowed categories, https links, no duplicates). Run it locally with `node scripts/validate-catalog.mjs`.
+- **Weekly link check** ([link-check.yml](.github/workflows/link-check.yml)): every Monday morning (Australian time), it tests every catalog link and opens or updates a "Broken catalog links" issue when any fail. When they're fixed, it closes the issue. You can also run it from the Actions tab.
+
 ## Project ownership
 
 AI Download Center's concept, design direction, and curation are credited to [@joshuawayzwright](https://github.com/joshuawayzwright). The site implementation was developed with GitHub Copilot. The original project code is covered by the MIT license in [LICENSE](LICENSE). Provider names, model names, logos, and linked resources belong to their respective owners.
