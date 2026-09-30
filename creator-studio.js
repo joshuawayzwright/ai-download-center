@@ -64,23 +64,29 @@ function buildPackage() {
     { label: 'Takeaway and next step', share: 0.09 },
   ];
   let elapsedSeconds = 0;
+  const sectionStarts = [];
   const runOfShow = sections.map((section) => {
     const sectionSeconds = Math.round(duration * 60 * section.share);
     const start = formatTime(elapsedSeconds);
+    sectionStarts.push(start);
     elapsedSeconds += sectionSeconds;
     const end = formatTime(elapsedSeconds);
     return `${start}-${end}  ${section.label}`;
   });
 
-  const openingHook = `Choosing an AI model is easy; choosing one that fits your hardware, budget, and actual work is harder. Today, we are breaking down ${cleanTopic.toLowerCase()} so you can make a better shortlist.`;
-  const script = [
-    `[00:00 | COLD OPEN]\n${openingHook}`,
-    `[00:20 | WHY IT MATTERS]\nIf you are comparing options, start with the job you need done, the device you have, and whether you are comfortable sending data to a hosted service. Those constraints matter more than a leaderboard headline.`,
-    `[01:00 | CONTEXT]\nHere is what we are evaluating: ${cleanTopic}. First, confirm the exact model or product version and its official documentation. Then note the hardware requirements, license, pricing, and data-handling terms. [Add current citations on screen.]`,
-    `[02:00 | WALKTHROUGH]\nShow the same representative task across the options. Keep the prompt, settings, and evaluation criteria consistent. Capture the real output, timing, and any setup friction. Do not present a single example as a universal benchmark.`,
-    `[04:00 | TRADE-OFFS]\nThe practical question is not simply which option wins. It is which one fits your constraints. Call out the strongest use case, the main limitation, and anything you could not verify.`,
-    `[05:00 | TAKEAWAY]\nThe takeaway: ${goal} Before you choose, check the linked release notes, terms, and model card. Tell us what you are testing next, and subscribe for independent AI field notes.`,
-  ].join('\n\n');
+  const openingHook = `${cleanTopic}: there are plenty of options, and the hard part is picking the one that fits your hardware, budget, and actual work. Let's break it down so you can make a better shortlist.`;
+  // One script block per run-of-show section, so script timestamps always match the chosen length.
+  const scriptBlocks = [
+    ['COLD OPEN', openingHook],
+    ['WHY IT MATTERS', 'If you are comparing options, start with the job you need done, the device you have, and whether you are comfortable sending data to a hosted service. Those constraints matter more than a leaderboard headline.'],
+    ['CONTEXT', `Here is what we are evaluating: ${cleanTopic}. First, confirm the exact model or product version and its official documentation. Then note the hardware requirements, license, pricing, and data-handling terms. [Add current citations on screen.]`],
+    ['WALKTHROUGH', 'Show the same representative task across the options. Keep the prompt, settings, and evaluation criteria consistent. Capture the real output, timing, and any setup friction. Do not present a single example as a universal benchmark.'],
+    ['TRADE-OFFS', 'The practical question is not simply which option wins. It is which one fits your constraints. Call out the strongest use case, the main limitation, and anything you could not verify.'],
+    ['TAKEAWAY', `The takeaway: ${goal} Before you choose, check the linked release notes, terms, and model card. Tell us what you are testing next, and subscribe for independent AI field notes.`],
+  ];
+  const script = scriptBlocks
+    .map(([label, text], index) => `[${sectionStarts[index]} | ${label}]\n${text}`)
+    .join('\n\n');
 
   const visualPlan = [
     format.visual,
