@@ -5,7 +5,7 @@ labels: ["featured-request"]
 body:
   - type: markdown
     attributes:
-      value: Featured listings appear first in the catalog and are clearly labeled as sponsored. We'll reply on this issue with pricing and payment details.
+      value: "Featured listings appear first in the catalog and are clearly labeled as sponsored. **To start now, use the checkout: the first 7 days are free, then $99 USD per month, cancel anytime: https://buy.stripe.com/dRmfZh7L4edt6gg1XpeAg04** Use this form for questions or custom requests, and we'll reply here."
   - type: input
     id: name
     attributes:

@@ -15,10 +15,11 @@ Every marketing agent reads this file before writing. If a fact you need isn't h
 
 1. **Visitors (free):** developers, researchers, students, and teams choosing an AI tool. They want to compare options fast and get to the official source without SEO spam.
 2. **Sponsors (paid):** AI startups and tool makers who want to be seen by those visitors.
-   - Featured listing: **$99 per month** (check `config.js` for the current price). Pinned to the top of the catalog, shown first in matching searches, labeled "Sponsored".
+   - Featured listing: **$99 USD per month with the first 7 days free** (check `config.js` for the current price). Pinned to the top of the catalog, shown first in matching searches, labeled "Sponsored". Sponsors pay through Stripe; the trial is built into checkout.
    - Free listing: submit through the GitHub form. It's reviewed by hand.
    - Request links:
-     - Featured: https://github.com/joshuawayzwright/ai-download-center/issues/new?template=featured-listing.yml
+     - Featured (Stripe checkout, 7-day free trial): https://buy.stripe.com/dRmfZh7L4edt6gg1XpeAg04
+     - Featured questions or custom requests: https://github.com/joshuawayzwright/ai-download-center/issues/new?template=featured-listing.yml
      - Free: https://github.com/joshuawayzwright/ai-download-center/issues/new?template=submit-tool.yml
 
 ## Voice
