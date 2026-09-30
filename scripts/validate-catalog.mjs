@@ -1,7 +1,10 @@
 // Validates data/tools.json. Exits 1 and lists every problem if the catalog is invalid.
 import { readFileSync } from 'node:fs';
 
-const CATEGORIES = ['llm', 'chatbot', 'assistant', 'self-hosted', 'vision', 'image', 'audio', 'code', 'video', 'utility'];
+// Allowed categories are the site's filter buttons, so adding a filter in index.html is all a new category needs.
+const CATEGORIES = [...readFileSync(new URL('../index.html', import.meta.url), 'utf8').matchAll(/data-filter="([^"]+)"/g)]
+  .map((match) => match[1])
+  .filter((value) => value !== 'all');
 const REQUIRED = ['name', 'company', 'category', 'platform', 'version', 'price', 'tags', 'description', 'url'];
 
 const problems = [];

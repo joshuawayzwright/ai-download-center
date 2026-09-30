@@ -6,6 +6,7 @@ const tools = JSON.parse(readFileSync(new URL('../data/tools.json', import.meta.
 const TIMEOUT_MS = 20000;
 // Many sites answer bots with these codes even though they work in a browser.
 const BOT_BLOCK_CODES = new Set([401, 403, 429, 503]);
+const DEAD_SITE_ERRORS = new Set(['ENOTFOUND', 'EAI_AGAIN', 'ECONNREFUSED', 'ECONNRESET', 'CERT_HAS_EXPIRED', 'ERR_TLS_CERT_ALTNAME_INVALID']);
 
 async function check(url) {
   const controller = new AbortController();
@@ -20,7 +21,11 @@ async function check(url) {
     if (BOT_BLOCK_CODES.has(response.status)) return { status: 'blocked', code: response.status };
     return { status: 'broken', code: response.status };
   } catch (error) {
-    return { status: 'broken', code: error.name === 'AbortError' ? 'timeout' : (error.cause?.code || error.message) };
+    if (error.name === 'AbortError') return { status: 'broken', code: 'timeout' };
+    const code = error.cause?.code || error.message;
+    // Only "the site isn't there" errors count as broken. Others (oversized headers, incomplete
+    // certificate chains) come from this checker being stricter than browsers.
+    return { status: DEAD_SITE_ERRORS.has(code) ? 'broken' : 'unverified', code };
   } finally {
     clearTimeout(timer);
   }
@@ -33,7 +38,7 @@ for (let i = 0; i < tools.length; i += 10) {
 }
 
 const broken = results.filter((r) => r.status === 'broken');
-const blocked = results.filter((r) => r.status === 'blocked');
+const blocked = results.filter((r) => r.status === 'blocked' || r.status === 'unverified');
 const moved = results.filter((r) => r.status === 'ok' && r.finalUrl && new URL(r.finalUrl).host !== new URL(r.tool.url).host);
 
 const lines = [
@@ -51,7 +56,7 @@ if (moved.length) {
   lines.push('');
 }
 if (blocked.length) {
-  lines.push(`<details><summary>${blocked.length} sites blocked the automated check (usually fine in a browser)</summary>`, '');
+  lines.push(`<details><summary>${blocked.length} sites couldn't be verified automatically (usually fine in a browser)</summary>`, '');
   blocked.forEach((r) => lines.push(`- ${r.tool.name}: ${r.tool.url} (${r.code})`));
   lines.push('', '</details>');
 }
