@@ -1,6 +1,14 @@
 # AI Download Center
 
-A GitHub-ready directory for discovering major AI models, assistants, self-hosted tools, and independent AI apps.
+A public directory for discovering major AI models, assistants, self-hosted tools, independent AI apps, and official download sources.
+
+**Live site:** https://joshuawayzwright.github.io/ai-download-center/
+
+**Featured listing:** $99 USD/month after a 7-day free trial, securely billed through Stripe.
+
+**Manage billing:** https://billing.stripe.com/p/login/eVq00je9s5GX8oobxZeAg00
+
+**Support:** hello@thesoloserviceprovider.com.au
 
 ## Features
 
@@ -54,7 +62,9 @@ node scripts/validate-catalog.mjs
 Settings live in [config.js](config.js).
 
 - **Free submissions:** the "Submit a tool" button opens a GitHub issue form ([submit-tool.yml](.github/ISSUE_TEMPLATE/submit-tool.yml)). To accept a submission, add an entry to `data/tools.json`.
-- **Featured listings:** add `"sponsored": true` to an entry in `data/tools.json`. It moves to the top of the catalog with a Sponsored badge. The "Get featured" button opens a request form until you set `featuredCheckoutUrl` to a Stripe Payment Link, Gumroad or Lemon Squeezy checkout URL.
+- **Featured listings:** the public "Start 7-day free trial" button opens the live Stripe subscription checkout at $99 USD/month after trial. Paid entries use `"sponsored": true` and are clearly labeled Sponsored.
+- **Customer billing:** sponsors can update payment details, view invoices, or cancel through the Stripe customer portal linked from the site and confirmation page.
+- **Customer support:** billing and listing support uses `hello@thesoloserviceprovider.com.au`.
 - **Affiliate links:** add `"affiliateUrl": "https://..."` to an entry. The card's link uses it (marked `rel="sponsored"`) instead of the plain `url`.
 
 The footer tells visitors that sponsored placements are paid and that some links are affiliate links. Keep it there: advertising rules in most countries require that disclosure.
