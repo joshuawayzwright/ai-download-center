@@ -1,40 +1,12 @@
 import { readFile, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 
 const TARGET_SIZE = 1000;
 const CATALOG_URL = 'https://huggingface.co/api/models?sort=downloads&direction=-1&limit=1000&full=true';
-const taskCategories = {
-  'automatic-speech-recognition': 'audio',
-  'audio-classification': 'audio',
-  'audio-to-audio': 'audio',
-  'text-to-audio': 'audio',
-  'text-to-speech': 'audio',
-  'text-to-video': 'video',
-  'image-to-video': 'video',
-  'text-to-image': 'image',
-  'image-to-image': 'image',
-  'unconditional-image-generation': 'image',
-  'image-classification': 'vision',
-  'image-segmentation': 'vision',
-  'object-detection': 'vision',
-  'depth-estimation': 'vision',
-  'visual-question-answering': 'vision',
-  'image-to-text': 'vision',
-  conversational: 'chatbot',
-  'text-generation': 'llm',
-  'text2text-generation': 'llm',
-  'sentence-similarity': 'llm',
-  'feature-extraction': 'llm',
-};
-
-const taskLabels = {
-  audio: 'Audio',
-  chatbot: 'Conversational',
-  code: 'Code',
-  image: 'Image generation',
-  llm: 'Text generation',
-  video: 'Video',
-  vision: 'Computer vision',
-};
+// Classification and test-fixture filtering are shared with the site and the normalizer.
+const require = createRequire(import.meta.url);
+const { classify, describe } = require('../hf-classify.js');
+const { isTestFixture } = require('./hf-fixtures.cjs');
 
 const catalogPath = new URL('../data/tools.json', import.meta.url);
 const catalog = JSON.parse(await readFile(catalogPath, 'utf8'));
@@ -57,19 +29,11 @@ for (const model of models) {
   if (!modelId || existingNames.has(modelId.toLowerCase())) continue;
 
   const tags = Array.isArray(model.tags) ? model.tags : [];
-  const searchable = `${modelId} ${tags.join(' ')}`.toLowerCase();
-  const task = model.pipeline_tag || tags.find((tag) => taskCategories[tag]) || 'text-generation';
-  let category = taskCategories[task] || 'llm';
-
-  if (searchable.includes('diffusion') || searchable.includes('flux')) category = 'image';
-  else if (searchable.includes('video')) category = 'video';
-  else if (searchable.includes('speech') || searchable.includes('audio')) category = 'audio';
-  else if (searchable.includes('vision') || searchable.includes('detection')) category = 'vision';
-  else if (searchable.includes('code') || searchable.includes('coder')) category = 'code';
-
+  if (isTestFixture(modelId, model)) continue;
+  const { category, task, label } = classify(model);
   const licenseTag = tags.find((tag) => tag.startsWith('license:'));
-  const downloads = Number(model.downloads || 0).toLocaleString();
-  const modelTags = [...new Set(['community', 'hugging-face', task, ...tags.slice(0, 3)])].slice(0, 6);
+  const extra = tags.filter((t) => !/^(license:|region:|arxiv:|base_model:|dataset:|endpoints_compatible|autotrain_compatible|deploy:|doi:)/.test(t) && t !== task);
+  const modelTags = [...new Set(['community', 'hugging-face', task, ...extra.slice(0, 3)])].slice(0, 6);
   const name = modelId;
 
   tools.push({
@@ -80,7 +44,7 @@ for (const model of models) {
     version: model.lastModified ? `Updated ${model.lastModified.slice(0, 10)}` : 'Community model',
     price: licenseTag ? licenseTag.slice('license:'.length) : 'Review license',
     tags: modelTags,
-    description: `${taskLabels[category] || 'AI'} model from the public Hugging Face registry with ${downloads} downloads.`,
+    description: describe(model, label),
     url: `https://huggingface.co/${modelId.split('/').map(encodeURIComponent).join('/')}`,
     source: 'hugging-face',
   });
