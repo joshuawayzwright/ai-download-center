@@ -15,8 +15,8 @@ A public directory for discovering major AI models, assistants, self-hosted tool
 - Search across AI models, chatbot tools, and utilities
 - Filter by category such as LLM, chatbot, assistant, self-hosted, image, video, and audio
 - Showcase official website and project links
-- Search live public Hugging Face models alongside the curated listings
-- 1,000 validated listings, including community model cards from Hugging Face
+- Search live public Hugging Face models alongside the hand-picked listings
+- 983 listings: 112 hand-picked tools and 871 community model cards imported from Hugging Face, all checked by the catalog validator
 - Mobile-friendly landing page and catalog layout
 - Easy extension through the JSON-based catalog
 - AI Field Notes channel launch kit and in-browser video brief builder
@@ -48,7 +48,7 @@ The public site is published with GitHub Pages. Submit `https://joshuawayzwright
 
 ## Notes
 
-This directory combines a curated catalog with on-demand search of Hugging Face's public model API. Live search requires an internet connection and returns up to 100 relevant results per page; use Load more to continue through the registry's matching public results. Private or unlisted models and models outside Hugging Face are not included. Always confirm licensing, usage terms, and platform policies on each model card before using or hosting a model.
+This directory combines hand-picked listings and imported Hugging Face model cards with on-demand search of Hugging Face's public model API. Live search requires an internet connection and returns up to 100 relevant results per page; use Load more to continue through the registry's matching public results. Private or unlisted models and models outside Hugging Face are not included. Always confirm licensing, usage terms, and platform policies on each model card before using or hosting a model.
 
 To refresh the community-model portion of the catalog and keep the threefold target, run:
 
@@ -82,7 +82,7 @@ These GitHub Actions run free on this public repository:
 
 ## Project ownership
 
-AI Download Center's concept, design direction, and curation are credited to [@joshuawayzwright](https://github.com/joshuawayzwright). The site implementation was developed with GitHub Copilot. The original project code is covered by the MIT license in [LICENSE](LICENSE). Provider names, model names, logos, and linked resources belong to their respective owners.
+AI Download Center's concept, design direction, and curation are credited to [@joshuawayzwright](https://github.com/joshuawayzwright). The site implementation was developed with GitHub Copilot and Claude Code. The original project code is covered by the MIT license in [LICENSE](LICENSE). Provider names, model names, logos, and linked resources belong to their respective owners.
 
 ## License
 
