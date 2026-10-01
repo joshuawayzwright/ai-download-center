@@ -10,9 +10,9 @@ window.SITE_CONFIG = {
 
   // Where sponsors manage or cancel their subscription. Paste the Stripe customer portal login link
   // (Stripe Dashboard > Settings > Billing > Customer portal > "Login link"), e.g. https://billing.stripe.com/p/login/...
-  billingPortalUrl: '',
+  billingPortalUrl: 'https://billing.stripe.com/p/login/eVq00je9s5GX8oobxZeAg00',
   // A public contact address for sponsors (shown on the confirmation page). Leave empty to hide it.
-  supportEmail: '',
+  supportEmail: 'hello@thesoloserviceprovider.com.au',
   // The business name customers see on Stripe checkout and their card statement.
   merchantName: 'The Solo Service Provider',
 };

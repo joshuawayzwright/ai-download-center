@@ -71,6 +71,8 @@
       <footer class="site-footer">
         <span>AI Download Center</span>
         <a href="index.html">Back to the directory</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
         <p class="disclosure">Listings marked Sponsored are paid placements. Some outbound links may be affiliate links, and we may earn a commission if you sign up, at no cost to you.</p>
       </footer>
     </div>
@@ -85,7 +87,7 @@
         if (config.billingPortalUrl) {
           manage.href = config.billingPortalUrl;
           manage.hidden = false;
-          text.textContent = 'Manage or cancel your subscription yourself through Stripe. Cancelling during the trial costs nothing.';
+          text.textContent = 'Manage payment details, invoices or cancellation yourself through Stripe. Cancellation takes effect at the end of the current billing period; cancelling during the 7-day trial prevents the first monthly charge.';
         }
         if (config.supportEmail) {
           support.href = 'mailto:' + config.supportEmail;

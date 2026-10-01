@@ -452,6 +452,13 @@ function setupListingLinks() {
   document.getElementById('featuredLink').href = config.featuredCheckoutUrl || `${repoUrl}/issues/new?template=featured-listing.yml`;
   if (config.featuredPrice) document.getElementById('featuredPrice').textContent = config.featuredPrice;
   if (config.featuredPeriod) document.getElementById('featuredPeriod').textContent = config.featuredPeriod;
+
+  ['manageBillingNav', 'manageBillingFooter'].forEach((id) => {
+    const link = document.getElementById(id);
+    if (!link || !config.billingPortalUrl) return;
+    link.href = config.billingPortalUrl;
+    link.hidden = false;
+  });
 }
 
 setupListingLinks();
