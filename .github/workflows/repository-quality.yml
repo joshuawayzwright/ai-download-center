@@ -27,6 +27,9 @@ jobs:
             CONTRIBUTING.md
             LICENSE
             index.html
+            featured-thanks.html
+            privacy.html
+            terms.html
             app.js
             config.js
             data/tools.json
@@ -55,6 +58,18 @@ jobs:
             echo "Potential committed secret detected."
             exit 1
           fi
+
+      - name: Validate production payment configuration
+        shell: bash
+        run: |
+          grep -q "featuredCheckoutUrl: 'https://buy.stripe.com/" config.js
+          grep -q "billingPortalUrl: 'https://billing.stripe.com/" config.js
+          grep -q "supportEmail: 'hello@thesoloserviceprovider.com.au'" config.js
+          grep -q '\$99 USD' index.html
+          grep -q '7-day free trial' index.html
+          grep -q 'Stripe customer portal' terms.html
+          grep -q 'hello@thesoloserviceprovider.com.au' privacy.html
+          grep -q 'hello@thesoloserviceprovider.com.au' terms.html
 
       - name: Validate catalog
         run: node scripts/validate-catalog.mjs
