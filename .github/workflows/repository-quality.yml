@@ -1,0 +1,73 @@
+name: Repository quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify required project files
+        shell: bash
+        run: |
+          required=(
+            README.md
+            SECURITY.md
+            CONTRIBUTING.md
+            LICENSE
+            index.html
+            app.js
+            config.js
+            data/tools.json
+            robots.txt
+            sitemap.xml
+            .github/CODEOWNERS
+            .github/dependabot.yml
+          )
+
+          for file in "${required[@]}"; do
+            test -f "$file" || { echo "Missing required file: $file"; exit 1; }
+          done
+
+      - name: Check for unresolved merge markers
+        shell: bash
+        run: |
+          if grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)' --exclude-dir=.git .; then
+            echo "Unresolved merge markers found."
+            exit 1
+          fi
+
+      - name: Detect common committed secret patterns
+        shell: bash
+        run: |
+          if grep -R -n -E '(BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|sk_(live|test)_[A-Za-z0-9]{16,})' --exclude-dir=.git .; then
+            echo "Potential committed secret detected."
+            exit 1
+          fi
+
+      - name: Validate catalog
+        run: node scripts/validate-catalog.mjs
+
+      - name: Validate core JSON
+        shell: bash
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('data/tools.json','utf8')); console.log('data/tools.json is valid JSON')"
+
+      - name: Check critical metadata
+        shell: bash
+        run: |
+          grep -qi '<meta[^>]*name="description"' index.html
+          grep -qi '<link[^>]*rel="canonical"' index.html
+          grep -q 'Sitemap:' robots.txt
+          grep -q '<urlset' sitemap.xml
