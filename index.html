@@ -73,8 +73,8 @@
             <h1>The AI directory for builders, researchers, and curious teams.</h1>
             <p>
               Compare AI models, assistants, self-hosted apps, and creative tools in one place.
-              Every listing links to the official source, and search also covers public models
-              on Hugging Face.
+              Hand-picked listings link to the official source, community model cards link to
+              Hugging Face, and search also covers every public model there.
             </p>
             <div class="hero-actions">
               <a class="primary-btn" href="#catalog">Explore catalog</a>
@@ -82,9 +82,9 @@
               <a class="secondary-btn" href="#list-your-tool">List your tool</a>
             </div>
             <ul class="hero-stats" aria-label="Catalog stats">
-              <li><strong id="count-models">86</strong><span>curated listings</span></li>
+              <li><strong id="count-models">112</strong><span>hand-picked listings</span></li>
               <li><strong id="count-categories">10</strong><span>categories</span></li>
-              <li><strong>Live</strong><span>Hugging Face search</span></li>
+              <li><strong id="count-community">871</strong><span>community model cards</span></li>
             </ul>
           </div>
           <div class="hero-panel" id="featured">
@@ -212,6 +212,7 @@
               <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
               <button class="filter-btn" data-filter="android" aria-pressed="false">Android APKs</button>
               <button class="filter-btn" data-filter="llm" aria-pressed="false">LLM</button>
+              <button class="filter-btn" data-filter="nlp" aria-pressed="false">Embeddings &amp; NLP</button>
               <button class="filter-btn" data-filter="chatbot" aria-pressed="false">Chatbots</button>
               <button class="filter-btn" data-filter="assistant" aria-pressed="false">Assistants</button>
               <button class="filter-btn" data-filter="self-hosted" aria-pressed="false">Self-hosted</button>
@@ -360,6 +361,7 @@
     </div>
 
     <script src="config.js"></script>
-    <script src="app.js?v=20260930-catalog1000"></script>
+    <script src="hf-classify.js?v=20261001-classify1"></script>
+    <script src="app.js?v=20261001-classify1"></script>
   </body>
 </html>

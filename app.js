@@ -18,50 +18,6 @@ let liveSearchQuery = '';
 let liveNextPageUrl = null;
 const catalogCacheKey = 'ai-download-center:catalog:v1';
 
-const taskCategories = {
-  'automatic-speech-recognition': 'audio',
-  'audio-classification': 'audio',
-  'audio-to-audio': 'audio',
-  'text-to-audio': 'audio',
-  'text-to-speech': 'audio',
-  'text-to-video': 'video',
-  'image-to-video': 'video',
-  'text-to-image': 'image',
-  'image-to-image': 'image',
-  'unconditional-image-generation': 'image',
-  'image-classification': 'vision',
-  'image-segmentation': 'vision',
-  'object-detection': 'vision',
-  'depth-estimation': 'vision',
-  'visual-question-answering': 'vision',
-  'image-to-text': 'vision',
-  conversational: 'chatbot',
-};
-
-const taskDescriptions = {
-  'automatic-speech-recognition': 'Speech recognition model',
-  'audio-classification': 'Audio classification model',
-  'audio-to-audio': 'Audio transformation model',
-  'text-to-audio': 'Text-to-audio generation model',
-  'text-to-speech': 'Speech generation model',
-  'text-to-video': 'Text-to-video generation model',
-  'image-to-video': 'Image-to-video generation model',
-  'text-to-image': 'Text-to-image generation model',
-  'image-to-image': 'Image transformation model',
-  'unconditional-image-generation': 'Image generation model',
-  'image-classification': 'Image classification model',
-  'image-segmentation': 'Image segmentation model',
-  'object-detection': 'Object detection model',
-  'depth-estimation': 'Depth estimation model',
-  'visual-question-answering': 'Visual question answering model',
-  'image-to-text': 'Image captioning model',
-  conversational: 'Conversational model',
-  'text-generation': 'Text generation model',
-  'text2text-generation': 'Text-to-text generation model',
-  'sentence-similarity': 'Text embedding and similarity model',
-  'feature-extraction': 'Feature extraction model',
-};
-
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (character) => ({
     '&': '&amp;',
@@ -76,43 +32,16 @@ function normalizeSearchText(value) {
   return String(value ?? '').toLowerCase().replace(/[-_./]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+// Live search results use the same classifier as the imported catalog entries (hf-classify.js).
 function toCommunityModel(model) {
   const modelTags = Array.isArray(model.tags) ? model.tags : [];
   const modelId = String(model.id || 'Unknown model');
   const company = String(model.author || modelId.split('/')[0] || 'Hugging Face');
-  const taggedTask = modelTags.find((tag) => taskCategories[tag]);
-  const modelTask = model.pipeline_tag || taggedTask;
-  const searchableMetadata = `${modelId} ${modelTags.join(' ')}`.toLowerCase();
-  let category = taskCategories[modelTask] || 'llm';
-
-  if (!taskCategories[modelTask]) {
-    if (searchableMetadata.includes('diffusion') || searchableMetadata.includes('text-to-image') || searchableMetadata.includes('flux')) {
-      category = 'image';
-    } else if (searchableMetadata.includes('text-to-video') || searchableMetadata.includes('video')) {
-      category = 'video';
-    } else if (searchableMetadata.includes('speech') || searchableMetadata.includes('audio') || searchableMetadata.includes('whisper')) {
-      category = 'audio';
-    } else if (searchableMetadata.includes('object-detection') || searchableMetadata.includes('segmentation') || searchableMetadata.includes('vision')) {
-      category = 'vision';
-    } else if (searchableMetadata.includes('code') || searchableMetadata.includes('coder')) {
-      category = 'code';
-    }
-  }
-
-  const task = modelTask || category;
+  const { category, task, label } = window.HFClassify.classify(model);
   const licenseTag = modelTags.find((tag) => tag.startsWith('license:'));
-  const tags = [...new Set(['community', 'hugging-face', task, ...modelTags.slice(0, 3)])].slice(0, 6);
+  const extra = modelTags.filter((tag) => !/^(license:|region:|arxiv:|base_model:|dataset:|endpoints_compatible|autotrain_compatible|deploy:|doi:)/.test(tag) && tag !== task);
+  const tags = [...new Set(['community', 'hugging-face', task, ...extra.slice(0, 3)])].slice(0, 6);
   const modelPath = modelId.split('/').map((part) => encodeURIComponent(part)).join('/');
-  const downloads = Number(model.downloads || 0).toLocaleString();
-  const categoryDescriptions = {
-    audio: 'Audio model',
-    chatbot: 'Conversational model',
-    code: 'Code model',
-    image: 'Image generation model',
-    llm: 'Text generation model',
-    video: 'Video generation model',
-    vision: 'Computer vision model',
-  };
 
   return {
     name: modelId,
@@ -122,9 +51,10 @@ function toCommunityModel(model) {
     version: model.lastModified ? `Updated ${model.lastModified.slice(0, 10)}` : 'Community model',
     price: licenseTag ? licenseTag.slice('license:'.length) : 'Review license',
     tags,
-    description: `${taskDescriptions[modelTask] || categoryDescriptions[category] || `${task.replaceAll('-', ' ')} model`}. ${downloads} downloads on Hugging Face.`,
+    description: window.HFClassify.describe(model, label),
     url: `https://huggingface.co/${modelPath}`,
     source: 'hugging-face',
+    live: true,
   };
 }
 
@@ -145,7 +75,7 @@ async function loadTools() {
   let usingCachedCatalog = false;
 
   try {
-    const response = await fetch('./data/tools.json?v=20260930-catalog1000');
+    const response = await fetch('./data/tools.json?v=20261001-classify1');
     if (!response.ok) throw new Error(`Catalog request returned ${response.status}`);
     data = await response.json();
     try {
@@ -193,8 +123,11 @@ async function loadTools() {
   curatedTools = [...data.tools].sort((a, b) => Number(Boolean(b.sponsored)) - Number(Boolean(a.sponsored)));
   tools = [...curatedTools, ...liveTools];
 
-  countModels.textContent = curatedTools.length;
+  const handPicked = curatedTools.filter((tool) => tool.source !== 'hugging-face').length;
+  countModels.textContent = handPicked;
   countCategories.textContent = new Set(curatedTools.map((tool) => tool.category)).size;
+  const countCommunity = document.getElementById('count-community');
+  if (countCommunity) countCommunity.textContent = (curatedTools.length - handPicked).toLocaleString('en-US');
   document.querySelectorAll('[data-count-for]').forEach((element) => {
     const count = curatedTools.filter((tool) => matchesFilter(tool, element.dataset.countFor)).length;
     element.textContent = `${count} listings`;
@@ -260,8 +193,8 @@ function renderTools() {
     return matchesCategory && matchesSearch;
   });
 
-  const liveCount = filtered.filter((tool) => tool.source === 'hugging-face').length;
-  resultsText.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}${liveCount ? `, including ${liveCount} live models` : ''}`;
+  const liveCount = filtered.filter((tool) => tool.live).length;
+  resultsText.textContent = `Showing ${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}${liveCount ? `, including ${liveCount} live Hugging Face results` : ''}`;
 
   if (!filtered.length) {
     toolGrid.innerHTML = `
