@@ -60,14 +60,44 @@ jobs:
         run: node scripts/validate-catalog.mjs
 
       - name: Validate core JSON
-        shell: bash
-        run: |
-          node -e "JSON.parse(require('fs').readFileSync('data/tools.json','utf8')); console.log('data/tools.json is valid JSON')"
+        run: node -e "JSON.parse(require('fs').readFileSync('data/tools.json','utf8')); console.log('data/tools.json is valid JSON')"
 
       - name: Check critical metadata
         shell: bash
         run: |
-          grep -qi '<meta[^>]*name="description"' index.html
-          grep -qi '<link[^>]*rel="canonical"' index.html
-          grep -q 'Sitemap:' robots.txt
-          grep -q '<urlset' sitemap.xml
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          class HeadMetadataParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.description = False
+                  self.canonical = False
+
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if tag == "meta" and attrs.get("name", "").lower() == "description" and attrs.get("content", "").strip():
+                      self.description = True
+                  if tag == "link" and attrs.get("rel", "").lower() == "canonical" and attrs.get("href", "").strip():
+                      self.canonical = True
+
+          parser = HeadMetadataParser()
+          parser.feed(Path("index.html").read_text(encoding="utf-8"))
+
+          if not parser.description:
+              raise SystemExit("Missing non-empty meta description in index.html")
+          if not parser.canonical:
+              raise SystemExit("Missing canonical link in index.html")
+
+          robots = Path("robots.txt").read_text(encoding="utf-8")
+          if "Sitemap:" not in robots:
+              raise SystemExit("robots.txt does not declare a sitemap")
+
+          root = ET.parse("sitemap.xml").getroot()
+          if not root.tag.endswith("urlset"):
+              raise SystemExit("sitemap.xml root element is not urlset")
+
+          print("Critical metadata checks passed")
+          PY
