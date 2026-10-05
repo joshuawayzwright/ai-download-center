@@ -74,6 +74,28 @@ jobs:
       - name: Validate catalog
         run: node scripts/validate-catalog.mjs
 
+      - name: Keep submission categories aligned with catalog
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          index = Path("index.html").read_text(encoding="utf-8")
+          form = Path(".github/ISSUE_TEMPLATE/submit-tool.yml").read_text(encoding="utf-8")
+
+          catalog = [x for x in re.findall(r'data-filter="([^"]+)"', index) if x != "all"]
+          match = re.search(r'options:\s*\[([^\]]+)\]', form)
+          if not match:
+              raise SystemExit("Submission category options were not found")
+
+          submission = [x.strip() for x in match.group(1).split(",")]
+          if catalog != submission:
+              raise SystemExit(f"Submission categories differ from catalog filters: catalog={catalog}, submission={submission}")
+
+          print(f"Submission categories aligned: {len(catalog)} categories")
+          PY
+
       - name: Validate core JSON
         run: node -e "JSON.parse(require('fs').readFileSync('data/tools.json','utf8')); console.log('data/tools.json is valid JSON')"
 
