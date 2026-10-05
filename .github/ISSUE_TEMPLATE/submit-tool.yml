@@ -30,7 +30,7 @@ body:
     id: category
     attributes:
       label: Category
-      options: [llm, chatbot, assistant, self-hosted, vision, image, audio, code, video, utility]
+      options: [android, llm, nlp, chatbot, assistant, self-hosted, vision, image, audio, code, video, utility]
     validations:
       required: true
   - type: dropdown
