@@ -251,7 +251,7 @@ public final class MainActivity extends Activity {
         counter.setText(shown.size() + " RESULTS  •  " + catalog.size() + " CATALOGUE ENTRIES");
         allButton.setBackground(shape(savedOnly ? CARD : GOLD, savedOnly ? LINE : GOLD, 10));
         allButton.setTextColor(savedOnly ? SILVER : BLACK);
-        savedButton.setBackground(shape(savedOnly ? CARD : GOLD, savedOnly ? LINE : GOLD, 10));
+        savedButton.setBackground(shape(savedOnly ? GOLD : CARD, savedOnly ? GOLD : LINE, 10));
         savedButton.setTextColor(savedOnly ? BLACK : SILVER);
         adapter.notifyDataSetChanged();
     }
