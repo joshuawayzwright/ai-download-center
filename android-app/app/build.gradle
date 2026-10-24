@@ -1,0 +1,39 @@
+plugins { id 'com.android.application' }
+
+def signingReady = ['WRIGHTWAYZ_KEYSTORE_PATH', 'WRIGHTWAYZ_KEYSTORE_PASSWORD',
+                    'WRIGHTWAYZ_KEY_ALIAS', 'WRIGHTWAYZ_KEY_PASSWORD']
+                   .every { System.getenv(it) }
+
+android {
+    namespace 'com.wrightwayz.aicentre'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'com.wrightwayz.aicentre'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0'
+    }
+    signingConfigs {
+        release {
+            if (signingReady) {
+                storeFile file(System.getenv('WRIGHTWAYZ_KEYSTORE_PATH'))
+                storePassword System.getenv('WRIGHTWAYZ_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('WRIGHTWAYZ_KEY_ALIAS')
+                keyPassword System.getenv('WRIGHTWAYZ_KEY_PASSWORD')
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (signingReady) signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    // Same catalog as GitHub Pages, bundled for offline access.
+    sourceSets { main { assets.srcDirs += [file('../../data')] } }
+}
