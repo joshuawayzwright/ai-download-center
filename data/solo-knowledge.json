@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-25",
+  "brand": {
+    "name": "The Solo Service Provider",
+    "assistant": "SOLO AI",
+    "owner": "Joshua Wright",
+    "contact": "hello@thesoloserviceprovider.com.au",
+    "site": "https://thesoloserviceprovider.com.au",
+    "location": "Gold Coast, Queensland, Australia"
+  },
+  "products": [
+    {
+      "id": "ai-marketing-kit",
+      "name": "AI Marketing Kit",
+      "price_aud": 79,
+      "payment_type": "one_time",
+      "status": "checkout_active_fulfilment_unverified",
+      "url": "https://thesoloserviceprovider.com.au/marketing-kit.html",
+      "free_sample": "https://thesoloserviceprovider.com.au/downloads/five-minute-ai-marketing-fix.pdf"
+    }
+  ],
+  "projects": [
+    {
+      "id": "sudo-hq",
+      "name": "Sudo HQ",
+      "status": "development",
+      "repo": "https://github.com/joshuawayzwright/sudo-hq",
+      "description": "Mobile-first local-first task and project management."
+    },
+    {
+      "id": "projectforge-ai",
+      "name": "ProjectForge AI",
+      "status": "development",
+      "repo": "https://github.com/joshuawayzwright/projectforge-ai",
+      "description": "AI project discovery and planning tools; no model inference."
+    },
+    {
+      "id": "ai-download-center",
+      "name": "AI Download Centre",
+      "status": "public_directory",
+      "repo": "https://github.com/joshuawayzwright/ai-download-center",
+      "url": "https://joshuawayzwright.github.io/ai-download-center/",
+      "description": "Public AI tool and model discovery catalogue."
+    },
+    {
+      "id": "wrightwayz",
+      "name": "WrightWayz",
+      "status": "separate_organisation",
+      "repo": "https://github.com/joshuawayzwright/wrightwayz-website",
+      "description": "Separate community organisation, not part of commercial product sales."
+    }
+  ],
+  "services": [
+    {
+      "name": "AI workflow enquiries",
+      "contact": "mailto:hello@thesoloserviceprovider.com.au?subject=AI%20workflow%20enquiry"
+    },
+    {
+      "name": "Website and app project enquiries",
+      "contact": "mailto:hello@thesoloserviceprovider.com.au?subject=Development%20enquiry"
+    }
+  ],
+  "policies": {
+    "terms": "https://thesoloserviceprovider.com.au/terms.html",
+    "privacy": "https://thesoloserviceprovider.com.au/privacy.html",
+    "refunds": "https://thesoloserviceprovider.com.au/refunds.html"
+  },
+  "assistant_rules": [
+    "Do not claim unfinished applications are available for sale.",
+    "Do not assert paid kit delivery is working until fulfilment is tested.",
+    "Do not describe WrightWayz as part of the commercial business.",
+    "Do not ask for card numbers, passwords, or sensitive personal data.",
+    "Use verified links and distinguish public directory entries from endorsements."
+  ]
+}
