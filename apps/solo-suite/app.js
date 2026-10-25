@@ -103,7 +103,7 @@ document.addEventListener("click",ev=>{
  if(btn.dataset.delete){if(!window.confirm("Delete this local record? This cannot be undone."))return;db[bucket[route]]=db[bucket[route]].filter(x=>x.id!==uid);persist();latest="";render();toast("Record deleted");return;}
  if(btn.dataset.load){latest=r.output;render();toast("Saved record opened");return;}
  if(btn.dataset.advance){const stages=["New","Contacted","Quoted","Won","Lost"];r.stage=stages[(stages.indexOf(r.stage)+1)%stages.length];persist();render();toast("Lead moved to "+r.stage);return;}
- if(btn.dataset.task){r.done=!r.done;persist();render();toast(r.done?"Task completed":"Task reopened");}
+ if(btn.dataset.task){r.done=!r.done;r.output=r.output.replace(/Status: (To do|Done)/,"Status: "+(r.done?"Done":"To do"));latest=r.output;persist();render();toast(r.done?"Task completed":"Task reopened");}
 });
 document.addEventListener("submit",ev=>{
  if(ev.target.id==="tool-form"){ev.preventDefault();if(ev.target.reportValidity())submitTool(ev.target);}
