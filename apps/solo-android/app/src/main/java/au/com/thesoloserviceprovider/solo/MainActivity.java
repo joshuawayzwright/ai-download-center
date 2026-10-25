@@ -55,6 +55,10 @@ public final class MainActivity extends Activity {
     hub.setText("Explore AI Download Centre");
     hub.setOnClickListener(v -> open("https://joshuawayzwright.github.io/ai-download-center/"));
     page.addView(hub);
+    Button suite = new Button(this);
+    suite.setText("Open SOLO Business Tools (preview)");
+    suite.setOnClickListener(v -> open("https://solo-ai-business-command.vercel.app/"));
+    page.addView(suite);
     TextView note = label("Preview client. Live AI requires a configured, protected server API. Never enter payment or private details.",12,Color.LTGRAY);
     page.addView(note);
     setContentView(page);
