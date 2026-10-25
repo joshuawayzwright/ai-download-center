@@ -1,0 +1,40 @@
+name: SOLO Android Build (Fixed)
+on:
+  push:
+    paths:
+      - 'apps/solo-android/**'
+      - '.github/workflows/solo-android-build-fixed.yml'
+  pull_request:
+    paths:
+      - 'apps/solo-android/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: Check installed Android SDK
+        run: |
+          test -d "$ANDROID_HOME/platforms/android-35" || {
+            echo "Android 35 platform not present on runner"; exit 1;
+          }
+          test -d "$ANDROID_HOME/build-tools" || exit 1
+      - name: Build SOLO debug APK
+        run: gradle -p apps/solo-android :app:assembleDebug --stacktrace --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: solo-ai-debug-apk
+          path: apps/solo-android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
