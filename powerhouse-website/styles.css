@@ -46,3 +46,21 @@
 .social-icon:focus-visible{outline:3px solid #32a8ff;outline-offset:4px}
 @media(max-width:900px){.social-connect .wrap{flex-direction:column;align-items:flex-start}.social-icons{justify-content:flex-start}.social-icon{width:60px}.social-icon>span{width:48px;height:48px}}
 @media(prefers-reduced-motion:reduce){.social-icon>span{transition:none}}
+
+/* Critical mobile QA repairs — marketing-kit legacy markup and guide overlay */
+.identity{display:inline-flex;align-items:center;gap:12px;min-width:0;text-decoration:none;font-weight:900;color:#f2cf83}
+.identity img{display:block;width:54px!important;height:54px!important;max-width:54px!important;max-height:54px!important;flex:0 0 54px;object-fit:contain}
+.identity span{font-size:13px;line-height:1.2;letter-spacing:.06em}
+.hero .wrap{min-width:0}
+.hero h1{overflow-wrap:break-word}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px}
+.hero .actions .btn{max-width:100%}
+.solo-guide-trigger{bottom:12px;right:12px}
+@media(max-width:760px){
+ .identity img{width:42px!important;height:42px!important;max-width:42px!important;max-height:42px!important;flex-basis:42px}
+ .identity span{font-size:10px}
+ .solo-guide-trigger{width:50px;height:50px;padding:4px!important;right:8px;bottom:8px;font-size:0!important;overflow:hidden;border-radius:50%}
+ .solo-guide-trigger:after{content:"✦";font-size:23px;line-height:1}
+ .solo-guide-panel{right:8px;bottom:68px;max-height:calc(100dvh - 90px);overflow:auto}
+ .product-actions{padding-right:52px}
+}
