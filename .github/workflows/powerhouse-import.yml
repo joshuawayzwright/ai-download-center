@@ -1,0 +1,48 @@
+name: Import approved Powerhouse website
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'solo-production-qa-verified.zip'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate approved archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f solo-production-qa-verified.zip
+          unzip -t solo-production-qa-verified.zip
+          python3 - <<'PY'
+          from zipfile import ZipFile
+          from pathlib import PurePosixPath
+          p='solo-production-qa-verified.zip'
+          with ZipFile(p) as z:
+              files=[x for x in z.namelist() if not x.endswith('/')]
+              assert len(files)>=20, 'Missing website files'
+              required={'index.html','styles.css','digital-products.html','solo-ai.html','marketing-kit.html','contact.html'}
+              assert required.issubset(files), 'Required pages missing'
+              for name in files:
+                  pp=PurePosixPath(name)
+                  assert not pp.is_absolute() and '..' not in pp.parts, 'Unsafe archive path'
+          print('Approved archive structure validated')
+          PY
+      - name: Extract into isolated website directory
+        run: |
+          mkdir -p powerhouse-website
+          unzip -oq solo-production-qa-verified.zip -d powerhouse-website
+      - name: Commit imported website only
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add powerhouse-website/
+          if ! git diff --cached --quiet; then
+            git commit -m "build(powerhouse): import approved website package"
+            git push
+          fi
