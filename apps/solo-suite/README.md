@@ -30,8 +30,8 @@ Serve repository root with `python3 -m http.server 8080` and visit `/apps/solo-s
 - [x] Created local storage + JSON export, copy and .txt export.
 - [x] Created isolated feature branch; no production site modifications.
 - [x] Parsed the full app JavaScript through the V8 JavaScript compiler.
-- [ ] Verify browser interactions and Samsung-class mobile viewport.
-- [ ] Verify production Vercel preview and custom URL.
+- [x] Browser QA: navigation, LeadPilot, QuoteSnap and Business OS; 375×812 viewport with no horizontal overflow. Issues corrected in follow-up commits.
+- [x] Deployed isolated Vercel project at https://solo-ai-business-command.vercel.app/; static assets all returned HTTP 200 after two fixes.
 - [ ] Integrate dedicated commercial Supabase project with auth, RLS, back-ups and data deletion.
 - [ ] Connect genuine server-side AI and third-party customer messaging with spend caps and consent.
 - [ ] Implement compliant Stripe / Google Play purchase flows, trials, entitlements and refunds.
@@ -40,3 +40,9 @@ Serve repository root with `python3 -m http.server 8080` and visit `/apps/solo-s
 
 ## No release claims
 Current version is a clickable prototype. It is not ready for sale, handling confidential customer information or publication on Google Play.
+## Verification notes — 25 October 2026
+- Browser-run tested fake customer data only, no payment or outbound messages.
+- Simulated JavaScript event and persistence checks passed on all ten modules; generated output is template-based, not AI-powered.
+- QuoteSnap arithmetic: two at A$100 plus 10% GST = A$220.00, verified in latest local logic tests.
+- Task completion now updates its saved draft's status, verified in logic tests.
+- Remaining seven modules still need full physical-device and end-to-end browser acceptance tests.
