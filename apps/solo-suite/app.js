@@ -34,7 +34,7 @@ let db=load(), route="dashboard", latest="",toastTimer=0;
 function load(){try{const p=JSON.parse(localStorage.getItem(KEY)||"{}");const o={};Object.keys(defaults).forEach(k=>o[k]=Array.isArray(p[k])?p[k].slice(0,500):[]);return o;}catch(e){return structuredClone(defaults);}}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(db));return true;}catch(e){toast("Browser storage is full or unavailable. Export your data.");return false;}}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function money(v){return new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(Number(v)||0);}
+function money(v){const n=new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(Number(v)||0);return n.startsWith("$")?"A"+n:n;}
 function pretty(v){return String(v||"").trim();}
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.hidden=true,3400);}
 function id(){return "rec-"+Date.now()+"-"+Math.random().toString(36).slice(2,8);}
