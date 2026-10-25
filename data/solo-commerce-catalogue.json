@@ -1,0 +1,102 @@
+{
+  "currency": "AUD",
+  "pricing_status": "proposed_pending_owner_approval",
+  "existing_product": {
+    "name": "AI Marketing Kit",
+    "price": 79,
+    "status": "existing_checkout_link_requires_fulfilment_verification",
+    "checkout_url": "https://buy.stripe.com/4gM8wP2qK0mDaww1XpeAg01"
+  },
+  "upcoming_products": [
+    {
+      "id": "ai-content-engine",
+      "name": "AI Content Engine",
+      "price": 39,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-lead-generation-playbook",
+      "name": "AI Lead Generation Playbook",
+      "price": 39,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-client-onboarding-system",
+      "name": "AI Client Onboarding System",
+      "price": 29,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-automation-starter-kit",
+      "name": "AI Automation Starter Kit",
+      "price": 49,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-website-conversion-toolkit",
+      "name": "AI Website Conversion Toolkit",
+      "price": 39,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-customer-support-toolkit",
+      "name": "AI Customer Support Toolkit",
+      "price": 29,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-digital-product-launch-kit",
+      "name": "AI Digital Product Launch Kit",
+      "price": 49,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-business-research-toolkit",
+      "name": "AI Business Research Toolkit",
+      "price": 39,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    },
+    {
+      "id": "ai-productivity-command-centre",
+      "name": "AI Productivity Command Centre",
+      "price": 29,
+      "status": "draft_not_for_sale",
+      "checkout_url": null
+    }
+  ],
+  "subscription_concepts": [
+    {
+      "name": "SOLO Updates",
+      "price_monthly": 0,
+      "description": "Opt-in launch news and product updates",
+      "status": "proposed"
+    },
+    {
+      "name": "SOLO Toolkit Club",
+      "price_monthly": 19,
+      "description": "A monthly new toolkit or updated resource with a members archive, subject to content capacity",
+      "status": "proposed"
+    },
+    {
+      "name": "SOLO Creator",
+      "price_monthly": 39,
+      "description": "Toolkit Club plus templates and monthly group Q&A, subject to service capacity",
+      "status": "proposed"
+    },
+    {
+      "name": "SOLO AI Pro",
+      "price_monthly": 29,
+      "description": "Metered AI chat access with published fair-use caps, only after model service and metering work",
+      "status": "future_not_available"
+    }
+  ],
+  "sales_policy": "Do not publish live buy buttons for unverified product delivery or subscriptions before entitlements and cancellation are operational."
+}
