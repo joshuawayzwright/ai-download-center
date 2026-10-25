@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://thesoloserviceprovider.com.au/sitemap.xml
