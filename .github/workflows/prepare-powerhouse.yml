@@ -1,0 +1,36 @@
+name: Prepare approved Powerhouse site
+on:
+  push:
+    paths:
+      - solo-production-qa-verified.zip
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify and extract approved package
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f solo-production-qa-verified.zip
+          unzip -t solo-production-qa-verified.zip
+          mkdir -p powerhouse-website
+          unzip -oq solo-production-qa-verified.zip -d powerhouse-website
+          test -f powerhouse-website/index.html
+          test -f powerhouse-website/assets/solo-hero.webp
+          test -f powerhouse-website/digital-products.html
+      - name: Commit extracted website separately
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add powerhouse-website
+          if ! git diff --cached --quiet; then
+            git commit -m "build(powerhouse): extract approved production package"
+            git push
+          fi
