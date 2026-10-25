@@ -36,6 +36,8 @@ jobs:
         run: |
           mkdir -p powerhouse-website
           unzip -oq solo-production-qa-verified.zip -d powerhouse-website
+      - name: Verify complete approved site before committing
+        run: python3 scripts/verify-powerhouse-package.py
       - name: Commit imported website only
         shell: bash
         run: |
