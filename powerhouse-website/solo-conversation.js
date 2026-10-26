@@ -8,9 +8,9 @@
   const messages = [];
   const add = (role, value) => {
     const line = document.createElement('div');
-    line.className = 'solo-message ' + (role === 'user' ? 'from-user' : 'from-solo');
+    line.className = 'solo-message ' + (role === 'user' ? 'from-user' : role === 'notice' ? 'system-notice' : 'from-solo');
     const label = document.createElement('strong');
-    label.textContent = role === 'user' ? 'YOU' : 'SOLO';
+    label.textContent = role === 'user' ? 'YOU' : role === 'notice' ? 'STATUS' : 'SOLO';
     const text = document.createElement('p');
     text.textContent = value;
     line.append(label, text);
@@ -22,8 +22,7 @@
     const prompt = input.value.trim();
     if (!prompt || prompt.length > 1200 || submit.disabled) return;
     add('user', prompt);
-    messages.push({role:'user',content:prompt});
-    if (messages.length > 12) messages.splice(0, messages.length - 12);
+    const pending = [...messages, {role:'user',content:prompt}].slice(-12);
     input.value = '';
     submit.disabled = true;
     status.textContent = 'Connecting to SOLO…';
@@ -34,7 +33,7 @@
       try {
         response = await fetch('/api/solo-chat', {
           method:'POST', headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({messages}), signal:controller.signal
+          body:JSON.stringify({messages:pending}), signal:controller.signal
         });
       } finally {clearTimeout(timer);}
       const data = await response.json().catch(() => ({}));
@@ -42,16 +41,17 @@
         const message = response.status === 503
           ? 'SOLO AI is in private testing. Public conversations are not available yet.'
           : 'SOLO could not respond right now. Please try again later.';
-        add('assistant', message);
+        add('notice', message);
         status.textContent = 'Development access only';
         return;
       }
       if (typeof data.reply !== 'string' || !data.reply.trim()) throw Error('Empty reply');
       add('assistant', data.reply);
-      messages.push({role:'assistant',content:data.reply.slice(0,1200)});
+      messages.splice(0, messages.length, ...pending, {role:'assistant',content:data.reply.slice(0,1200)});
+      if(messages.length > 12) messages.splice(0, messages.length - 12);
       status.textContent = 'SOLO replied';
     } catch {
-      add('assistant','SOLO is unavailable right now. No message was sent to another service.');
+      add('notice','SOLO is unavailable right now. Please try again later.');
       status.textContent = 'Connection unavailable';
     } finally {submit.disabled=false;input.focus();}
   });
