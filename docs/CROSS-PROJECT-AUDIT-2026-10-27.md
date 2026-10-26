@@ -12,7 +12,7 @@ Vercel team projects (6):
 | `wrightwayz-website` | READY, production | Preserve; charity flagship |
 | `solo-provider-industrial.` | READY, preview | Commercial website; live domain still on earlier production |
 | `sudo-hq` | READY, production | Preserve, inspect separately |
-| `solo-ai-business-command` | **ERROR**, production | Investigate build logs before any release |
+| `solo-ai-business-command` | **ERROR**, production | Build log confirms missing Root Directory `apps/solo-suite`; fix project linkage/root only after identifying intended source |
 | `solo-provider-fixed-review` | READY, production | Possible legacy/duplicate; do not delete without domain/traffic check |
 | `solo-service-provider-preview` | READY, production | Possible legacy/duplicate; do not delete without domain/traffic check |
 
@@ -30,14 +30,14 @@ Vercel team projects (6):
 1. `solo-provider-fixed-review` and `solo-service-provider-preview`: check domain aliases, deployments, usage and references before archiving.
 2. `desktop-tutorial`: appears empty; confirm owner intent before archiving.
 3. `ai-download-center`: historical website ZIPs, extracted asset variants, temporary smoke-test scripts, and obsolete SVGs may be redundant. Establish hashes and references before removal; preserve approved brand assets and rollback files.
-4. `solo-ai-business-command`: investigate production build error before consolidation.
+4. `solo-ai-business-command`: build failure is caused by nonexistent `apps/solo-suite` root; do not guess a replacement root or deploy over an unknown app.
 
 ## Priority release gates
 - [x] Inventory connected GitHub repositories and Vercel projects.
 - [x] Verify both primary public websites respond.
 - [x] Stage WrightWayz-inspired commercial palette without changing identity.
 - [ ] Preview CSS regression: mobile 390px and desktop 1440px, contrast, focus, text clipping, logo fidelity.
-- [ ] Identify and correct `solo-ai-business-command` build failure.
+- [x] Identify `solo-ai-business-command` build failure: configured `apps/solo-suite` directory is absent.\n- [ ] Decide correct source directory or retire duplicate project only after mapping its domains and purpose.
 - [ ] Run actual SOLO API POST and CI tests; authenticate users and enforce durable quotas.
 - [ ] Verify Stripe payment-to-file delivery with an authorised test transaction.
 - [ ] Verify all commercial product assets are complete and readable.
