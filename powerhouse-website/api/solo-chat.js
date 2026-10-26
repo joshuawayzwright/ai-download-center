@@ -54,29 +54,34 @@ module.exports = async (req,res) => {
   const a=crypto.createHash("sha256").update(supplied).digest();
   const b=crypto.createHash("sha256").update(expected).digest();
   if(!supplied||!crypto.timingSafeEqual(a,b))return json(res,401,{error:"Private testing access required"});
-  if(!process.env.OPENAI_API_KEY)return json(res,503,{error:"SOLO AI provider is not configured"});
-  const model=process.env.SOLO_AI_MODEL||"gpt-5-mini";
+  const provider=process.env.SOLO_AI_PROVIDER||"groq";
+  if(!["groq","openai"].includes(provider))return json(res,503,{error:"SOLO AI provider is not supported"});
+  const key=provider==="groq"?process.env.GROQ_API_KEY:process.env.OPENAI_API_KEY;
+  if(!key)return json(res,503,{error:"SOLO AI provider is not configured"});
+  const model=process.env.SOLO_AI_MODEL||(provider==="groq"?"llama-3.3-70b-versatile":"gpt-5-mini");
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),15000);
   try {
-    const upstream=await fetch("https://api.openai.com/v1/responses",{
+    const isGroq=provider==="groq";
+    const upstream=await fetch(isGroq?"https://api.groq.com/openai/v1/chat/completions":"https://api.openai.com/v1/responses",{
       method:"POST",
-      headers:{"Authorization":"Bearer "+process.env.OPENAI_API_KEY,"Content-Type":"application/json"},
-      body:JSON.stringify({
-        model,
-        instructions:SYSTEM,
+      headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
+      body:JSON.stringify(isGroq?{
+        model,messages:[{role:"system",content:SYSTEM},...messages],
+        max_completion_tokens:320,temperature:0.5
+      }:{
+        model,instructions:SYSTEM,
         input:messages.map(m=>({role:m.role,content:m.content})),
-        max_output_tokens:320,
-        store:false
+        max_output_tokens:320,store:false
       }),
       signal:controller.signal
     });
     if(!upstream.ok)return json(res,502,{error:"SOLO AI provider is temporarily unavailable",upstreamStatus:upstream.status});
     const result=await upstream.json();
-    const answer=(result.output||[]).flatMap(item=>item.content||[])
-      .filter(c=>c.type==="output_text").map(c=>c.text).join("\n").trim();
+    const answer=(isGroq?result.choices?.[0]?.message?.content:(result.output||[]).flatMap(item=>item.content||[])
+      .filter(c=>c.type==="output_text").map(c=>c.text).join("\\n"))?.trim();
     if(!answer)return json(res,502,{error:"SOLO AI returned no text response"});
-    return json(res,200,{reply:answer,model:result.model||model});
+    return json(res,200,{reply:answer,model:result.model||model,provider});
   } catch(e) {
     return json(res,504,{error:"SOLO AI request timed out or could not reach the provider"});
   } finally {clearTimeout(timer)}
