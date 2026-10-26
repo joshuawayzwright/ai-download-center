@@ -139,3 +139,28 @@
 .solo-capabilities h3{color:#f2d28d;font-size:20px}
 .solo-capabilities p{color:#c3d1df;line-height:1.65}
 @media(max-width:800px){.solo-capabilities{grid-template-columns:1fr}.solo-product h2{font-size:clamp(30px,9vw,46px)}}
+
+/* SOLO AI conversation — accessible preview, responsive on Samsung-sized viewports */
+.solo-conversation{background:radial-gradient(circle at 80% 0%,#0d477050,transparent 48%),#050d1a;border-block:1px solid #a78143}
+.solo-conversation h2{font:800 clamp(30px,4vw,52px)/1.1 Georgia,serif;color:#f2d08a;margin:12px 0}
+.solo-conversation>.wrap>p{max-width:790px;color:#c4d3e1;line-height:1.7}
+.solo-chat-shell{max-width:850px;margin:28px auto 0;background:#071422;border:1px solid #aa874d;border-radius:16px;overflow:hidden;box-shadow:0 22px 70px #0007}
+.solo-chat-top{display:flex;align-items:center;gap:15px;padding:18px 22px;background:linear-gradient(110deg,#112c49,#091526);border-bottom:1px solid #50617a}
+.solo-chat-top img{object-fit:contain;border-radius:12px}
+.solo-chat-top strong,.solo-chat-top span{display:block}
+.solo-chat-top strong{font-size:18px;color:#f0cd82}
+.solo-chat-top span{font-size:12px;color:#bdcad9}
+.solo-chat-transcript{min-height:230px;max-height:430px;overflow:auto;display:flex;flex-direction:column;gap:16px;padding:24px}
+.solo-message{max-width:86%;padding:13px 16px;border:1px solid #355574;border-radius:12px;background:#10233a}
+.solo-message.from-user{align-self:flex-end;background:#273d50;border-color:#b08a4e}
+.solo-message strong{font-size:11px;letter-spacing:.15em;color:#eec67d}
+.solo-message p{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;color:#e2eaf3;line-height:1.6}
+#solo-chat-form{border-top:1px solid #35516b;padding:18px 22px}
+#solo-chat-form label{display:block;font-weight:800;font-size:12px;color:#eac57d;margin-bottom:8px}
+.solo-chat-compose{display:flex;gap:12px;align-items:stretch}
+.solo-chat-compose textarea{min-width:0;flex:1;resize:vertical;border:1px solid #5c7895;border-radius:8px;background:#0c2035;color:#fff;padding:12px;font:inherit}
+.solo-chat-compose textarea:focus-visible{outline:3px solid #38a9ff}
+.solo-chat-compose button{flex:0 0 auto;cursor:pointer}
+.solo-chat-compose button:disabled{opacity:.5;cursor:wait}
+#solo-chat-form small{display:block;color:#aebed0;margin-top:10px}
+@media(max-width:600px){.solo-chat-transcript{padding:15px;min-height:200px}.solo-message{max-width:95%}.solo-chat-compose{flex-direction:column}.solo-chat-compose button{width:100%}.solo-chat-top{padding:14px}.solo-chat-shell{border-radius:10px}#solo-chat-form{padding:14px}}
