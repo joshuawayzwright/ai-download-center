@@ -57,7 +57,7 @@ module.exports = async (req,res) => {
   if((process.env.SOLO_AI_PROVIDER||"gemini")==="gemini"){
     const secret=process.env["GEMINI_API_KEY"];
     if(!secret)return json(res,503,{error:"Gemini provider is not configured"});
-    const model=process.env.SOLO_AI_MODEL||"gemini-2.5-flash";
+    const model=process.env.SOLO_AI_MODEL||"gemini-3.5-flash-lite";
     const controller=new AbortController();
     const timer=setTimeout(()=>controller.abort(),15000);
     try{
