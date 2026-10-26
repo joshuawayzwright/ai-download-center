@@ -1,0 +1,61 @@
+name: Stage approved SOLO brand artwork
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'solo-brand-lock-v1.zip'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate source archive and assets
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import struct
+          path=Path('solo-brand-lock-v1.zip')
+          if not path.is_file(): raise SystemExit('Missing approved brand archive')
+          required=['business-emblem.png','solo-ai-emblem.png','business-app-icon-512.png','solo-ai-app-icon-512.png','banner-approved.png','watermark-business.png']
+          with ZipFile(path) as z:
+              if z.testzip() is not None: raise SystemExit('Corrupt archive')
+              members={n.split('/')[-1]:n for n in z.namelist() if not n.endswith('/')}
+              for name in required:
+                  if name not in members: raise SystemExit('Missing '+name)
+              for name,entry in members.items():
+                  if not name.endswith('.png'): continue
+                  data=z.read(entry)
+                  if data[:8]!=b'\x89PNG\r\n\x1a\n': raise SystemExit('Invalid PNG '+name)
+                  w,h=struct.unpack('>II',data[16:24])
+                  if min(w,h)<16: raise SystemExit('Undersized image '+name)
+                  print(name,w,h)
+              # Never mistake upscaled crops for native high-resolution masters.
+              for name in ['business-app-icon-512.png','solo-ai-app-icon-512.png']:
+                  data=z.read(members[name]);w,h=struct.unpack('>II',data[16:24])
+                  if (w,h)!=(512,512):raise SystemExit('Unexpected app icon dimensions')
+          PY
+      - name: Extract to staging only
+        run: |
+          mkdir -p powerhouse-website/assets/approved-stage
+          python3 - <<'PY'
+          from zipfile import ZipFile
+          from pathlib import Path
+          with ZipFile('solo-brand-lock-v1.zip') as z:
+              for name in z.namelist():
+                  if not name.endswith('.png'):continue
+                  out=Path('powerhouse-website/assets/approved-stage')/Path(name).name
+                  out.write_bytes(z.read(name))
+          PY
+      - name: Commit staged assets without changing live references
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add powerhouse-website/assets/approved-stage
+          if ! git diff --cached --quiet; then
+            git commit -m 'assets(brand): stage approved SOLO source artwork for visual QA'
+            git push
+          fi
