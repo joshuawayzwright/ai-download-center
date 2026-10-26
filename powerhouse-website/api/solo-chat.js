@@ -42,6 +42,8 @@ module.exports = async (req,res) => {
   const messages=body?.messages;
   if(!Array.isArray(messages)||messages.length<1||messages.length>MAX_MESSAGES||messages.some(m=>!m||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||!m.content.trim()||m.content.length>MAX_CHARS))return json(res,400,{error:"Invalid conversation. Limit 12 messages and 1,200 characters each."});
   if(messages[messages.length-1].role!=="user")return json(res,400,{error:"Last message must be from the user"});
+  // Enforce alternating roles; reject fabricated or malformed conversation turns.
+  if(messages.some((m,i)=>i>0&&m.role===messages[i-1].role))return json(res,400,{error:"Conversation roles must alternate"});
   // Private testing only: feature gate plus server-side owner secret.
   // Do not ship a browser client containing the secret. Public users require
   // authenticated identities and durable per-user rate limits first.
