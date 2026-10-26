@@ -1,0 +1,41 @@
+name: SOLO private AI smoke test
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check required secrets
+        env:
+          TEST_URL: ${{ secrets.SOLO_TEST_URL }}
+          TEST_TOKEN: ${{ secrets.SOLO_TEST_TOKEN }}
+        run: |
+          if [ -z "$TEST_URL" ] || [ -z "$TEST_TOKEN" ]; then
+            echo "Missing SOLO_TEST_URL or SOLO_TEST_TOKEN GitHub Actions secret."
+            exit 1
+          fi
+      - name: Verify private SOLO model reply
+        env:
+          TEST_URL: ${{ secrets.SOLO_TEST_URL }}
+          TEST_TOKEN: ${{ secrets.SOLO_TEST_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          url=os.environ['TEST_URL'].rstrip('/')+'/api/solo-chat'
+          payload=json.dumps({'messages':[{'role':'user','content':'Reply with one short greeting to confirm SOLO AI is responding.'}]}).encode()
+          req=urllib.request.Request(url,data=payload,headers={'Content-Type':'application/json','x-solo-test-token':os.environ['TEST_TOKEN']},method='POST')
+          try:
+              with urllib.request.urlopen(req,timeout=22) as response:
+                  data=json.load(response)
+                  assert response.status==200
+                  assert isinstance(data.get('reply'),str) and data['reply'].strip()
+                  print('PASS: Private SOLO AI returned a non-empty model response.')
+                  print('Model:',data.get('model','not supplied'))
+          except urllib.error.HTTPError as e:
+              print('FAIL: HTTP',e.code)
+              # Avoid logging any user or provider response bodies.
+              raise SystemExit(1)
+          PY
