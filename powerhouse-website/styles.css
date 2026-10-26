@@ -75,3 +75,28 @@
 .brand-stage-card img{display:block;width:min(100%,340px);height:320px;object-fit:contain;margin:auto}
 .brand-stage-note{font-size:12px;color:#b7c5d3}
 @media(max-width:720px){.brand-stage-grid{grid-template-columns:1fr}.brand-stage-card img{height:280px}}
+
+/* October visual QA: original approved icons, safe proportions, complete content */
+.brand img,.identity img{object-fit:contain!important;object-position:center;border-radius:0!important;overflow:visible}
+.founder-panel-top{align-items:center;gap:18px;flex-wrap:wrap}
+.founder-panel-top img{display:block;width:76px!important;height:76px!important;min-width:76px;max-width:76px;object-fit:contain!important;border-radius:0!important;border:0!important;box-shadow:none!important}
+.founder-panel-top .eyebrow{flex:1 1 160px;line-height:1.5}
+.founder-panel:after{right:0;top:0;width:60px;height:60px;pointer-events:none}
+.hero-art img{max-width:min(100%,420px)!important;width:100%;height:auto;image-rendering:auto;object-fit:contain}
+.social-copy h2{font:800 clamp(28px,3.2vw,46px)/1.15 Georgia,serif}
+.social-icon>span{padding:0;overflow:hidden;display:grid;place-items:center}
+.social-icon>span img{display:block;width:46px;height:46px;object-fit:contain;border-radius:50%}
+.social-icon:hover>span img{filter:brightness(1.15)}
+.social-connect{scroll-margin-top:90px}
+.development-lab{background:linear-gradient(125deg,#071321,#0c2440 65%,#030a13);border-block:1px solid #947442;padding:80px 0}
+.development-lab h2{font:800 clamp(32px,4.4vw,58px)/1.1 Georgia,serif;color:#edc77d;max-width:920px;margin:12px 0 18px}
+.lab-intro{font-size:17px;line-height:1.7;color:#c5d2df;max-width:850px}
+.lab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:32px 0}
+.lab-grid article{min-width:0;background:#071422;border:1px solid #486282;padding:28px;display:flex;flex-direction:column;gap:12px;box-shadow:0 8px 25px #0004}
+.lab-grid h3{font-size:20px;letter-spacing:.04em;color:#f0d095;margin:0}
+.lab-grid p{color:#bdccdb;line-height:1.7;flex:1}
+.lab-grid a{color:#f0c77b;font-weight:800;text-decoration:none}
+.lab-grid a:hover{text-decoration:underline}
+.lab-state{font-size:10px;font-weight:900;letter-spacing:.14em;color:#43b8ff}
+.lab-footnote{color:#c5d2df}.lab-footnote a{color:#efc77c}
+@media(max-width:800px){.lab-grid{grid-template-columns:1fr}.development-lab{padding:54px 0}.social-copy h2{font-size:clamp(27px,8vw,40px)}.founder-panel-top img{width:64px!important;height:64px!important;min-width:64px;max-width:64px}.hero-art img{max-width:min(100%,390px)!important}}
