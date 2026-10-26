@@ -42,11 +42,42 @@ module.exports = async (req,res) => {
   const messages=body?.messages;
   if(!Array.isArray(messages)||messages.length<1||messages.length>MAX_MESSAGES||messages.some(m=>!m||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||!m.content.trim()||m.content.length>MAX_CHARS))return json(res,400,{error:"Invalid conversation. Limit 12 messages and 1,200 characters each."});
   if(messages[messages.length-1].role!=="user")return json(res,400,{error:"Last message must be from the user"});
-  // Cost protection: do not accept unauthenticated traffic without a verified
-  // rate-limit/auth system. Never silently turn this into an open proxy.
-  if(process.env.SOLO_PUBLIC_CHAT_ENABLED!=="true")return json(res,503,{error:"SOLO chat is in private testing. Public AI conversations are not enabled."});
+  // Private testing only: feature gate plus server-side owner secret.
+  // Do not ship a browser client containing the secret. Public users require
+  // authenticated identities and durable per-user rate limits first.
+  if(process.env.SOLO_PRIVATE_TEST_ENABLED!=="true")
+    return json(res,503,{error:"SOLO chat is in private testing. Public AI conversations are not enabled."});
+  const expected=process.env.SOLO_PRIVATE_TEST_TOKEN;
+  const supplied=String(req.headers["x-solo-test-token"]||"");
+  if(!expected||expected.length<32)return json(res,503,{error:"Private testing credentials are not configured"});
+  const crypto=require("node:crypto");
+  const a=crypto.createHash("sha256").update(supplied).digest();
+  const b=crypto.createHash("sha256").update(expected).digest();
+  if(!supplied||!crypto.timingSafeEqual(a,b))return json(res,401,{error:"Private testing access required"});
   if(!process.env.OPENAI_API_KEY)return json(res,503,{error:"SOLO AI provider is not configured"});
-  // Future provider implementation deliberately gated until identity and
-  // rate-limiting controls are verified. This is NOT a live AI completion.
-  return json(res,503,{error:"SOLO chat backend is staged; secure usage controls and provider integration are pending."});
+  const model=process.env.SOLO_AI_MODEL||"gpt-5-mini";
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),15000);
+  try {
+    const upstream=await fetch("https://api.openai.com/v1/responses",{
+      method:"POST",
+      headers:{"Authorization":"Bearer "+process.env.OPENAI_API_KEY,"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model,
+        instructions:SYSTEM,
+        input:messages.map(m=>({role:m.role,content:m.content})),
+        max_output_tokens:320,
+        store:false
+      }),
+      signal:controller.signal
+    });
+    if(!upstream.ok)return json(res,502,{error:"SOLO AI provider is temporarily unavailable",upstreamStatus:upstream.status});
+    const result=await upstream.json();
+    const answer=(result.output||[]).flatMap(item=>item.content||[])
+      .filter(c=>c.type==="output_text").map(c=>c.text).join("\n").trim();
+    if(!answer)return json(res,502,{error:"SOLO AI returned no text response"});
+    return json(res,200,{reply:answer,model:result.model||model});
+  } catch(e) {
+    return json(res,504,{error:"SOLO AI request timed out or could not reach the provider"});
+  } finally {clearTimeout(timer)}
 };
