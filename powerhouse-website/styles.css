@@ -164,3 +164,19 @@
 .solo-chat-compose button:disabled{opacity:.5;cursor:wait}
 #solo-chat-form small{display:block;color:#aebed0;margin-top:10px}
 @media(max-width:600px){.solo-chat-transcript{padding:15px;min-height:200px}.solo-message{max-width:95%}.solo-chat-compose{flex-direction:column}.solo-chat-compose button{width:100%}.solo-chat-top{padding:14px}.solo-chat-shell{border-radius:10px}#solo-chat-form{padding:14px}}
+
+/* Shared WrightWayz visual language — commercial SOLO identity remains separate.
+   Source palette: WrightWayz production index.html, 27 October 2026. */
+:root{--ww-charcoal:#0a0a0a;--ww-steel:#c6c9cc;--ww-gold:#c99734;--ww-gold-light:#f2c766;--ww-blue:#139ee8;--ww-panel:#111417}
+body{background:var(--ww-charcoal);color:#f4f4f2}
+.top{background:#070809;border-bottom-color:var(--ww-gold)}
+.hero{background:radial-gradient(ellipse at 76% 48%,#0a3044 0%,#101316 46%,#070809 84%);border-bottom-color:var(--ww-gold)}
+.hero h1 em,.heading h2,.founder-intro h2 em,.development-lab h2,.solo-product h2,.solo-conversation h2,.social-copy h2{color:var(--ww-gold-light)}
+.button{background:linear-gradient(120deg,#f2c766,#c99734);color:#08090a;border-color:var(--ww-gold)}
+.outline{border-color:var(--ww-gold);color:var(--ww-gold-light)}
+.eyebrow,.brand,.lab-grid a,.founder-email{color:var(--ww-gold-light)}
+.features,.founder-section,.development-lab,.social-connect,.solo-product,.solo-conversation{background:linear-gradient(130deg,#0a0a0a,#111417 62%,#06131b);border-color:#7e612d}
+.product,.lab-grid article,.solo-capabilities article,.social-icon,.founder-panel,.solo-chat-shell{background:linear-gradient(145deg,#171a1d,#0b0d0f);border-color:#5b5240}
+.social-icon{box-shadow:0 8px 24px #0008}
+.social-icon:hover,.social-icon:focus-visible{border-color:var(--ww-gold-light);background:#17130c}
+.hero-art img,.brand img,.founder-panel-top img{object-fit:contain;image-rendering:auto}
