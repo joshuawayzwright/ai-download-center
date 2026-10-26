@@ -129,3 +129,13 @@
 @media(max-width:960px){.social-icons{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:560px){.social-connect{padding:52px 0}.social-icons{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.social-icon{min-height:104px;padding:12px 4px}.social-icon>span,.social-icon>span img{width:49px;height:49px}.threads-mark{width:49px;height:49px;font-size:11px}.social-icon small{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.social-icon{transition:none}}
+
+/* SOLO AI flagship product page */
+.solo-product{background:radial-gradient(circle at 80% 5%,#0d467455,transparent 50%),#040c18;border-block:1px solid #c09850}
+.solo-product h2{font:800 clamp(32px,4.6vw,62px)/1.1 Georgia,serif;color:#efca80;margin:14px 0}
+.solo-lead{font-size:clamp(17px,1.7vw,21px);max-width:900px;color:#c9d9e8;line-height:1.7}
+.solo-capabilities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:35px 0}
+.solo-capabilities article{min-width:0;padding:27px;border:1px solid #4b6a8d;background:linear-gradient(140deg,#102741,#071321)}
+.solo-capabilities h3{color:#f2d28d;font-size:20px}
+.solo-capabilities p{color:#c3d1df;line-height:1.65}
+@media(max-width:800px){.solo-capabilities{grid-template-columns:1fr}.solo-product h2{font-size:clamp(30px,9vw,46px)}}
