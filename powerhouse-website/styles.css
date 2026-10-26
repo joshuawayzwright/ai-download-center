@@ -100,3 +100,13 @@
 .lab-state{font-size:10px;font-weight:900;letter-spacing:.14em;color:#43b8ff}
 .lab-footnote{color:#c5d2df}.lab-footnote a{color:#efc77c}
 @media(max-width:800px){.lab-grid{grid-template-columns:1fr}.development-lab{padding:54px 0}.social-copy h2{font-size:clamp(27px,8vw,40px)}.founder-panel-top img{width:64px!important;height:64px!important;min-width:64px;max-width:64px}.hero-art img{max-width:min(100%,390px)!important}}
+
+/* Mobile footer must remain accessible behind floating SOLO trigger */
+@media(max-width:760px){
+ footer{padding-bottom:95px}
+ .footerlinks{display:flex;flex-wrap:wrap;gap:14px 18px;padding-right:55px}
+ .footerlinks a{display:inline-block;min-height:34px}
+ .solo-guide-trigger{right:12px;bottom:12px;width:46px;height:46px}
+ .founder-panel{overflow:visible}
+ .founder-panel-top{padding-right:22px}
+}
