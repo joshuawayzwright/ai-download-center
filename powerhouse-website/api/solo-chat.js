@@ -54,6 +54,25 @@ module.exports = async (req,res) => {
   const a=crypto.createHash("sha256").update(supplied).digest();
   const b=crypto.createHash("sha256").update(expected).digest();
   if(!supplied||!crypto.timingSafeEqual(a,b))return json(res,401,{error:"Private testing access required"});
+  if((process.env.SOLO_AI_PROVIDER||"gemini")==="gemini"){
+    const secret=process.env["GEMINI_API_KEY"];
+    if(!secret)return json(res,503,{error:"Gemini provider is not configured"});
+    const model=process.env.SOLO_AI_MODEL||"gemini-2.5-flash";
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),15000);
+    try{
+      const url="https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent";
+      const response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":secret},
+        body:JSON.stringify({systemInstruction:{parts:[{text:SYSTEM}]},contents:messages.map(m=>({role:m.role==="assistant"?"model":"user",parts:[{text:m.content}]})),generationConfig:{maxOutputTokens:320}}),
+        signal:controller.signal});
+      if(!response.ok)return json(res,502,{error:"Gemini provider unavailable",upstreamStatus:response.status});
+      const data=await response.json();
+      const reply=(data.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("").trim();
+      if(!reply)return json(res,502,{error:"Gemini returned no text response"});
+      return json(res,200,{reply,provider:"gemini",model});
+    }catch(e){return json(res,504,{error:"Gemini request timed out or failed"})}
+    finally{clearTimeout(timer)}
+  }
   const provider=process.env.SOLO_AI_PROVIDER||"groq";
   if(!["groq","openai"].includes(provider))return json(res,503,{error:"SOLO AI provider is not supported"});
   const key=provider==="groq"?process.env.GROQ_API_KEY:process.env.OPENAI_API_KEY;
