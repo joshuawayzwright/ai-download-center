@@ -5,15 +5,12 @@
  if(!key){console.error("SOLO_GEMINI_NO_KEY");process.exitCode=1;return;}
  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);
  try{
-  const response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",{
-   method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key},
-   body:JSON.stringify({contents:[{role:"user",parts:[{text:"Say hello in one sentence."}]}],generationConfig:{maxOutputTokens:80}}),signal:controller.signal
-  });
-  if(!response.ok){console.error("SOLO_GEMINI_HTTP_"+response.status);process.exitCode=1;return;}
+  const response=await fetch("https://generativelanguage.googleapis.com/v1beta/models",{headers:{"x-goog-api-key":key},signal:controller.signal});
+  if(!response.ok){console.error("SOLO_GEMINI_MODELS_HTTP_"+response.status);process.exitCode=1;return;}
   const body=await response.json();
-  const answer=(body.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("").trim();
-  if(!answer){console.error("SOLO_GEMINI_EMPTY");process.exitCode=1;return;}
-  console.log("SOLO_GEMINI_REAL_RESPONSE_PASS");
+  const models=(body.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes("generateContent")).map(m=>m.name);
+  console.log("SOLO_GEMINI_SUPPORTED_MODELS:",models.slice(0,18).join(","));
+  if(!models.length){console.error("SOLO_GEMINI_NO_GENERATION_MODELS");process.exitCode=1;return;}
  }catch(e){console.error("SOLO_GEMINI_NETWORK_ERROR");process.exitCode=1}
  finally{clearTimeout(timer)}
 })();
