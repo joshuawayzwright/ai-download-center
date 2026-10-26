@@ -3,6 +3,7 @@
 // Intentionally does not enable unrestricted public paid inference.
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 1200;
+const MAX_BODY_BYTES = 16000;
 const SYSTEM = [
   "You are SOLO AI, an approachable, practical AI assistant built by The Solo Service Provider.",
   "Help users think clearly, solve problems and use AI tools responsibly.",
@@ -30,8 +31,14 @@ module.exports = async (req,res) => {
   }
   const type=String(req.headers["content-type"]||"");
   if(!type.toLowerCase().startsWith("application/json"))return json(res,415,{error:"JSON required"});
+  const len=Number(req.headers["content-length"]||0);
+  if(!Number.isFinite(len)||len<0||len>MAX_BODY_BYTES)return json(res,413,{error:"Conversation request is too large"});
   let body=req.body;
   try {if(typeof body==="string")body=JSON.parse(body)}catch{return json(res,400,{error:"Invalid JSON"})}
+  if(body===undefined){
+    let raw="";
+    try{for await(const chunk of req){raw+=chunk.toString();if(Buffer.byteLength(raw)>MAX_BODY_BYTES)return json(res,413,{error:"Conversation request is too large"});}body=JSON.parse(raw);}catch{return json(res,400,{error:"Invalid JSON"})}
+  }
   const messages=body?.messages;
   if(!Array.isArray(messages)||messages.length<1||messages.length>MAX_MESSAGES||messages.some(m=>!m||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||!m.content.trim()||m.content.length>MAX_CHARS))return json(res,400,{error:"Invalid conversation. Limit 12 messages and 1,200 characters each."});
   if(messages[messages.length-1].role!=="user")return json(res,400,{error:"Last message must be from the user"});
