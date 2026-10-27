@@ -1,6 +1,6 @@
 # SOLO AI — Shared Product Architecture
 
-Status: verified private Gemini API; real customer sessions, all five hosted admission races and actual API quota rejection are verified in a completed Preview window. The commercial database and permission boundaries are verified. Cleanup restored disabled customer gates and SQL policy. Customer-authenticated Gemini replies and provider-outcome failures remain unverified. No public generative AI service. See [live customer evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md).
+Status: verified private Gemini API; real customer sessions, all five hosted admission races and actual API quota rejection are verified. Two captured customer-authenticated Gemini turns now verify context recall, exact quota decrement and durable successful finalization. Cleanup restored disabled customer gates and SQL policy. Real provider-error/timeout and finalization-failure accounting, customer website/mobile acceptance and public release remain open. See [customer Gemini evidence](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md) and the earlier [Auth/quota evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md).
 Current release evidence and remaining gates: [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 
 ## Mission
@@ -24,7 +24,7 @@ SOLO AI will serve both The Solo Service Provider Powerhouse website and a futur
 
 ## Security and privacy gates
 - Never expose API keys in frontend JavaScript or GitHub.
-- The implemented customer path reserves per-user and global rolling-minute/UTC-day allowance before inference. Five hosted race scenarios and actual API 429 before inference verified those admission controls. Input/output bounds limit each request. Customer provider outcomes, public-launch abuse controls, spending alerts and monetary budgets remain release gates.
+- The implemented customer path reserves per-user and global rolling-minute/UTC-day allowance before inference. Five hosted race scenarios and actual API 429 verified admission controls; two captured Gemini turns verified quota decrement and successful ledger finalization. Input/output bounds limit each request. Real provider-error/timeout and finalization-failure accounting, public-launch abuse controls, spending alerts and monetary budgets remain release gates.
 - Do not persist chat history without explicit retention policy and user-facing notice.
 - Do not expose private GitHub, Stripe or customer data through public tool access.
 - Cite catalogue sources and distinguish listings from verified recommendations.
@@ -50,9 +50,13 @@ operations. Service-role checks in rolled-back transactions verified disabled
 and invalid-request paths when there were zero members and ledger rows.
 Actual HTTPS calls also confirmed anonymous denial of all three RPCs and the
 private schema. Later actual login and five hosted admission races passed.
-Final cleanup verified policy disabled, two blocked/expired memberships, zero
-active members or fixture Auth sessions, and 11 retained reservations with no
-provider result. Customer-authenticated inference remains unverified.
+That Auth/quota cycle ended with 11 retained reservations and no provider calls.
+The later customer Gemini cycle made four counted requests: two have ledger-only
+success evidence after lost client output, and two have captured HTTP/context
+assertions plus durable success. Current cleanup verifies policy disabled, two
+blocked/expired memberships, zero eligible members/sessions, and 15 retained rows
+(11 admission-only, four Gemini successes). Context recall used client-supplied
+history; no server-stored conversation memory is claimed.
 
 The account route requires the live SQL policy and an unblocked, unexpired
 membership before returning an authenticated session. A controlled auth-only

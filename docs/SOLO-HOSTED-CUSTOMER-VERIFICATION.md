@@ -4,8 +4,12 @@ The Auth/race harness has **passed actual hosted authentication and all five
 admission race scenarios**. A separate actual customer API check returned 429
 before inference, and final cleanup is verified. See
 [the live verification record](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md).
-Customer Gemini replies and provider-outcome failures remain unverified; zero
-provider calls were made. The harness is
+That Auth/quota cycle made zero provider calls. A separate
+[customer Gemini verification](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md)
+now verifies two captured customer replies, context recall and durable success
+finalization; four provider calls were counted across its two windows. Real
+provider-error/timeout and finalization-failure accounting remain unverified.
+The Auth/race harness is
 `powerhouse-website/scripts/solo-customer-hosted-smoke.cjs`; its nine local tests
 use simulated services. No new CI workflow or automatic deployment hook runs it.
 
@@ -15,14 +19,19 @@ It never calls `/api/solo-chat`, Gemini, signup, invitations, password resets or
 Auth administration. It never edits policy, membership, environment variables or
 schema. Test credentials and cookies stay in memory and are not printed.
 
-Current source is `0af8d9c263a1653128786061f3ffacea99b36894`.
+Current source is `f4ba7c22e6976c127aefb55a1c0479686cad16f0`; runtime implementation
+is unchanged at `0af8d9c263a1653128786061f3ffacea99b36894`.
 [CI run 40478171099](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171099)
 passed **137 API/browser/smoke + 21 SQL = 158 tests**, zero failures/skips;
 [quality run 40478171124](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171124)
-passed. Final normal Preview `dpl_BDfkTt3NR4rJwy9XoBT9tJwsLnx8` is **READY**:
-[current SOLO Preview](https://solo-provider-industrial-9i280wcne-wrightwayz.vercel.app/solo-ai.html#conversation).
+passed. That existing 158-test baseline was not rerun for the Gemini cycle.
+Final normal Preview `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM` is **READY** at `f4ba7c2`:
+[current SOLO Preview](https://solo-provider-industrial-qoyn70gb8-wrightwayz.vercel.app/solo-ai.html#conversation).
 Both customer flags and the SQL policy are disabled; both test members are
-blocked/expired, fixture sessions are zero, and 11 reservations remain recorded.
+blocked/expired, sessions are zero, and 15 rows remain: the 11 prior admission-only
+reservations and four succeeded Gemini requests. The final normal Preview's
+three disabled HTTP checks passed. The prior Auth/quota cycle's 11-row cleanup
+and zero-call evidence remain historical facts in its original record.
 
 ## Earlier read-only configuration probe — hosted access verified
 
@@ -80,8 +89,9 @@ boolean settings `disable_signup`, `email`, `anonymous` and
 never printed. The marker establishes server-key access and observed settings
 only; it does not require signup to be disabled. The later actual Auth settings
 GET verified `disable_signup=true` before the controlled pilot. Keep signup
-disabled. Customer-authenticated Gemini replies and provider-outcome failures
-remain unverified despite the completed login and quota checks.
+disabled. Customer-authenticated Gemini replies and successful finalization are
+now verified separately; real provider-error/timeout and finalization-failure
+accounting remain open.
 
 ## Prerequisites controlled by the operator
 
@@ -182,10 +192,11 @@ scenarios. Root/operator verifies the actual ledger rows, cap values and grants
 after each run. Restore the SQL policy to disabled, block or expire the test
 members and disable the Preview Auth gate after the verification window.
 
-This harness supplies **Auth and hosted database evidence only**. A separately
-authorized, bounded customer-authenticated Gemini conversation, provider-error
-accounting, the real browser experience, Samsung layout acceptance and public
-release approval remain separate gates.
+This harness supplies **Auth and hosted database evidence only**. The separate
+[customer Gemini record](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md) verifies
+successful generation and durable completion. Real provider-error accounting,
+the customer browser experience, Samsung layout acceptance and public release
+approval remain separate open gates.
 
 ## Documented secret-configuration capability
 

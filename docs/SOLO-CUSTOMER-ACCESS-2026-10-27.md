@@ -7,14 +7,17 @@ account panel are implemented for a Preview-only pilot. The existing commercial
 Supabase project is now accessible and its admission migration has been applied
 and checked on the hosted database. **Live customer login/session controls, all
 five hosted admission races and actual API quota rejection are verified.**
-Customer-authenticated Gemini replies and provider-outcome failures remain
-unverified; this is not a public release.
+Two captured customer-authenticated Gemini turns now also verify context recall,
+quota decrement and successful durable finalization. Real provider-error/timeout
+and finalization-failure behavior, customer website/mobile acceptance and public
+release remain unverified.
 
 The sensitive Vercel Preview Supabase secret key now has **verified hosted
 server RPC access** through the read-only configuration probe. Actual Auth
 settings confirm unrestricted signup is disabled. The test window is closed:
 both customer Preview flags and the hosted SQL policy are disabled, both test
-memberships are blocked/expired, and 11 counted reservations remain intact.
+memberships are blocked/expired, and 15 ledger rows remain intact: 11 earlier
+admission-only reservations and four succeeded Gemini requests.
 Production remains the existing maintenance deployment; public inference stays off.
 
 The previous owner-token Gemini two-turn HTTP result remains recorded in
@@ -26,10 +29,15 @@ recorded in [issue #31](https://github.com/joshuawayzwright/ai-download-center/i
 
 ## GitHub and deployed evidence
 
-- Current verified source: [`0af8d9c263a1653128786061f3ffacea99b36894`](https://github.com/joshuawayzwright/ai-download-center/commit/0af8d9c263a1653128786061f3ffacea99b36894). The [live customer verification record](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md) contains the actual Auth, five race scenarios, API 429 and cleanup evidence. No AI provider calls were made in this cycle.
-- Current CI: [run 40478171099](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171099) passed **137 API/browser/smoke + 21 SQL = 158 tests**, zero failures/skips; jobs `122101471635` and `122101471320`. [Repository quality run 40478171124](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171124) also passed.
-- Current normal protected Preview: `dpl_BDfkTt3NR4rJwy9XoBT9tJwsLnx8`, **READY** at that source commit: [SOLO preview](https://solo-provider-industrial-9i280wcne-wrightwayz.vercel.app/solo-ai.html#conversation). No build override; normal build logs. Final actual HTTP checks returned account GET **200**, all three status booleans false and private/no-store caching; refresh **503 `auth_disabled`**; dummy customer Bearer chat **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`.
-- Final SQL state: disabled policy, restored caps **3/20/20/200**, two blocked/expired members with zero active, zero fixture Auth sessions, 11 `reserved` ledger rows with provider `NULL`, and zero rows for the API-denied request. Production remains `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`.
+- Current verified source: [`f4ba7c22e6976c127aefb55a1c0479686cad16f0`](https://github.com/joshuawayzwright/ai-download-center/commit/f4ba7c22e6976c127aefb55a1c0479686cad16f0), with unchanged runtime implementation `0af8d9c`. The [customer Gemini record](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md) verifies two captured HTTP 200 turns, exact context recall, allowance **2 → 1 → 0**, logout 200 and two matching succeeded SQL rows. Marker: `SOLO_CUSTOMER_GEMINI_TWO_TURN_PASS`.
+- Four actual Gemini requests were made across two bounded windows. The first two have durable success records but lost client output; no HTTP/context assertions are claimed for that attempt. All four successes and the prior 11 reservations are retained.
+- Existing CI baseline: [run 40478171099](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171099) at `0af8d9c` passed **137 API/browser/smoke + 21 SQL = 158 tests**, zero failures/skips; jobs `122101471635` and `122101471320`. [Repository quality run 40478171124](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171124) also passed. No runtime changes or new test run are claimed for this Gemini cycle.
+- Current normal protected Preview: `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM`, **READY** at `f4ba7c2`: [SOLO preview](https://solo-provider-industrial-qoyn70gb8-wrightwayz.vercel.app/solo-ai.html#conversation). No build override. Actual HTTP checks returned account GET **200**, all three status booleans false and private/no-store caching; refresh **503 `auth_disabled`**; customer chat **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`.
+- Final SQL state: disabled policy, restored caps **3/20/20/200**, two blocked/expired members with zero eligible, zero sessions, and 15 retained rows: 11 admission-only reservations plus four Gemini successes. Production remains `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`.
+
+Earlier Auth/quota cycle:
+
+- The [live Auth/quota verification record](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md) at `0af8d9c` preserves the actual Auth, five race scenarios, API 429 and cleanup evidence. That cycle made **zero AI provider calls**, retained 11 reserved rows and ended with normal Preview `dpl_BDfkTt3NR4rJwy9XoBT9tJwsLnx8`. Its completed evidence has not been replaced by the later Gemini check.
 
 Earlier server-key configuration evidence:
 
@@ -158,11 +166,13 @@ the absence of an application signup action alone does not close that endpoint.
 
 ## Automated verification
 
-The current CI run `40478171099` verifies **158 passing tests**: 137
+The existing CI baseline `40478171099` at `0af8d9c` verifies **158 passing tests**: 137
 API/browser/smoke tests and 21 SQL tests, with zero failures or skipped tests.
 This includes the previous 153-test baseline plus five guarded-fixture tests.
 The harness tests use mocked services; actual hosted authentication and quota
 evidence is recorded separately in the linked live verification record.
+Runtime code did not change for the later customer Gemini check; this suite
+was not rerun and no new automated-test total is claimed for that cycle.
 
 | Suite | Passing tests |
 | --- | ---: |
@@ -225,7 +235,7 @@ signup is now disabled and verified. Do not request another
 Gemini key or repeat OpenAI/Groq setup.
 
 Vercel **Preview** configuration now contains all six variables below. The
-current normal deployment `dpl_BDfkTt3NR4rJwy9XoBT9tJwsLnx8` consumes the restored
+current normal deployment `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM` consumes the restored
 disabled customer flags, and its closed gates passed actual HTTP checks.
 Any new controlled verification window will require deliberate gate settings
 and a fresh deployment.
@@ -243,12 +253,13 @@ Keep the existing Gemini Preview configuration and private owner token. Never
 copy charity keys or grant its resources to SOLO. Do not expose the server key
 or owner token to the website, Android, source control, logs or issue comments.
 
-The controlled Auth/quota verification window is complete and closed. The
+The controlled Auth/quota and customer Gemini windows are complete and closed. The
 account endpoint still requires an active SQL policy and unblocked, unexpired
-membership before login. A future bounded customer-Gemini check must explicitly
-prepare those settings and appropriate monetary controls. A complete customer
-reply, provider-failure accounting and finalization behavior against real
-services remain unverified. Keep public inference disabled.
+membership before login. Two captured replies and successful SQL finalization
+are verified; real provider-error/timeout and finalization-failure accounting
+remain open. Actual branded website sign-in/chat and Samsung/desktop acceptance
+also remain unverified. Future verification windows require deliberate settings
+and monetary controls. Keep public inference disabled.
 
 ## Remaining release gates
 
@@ -263,8 +274,11 @@ services remain unverified. Keep public inference disabled.
 - [x] Live customer login, cookie rotation and logout/revoked-session rejection verified.
 - [x] Five independent hosted race scenarios demonstrate strict caps and duplicate suppression.
 - [x] Actual customer chat API rejects exhausted quota with 429 before inference.
-- [x] Close the verification window; restore disabled gates/policy, block and expire test members, retain all 11 reservations, and verify final deployment.
-- [ ] Customer-authenticated Gemini conversation and error accounting verified end to end.
+- [x] Close the earlier Auth/quota window; restore disabled gates/policy, block and expire test members, retain all 11 reservations, and verify that deployment.
+- [x] Verify two captured customer-authenticated Gemini turns, context recall, exact quota decrement and durable successful SQL finalization.
+- [x] Account for all four provider requests across both Gemini windows; retain 15 total ledger rows and verify final cleanup and disabled normal Preview.
+- [ ] Verify real provider-error/timeout and finalization-failure accounting.
+- [ ] Verify customer sign-in and complete conversation through the actual branded website UI.
 - [ ] Desktop and Samsung browser behavior, keyboard, focus and accessible account/chat states verified.
 - [ ] Approved customer retention/deletion disclosure, monetary controls and public abuse controls.
 - [ ] Explicit production release approval and actual deployed production verification.
