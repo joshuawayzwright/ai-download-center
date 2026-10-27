@@ -22,11 +22,15 @@ This section supersedes the older live-store and private-chat observations in th
 - [x] Verify the profile's rendered content, email destination and fully loaded banner dimensions.
 - [x] Mark the old 25-repository migration and 15-app expansion as plans, not completed releases.
 - [x] Prepare current directory/commercial contact corrections without changing checkout configuration.
-- [ ] Verify this source refresh's GitHub Actions and published directory contact after the commit.
+- [x] Verify contact source refresh [dcffec3](https://github.com/joshuawayzwright/ai-download-center/commit/dcffec321735ca56da1e8d0991dcec8205de82ae): [Repository quality](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40515180059), [catalog validation](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40515179967) and [Pages deployment](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40515180057) succeeded. Actual HTTPS requests to directory home, config, privacy and terms returned 200 with the current email and no old support email; terms includes the current phone.
+- [x] Verify the corrected Android build workflow [40515179982](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40515179982) succeeds for the contact-text change; this is not Play publication.
+- [ ] Resolve or retire the duplicate legacy Android workflow, which still fails in [run 40515180137](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40515180137); a passing corrected workflow does not make every check green.
 - [ ] Finish account sidebar bio, public-email selection and pins through an authenticated GitHub browser session; the repository connector does not expose these settings.
 - [ ] Correct older WrightWayz website contact/registration wording under its existing website change controls; this profile refresh does not alter charity production.
 - [ ] Resolve the existing WrightWayz CI canonical-domain mismatch before calling its quality gates green.
 - [ ] Complete the remaining customer, commerce, mobile and Android release gates in issue #31.
+
+ProjectForge's documentation update [b7839e4](https://github.com/joshuawayzwright/projectforge-ai/commit/b7839e47616368fcaca4f0c5854811e4aa713714) passed its [Pages verification/deployment workflow](https://github.com/joshuawayzwright/projectforge-ai/actions/runs/40515134283). Its public homepage still responds with the expected title. Commercial contact source changes remain pending a separately approved production cutover; the live commercial maintenance page still displays its earlier contact address.
 
 No deletion, archiving, repository-visibility change, payment activation or production cutover was performed. The original brand assets remain byte-for-byte intact.
 
