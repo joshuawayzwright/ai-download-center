@@ -11,7 +11,7 @@ Its current-status section supersedes the historical execution log.
 - Real customer login/session controls, five hosted quota/duplicate races and actual customer API quota rejection are verified. Two captured customer-authenticated Gemini turns also verified context recall, exact allowance decrement and durable successful finalization. See [Auth/quota evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md) and [customer Gemini evidence](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md).
 - The existing commercial database is Supabase project `tymayhazawkofmiypeqt`, organisation `txfdoppxcbylrguxsjod` (The Solo Service Provider), Free plan, existing `ap-northeast-1` region. Its migration, server credential and hosted permission boundaries are verified; unrestricted signup is disabled. Reuse it; no new account or database setup is required.
 - Both customer Preview flags and the SQL policy were restored disabled after testing. The last completed Gemini window retained 15 ledger rows: 11 earlier admission-only reservations and four Gemini successes. The first two Gemini calls have ledger-only evidence after lost client output; the later two have captured HTTP/context assertions.
-- The account-isolation update is deployed at `057ed6114206fa0b0ab2c2ed094596410f2bdb76`; 179 automated tests, four actual closed-gate HTTP checks and the specified desktop closed-gate/keyboard checks passed. Actual signed-in website chat, live session changes/cross-tab behavior, Samsung/device acceptance, real provider-error/timeout and finalization-failure accounting, and monetary/public-launch controls remain open.
+- The account-isolation update at `057ed6114206fa0b0ab2c2ed094596410f2bdb76` and its earlier 179-test/closed-gate browser evidence are preserved. The subsequent immediate sign-out fix at `1a2738816fe764ec5ac1723fef377aca5f505ee0` passes 181 automated tests and is deployed in protected Preview. Actual signed-in website chat, live session changes/cross-tab behavior, Samsung/device acceptance, real provider-error/timeout and finalization-failure accounting, and monetary/public-launch controls remain open.
 - Production serves the approved maintenance deployment `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. Do not promote a development branch wholesale.
 - Android client: not yet connected to an authenticated production API.
 
@@ -75,7 +75,7 @@ also passed. Controlled cross-tab integration exercises both actual browser
 controllers with **mocked transports**; it is not a live signed-in browser test.
 
 Normal Preview `dpl_CrptDDmWkonFKZ27xibWehkdHqJo` is **READY** at that commit:
-[current SOLO Preview](https://solo-provider-industrial-3j5n9hezq-wrightwayz.vercel.app/solo-ai.html#conversation).
+[account-isolation verification Preview](https://solo-provider-industrial-3j5n9hezq-wrightwayz.vercel.app/solo-ai.html#conversation).
 Four actual HTTP checks passed with gates closed: account GET **200**, all
 status booleans false and private/no-store caching; refresh POST **503
 `auth_disabled`**; dummy Bearer chat and `expectedUserId` chat without a cookie
@@ -97,6 +97,31 @@ four earlier Gemini successes. Production remains the same maintenance alias.
 See [browser-isolation evidence](SOLO-BROWSER-ISOLATION-2026-10-27.md),
 [sanitized results](evidence/solo-browser-isolation-2026-10-27.json) and
 [desktop screenshot](evidence/solo-browser-preview-2026-10-27.jpg).
+
+## Immediate local sign-out update
+
+Code `1a2738816fe764ec5ac1723fef377aca5f505ee0` clears local identity and
+conversation state before dispatching logout. Pending browser chat is aborted;
+late replies cannot restore old transcript, draft or focus; new local chat
+requests are blocked while sign-out is pending. Remote revocation remains a
+separate server outcome. Peer notification still follows settlement, and fresh
+status checks can rediscover a valid session if server sign-out failed. Local
+abort cannot undo an already-admitted provider call.
+
+Two new regressions failed against the original controller and passed after the
+fix. [CI 40512204310](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40512204310)
+passed **160 JavaScript + 21 SQL = 181 tests**, zero failures/skips.
+Protected Preview `dpl_Dr62bzK8kLsqyXaoZUQfNbacjUsc` is READY at that source:
+[SOLO Preview](https://solo-provider-industrial-pf0z4q0gh-wrightwayz.vercel.app/solo-ai.html#conversation).
+Four deployed files match their source hashes and all four actual closed-gate
+API checks pass. The desktop account panel remains private with login/sign-out
+hidden. This is not a signed-in browser result. See
+[sign-out verification](SOLO-LOGOUT-VERIFICATION-2026-10-27.md).
+
+No model call, hosted database write, environment change or production promotion
+occurred in this cycle. The existing test credentials are not retained; secure
+browser sign-in remains required. Additional model calls also need verified
+zero-cost entitlement or an approved monetary ceiling.
 
 **Production private testing and public customer inference remain disabled.**
 The completed Preview milestones do not authorize a production cutover or
