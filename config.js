@@ -12,7 +12,7 @@ window.SITE_CONFIG = {
   // (Stripe Dashboard > Settings > Billing > Customer portal > "Login link"), e.g. https://billing.stripe.com/p/login/...
   billingPortalUrl: 'https://billing.stripe.com/p/login/eVq00je9s5GX8oobxZeAg00',
   // A public contact address for sponsors (shown on the confirmation page). Leave empty to hide it.
-  supportEmail: 'hello@thesoloserviceprovider.com.au',
+  supportEmail: 'superadmin2712@gmail.com',
   // The business name customers see on Stripe checkout and their card statement.
   merchantName: 'The Solo Service Provider',
 };

@@ -64,12 +64,12 @@ jobs:
         run: |
           grep -q "featuredCheckoutUrl: 'https://buy.stripe.com/" config.js
           grep -q "billingPortalUrl: 'https://billing.stripe.com/" config.js
-          grep -q "supportEmail: 'hello@thesoloserviceprovider.com.au'" config.js
+          grep -q "supportEmail: 'superadmin2712@gmail.com'" config.js
           grep -q '\$99 USD' index.html
           grep -q '7-day free trial' index.html
           grep -q 'Stripe customer portal' terms.html
-          grep -q 'hello@thesoloserviceprovider.com.au' privacy.html
-          grep -q 'hello@thesoloserviceprovider.com.au' terms.html
+          grep -q 'superadmin2712@gmail.com' privacy.html
+          grep -q 'superadmin2712@gmail.com' terms.html
 
       - name: Validate catalog
         run: node scripts/validate-catalog.mjs

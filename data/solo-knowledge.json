@@ -5,7 +5,7 @@
     "name": "The Solo Service Provider",
     "assistant": "SOLO AI",
     "owner": "Joshua Wright",
-    "contact": "hello@thesoloserviceprovider.com.au",
+    "contact": "superadmin2712@gmail.com",
     "site": "https://thesoloserviceprovider.com.au",
     "location": "Gold Coast, Queensland, Australia"
   },
@@ -133,11 +133,11 @@
   "services": [
     {
       "name": "AI workflow enquiries",
-      "contact": "mailto:hello@thesoloserviceprovider.com.au?subject=AI%20workflow%20enquiry"
+      "contact": "mailto:superadmin2712@gmail.com?subject=AI%20workflow%20enquiry"
     },
     {
       "name": "Website and app project enquiries",
-      "contact": "mailto:hello@thesoloserviceprovider.com.au?subject=Development%20enquiry"
+      "contact": "mailto:superadmin2712@gmail.com?subject=Development%20enquiry"
     }
   ],
   "policies": {
@@ -174,7 +174,7 @@
       "checkout_url": null,
       "historical_price_aud": 79,
       "legacy_free_resource_url": "https://thesoloserviceprovider.com.au/downloads/five-minute-ai-marketing-fix.pdf",
-      "support_contact": "hello@thesoloserviceprovider.com.au",
+      "support_contact": "superadmin2712@gmail.com",
       "note": "Do not promote as a launch or flagship product. Preserve support and historical customer access; direct catalogue enquiries to the full launch collection."
     }
   ]

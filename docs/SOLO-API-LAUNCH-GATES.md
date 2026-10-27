@@ -1,5 +1,7 @@
 # SOLO AI — Launch Gates and Shared API
 
+**28 October update:** the commercial website is live with ten COMING SOON products. The customer branch now has explicit production-origin gates, shutdown-safe logout and persistent login-admission code, with 214 local tests passing. Its new Auth-admission migration is **not applied**: the connector returned an expired-request error twice and readback confirms no new RPC/table. Public AI remains closed. See [production preparation](SOLO-PRODUCTION-ACCESS-PREPARATION-2026-10-28.md) and the current section of issue #31; earlier milestones below retain their original scope.
+
 Updated 27 October 2026. The authoritative current release checklist is
 [GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 Its current-status section supersedes the historical execution log.

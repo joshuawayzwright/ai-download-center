@@ -34,14 +34,14 @@ independently verified as sale-ready. Start with Cashflow Control, then Quote &
 Invoice Builder, as the reset specifies. The [first private Cashflow build](SOLO-CASHFLOW-CONTROL-BUILD-2026-10-28.md)
 is tangible product work, not approval to sell it.
 
-- [ ] Confirm the approved website scope and maintenance cutover. A website-only release may keep customer AI and all unfinished-product checkouts disabled.
+- [x] Owner authorized the coming-soon website cutover on 28 October. PR #35 is merged and the actual commercial domain serves the ten-product website; customer AI and all unfinished-product checkouts remain disabled. See [website release](SOLO-WEBSITE-RELEASE-2026-10-28.md).
 - [ ] Complete the specific product files and guide; independently verify calculations, examples, supported applications, mobile usability and accessibility.
 - [ ] Obtain owner acceptance of the deliverable, accurate listing/preview, licence, refund/support wording and final price. Reset prices remain provisional.
 - [ ] Audit and configure the correct product's existing Stripe infrastructure; do not reuse the retired Kit, another product's link or the directory's paid-listing checkout.
 - [ ] Verify payment-confirmed fulfilment using signed webhooks and durable order state, protected downloads and the stated delivery/email method. Keep paid files and the full package out of the public repository.
 - [ ] Verify successful and failed payments, duplicate webhooks, download access and the refund/support path before accepting external orders.
 - [ ] Verify the approved live purchase-to-delivery journey after launch; distinguish self-tests from real external orders.
-- [ ] Release each remaining product only after its own gates pass; keep unfinished listings explicitly in development.
+- [ ] Release each remaining product only after its own gates pass; keep unfinished listings explicitly COMING SOON.
 
 ## SOLO AI — historical verification snapshot
 - Gemini provider-only Vercel diagnostic previously returned a real model response.

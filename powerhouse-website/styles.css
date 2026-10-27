@@ -282,3 +282,13 @@ body{background:var(--ww-charcoal);color:#f4f4f2}
 @media(max-width:720px){.policy-layout{grid-template-columns:minmax(0,1fr);padding-top:30px;gap:26px}.policy-sidebar{position:static}.policy-contents ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 25px}.policy-help{padding:20px 0 0}.policy-section{scroll-margin-top:90px}.policy-intro{font-size:16px}.policy-hero{padding-bottom:32px}.policy-release-note{padding:18px}.policy-simple{padding-top:30px}}
 @media(max-width:450px){.policy-contents ol{grid-template-columns:1fr}.policy-meta{gap:20px}.policy-hero .eyebrow{font-size:9px;letter-spacing:.14em}.policy-section h2{font-size:20px}.policy-related{gap:6px 22px}.policy-header .outline{padding:10px 12px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Public SOLO AI availability panel, using the approved chat shell. */
+.solo-launch-status{padding:clamp(22px,4vw,36px)}
+.solo-launch-status h3{margin-top:0}
+.solo-launch-status p{max-width:70ch}
+.solo-launch-status .actions{flex-wrap:wrap}
+
+/* Keep section headings visible beneath the sticky site navigation. */
+#products,#apps,#projects,#about,#social-connect-title{scroll-margin-top:100px}
+@media(max-width:760px){#products,#apps,#projects,#about,#social-connect-title{scroll-margin-top:170px}}

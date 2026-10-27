@@ -103,7 +103,7 @@ public final class MainActivity extends Activity {
         history.put(new JSONObject().put("role","assistant").put("content",answer));
         c.disconnect();
       } catch(Exception e) {
-        answer="Live SOLO conversations are not available yet. Visit the AI Download Centre to explore AI tools, or contact hello@thesoloserviceprovider.com.au.";
+        answer="Live SOLO conversations are not available yet. Visit the AI Download Centre to explore AI tools, or contact superadmin2712@gmail.com.";
       }
       String result=answer;
       runOnUiThread(() -> {addMessage("SOLO",result);send.setEnabled(true);});
