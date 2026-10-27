@@ -35,6 +35,13 @@ that entire development branch.
 - Local file and fragment links checked across eight customer/historical pages.
 - Existing directory catalogue validation passes: 983 entries, 12 categories.
 - Approved artwork files are unchanged.
+- The SOLO hero button reaches the availability panel; the keyboard skip link
+  uses the existing approved focus styling.
+- Sampler contact-only correction: three displayed emails and the mailto link
+  use current support details. Both pages visually checked; text differs only
+  in those email substitutions and 2× rendering has zero changed pixels outside
+  the three contact regions. Final PDF SHA-256:
+  `a06b1ef7b7fd308b7c687d467dffc1557199a07d59c0c49560fca035dd23160d`.
 
 Deployment readiness, browser verification and the production alias must be
 recorded separately after the deployment completes. These source checks alone
