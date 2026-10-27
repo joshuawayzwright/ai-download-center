@@ -288,3 +288,7 @@ body{background:var(--ww-charcoal);color:#f4f4f2}
 .solo-launch-status h3{margin-top:0}
 .solo-launch-status p{max-width:70ch}
 .solo-launch-status .actions{flex-wrap:wrap}
+
+/* Keep section headings visible beneath the sticky site navigation. */
+#products,#apps,#projects,#about,#social-connect-title{scroll-margin-top:100px}
+@media(max-width:760px){#products,#apps,#projects,#about,#social-connect-title{scroll-margin-top:170px}}
