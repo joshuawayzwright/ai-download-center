@@ -1,11 +1,16 @@
 # SOLO AI — Launch Gates and Shared API
 
+Updated 27 October 2026. The authoritative current release checklist is
+[GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
+Its current-status section supersedes the historical execution log.
+
 ## Current status
-- API: `powerhouse-website/api/solo-chat.js`, deployed to Vercel preview.
-- Model provider: OpenAI Responses API, server-side only.
-- Public inference: **OFF**.
-- Website assistant: keyword navigation guide only, not generative chat.
-- Android app: not yet connected.
+- API: `powerhouse-website/api/solo-chat.js`, deployed to private Vercel previews.
+- Current provider: **Gemini**, default model `gemini-3.5-flash-lite`, with the existing server-side Preview key. OpenAI/Groq code paths are retained but are not the selected provider.
+- Public inference: **OFF**. A private owner token is not customer authentication.
+- The development website has a conversation UI; real customer login and durable quotas remain unfinished.
+- Production serves the approved maintenance deployment `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. Do not promote a development branch wholesale.
+- Android client: not yet connected to an authenticated production API.
 
 ## Private test contract
 `POST /api/solo-chat`
@@ -17,22 +22,30 @@
 Required headers: `Content-Type: application/json`, same-origin `Origin` for browser calls, and `x-solo-test-token` for owner-only tests.
 
 Vercel preview secrets (server-side only):
-- `OPENAI_API_KEY`: configured, value not verified.
+- `GEMINI_API_KEY`: existing sensitive Preview variable; never retrieve or print its value.
 - `SOLO_PRIVATE_TEST_ENABLED`: must be explicitly `true` to allow owner tests.
 - `SOLO_PRIVATE_TEST_TOKEN`: random secret, minimum 32 characters.
 - `SOLO_AI_MODEL`: optional supported model override.
+- `SOLO_AI_PROVIDER`: optional provider override; defaults to Gemini.
 
 **Never place private test tokens or provider keys in a browser bundle, URL, public repository, Android APK or screenshots.**
 
-## Release gates
-1. [ ] Automated Node tests pass in CI.
-2. [ ] Private POST request returns an actual provider response.
-3. [ ] Persistent per-user authentication (not a shared test token).
-4. [ ] Durable rate limiting and quotas across serverless instances.
-5. [ ] Cost alerts, budget controls and request telemetry with privacy safeguards.
-6. [ ] Safety, privacy, abuse and prompt-injection tests.
-7. [ ] Web chat UI tested on Samsung and desktop.
-8. [ ] Android client uses the same authenticated API.
-9. [ ] Owner approves public launch.
+## Verification and release gates
+`powerhouse-website/scripts/solo-private-smoke.cjs` is an opt-in server-side test of
+the **deployed** `/api/solo-chat` endpoint, including denied requests and a real
+two-turn Gemini conversation. It is separate from the historical provider-only
+diagnostics. It logs only status, timing and request identifiers.
+
+The script accepts a temporary Vercel share URL in `SOLO_SMOKE_TARGET_URL` and the
+existing private token from the server environment. It rejects production, other
+projects and cross-origin redirects. Never put those values in a browser, APK,
+source file or build command. The temporary target must be blanked after use;
+the diagnostic must not become an automatic build command.
+
+Customer identity, durable atomic quotas, cost ceilings, privacy safeguards,
+device verification and owner approval remain release gates in issue #31.
+The only connected Supabase project found during the 27 October inventory was
+`Wrightwayz Project` (inactive). It is not a commercial SOLO customer database
+and must not be repurposed for this release.
 
 **Do not set `SOLO_PRIVATE_TEST_ENABLED=true` in production until rate limits and authentication are ready.** Preview-only owner tests must not be mistaken for a public product.
