@@ -274,7 +274,8 @@ test('customer request reserves once before Gemini and records usage before repo
 test('customer cookie POST and Android bearer without Origin share the same admission path', async () => {
   for (const headers of [{ authorization: undefined, cookie: `__Host-solo-access=${TOKEN}` }, { origin: undefined }]) {
     await isolated(async network => {
-      assert.equal((await chat({ headers })).status, 200);
+      const body = headers.cookie ? { ...BODY, expectedUserId: USER } : BODY;
+      assert.equal((await chat({ headers, body })).status, 200);
       assert.equal(network.counts.admit, 1);
       assert.equal(network.counts.provider, 1);
     });

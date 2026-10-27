@@ -206,3 +206,12 @@ body{background:var(--ww-charcoal);color:#f4f4f2}
 .social-icon:focus-visible{outline:3px solid #44adff;outline-offset:3px}
 @media(max-width:850px){.social-icons{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:550px){.social-connect{padding:48px 0}.social-icons{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.social-icon{min-height:87px;padding:12px 5px}.social-icon>span.social-mark{width:34px;height:34px}.social-icon .social-mark svg{width:29px;height:29px}.social-icon small{font-size:11px}}
+
+/* SOLO conversation entry and keyboard access; approved artwork is unchanged. */
+#conversation{scroll-margin-top:100px}
+#solo-account-status{overflow-wrap:anywhere}
+#solo-account .actions button{min-height:44px}
+#solo-account input:focus-visible,#solo-account button:focus-visible,.solo-chat-transcript:focus-visible{outline:3px solid #0087ff;outline-offset:3px}
+.solo-skip-link{position:fixed;top:8px;left:12px;z-index:20;transform:translateY(-160%);padding:12px 18px;background:#0a0a0a;color:#d4af37;border:1px solid #d4af37}
+.solo-skip-link:focus{transform:translateY(0)}
+.solo-skip-link:focus-visible{outline:3px solid #0087ff;outline-offset:3px}

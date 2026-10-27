@@ -5,6 +5,8 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const source = fs.readFileSync(path.join(__dirname, '../solo-conversation.js'), 'utf8');
+const USER = '11111111-1111-4111-8111-111111111111';
+const OTHER_USER = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const response = (reply = 'SOLO response', status = 200) => ({
   ok: status >= 200 && status < 300,
   status,
@@ -271,7 +273,7 @@ test('429 honors Retry-After without automatic inference and preserves the retry
 
 test('401 requests account refresh only when customer accounts are enabled', async () => {
   const h = harness(async () => response('', 401), {
-    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1}
+    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: USER}
   });
   await h.submit('My session expired');
   assert.equal(h.status.textContent, 'Sign-in required');
@@ -286,7 +288,7 @@ test('invited account login and customer chat gates are respected before sending
   assert.equal(h.calls.length, 0);
   assert.equal(h.input.value, 'Keep this draft');
   assert.equal(h.status.textContent, 'Sign-in required');
-  h.setAccount({enabled: true, authenticated: true, chatEnabled: false, sessionVersion: 1});
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: false, sessionVersion: 1, userId: USER});
   await h.submit('Wait for chat approval');
   assert.equal(h.calls.length, 0);
   assert.equal(h.status.textContent, 'Development access only');
@@ -303,7 +305,7 @@ test('missing secure UUID support fails closed without a random fallback', async
 test('account change clears context and suppresses an old in-flight reply and prompt', async () => {
   let finish;
   const h = harness(() => new Promise(resolve => { finish = resolve; }), {
-    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1}
+    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: USER}
   });
   const pending = h.submit('Previous account private prompt');
   h.setAccount({enabled: true, authenticated: false, chatEnabled: false, sessionVersion: 2});
@@ -311,8 +313,9 @@ test('account change clears context and suppresses an old in-flight reply and pr
   finish(response('Previous account private reply'));
   await pending;
   assert.equal(h.input.value, '');
+  assert.equal(h.input.focusCount, 0, 'an old request must not move focus after sign-out');
   assert.ok(h.lines().every(line => !line.text.includes('Previous account')));
-  h.setAccount({enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 3});
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 3, userId: OTHER_USER});
   const next = h.submit('New account question');
   finish(response('New account reply'));
   await next;
@@ -327,4 +330,84 @@ test('admitted provider failure updates returned usage without an extra request'
   assert.equal(h.events.filter(event => event.type === 'solo:usage').length, 1);
   assert.deepEqual(h.events.find(event => event.type === 'solo:usage').detail, usage);
   assert.equal(h.status.textContent, 'Response unavailable');
+});
+
+test('customer requests bind to the visible account and include the binding in the 16000-byte budget', async () => {
+  // Three such turns fit without expectedUserId (15,961 bytes), but not with it
+  // (16,017 bytes), so the older complete exchange must be trimmed.
+  const content = '\u0001'.repeat(878);
+  const h = harness(async () => response(content), {
+    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: USER}
+  });
+  await h.submit(content);
+  await h.submit(content);
+  for (const call of h.calls) {
+    assert.equal(JSON.parse(call.body).expectedUserId, USER);
+    assert.ok(Buffer.byteLength(call.body, 'utf8') <= 16000);
+  }
+  assert.deepEqual(h.history(1), [{role: 'user', content}]);
+});
+
+test('an authenticated UI without a valid account ID fails closed and requests an account check', async () => {
+  for (const userId of [undefined, null, 'not-an-account', 42]) {
+    const h = harness(undefined, {
+      account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId}
+    });
+    await h.submit('A draft without a verified owner');
+    assert.equal(h.calls.length, 0);
+    assert.equal(h.input.value, '');
+    assert.equal(h.events.filter(event => event.type === 'solo:account-stale').length, 1);
+    await h.submit('Wait for account verification');
+    assert.equal(h.calls.length, 0);
+  }
+});
+
+test('account_changed clears stale history and draft without a duplicate retry or focus restoration', async () => {
+  const h = harness(async (_options, number) => number === 2
+    ? {ok: false, status: 409, json: async () => ({code: 'account_changed', error: 'Account changed'})}
+    : response('Reply for this account'), {
+    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: USER}
+  });
+  await h.submit('First account private history');
+  const priorFocus = h.input.focusCount;
+  await h.submit('First account private follow-up');
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.input.value, '');
+  assert.equal(h.input.focusCount, priorFocus);
+  assert.ok(h.lines().every(line => !line.text.includes('First account') && !line.text.includes('already been accepted')));
+  assert.equal(h.events.filter(event => event.type === 'solo:account-stale').length, 1);
+  assert.equal(h.events.filter(event => event.type === 'solo:usage').length, 0);
+  await h.submit('Do not send while checking account access');
+  assert.equal(h.calls.length, 2, 'account recovery must never automatically retry inference');
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 2, userId: OTHER_USER});
+  await h.submit('Second account new conversation');
+  assert.deepEqual(h.history(2), [{role: 'user', content: 'Second account new conversation'}]);
+  assert.equal(JSON.parse(h.calls[2].body).expectedUserId, OTHER_USER);
+  assert.notEqual(JSON.parse(h.calls[2].body).requestId, JSON.parse(h.calls[1].body).requestId);
+});
+
+test('a changed public account ID clears context even if its session version is unchanged', async () => {
+  const h = harness(undefined, {
+    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: USER}
+  });
+  await h.submit('Original account private history');
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: OTHER_USER});
+  assert.ok(h.lines().every(line => !line.text.includes('Original account')));
+  await h.submit('Changed account conversation');
+  assert.deepEqual(h.history(1), [{role: 'user', content: 'Changed account conversation'}]);
+});
+
+test('an expired customer cookie requests one refresh and keeps the UUID for a manual retry', async () => {
+  const h = harness(async (_options, number) => number === 1
+    ? {ok: false, status: 401, json: async () => ({code: 'session_expired'})} : response(), {
+    account: {enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: USER}
+  });
+  await h.submit('Keep this customer request');
+  assert.equal(h.events.filter(event => event.type === 'solo:session-expired').length, 1);
+  assert.equal(h.calls.length, 1);
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: true, sessionVersion: 1, userId: USER});
+  assert.equal(h.calls.length, 1, 'refreshing account state must not submit inference');
+  await h.submit(h.input.value);
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.calls[0].body, h.calls[1].body);
 });

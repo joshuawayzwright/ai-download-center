@@ -5,6 +5,7 @@ const { HttpError, parseAccessToken, verifyCustomer, reserve, finalize } = requi
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 1200;
 const MAX_BODY_BYTES = 16000;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const SYSTEM = [
   "You are SOLO AI, an approachable, practical AI assistant built by The Solo Service Provider.",
   "Help users think clearly, solve problems and use AI tools responsibly.",
@@ -72,15 +73,27 @@ module.exports = async (req,res) => {
   let customer=null,admittedUsage=null;
   try {
     const access=parseAccessToken(req);
-    if(access){
+    const customerIntent=Object.prototype.hasOwnProperty.call(body,'expectedUserId');
+    if(access||customerIntent){
       // Customer rollout is preview-only until a separate production approval.
       if(process.env.VERCEL_ENV!=="preview"||process.env.SOLO_CUSTOMER_CHAT_ENABLED!=="true")
         throw new HttpError(503,'customer_disabled','Customer conversations are not enabled yet.');
+      // The access cookie can expire while its refresh cookie remains. A browser
+      // account binding signals customer intent, never owner authorization.
+      if(!access)throw new HttpError(401,'session_expired','Your account session expired. Check account access before retrying.');
       if((process.env.SOLO_AI_PROVIDER||'gemini')!=='gemini'||
           (process.env.SOLO_AI_MODEL||'gemini-3.5-flash-lite')!=='gemini-3.5-flash-lite'||
           typeof process.env.GEMINI_API_KEY!=='string'||!process.env.GEMINI_API_KEY.trim())
         throw new HttpError(503,'provider_unavailable','The customer AI provider is not configured.');
       customer=await verifyCustomer(access.token);
+      // Browser cookies are shared between tabs. Bind the visible conversation
+      // to its account before reserving quota or forwarding any text to Gemini.
+      if(access.source==='cookie'){
+        if(typeof body.expectedUserId!=='string'||!UUID.test(body.expectedUserId))
+          throw new HttpError(400,'expected_account_required','Check your account access before sending a conversation.');
+        if(body.expectedUserId.toLowerCase()!==customer.userId.toLowerCase())
+          throw new HttpError(409,'account_changed','Your account changed. Clear the previous conversation and check account access.');
+      }
       const admission=await reserve(customer,{requestId:body.requestId,messages,model:'gemini-3.5-flash-lite'});
       if(Number.isSafeInteger(admission.daily_limit)&&admission.daily_limit>=0&&
           Number.isSafeInteger(admission.remaining_daily)&&admission.remaining_daily>=0&&

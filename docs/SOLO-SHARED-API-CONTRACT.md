@@ -1,14 +1,32 @@
 # SOLO shared chat contract (web + Android)
 
-**Status:** PRIVATE TEST ONLY. The owner-token API is verified. Customer access is implemented behind Preview-only gates but awaits its separate commercial database and live verification. This document is not proof of a public AI service.
+**Status:** PRIVATE PREVIEW. The owner-token API, real customer sessions, hosted
+quota/duplicate controls and a captured two-turn customer Gemini conversation
+with successful durable finalization are verified. The existing commercial
+Supabase project is `tymayhazawkofmiypeqt`; no replacement database or account
+setup is required. Both customer Preview flags and SQL policy were restored
+disabled after testing. See [Auth/quota evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md)
+and [customer Gemini evidence](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md).
+
+The new cookie account-binding and browser revalidation code described below
+is implemented and locally reviewed. Root verification of the new automated
+suite, deployment and live cross-tab behavior is still pending. Previous API
+milestones and the 158-test baseline do not establish that this new safeguard
+has passed in a deployed browser. Public release, customer UI/device acceptance
+and real provider-error/finalization-failure accounting remain open.
 
 Endpoint: `POST https://thesoloserviceprovider.com.au/api/solo-chat` (future production; currently unavailable while the production site is in maintenance).
 Private preview endpoint is on the Vercel preview deployment, not the production domain.
 
-Customer request (owner smoke requests do not require a request ID):
+Browser customer request using the HttpOnly access cookie:
 ```json
-{"requestId":"d83e81e9-8bfd-48f7-8ad1-3cb9899f1a0a","messages":[{"role":"user","content":"Help me plan my week"}]}
+{"requestId":"d83e81e9-8bfd-48f7-8ad1-3cb9899f1a0a","expectedUserId":"5066992e-32ca-49c6-91e0-0620c9ffba82","messages":[{"role":"user","content":"Help me plan my week"}]}
 ```
+
+`expectedUserId` is the displayed account's UUID from verified `/api/solo-auth`
+status. It is an account-consistency check, not a credential. Explicit customer
+Bearer requests may omit it. Owner smoke requests omit both `requestId` and
+`expectedUserId` and use their separate server-only testing credential.
 
 Successful response:
 ```json
@@ -21,12 +39,12 @@ Error response:
 ```
 
 ## Client rules
-- Up to 12 messages, 1,200 JavaScript string characters per message, and 16,000 UTF-8 bytes for the complete JSON request. A valid alternating request starts and ends with `user`, so it contains at most 11 messages. Trim complete oldest user/assistant pairs to meet both limits.
+- Up to 12 messages, 1,200 JavaScript string characters per message, and 16,000 UTF-8 bytes for the complete JSON request, including `requestId` and cookie-account `expectedUserId`. A valid alternating request starts and ends with `user`, so it contains at most 11 messages. Trim complete oldest user/assistant pairs to meet both limits.
 - Send exactly `application/json` as the MIME type (charset parameters are allowed).
 - Use HTTPS; do not store credentials in app bundles or browser local storage.
 - Do not embed the private owner testing token in Android or web clients.
 - The current private test token is only for backend smoke testing.
-- Public clients require proper login, server-validated user identity, durable quotas and abuse prevention.
+- Customer requests use verified login, server-validated identity and durable quotas; public abuse prevention and production approval remain release gates.
 - Display the server's actual errors; never fabricate a model reply.
 - The API does not execute tools, browse the internet, access connected accounts or act autonomously.
 
@@ -56,8 +74,50 @@ rejected as ambiguous. Native requests may omit Origin; cookie POSTs may not.
 
 The server validates the exact token online and checks issuer, audience, user,
 expiry and session claims. SQL additionally requires a currently live matching
-session and an unblocked, unexpired commercial membership. User or session IDs
-in a client request body are never trusted.
+session and an unblocked, unexpired commercial membership. A client-supplied
+user or session ID never establishes identity or authorizes access.
+
+## Cookie account consistency and browser revalidation
+
+Cookies are shared by tabs on the same host. A conversation displayed for one
+account must not be sent using another account's replacement cookie. The
+sanitized browser account state therefore includes `userId`: the verified UUID
+while authenticated, otherwise `null`. No session token, password or privileged
+key is added to that state.
+
+For cookie chat, the server performs normal request validation, credential and
+Preview/provider checks, then online customer authentication. It compares
+`expectedUserId` with that authenticated user **before** calling SQL admission
+or the provider:
+
+| Condition | Response | Admission/provider effect |
+| --- | --- | --- |
+| Missing or malformed UUID on a cookie request | 400 `expected_account_required` | No admission or provider dispatch |
+| UUID differs from the verified cookie account | 409 `account_changed` | No admission or provider dispatch |
+| UUID matches | Continue to membership/session/quota admission | Existing admission rules apply |
+
+UUID comparison is case-insensitive. A body containing `expectedUserId` signals
+customer intent: if its access credential has expired or disappeared, the open
+customer path returns **401 `session_expired`**, never an owner-token fallback.
+Disabled gates and other earlier validation failures still take precedence.
+Explicit Bearer customers remain compatible without the field; owner testing
+requests without it are unchanged. Older cookie clients without the binding
+must update before they can send chat under this contract.
+
+The browser handles **409 `account_changed` before other 409 responses**. It
+clears transcript, retained history, draft, retry UUID and wait state, aborts the
+pending browser operation, blocks chat and emits `solo:account-stale` for a
+server account recheck. It neither restores the old draft nor automatically
+resends inference. Responses from the invalidated conversation are ignored.
+
+Successful login and logout notify other tabs using a fixed, ephemeral
+`account-changed` signal through `BroadcastChannel` when available. The signal
+contains no identity, credentials or conversation text. Receiving it immediately
+invalidates the old state and rechecks the server; it never supplies trusted
+identity. Focus, becoming visible and restoration from the back/forward cache
+also trigger account checks. Generation checks prevent stale account responses
+from restoring invalidated state. These implemented behaviors still require the
+new test/deployment and live cross-tab evidence noted above.
 
 ## Request admission and retries
 
@@ -65,10 +125,10 @@ in a client request body are never trusted.
 - Preserve the same UUID for an unchanged manual retry after an uncertain result.
 - No automatic inference retry is permitted. Refreshing an account never resends chat.
 - SQL reserves allowance atomically before Gemini. Every reservation counts, including errors or unfinished calls.
-- Reusing an admitted ID returns 409; changing its payload still returns 409. Replies are not stored or replayed. The user must deliberately edit/send a new request to spend another allowance.
+- Reusing an admitted ID returns a duplicate/conflict 409; changing its payload still returns a conflict. Replies are not stored or replayed. The user must deliberately edit/send a new request to spend another allowance. Handle `409 account_changed` separately: it occurs before admission and requires clearing stale account context, not marking a request accepted.
 - 429 includes `Retry-After`. Respect it; minute windows roll over 60 seconds and daily windows reset at UTC midnight.
 - `usage` is a server snapshot. Another device may consume allowance afterward. Refresh account status to obtain a newer snapshot.
-- Changing account clears retained browser conversation context and cancels the pending browser request. Cancellation cannot guarantee a provider call already admitted on the server is cancelled or refunded.
+- Changing account clears retained browser conversation, draft and retry state and cancels the pending browser request. Cancellation cannot guarantee a provider call already admitted on the server is cancelled or refunded. A server-rejected account mismatch itself never reaches admission.
 
 The customer path requires `VERCEL_ENV=preview`, explicitly configured customer
 gates and the supported Gemini model. Production cannot enable customer inference
@@ -78,21 +138,24 @@ with the feature flag alone. The database policy independently defaults off.
 
 | Status | Meaning |
 | --- | --- |
-| 400 | Invalid JSON, body shape or conversation history |
-| 401 | Missing/incorrect owner testing token, or invalid/expired/revoked customer session |
+| 400 | Invalid JSON, body shape or history; `expected_account_required` for missing/malformed cookie account binding |
+| 401 | Missing/incorrect owner testing token, invalid/expired/revoked customer session, or `session_expired` when customer intent remains but its access credential is missing |
 | 403 | Invalid browser origin, or customer membership missing, blocked or expired |
 | 405 | Method other than POST |
 | 413 | Request exceeds the 16,000-byte body limit |
 | 415 | Request is not JSON |
-| 409 | Customer request ID was already admitted or its fingerprint conflicts |
+| 409 `account_changed` | Cookie account differs from the displayed UUID; clear stale context and recheck account; no admission occurred |
+| 409, other duplicate/conflict code | Customer request ID was already admitted or its fingerprint conflicts; do not dispatch it again |
 | 429 | Customer/global quota exhausted, or Auth rate limit; honor `Retry-After` |
 | 502 | Provider returned an error or no visible answer; an upstream HTTP status may be included |
 | 503 | Gate/configuration disabled, Auth/database unavailable, or usage finalization failed |
 | 504 | Provider request timed out or failed |
 
 Errors never count as a model reply. Keep failed user messages out of the
-successful conversation history and retain their text for retry. Gemini parts
-marked as thoughts are not included in `reply`.
+successful conversation history. Retain their text for a manual retry only
+while the same account/conversation remains valid; an account change clears
+that draft and retry state. Gemini parts marked as thoughts are not included
+in `reply`.
 
 A finalization failure returns an error even when Gemini answered, because the
 durable usage record could not be confirmed. Its reservation remains consumed.

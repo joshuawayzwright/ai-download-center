@@ -11,6 +11,8 @@
   let retry = null;
   let retryAfter = 0;
   let activeController;
+  let conversationVersion = 0;
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const add = (role, value) => {
     const line = document.createElement('div');
     line.className = 'solo-message ' + (role === 'user' ? 'from-user' : role === 'notice' ? 'system-notice' : 'from-solo');
@@ -29,18 +31,29 @@
     add('notice', `Your usage limit has been reached. Please wait ${remainingWait()} seconds before trying again.`);
     status.textContent = 'Usage limit reached';
   };
+  const clearConversation = notice => {
+    conversationVersion++;
+    activeController?.abort();
+    retry = null;
+    retryAfter = 0;
+    messages.length = 0;
+    input.value = '';
+    transcript.replaceChildren();
+    add('notice', notice);
+  };
+  const recheckAccount = () => {
+    clearConversation('Your account changed. The previous conversation has been cleared. Checking account access…');
+    // Block submissions even if the account controller's check is asynchronous.
+    account = {...account, authenticated: false, chatEnabled: false, userId: null};
+    status.textContent = 'Checking account access…';
+    window.dispatchEvent(new CustomEvent('solo:account-stale'));
+  };
   input.addEventListener('input', () => { retry = null; });
   window.addEventListener('solo:account', event => {
     const next = event.detail;
     if (!next || typeof next.enabled !== 'boolean') return;
-    if (next.sessionVersion !== account.sessionVersion || next.authenticated !== account.authenticated) {
-      activeController?.abort();
-      retry = null;
-      retryAfter = 0;
-      messages.length = 0;
-      input.value = '';
-      transcript.replaceChildren();
-      add('notice', 'Conversation cleared after the account changed.');
+    if (next.sessionVersion !== account.sessionVersion || next.authenticated !== account.authenticated || next.userId !== account.userId) {
+      clearConversation('Conversation cleared after the account changed.');
     }
     account = next;
     status.textContent = !account.enabled ? 'Private testing — public access not enabled'
@@ -56,17 +69,23 @@
       status.textContent = !account.authenticated ? 'Sign-in required' : 'Development access only';
       return;
     }
+    const expectedUserId = account.authenticated ? account.userId : null;
+    if (account.authenticated && (typeof expectedUserId !== 'string' || !uuid.test(expectedUserId))) {
+      recheckAccount();
+      return;
+    }
     if (Date.now() < retryAfter) { showWait(); return; }
     const pending = [...messages, {role:'user',content:prompt}];
     // Keep complete exchanges followed by the pending user turn. A 12-message
     // slice can start with an assistant; at most 11 preserves the shared API contract.
     while (pending.length > 11) pending.splice(0, 2);
-    // Include the fixed-size UUID field when enforcing the byte bound.
-    let payload = JSON.stringify({messages:pending, requestId: '00000000-0000-4000-8000-000000000000'});
+    // Include both UUID fields when enforcing the complete request byte bound.
+    const requestBody = requestId => ({messages: pending, requestId, ...(expectedUserId ? {expectedUserId} : {})});
+    let payload = JSON.stringify(requestBody('00000000-0000-4000-8000-000000000000'));
     // Character limits alone do not bound UTF-8 or JSON-escaped request bytes.
     while (encoder.encode(payload).byteLength > 16000 && pending.length > 1) {
       pending.splice(0, 2);
-      payload = JSON.stringify({messages:pending, requestId: '00000000-0000-4000-8000-000000000000'});
+      payload = JSON.stringify(requestBody('00000000-0000-4000-8000-000000000000'));
     }
     const fingerprint = JSON.stringify(pending);
     if (retry?.fingerprint === fingerprint && retry.accepted) {
@@ -85,13 +104,14 @@
       }
     }
     const requestId = retry.requestId;
-    payload = JSON.stringify({messages:pending, requestId});
+    payload = JSON.stringify(requestBody(requestId));
     add('user', prompt);
     input.value = '';
     submit.disabled = true;
     status.textContent = 'Connecting to SOLO…';
     let succeeded = false;
     const sessionVersion = account.sessionVersion;
+    const version = conversationVersion;
     try {
       const controller = new AbortController();
       activeController = controller;
@@ -104,7 +124,11 @@
         });
         data = await response.json().catch(() => ({}));
       } finally {clearTimeout(timer);}
-      if (sessionVersion !== account.sessionVersion) return;
+      if (version !== conversationVersion || sessionVersion !== account.sessionVersion) return;
+      if (response.status === 409 && data.code === 'account_changed') {
+        recheckAccount();
+        return;
+      }
       if (data.usage) window.dispatchEvent(new CustomEvent('solo:usage', {detail: data.usage}));
       if (!response.ok) {
         if (response.status === 409) {
@@ -147,15 +171,16 @@
       retry = null;
       status.textContent = 'SOLO replied';
     } catch {
-      if (sessionVersion !== account.sessionVersion) return;
+      if (version !== conversationVersion || sessionVersion !== account.sessionVersion) return;
       add('notice','SOLO is unavailable right now. Please try again later.');
       status.textContent = 'Connection unavailable';
     } finally {
       // Preserve a newer draft typed while the request was pending.
-      if (!succeeded && input.value === '' && sessionVersion === account.sessionVersion) input.value = prompt;
+      const sameConversation = version === conversationVersion && sessionVersion === account.sessionVersion;
+      if (!succeeded && input.value === '' && sameConversation) input.value = prompt;
       activeController = null;
       submit.disabled = false;
-      input.focus();
+      if (sameConversation) input.focus();
     }
   });
 })();

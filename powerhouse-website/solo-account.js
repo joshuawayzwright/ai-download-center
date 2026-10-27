@@ -9,9 +9,14 @@
   const email = form.querySelector('input[type="email"]');
   const password = form.querySelector('input[type="password"]');
   const submit = form.querySelector('button[type="submit"]');
-  let state = {enabled: false, authenticated: false, chatEnabled: false, usage: null, sessionVersion: 0};
+  const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  let state = {enabled: false, authenticated: false, userId: null, chatEnabled: false, usage: null, sessionVersion: 0};
   let identity = '';
   let busy = false;
+  let generation = 0;
+  let queuedCheck = false;
+  let lastWakeCheck = -Infinity;
+  let channel;
 
   const safeUsage = value => value && Number.isInteger(value.daily_limit) && value.daily_limit >= 0 &&
     Number.isInteger(value.remaining_daily) && value.remaining_daily >= 0 && value.remaining_daily <= value.daily_limit
@@ -26,16 +31,18 @@
     panel.setAttribute('aria-busy', String(busy));
   };
 
-  const publish = data => {
+  const publish = (data, invalidate = false) => {
     const enabled = data?.enabled === true;
-    const authenticated = enabled && data?.authenticated === true;
+    const userId = typeof data?.user?.id === 'string' && UUID.test(data.user.id)
+      ? data.user.id.toLowerCase() : null;
+    const authenticated = enabled && data?.authenticated === true && userId !== null;
     const address = authenticated && typeof data.user?.email === 'string' ? data.user.email.slice(0, 254) : '';
-    const nextIdentity = authenticated
-      ? typeof data.user?.id === 'string' ? data.user.id : address || 'authenticated' : '';
-    const sessionVersion = state.sessionVersion + (nextIdentity !== identity ? 1 : 0);
+    const nextIdentity = authenticated ? userId : '';
+    const sessionVersion = state.sessionVersion + (invalidate || nextIdentity !== identity ? 1 : 0);
     identity = nextIdentity;
     state = {
-      enabled, authenticated, chatEnabled: enabled && data?.chatEnabled === true,
+      enabled, authenticated, userId: authenticated ? userId : null,
+      chatEnabled: authenticated && data?.chatEnabled === true,
       usage: authenticated ? safeUsage(data.usage) : null, sessionVersion
     };
     form.hidden = !enabled || authenticated;
@@ -90,7 +97,10 @@
   };
 
   const run = async action => {
-    if (busy) return;
+    if (busy) {
+      if (action === 'check') queuedCheck = true;
+      return;
+    }
     let body;
     if (action === 'login') {
       if (!email.value.trim() || !password.value) return;
@@ -99,10 +109,27 @@
     } else if (action !== 'check') body = {action};
     busy = true;
     controls();
+    const startedGeneration = generation;
+    // Logout can clear cookies even when server revocation fails. Other tabs
+    // must recheck the actual cookie session rather than trust this response.
+    let notifyTabs = action === 'logout';
+    let refreshed = action === 'refresh';
     try {
       let result = await request(body ? 'POST' : 'GET', body);
+      if (action === 'login' && result.ok && result.data.authenticated === true) notifyTabs = true;
+      if (startedGeneration !== generation) {
+        if (refreshed && result.ok) notifyTabs = true;
+        return;
+      }
       // Refresh once when an existing session expired; never retry inference here.
-      if (action === 'check' && result.status === 401) result = await request('POST', {action: 'refresh'});
+      if (action === 'check' && result.status === 401) {
+        refreshed = true;
+        result = await request('POST', {action: 'refresh'});
+      }
+      if (startedGeneration !== generation) {
+        if (refreshed && result.ok) notifyTabs = true;
+        return;
+      }
       if (!result.ok) {
         if (result.data.enabled === false) {
           publish(result.data);
@@ -116,14 +143,61 @@
           password.value = '';
         }
       }
-    } catch { failure(0, action); }
-    finally { busy = false; controls(); }
+    } catch {
+      if (startedGeneration === generation) failure(0, action);
+    } finally {
+      if (notifyTabs) {
+        // A fixed, ephemeral signal only: no identity, credentials or messages.
+        try { channel?.postMessage('account-changed'); } catch { /* Focus checks remain available. */ }
+      }
+      busy = false;
+      controls();
+      if (queuedCheck) {
+        queuedCheck = false;
+        return run('check');
+      }
+    }
   };
+
+  const invalidateAndCheck = () => {
+    generation++;
+    password.value = '';
+    // Publish immediately so chat drops old history and in-flight responses,
+    // including while another account request is still waiting on the server.
+    publish({enabled: state.enabled, authenticated: false, chatEnabled: false}, true);
+    status.textContent = 'Account access changed. Checking your session…';
+    return run('check');
+  };
+  const wakeCheck = () => {
+    if (document.visibilityState === 'hidden') return;
+    const now = Date.now();
+    // Browsers commonly deliver focus and visibility/pageshow together.
+    if (now - lastWakeCheck < 250) return;
+    lastWakeCheck = now;
+    return run('check');
+  };
+
+  try {
+    if (typeof window.BroadcastChannel === 'function') {
+      channel = new window.BroadcastChannel('solo-account-events-v1');
+      channel.addEventListener('message', event => {
+        if (event.data === 'account-changed') invalidateAndCheck();
+      });
+    }
+  } catch { /* Older/restricted browsers still recheck on focus and restoration. */ }
 
   form.addEventListener('submit', event => { event.preventDefault(); return run('login'); });
   refresh.addEventListener('click', () => run(state.authenticated ? 'refresh' : 'check'));
   logout.addEventListener('click', () => run('logout'));
+  window.addEventListener('solo:account-stale', invalidateAndCheck);
   window.addEventListener('solo:session-expired', () => { if (state.enabled) return run('refresh'); });
+  window.addEventListener('focus', wakeCheck);
+  // Initial navigation already has the startup check below. A restored page
+  // must revalidate cookies before trusting its retained account display.
+  window.addEventListener('pageshow', event => { if (event.persisted) wakeCheck(); });
+  document.addEventListener?.('visibilitychange', () => {
+    if (document.visibilityState === 'visible') wakeCheck();
+  });
   window.addEventListener('solo:usage', event => {
     const nextUsage = safeUsage(event.detail);
     if (state.authenticated && nextUsage) {
