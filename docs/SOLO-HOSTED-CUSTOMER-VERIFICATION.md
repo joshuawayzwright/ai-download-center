@@ -10,6 +10,41 @@ It never calls `/api/solo-chat`, Gemini, signup, invitations, password resets or
 Auth administration. It never edits policy, membership, environment variables or
 schema. Test credentials and cookies stay in memory and are not printed.
 
+## Read-only configuration probe — verification pending
+
+The existing commercial server key has now been saved as sensitive
+`SOLO_SUPABASE_SECRET_KEY` in Vercel Preview. The saved-variable metadata does
+not establish that the value is valid or has server RPC access. **Hosted
+credential verification remains pending.** The separate probe is
+`powerhouse-website/scripts/solo-customer-config-smoke.cjs`.
+
+Run it in a scoped server-side Preview build with the existing commercial
+`SOLO_SUPABASE_URL`, modern `SOLO_SUPABASE_SECRET_KEY` and
+`SOLO_SUPABASE_PUBLISHABLE_KEY`. It requires `VERCEL_ENV=preview`, both
+`SOLO_CUSTOMER_AUTH_ENABLED=false` and `SOLO_CUSTOMER_CHAT_ENABLED=false`, and
+explicit opt-in. Keep the hosted SQL policy disabled. With those variables
+securely supplied, run from the repository root:
+
+```sh
+SOLO_CUSTOMER_CONFIG_CHECK=true node powerhouse-website/scripts/solo-customer-config-smoke.cjs
+```
+
+The probe calls only the existing commercial `solo_customer_status` RPC and
+Auth settings endpoint. It requires an actual HTTP 200 from the RPC and the
+expected disabled-policy result, using random user/session UUIDs and the server
+key in `apikey` only. It then reads Auth settings using the publishable key.
+It creates no accounts or sessions, changes no database/configuration state,
+reserves no allowance and calls no AI provider.
+
+On a real pass it prints `SOLO_COMMERCIAL_SERVER_KEY_PASS` plus the validated
+boolean settings `disable_signup`, `email`, `anonymous` and
+`mailer_autoconfirm`. Credentials, raw service bodies and raw exceptions are
+never printed. The marker establishes server-key access and observed settings
+only; it does not require signup to be disabled. The last verified setting is
+still `disable_signup=false`, which must become `true` before the pilot. Live
+customer login, active admission, concurrent quotas and customer-authenticated
+Gemini chat remain separate unverified gates.
+
 ## Prerequisites controlled by the operator
 
 1. Inspect and apply the existing migration to the commercial project. Verify

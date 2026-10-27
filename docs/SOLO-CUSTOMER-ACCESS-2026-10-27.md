@@ -8,9 +8,11 @@ Supabase project is now accessible and its admission migration has been applied
 and checked on the hosted database. **Live customer login, concurrent hosted
 quotas and customer-authenticated Gemini chat remain unverified.**
 
-Two configuration blockers remain: the server-side Supabase secret key is not
-configured in Vercel, and actual Auth settings show unrestricted signup is still
-enabled. Both customer Preview flags and the hosted SQL policy remain disabled.
+The server-side Supabase secret key has now been saved as a sensitive Vercel
+Preview variable. **Its validity and hosted server access remain unverified**
+until the read-only configuration probe passes. Actual Auth settings still show
+unrestricted signup enabled. Both customer Preview flags and the hosted SQL
+policy remain disabled.
 Production remains the existing maintenance deployment; public inference stays off.
 
 The previous owner-token Gemini two-turn HTTP result remains recorded in
@@ -194,15 +196,18 @@ No test automatically calls Gemini or requires a real customer/provider secret.
 The commercial connection now reaches the existing project above. Project
 creation and organisation authorization are no longer blockers. The current
 connector does not expose retrieval of the modern server secret key or mutation
-of Auth signup settings. Complete those two existing-project settings securely
-before enabling account access; do not request another Gemini key or repeat
-OpenAI/Groq setup.
+of Auth signup settings. The existing project's server key has now been saved
+securely in Vercel Preview; metadata confirms the save, not the credential's
+validity or permissions. Verify it with the read-only configuration probe in
+[hosted customer verification](SOLO-HOSTED-CUSTOMER-VERIFICATION.md), then disable
+unrestricted signup before enabling account access. Do not request another
+Gemini key or repeat OpenAI/Groq setup.
 
-Vercel **Preview** configuration now contains five newly created sensitive
-variables. The current deployment `dpl_3iKhAVdexUXURiQ5YupThKu5aVco` was created
-after these settings and its disabled customer gates passed live HTTP checks.
-A further deployment is needed after the remaining server key and controlled
-pilot settings are configured.
+Vercel **Preview** configuration now contains all six variables below. The
+current deployment `dpl_3iKhAVdexUXURiQ5YupThKu5aVco` was created after the first
+five settings and its disabled customer gates passed live HTTP checks. It
+predates the saved server key. A new scoped build is required to verify the key,
+and a further deployment must consume the verified controlled pilot settings.
 
 | Variable | Current state and purpose |
 | --- | --- |
@@ -210,19 +215,20 @@ pilot settings are configured.
 | `SOLO_CUSTOMER_CHAT_ENABLED` | Configured sensitive for Preview; **false** |
 | `SOLO_SUPABASE_URL` | Configured for the existing commercial project |
 | `SOLO_SUPABASE_PUBLISHABLE_KEY` | Configured sensitive; modern key for server Auth exchange |
-| `SOLO_SUPABASE_SECRET_KEY` | **Absent; blocker.** Modern server key is required for RPC access via `apikey` |
+| `SOLO_SUPABASE_SECRET_KEY` | Saved sensitive for Preview; **credential and server RPC access verification pending** |
 | `SOLO_USAGE_HASH_SECRET` | Configured sensitive; independently generated from 48 random bytes |
 
 Keep the existing Gemini Preview configuration and private owner token. Never
 copy charity keys or grant its resources to SOLO. Do not expose the server key
 or owner token to the website, Android, source control, logs or issue comments.
 
-Before enabling the pilot, verify `disable_signup=true` in actual Auth settings,
-configure the missing sensitive Preview server key, and create controlled test
-identities without unsolicited emails. Explicitly enrol expiring members. The
-account endpoint requires an active SQL policy/member even for login, so enable
-that policy only for a bounded verification window; the customer chat flag can
-remain off during auth-only checks. Validate login, refresh, logout and stale-JWT
+Before enabling the pilot, verify the saved server key through the read-only
+configuration probe, verify `disable_signup=true` in actual Auth settings, and
+create controlled test identities without unsolicited emails. Explicitly enrol
+expiring members. The account endpoint requires an active SQL policy/member even
+for login, so enable that policy only for a bounded verification window; the
+customer chat flag can remain off during auth-only checks. Validate login,
+refresh, logout and stale-JWT
 rejection against the real service, then exercise overlapping HTTP requests,
 duplicate IDs, exhausted user/global allowances and outages. Verify a complete
 customer-authenticated Gemini conversation and accurate ledger outcomes.
@@ -233,7 +239,8 @@ customer-authenticated Gemini conversation and accurate ledger outcomes.
 - [x] Migration `20261027071534` applied; hosted grants/RLS and disabled service-role RPC outcomes verified.
 - [x] Anonymous HTTPS calls to all three RPCs/private schema rejected with expected permission errors.
 - [x] Five sensitive Preview variables configured; both customer flags remain false.
-- [ ] Configure `SOLO_SUPABASE_SECRET_KEY` securely for Preview.
+- [x] Save `SOLO_SUPABASE_SECRET_KEY` as a sensitive Preview variable; metadata confirms the save only.
+- [ ] Verify the saved key and hosted server access with the read-only configuration probe.
 - [ ] Disable unrestricted Supabase signup and re-read actual Auth settings.
 - [ ] Create controlled test identities and expiring memberships; redeploy and verify the bounded pilot.
 - [ ] Live customer login, cookie rotation and logout/revoked-session rejection verified.
