@@ -140,8 +140,32 @@ failures or skips**. The new UI suite has 29 cases, including account/identity
 changes invalidating pending form results, clearing earlier email/password/code
 values, preserving the current reset outcome, and one fixed cross-tab notification
 through the existing account controller. Existing account and conversation suites
-pass 30 and 26 cases respectively. GitHub CI and hosted deployment evidence must
-be recorded separately; this local count does not establish either.
+pass 30 and 26 cases respectively.
+
+### GitHub and protected Preview evidence
+
+- Runtime source: `8c50cf7abe02731a0bcfa83c63c7cd27f7cd8ba2` in draft PR #34.
+- [CI 40545518920](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40545518920)
+  passed **246 JavaScript + 30 SQL = 276 tests**, zero failures or skips. Both
+  actual job logs were inspected, not just their overall green status. Repository
+  quality [40545518713](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40545518713)
+  also passed.
+- Protected Preview `dpl_8v9c8Y1DBmxJn9HCtctawJxBrkef` is READY at that runtime
+  source: [SOLO preview](https://solo-provider-industrial-c9i4u7aj9-wrightwayz.vercel.app/solo-ai.html#conversation).
+- Five deployed HTML/CSS/JavaScript files returned HTTP 200 and match source
+  byte-for-byte. Twelve actual API checks passed: all onboarding actions remain
+  disabled, missing/cross-origin mutations are rejected, method restrictions
+  hold, existing account status remains disabled, same-origin logout clears both
+  cookie slots, and customer chat remains closed.
+- [Sanitized HTTP/source evidence](evidence/solo-onboarding-preview-2026-10-28.json)
+  contains hashes and exact result scope. The temporary preview share was revoked
+  after verification; the returned protection-bypass map is empty. No claim is
+  made that already cached cookies were independently tested for invalidation.
+- Fresh Vercel alias inspection confirms the live commercial website still uses
+  `dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt`. No production cutover occurred in this cycle.
+
+These are closed-gate HTTP checks. They do not replace a real new-account email,
+OTP/password reset or signed-in customer conversation test.
 
 Before customer activation:
 
