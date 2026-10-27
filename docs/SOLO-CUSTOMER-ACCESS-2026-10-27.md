@@ -15,6 +15,36 @@ This work extends that same `/api/solo-chat`; it does not create another AI back
 Current commits, preview deployment, test totals and remaining release gates are
 recorded in [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 
+## GitHub and deployed evidence
+
+- Implementation: [`430e50ad98058d17bf4cf3fb1505a52301d32535`](https://github.com/joshuawayzwright/ai-download-center/commit/430e50ad98058d17bf4cf3fb1505a52301d32535), [draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34).
+- CI: [SOLO API and database run 40449786312](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40449786312) passed: 118 API/browser/smoke tests and 21 SQL tests, zero failures. [Repository quality run 40449786100](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40449786100) also passed.
+- Normal Vercel preview: `dpl_bgKY3WhfdNKAq9Yg1LVi9vHuYoKi`, READY, exact implementation SHA above. [SOLO preview](https://solo-provider-industrial-f8ujxpeox-wrightwayz.vercel.app/solo-ai.html#conversation) requires authorised Vercel access.
+- Production homepage was rechecked and returned the existing maintenance page, HTTP 200. It was not promoted or changed.
+
+At 04:29 UTC, six real HTTP checks against that protected deployment passed:
+
+| Check | Actual result |
+| --- | --- |
+| Account status GET | 200, `enabled:false`, `authenticated:false`, `chatEnabled:false`, `no-store, private` |
+| Account POST refresh while disabled | 503, `auth_disabled` |
+| Chat GET | 405 |
+| Chat POST without owner/customer credentials | 401 |
+| Chat POST with a dummy customer Bearer credential while disabled | 503, `customer_disabled` |
+| Account POST from another Origin | 403, `invalid_origin` |
+
+The checks logged `SOLO_CUSTOMER_DISABLED_GATES_PASS`. They did not call Gemini,
+Supabase Auth or any customer database. They prove that the deployed gates and
+function bundle work; they do not prove live customer authentication.
+
+In the actual desktop browser, the account panel showed that access was
+unavailable, its login form stayed hidden, and a submitted chat request showed
+the private-testing notice and restored the draft. No model reply was invented.
+This verifies the closed-gate browser interaction, not active login or Samsung
+device acceptance. The existing artwork was retained.
+
+![Deployed account gate and honest chat rejection](evidence/solo-customer-preview-2026-10-27.jpg)
+
 ## Implemented behavior
 
 - Same-origin `/api/solo-auth` login, status, refresh and logout, with no public signup action.
