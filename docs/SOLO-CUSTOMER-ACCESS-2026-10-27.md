@@ -22,6 +22,13 @@ recorded in [issue #31](https://github.com/joshuawayzwright/ai-download-center/i
 
 ## GitHub and deployed evidence
 
+- Hosted setup and verification runner: [`29de409f6ec784b5e8a6e550bcd0d4ca8e1381b9`](https://github.com/joshuawayzwright/ai-download-center/commit/29de409f6ec784b5e8a6e550bcd0d4ca8e1381b9).
+- Current CI: [run 40468034635](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40468034635) passed **127 API/browser/smoke tests + 21 SQL tests = 148**, zero failures or skipped tests. [Repository quality run 40468034728](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40468034728) also passed.
+- Current normal protected Preview: `dpl_3iKhAVdexUXURiQ5YupThKu5aVco`, **READY** at `29de409f6ec784b5e8a6e550bcd0d4ca8e1381b9`: [SOLO preview](https://solo-provider-industrial-3weap1tym-wrightwayz.vercel.app/solo-ai.html#conversation). It consumes the five new Preview variables with both customer flags false. No build override was used.
+- Three real HTTP checks against that new deployment passed: account GET **200** with all three enabled/authenticated/chat booleans false and private/no-store caching; account refresh POST **503 `auth_disabled`**; customer chat POST **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`. These checks made no Supabase Auth or Gemini calls and do not establish live customer login.
+
+Earlier implementation and browser evidence:
+
 - Implementation: [`430e50ad98058d17bf4cf3fb1505a52301d32535`](https://github.com/joshuawayzwright/ai-download-center/commit/430e50ad98058d17bf4cf3fb1505a52301d32535), [draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34).
 - CI: [SOLO API and database run 40449786312](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40449786312) passed: 118 API/browser/smoke tests and 21 SQL tests, zero failures. [Repository quality run 40449786100](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40449786100) also passed.
 - Normal Vercel preview: `dpl_bgKY3WhfdNKAq9Yg1LVi9vHuYoKi`, READY, exact implementation SHA above. [SOLO preview](https://solo-provider-industrial-f8ujxpeox-wrightwayz.vercel.app/solo-ai.html#conversation) requires authorised Vercel access.
@@ -131,11 +138,11 @@ Supabase's own signup endpoint.
 
 ## Automated verification
 
-The established CI baseline is **139 passing tests**: 118 API/browser/smoke tests
-and 21 SQL tests, at run `40449786312` linked above. The new opt-in hosted
-verification runner has **nine additional passing local mocked tests**. The CI
-evidence above covers the 139-test baseline; those additional nine tests have
-only been verified locally and do not prove a hosted customer session.
+The current CI run `40468034635` verifies **148 passing tests**: 127
+API/browser/smoke tests and 21 SQL tests, with zero failures or skipped tests.
+This includes the previous 139-test baseline plus nine tests for the opt-in
+hosted verification runner. Those nine tests use mocked services; they do not
+prove a hosted customer session.
 
 | Suite | Passing tests |
 | --- | ---: |
@@ -145,6 +152,7 @@ only been verified locally and do not prove a hosted customer session.
 | Account browser controller | 17 |
 | Conversation browser controller | 21 |
 | Existing opt-in owner smoke runner | 4 |
+| New opt-in hosted verification runner | 9 |
 | Actual SQL migration in PGlite | 21 |
 
 The new runner and its prerequisites are documented in
@@ -191,8 +199,10 @@ before enabling account access; do not request another Gemini key or repeat
 OpenAI/Groq setup.
 
 Vercel **Preview** configuration now contains five newly created sensitive
-variables. Their creation does not change the immutable deployment listed above;
-a fresh Preview deployment is needed to consume new environment settings.
+variables. The current deployment `dpl_3iKhAVdexUXURiQ5YupThKu5aVco` was created
+after these settings and its disabled customer gates passed live HTTP checks.
+A further deployment is needed after the remaining server key and controlled
+pilot settings are configured.
 
 | Variable | Current state and purpose |
 | --- | --- |
