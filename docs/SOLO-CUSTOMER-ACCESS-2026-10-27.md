@@ -8,11 +8,10 @@ Supabase project is now accessible and its admission migration has been applied
 and checked on the hosted database. **Live customer login, concurrent hosted
 quotas and customer-authenticated Gemini chat remain unverified.**
 
-The server-side Supabase secret key has now been saved as a sensitive Vercel
-Preview variable. **Its validity and hosted server access remain unverified**
-until the read-only configuration probe passes. Actual Auth settings still show
-unrestricted signup enabled. Both customer Preview flags and the hosted SQL
-policy remain disabled.
+The sensitive Vercel Preview Supabase secret key now has **verified hosted
+server RPC access** through the read-only configuration probe. Actual Auth
+settings still show unrestricted signup enabled. Both customer Preview flags
+and the hosted SQL policy remain disabled.
 Production remains the existing maintenance deployment; public inference stays off.
 
 The previous owner-token Gemini two-turn HTTP result remains recorded in
@@ -24,10 +23,19 @@ recorded in [issue #31](https://github.com/joshuawayzwright/ai-download-center/i
 
 ## GitHub and deployed evidence
 
+- Configuration probe: [`415cc0df3217c4e0cec83e390122e6af99bfcf4b`](https://github.com/joshuawayzwright/ai-download-center/commit/415cc0df3217c4e0cec83e390122e6af99bfcf4b).
+- Current CI: [run 40476932755](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40476932755) passed **132 API/browser/smoke tests + 21 SQL tests = 153**, zero failures or skipped tests; jobs `122097356611` and `122097356702`. [Repository quality run 40476932720](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40476932720) also passed.
+- Scoped diagnostic deployment `dpl_Ght3B9TdBX37zQyHAKWvxm3tmGnR` was **READY** at that commit. Its logs contain `SOLO_COMMERCIAL_SERVER_KEY_PASS`, which requires actual RPC HTTP **200** followed by the existing adapter's expected **503 `disabled`** result. Auth settings were `disable_signup:false`, `email:true`, `anonymous:false`, `mailer_autoconfirm:false`.
+- Current normal protected Preview: `dpl_B1YYM8g9s9TfoLHGJtFw5ZLr2bCm`, **READY** at the same commit: [SOLO preview](https://solo-provider-industrial-8ig3nmuwt-wrightwayz.vercel.app/solo-ai.html#conversation). No build override was used and build logs confirm the probe did not run.
+- Actual HTTP checks on that normal deployment passed: account GET **200**, `enabled:false`, `authenticated:false`, `chatEnabled:false`, private/no-store caching; refresh POST **503 `auth_disabled`**; dummy customer Bearer chat POST **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`.
+- Fresh SQL inspection after the probe confirmed **policy disabled, zero members, zero ledger rows**. The sanitized [server-key and deployment evidence](evidence/solo-server-key-2026-10-27.json) records these results. They establish configuration access and closed gates, not customer login, active quotas or customer-authenticated Gemini chat.
+
+Earlier hosted setup evidence:
+
 - Hosted setup and verification runner: [`29de409f6ec784b5e8a6e550bcd0d4ca8e1381b9`](https://github.com/joshuawayzwright/ai-download-center/commit/29de409f6ec784b5e8a6e550bcd0d4ca8e1381b9).
-- Current CI: [run 40468034635](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40468034635) passed **127 API/browser/smoke tests + 21 SQL tests = 148**, zero failures or skipped tests. [Repository quality run 40468034728](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40468034728) also passed.
-- Current normal protected Preview: `dpl_3iKhAVdexUXURiQ5YupThKu5aVco`, **READY** at `29de409f6ec784b5e8a6e550bcd0d4ca8e1381b9`: [SOLO preview](https://solo-provider-industrial-3weap1tym-wrightwayz.vercel.app/solo-ai.html#conversation). It consumes the five new Preview variables with both customer flags false. No build override was used.
-- Three real HTTP checks against that new deployment passed: account GET **200** with all three enabled/authenticated/chat booleans false and private/no-store caching; account refresh POST **503 `auth_disabled`**; customer chat POST **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`. These checks made no Supabase Auth or Gemini calls and do not establish live customer login.
+- Earlier CI: [run 40468034635](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40468034635) passed **127 API/browser/smoke tests + 21 SQL tests = 148**, zero failures or skipped tests. [Repository quality run 40468034728](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40468034728) also passed.
+- Earlier normal protected Preview: `dpl_3iKhAVdexUXURiQ5YupThKu5aVco`, **READY** at `29de409f6ec784b5e8a6e550bcd0d4ca8e1381b9`: [SOLO preview](https://solo-provider-industrial-3weap1tym-wrightwayz.vercel.app/solo-ai.html#conversation). It consumed the first five Preview variables with both customer flags false. No build override was used.
+- Three real HTTP checks against that earlier deployment passed: account GET **200** with all three enabled/authenticated/chat booleans false and private/no-store caching; account refresh POST **503 `auth_disabled`**; customer chat POST **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`. These checks made no Supabase Auth or Gemini calls and do not establish live customer login.
 
 Earlier implementation and browser evidence:
 
@@ -140,11 +148,12 @@ Supabase's own signup endpoint.
 
 ## Automated verification
 
-The current CI run `40468034635` verifies **148 passing tests**: 127
+The current CI run `40476932755` verifies **153 passing tests**: 132
 API/browser/smoke tests and 21 SQL tests, with zero failures or skipped tests.
-This includes the previous 139-test baseline plus nine tests for the opt-in
-hosted verification runner. Those nine tests use mocked services; they do not
-prove a hosted customer session.
+This includes the previous 148-test baseline plus five tests for the read-only
+configuration probe. The harness tests use mocked services; they do not prove
+a hosted customer session. Actual configuration evidence is recorded separately
+above.
 
 | Suite | Passing tests |
 | --- | ---: |
@@ -155,6 +164,7 @@ prove a hosted customer session.
 | Conversation browser controller | 21 |
 | Existing opt-in owner smoke runner | 4 |
 | New opt-in hosted verification runner | 9 |
+| Read-only configuration probe | 5 |
 | Actual SQL migration in PGlite | 21 |
 
 The new runner and its prerequisites are documented in
@@ -197,17 +207,16 @@ The commercial connection now reaches the existing project above. Project
 creation and organisation authorization are no longer blockers. The current
 connector does not expose retrieval of the modern server secret key or mutation
 of Auth signup settings. The existing project's server key has now been saved
-securely in Vercel Preview; metadata confirms the save, not the credential's
-validity or permissions. Verify it with the read-only configuration probe in
-[hosted customer verification](SOLO-HOSTED-CUSTOMER-VERIFICATION.md), then disable
+securely in Vercel Preview and its hosted status-RPC access verified by the
+read-only configuration probe in
+[hosted customer verification](SOLO-HOSTED-CUSTOMER-VERIFICATION.md). Disable
 unrestricted signup before enabling account access. Do not request another
 Gemini key or repeat OpenAI/Groq setup.
 
 Vercel **Preview** configuration now contains all six variables below. The
-current deployment `dpl_3iKhAVdexUXURiQ5YupThKu5aVco` was created after the first
-five settings and its disabled customer gates passed live HTTP checks. It
-predates the saved server key. A new scoped build is required to verify the key,
-and a further deployment must consume the verified controlled pilot settings.
+current normal deployment `dpl_B1YYM8g9s9TfoLHGJtFw5ZLr2bCm` was created after
+the saved server key and its disabled customer gates passed live HTTP checks.
+Controlled pilot gate changes will require a further deployment.
 
 | Variable | Current state and purpose |
 | --- | --- |
@@ -215,16 +224,15 @@ and a further deployment must consume the verified controlled pilot settings.
 | `SOLO_CUSTOMER_CHAT_ENABLED` | Configured sensitive for Preview; **false** |
 | `SOLO_SUPABASE_URL` | Configured for the existing commercial project |
 | `SOLO_SUPABASE_PUBLISHABLE_KEY` | Configured sensitive; modern key for server Auth exchange |
-| `SOLO_SUPABASE_SECRET_KEY` | Saved sensitive for Preview; **credential and server RPC access verification pending** |
+| `SOLO_SUPABASE_SECRET_KEY` | Saved sensitive for Preview; **hosted status-RPC access verified** |
 | `SOLO_USAGE_HASH_SECRET` | Configured sensitive; independently generated from 48 random bytes |
 
 Keep the existing Gemini Preview configuration and private owner token. Never
 copy charity keys or grant its resources to SOLO. Do not expose the server key
 or owner token to the website, Android, source control, logs or issue comments.
 
-Before enabling the pilot, verify the saved server key through the read-only
-configuration probe, verify `disable_signup=true` in actual Auth settings, and
-create controlled test identities without unsolicited emails. Explicitly enrol
+Before enabling the pilot, verify `disable_signup=true` in actual Auth settings
+and create controlled test identities without unsolicited emails. Explicitly enrol
 expiring members. The account endpoint requires an active SQL policy/member even
 for login, so enable that policy only for a bounded verification window; the
 customer chat flag can remain off during auth-only checks. Validate login,
@@ -239,8 +247,8 @@ customer-authenticated Gemini conversation and accurate ledger outcomes.
 - [x] Migration `20261027071534` applied; hosted grants/RLS and disabled service-role RPC outcomes verified.
 - [x] Anonymous HTTPS calls to all three RPCs/private schema rejected with expected permission errors.
 - [x] Five sensitive Preview variables configured; both customer flags remain false.
-- [x] Save `SOLO_SUPABASE_SECRET_KEY` as a sensitive Preview variable; metadata confirms the save only.
-- [ ] Verify the saved key and hosted server access with the read-only configuration probe.
+- [x] Save `SOLO_SUPABASE_SECRET_KEY` as a sensitive Preview variable.
+- [x] Verify the saved key's hosted status-RPC access with the read-only configuration probe; SQL policy remains disabled.
 - [ ] Disable unrestricted Supabase signup and re-read actual Auth settings.
 - [ ] Create controlled test identities and expiring memberships; redeploy and verify the bounded pilot.
 - [ ] Live customer login, cookie rotation and logout/revoked-session rejection verified.

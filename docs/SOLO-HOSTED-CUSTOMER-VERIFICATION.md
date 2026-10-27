@@ -1,6 +1,7 @@
 # Hosted customer verification harness
 
-This is an **opt-in verification tool, not hosted evidence yet**. The harness is
+The Auth/race harness is an **opt-in tool with hosted customer verification still
+pending**. The harness is
 `powerhouse-website/scripts/solo-customer-hosted-smoke.cjs`; its nine local tests
 use simulated services. No new CI workflow or automatic deployment hook runs it.
 
@@ -10,13 +11,37 @@ It never calls `/api/solo-chat`, Gemini, signup, invitations, password resets or
 Auth administration. It never edits policy, membership, environment variables or
 schema. Test credentials and cookies stay in memory and are not printed.
 
-## Read-only configuration probe — verification pending
+## Read-only configuration probe — hosted access verified
 
-The existing commercial server key has now been saved as sensitive
-`SOLO_SUPABASE_SECRET_KEY` in Vercel Preview. The saved-variable metadata does
-not establish that the value is valid or has server RPC access. **Hosted
-credential verification remains pending.** The separate probe is
+The existing commercial server key is saved as sensitive
+`SOLO_SUPABASE_SECRET_KEY` in Vercel Preview. **Its hosted status-RPC access is
+verified.** The separate probe is
 `powerhouse-website/scripts/solo-customer-config-smoke.cjs`.
+
+At commit [`415cc0df3217c4e0cec83e390122e6af99bfcf4b`](https://github.com/joshuawayzwright/ai-download-center/commit/415cc0df3217c4e0cec83e390122e6af99bfcf4b),
+scoped diagnostic deployment `dpl_Ght3B9TdBX37zQyHAKWvxm3tmGnR` reached **READY**
+and logged `SOLO_COMMERCIAL_SERVER_KEY_PASS`. That pass requires a live RPC
+HTTP **200** and the existing adapter's expected **503 `disabled`** result.
+The logged settings were `disable_signup:false`, `email:true`, `anonymous:false`
+and `mailer_autoconfirm:false`. A separate actual Auth settings GET also
+confirmed `external.anonymous_users:false`. Fresh SQL inspection retained
+**policy disabled, zero members and zero ledger rows**.
+
+The normal deployment `dpl_B1YYM8g9s9TfoLHGJtFw5ZLr2bCm` is **READY** at that
+same commit: [SOLO preview](https://solo-provider-industrial-8ig3nmuwt-wrightwayz.vercel.app/solo-ai.html#conversation).
+It used no build override and logs confirm no probe ran. Actual HTTP checks
+returned account GET **200** with all three status booleans false and
+private/no-store caching, refresh POST **503 `auth_disabled`**, and dummy
+customer Bearer chat POST **503 `customer_disabled`**; marker
+`SOLO_CUSTOMER_CONFIG_DISABLED_PASS`. Sanitized results are recorded in
+[server-key evidence](evidence/solo-server-key-2026-10-27.json).
+
+[CI run 40476932755](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40476932755)
+passed **132 API/browser/smoke + 21 SQL = 153 tests**, zero failures or skipped
+tests; [repository quality run 40476932720](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40476932720)
+also passed. The five new probe tests use mocks. The hosted results above prove
+server access and closed gates; customer login, quota races and Gemini remain
+unverified.
 
 Run it in a scoped server-side Preview build with the existing commercial
 `SOLO_SUPABASE_URL`, modern `SOLO_SUPABASE_SECRET_KEY` and
