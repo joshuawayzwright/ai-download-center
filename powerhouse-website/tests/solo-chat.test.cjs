@@ -2,9 +2,9 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const {Readable}=require('node:stream');
 const handler=require('../api/solo-chat.js');
-function request({method='POST',body={messages:[{role:'user',content:'Hello SOLO'}]},headers={}}={}){
-  const req=Readable.from([]);
-  req.method=method;req.headers={'content-type':'application/json',host:'solo.example',origin:'https://solo.example',...headers};req.body=body;
+function request({method='POST',body={messages:[{role:'user',content:'Hello SOLO'}]},headers={},chunks}={}){
+  const req=Readable.from(chunks||[]);
+  req.method=method;req.headers={'content-type':'application/json',host:'solo.example',origin:'https://solo.example',...headers};req.body=chunks===undefined?body:undefined;
   let response, resolve;
   const finished=new Promise(r=>resolve=r);
   const res={headers:{},setHeader(k,v){this.headers[k]=v},end(s){response={status:this.statusCode,body:JSON.parse(s),headers:this.headers};resolve(response)}};
@@ -30,3 +30,149 @@ test('Gemini provider returns a private model reply',async()=>{const previous=gl
 
 test('rejects consecutive user turns',async()=>{const r=await request({body:{messages:[{role:'user',content:'one'},{role:'user',content:'two'}]}});assert.equal(r.status,400);assert.match(r.body.error,/alternate/)});
 test('Gemini upstream 429 is not reported as a successful reply',async()=>{const previous=global.fetch;process.env.SOLO_PRIVATE_TEST_ENABLED='true';process.env.SOLO_PRIVATE_TEST_TOKEN='0123456789abcdefghijklmnopqrstuvwxyz';process.env.GEMINI_API_KEY='test-only';delete process.env.SOLO_AI_PROVIDER;global.fetch=async()=>({ok:false,status:429});try{const r=await request({headers:{'x-solo-test-token':process.env.SOLO_PRIVATE_TEST_TOKEN}});assert.equal(r.status,502);assert.equal(r.body.upstreamStatus,429)}finally{global.fetch=previous;delete process.env.SOLO_PRIVATE_TEST_ENABLED;delete process.env.SOLO_PRIVATE_TEST_TOKEN;delete process.env.GEMINI_API_KEY}});
+
+const TEST_TOKEN='0123456789abcdefghijklmnopqrstuvwxyz';
+async function withGemini(fetchImpl,run){
+  const keys=['SOLO_PRIVATE_TEST_ENABLED','SOLO_PRIVATE_TEST_TOKEN','SOLO_AI_PROVIDER','SOLO_AI_MODEL','GEMINI_API_KEY'];
+  const previousEnv=new Map(keys.map(key=>[key,process.env[key]]));
+  const previousFetch=global.fetch;
+  Object.assign(process.env,{SOLO_PRIVATE_TEST_ENABLED:'true',SOLO_PRIVATE_TEST_TOKEN:TEST_TOKEN,GEMINI_API_KEY:'test-only'});
+  delete process.env.SOLO_AI_PROVIDER;
+  delete process.env.SOLO_AI_MODEL;
+  global.fetch=fetchImpl;
+  try{return await run();}
+  finally{
+    global.fetch=previousFetch;
+    for(const [key,value] of previousEnv){
+      if(value===undefined)delete process.env[key];else process.env[key]=value;
+    }
+  }
+}
+function privateRequest(options={}){
+  return request({...options,headers:{'x-solo-test-token':TEST_TOKEN,...options.headers}});
+}
+const geminiReply=parts=>({ok:true,json:async()=>({candidates:[{content:{parts}}]})});
+
+test('JSON MIME must match exactly while charset parameters remain valid',async()=>{
+  let calls=0;
+  await withGemini(async()=>{calls++;return geminiReply([{text:'Hello'}]);},async()=>{
+    for(const type of ['application/json-invalid','application/jsonp','application/json, text/plain']){
+      const r=await privateRequest({headers:{'content-type':type}});
+      assert.equal(r.status,415);
+    }
+    assert.equal(calls,0);
+    const valid=await privateRequest({headers:{'content-type':'Application/JSON; charset=utf-8'}});
+    assert.equal(valid.status,200);
+    assert.equal(calls,1);
+  });
+});
+
+for(const form of ['parsed object','string','Buffer','stream']){
+  test(`actual UTF-8 byte limit blocks oversized ${form} without reaching Gemini`,async()=>{
+    const body={messages:Array.from({length:11},(_,i)=>({role:i%2?'assistant':'user',content:'界'.repeat(1200)}))};
+    const encoded=JSON.stringify(body);
+    assert.ok(Buffer.byteLength(encoded)>16000);
+    const options=form==='parsed object'?{body}:form==='string'?{body:encoded}:form==='Buffer'?{body:Buffer.from(encoded)}:{chunks:[Buffer.from(encoded.slice(0,8000)),Buffer.from(encoded.slice(8000))]};
+    let calls=0;
+    await withGemini(async()=>{calls++;return geminiReply([{text:'Must not be requested'}]);},async()=>{
+      const r=await privateRequest(options);
+      assert.equal(r.status,413);
+      assert.equal(calls,0);
+    });
+  });
+}
+
+test('parsed body size includes extra fields and ignores a falsely small length header',async()=>{
+  let calls=0;
+  await withGemini(async()=>{calls++;return geminiReply([{text:'Must not be requested'}]);},async()=>{
+    const r=await privateRequest({body:{messages:[{role:'user',content:'Hello'}],extra:'x'.repeat(16000)},headers:{'content-length':'1'}});
+    assert.equal(r.status,413);
+    assert.equal(calls,0);
+  });
+});
+
+test('body byte limit allows exactly 16000 bytes and rejects the next byte',async()=>{
+  const body={messages:[{role:'user',content:'Hello'}],padding:''};
+  body.padding='x'.repeat(16000-Buffer.byteLength(JSON.stringify(body)));
+  let calls=0;
+  await withGemini(async()=>{calls++;return geminiReply([{text:'Hello'}]);},async()=>{
+    const encoded=Buffer.from(JSON.stringify(body));
+    assert.equal(encoded.length,16000);
+    assert.equal((await privateRequest({body:encoded})).status,200);
+    assert.equal((await privateRequest({body:Buffer.concat([encoded,Buffer.from(' ')])})).status,413);
+    assert.equal(calls,1);
+  });
+});
+
+test('stream decoding preserves UTF-8 characters split between chunks',async()=>{
+  const content='Hello 👋, 世界';
+  const raw=Buffer.from(JSON.stringify({messages:[{role:'user',content}]}));
+  const split=raw.indexOf(Buffer.from('👋'))+1;
+  let received;
+  await withGemini(async(url,options)=>{received=JSON.parse(options.body).contents[0].parts[0].text;return geminiReply([{text:'Hello'}]);},async()=>{
+    const r=await privateRequest({chunks:[raw.subarray(0,split),raw.subarray(split)]});
+    assert.equal(r.status,200);
+    assert.equal(received,content);
+  });
+});
+
+test('malformed JSON and non-object bodies fail before provider access',async()=>{
+  let calls=0;
+  const circular={};circular.self=circular;
+  const inputs=[{body:null},{body:[]},{body:false},{body:1},{body:'"string"'},{body:'{'},{body:Buffer.from('{')},{chunks:[Buffer.from('{')]},{chunks:[]},{body:{messages:[null]}},{body:{messages:Array(1)}},{body:circular}];
+  await withGemini(async()=>{calls++;return geminiReply([{text:'Must not be requested'}]);},async()=>{
+    for(const options of inputs)assert.equal((await privateRequest(options)).status,400);
+    assert.equal(calls,0);
+  });
+});
+
+test('assistant-first history is rejected before provider access',async()=>{
+  let calls=0;
+  await withGemini(async()=>{calls++;return geminiReply([{text:'Must not be requested'}]);},async()=>{
+    const r=await privateRequest({body:{messages:[{role:'assistant',content:'An orphaned answer'},{role:'user',content:'Next question'}]}});
+    assert.equal(r.status,400);
+    assert.match(r.body.error,/First message/);
+    assert.equal(calls,0);
+  });
+});
+
+test('valid three-turn history reaches Gemini with correct roles and contents',async()=>{
+  const messages=[{role:'user',content:'Remember cedar'},{role:'assistant',content:'I will remember cedar.'},{role:'user',content:'What word did I ask you to remember?'}];
+  let sent;
+  await withGemini(async(url,options)=>{sent=JSON.parse(options.body);return geminiReply([{text:'cedar'}]);},async()=>{
+    const r=await privateRequest({body:{messages}});
+    assert.equal(r.status,200);
+    assert.equal(r.body.reply,'cedar');
+    assert.equal(r.body.provider,'gemini');
+    assert.equal(r.body.model,'gemini-3.5-flash-lite');
+    assert.deepEqual(sent.contents,messages.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]})));
+  });
+});
+
+test('Gemini reply includes only visible string text parts',async()=>{
+  const parts=[{thought:true,text:'Private reasoning'},null,{text:42},{functionCall:{name:'ignored'}},{text:'Visible '},{thought:false,text:'answer'}];
+  await withGemini(async()=>geminiReply(parts),async()=>{
+    const r=await privateRequest();
+    assert.equal(r.status,200);
+    assert.equal(r.body.reply,'Visible answer');
+  });
+});
+
+test('Gemini thought-only responses fail without returning thoughts',async()=>{
+  await withGemini(async()=>geminiReply([{thought:true,text:'Private reasoning'}]),async()=>{
+    const r=await privateRequest();
+    assert.equal(r.status,502);
+    assert.equal(r.body.reply,undefined);
+    assert.equal(JSON.stringify(r.body).includes('Private reasoning'),false);
+  });
+});
+
+test('malformed Gemini parts fail as empty provider responses',async()=>{
+  for(const parts of [null,{},'wrong shape',[null,{text:12}]]){
+    await withGemini(async()=>geminiReply(parts),async()=>{
+      const r=await privateRequest();
+      assert.equal(r.status,502);
+      assert.equal(r.body.reply,undefined);
+    });
+  }
+});
