@@ -11,7 +11,7 @@ Its current-status section supersedes the historical execution log.
 - Real customer login/session controls, five hosted quota/duplicate races and actual customer API quota rejection are verified. Two captured customer-authenticated Gemini turns also verified context recall, exact allowance decrement and durable successful finalization. See [Auth/quota evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md) and [customer Gemini evidence](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md).
 - The existing commercial database is Supabase project `tymayhazawkofmiypeqt`, organisation `txfdoppxcbylrguxsjod` (The Solo Service Provider), Free plan, existing `ap-northeast-1` region. Its migration, server credential and hosted permission boundaries are verified; unrestricted signup is disabled. Reuse it; no new account or database setup is required.
 - Both customer Preview flags and the SQL policy were restored disabled after testing. The last completed Gemini window retained 15 ledger rows: 11 earlier admission-only reservations and four Gemini successes. The first two Gemini calls have ledger-only evidence after lost client output; the later two have captured HTTP/context assertions.
-- Actual customer sign-in/chat through the website UI, Samsung/desktop acceptance, real provider-error/timeout and finalization-failure accounting, and monetary/public-launch controls remain open. HTTP API evidence does not close browser acceptance.
+- The account-isolation update is deployed at `057ed6114206fa0b0ab2c2ed094596410f2bdb76`; 179 automated tests, four actual closed-gate HTTP checks and the specified desktop closed-gate/keyboard checks passed. Actual signed-in website chat, live session changes/cross-tab behavior, Samsung/device acceptance, real provider-error/timeout and finalization-failure accounting, and monetary/public-launch controls remain open.
 - Production serves the approved maintenance deployment `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. Do not promote a development branch wholesale.
 - Android client: not yet connected to an authenticated production API.
 
@@ -54,8 +54,8 @@ inventory limitation has been resolved by the existing commercial project above.
 
 ## Browser account-isolation update
 
-A separate cookie-chat account-binding change is implemented and its local
-source has been reviewed. Cookie requests include `expectedUserId`, matching
+A separate cookie-chat account-binding change is implemented, reviewed and
+deployed in protected Preview. Cookie requests include `expectedUserId`, matching
 the authenticated UUID displayed by the browser. After online authentication,
 a missing/malformed binding returns **400 `expected_account_required`** and a
 mismatch returns **409 `account_changed`**, before quota admission or provider
@@ -66,8 +66,37 @@ The browser clears stale conversation/draft/retry state on a known account
 change and rechecks the server account. Cross-tab notifications contain only a
 fixed signal; focus, visibility and restored-page checks provide additional
 revalidation. An account mismatch is not a duplicate or evidence of admission.
-Root verification of the new automated suite, deployment and live cross-tab
-behavior is pending; the prior 158-test baseline does not verify this change.
+
+At commit [`057ed6114206fa0b0ab2c2ed094596410f2bdb76`](https://github.com/joshuawayzwright/ai-download-center/commit/057ed6114206fa0b0ab2c2ed094596410f2bdb76),
+[CI run 40497102111](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40497102111)
+passed **158 JavaScript + 21 SQL = 179 tests**, zero failures/skips.
+[Repository quality run 40497102226](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40497102226)
+also passed. Controlled cross-tab integration exercises both actual browser
+controllers with **mocked transports**; it is not a live signed-in browser test.
+
+Normal Preview `dpl_CrptDDmWkonFKZ27xibWehkdHqJo` is **READY** at that commit:
+[current SOLO Preview](https://solo-provider-industrial-3j5n9hezq-wrightwayz.vercel.app/solo-ai.html#conversation).
+Four actual HTTP checks passed with gates closed: account GET **200**, all
+status booleans false and private/no-store caching; refresh POST **503
+`auth_disabled`**; dummy Bearer chat and `expectedUserId` chat without a cookie
+both **503 `customer_disabled`**. These do not establish a live authenticated
+400/409 account-binding rejection.
+
+Actual Chrome at **1363 × 936** verified CTA navigation to `#conversation`
+(section top 100.0625px, header bottom 77px), a visible first-Tab skip link at
+8px and Enter focus on main, and keyboard progression from Check Access to
+the outlined transcript log and message field. The account form remained hidden
+and there was no horizontal overflow. This verifies those deployed desktop
+closed-gate interactions; signed-in conversation/session-change and device
+acceptance remain open.
+
+The cycle made no new model call or hosted SQL write. A read-only commercial database
+check at **11:36:42 UTC** confirmed disabled policy, original caps
+**3/20/20/200**, zero eligible members/fixture sessions and 15 retained ledger rows with
+four earlier Gemini successes. Production remains the same maintenance alias.
+See [browser-isolation evidence](SOLO-BROWSER-ISOLATION-2026-10-27.md),
+[sanitized results](evidence/solo-browser-isolation-2026-10-27.json) and
+[desktop screenshot](evidence/solo-browser-preview-2026-10-27.jpg).
 
 **Production private testing and public customer inference remain disabled.**
 The completed Preview milestones do not authorize a production cutover or

@@ -8,12 +8,34 @@ setup is required. Both customer Preview flags and SQL policy were restored
 disabled after testing. See [Auth/quota evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md)
 and [customer Gemini evidence](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md).
 
-The new cookie account-binding and browser revalidation code described below
-is implemented and locally reviewed. Root verification of the new automated
-suite, deployment and live cross-tab behavior is still pending. Previous API
-milestones and the 158-test baseline do not establish that this new safeguard
-has passed in a deployed browser. Public release, customer UI/device acceptance
-and real provider-error/finalization-failure accounting remain open.
+The cookie account-binding and browser revalidation code below is implemented,
+reviewed and deployed at `057ed6114206fa0b0ab2c2ed094596410f2bdb76`.
+[CI run 40497102111](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40497102111)
+passed **158 JavaScript + 21 SQL = 179 tests**, zero failures/skips;
+[repository quality run 40497102226](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40497102226)
+also passed. Cross-tab integration uses both actual controllers with **mocked
+transports**. It does not establish live signed-in browser isolation.
+
+Normal Preview `dpl_CrptDDmWkonFKZ27xibWehkdHqJo` is **READY** at that commit:
+[current SOLO Preview](https://solo-provider-industrial-3j5n9hezq-wrightwayz.vercel.app/solo-ai.html#conversation).
+Actual closed-gate HTTP checks passed: account GET 200/disabled/private no-store,
+refresh POST 503 `auth_disabled`, and both dummy Bearer chat and
+`expectedUserId` chat without a cookie 503 `customer_disabled`. Actual Chrome
+**1363 × 936** verified the CTA/anchor offset, visible skip link and main focus,
+keyboard access to the outlined log and message field, hidden sign-in form and
+no horizontal overflow. Live signed-in UI/session changes/cross-tab behavior,
+Samsung/device acceptance, real provider-error/finalization-failure accounting
+and public release remain open.
+
+This verification made no new model calls or hosted SQL writes. The read-only
+**11:36:42 UTC** database check retained disabled policy, original caps
+**3/20/20/200**, zero eligible members/fixture sessions and 15 rows with four
+prior Gemini successes. Production still points to maintenance deployment
+`dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. See
+[browser-isolation evidence](SOLO-BROWSER-ISOLATION-2026-10-27.md),
+[sanitized results](evidence/solo-browser-isolation-2026-10-27.json) and
+[desktop screenshot](evidence/solo-browser-preview-2026-10-27.jpg). The earlier
+real Gemini evidence remains distinct from this no-inference browser cycle.
 
 Endpoint: `POST https://thesoloserviceprovider.com.au/api/solo-chat` (future production; currently unavailable while the production site is in maintenance).
 Private preview endpoint is on the Vercel preview deployment, not the production domain.
@@ -97,8 +119,10 @@ or the provider:
 | UUID matches | Continue to membership/session/quota admission | Existing admission rules apply |
 
 UUID comparison is case-insensitive. A body containing `expectedUserId` signals
-customer intent: if its access credential has expired or disappeared, the open
-customer path returns **401 `session_expired`**, never an owner-token fallback.
+customer intent: if its access cookie is missing, the open customer path returns
+**401 `session_expired`**, never an owner-token fallback. A present invalid or
+expired access token instead reaches online verification and returns
+**401 `invalid_session`**.
 Disabled gates and other earlier validation failures still take precedence.
 Explicit Bearer customers remain compatible without the field; owner testing
 requests without it are unchanged. Older cookie clients without the binding
@@ -116,8 +140,9 @@ contains no identity, credentials or conversation text. Receiving it immediately
 invalidates the old state and rechecks the server; it never supplies trusted
 identity. Focus, becoming visible and restoration from the back/forward cache
 also trigger account checks. Generation checks prevent stale account responses
-from restoring invalidated state. These implemented behaviors still require the
-new test/deployment and live cross-tab evidence noted above.
+from restoring invalidated state. Automated controller tests cover these
+behaviors with mocked transports. Deployed closed-gate and desktop checks are
+recorded above; live signed-in cross-tab/session-change verification remains open.
 
 ## Request admission and retries
 
@@ -139,7 +164,7 @@ with the feature flag alone. The database policy independently defaults off.
 | Status | Meaning |
 | --- | --- |
 | 400 | Invalid JSON, body shape or history; `expected_account_required` for missing/malformed cookie account binding |
-| 401 | Missing/incorrect owner testing token, invalid/expired/revoked customer session, or `session_expired` when customer intent remains but its access credential is missing |
+| 401 | Missing/incorrect owner testing token; `invalid_session` for a present invalid/expired customer token; `session_expired` when customer intent remains but its access credential is missing; revoked customer sessions are also rejected |
 | 403 | Invalid browser origin, or customer membership missing, blocked or expired |
 | 405 | Method other than POST |
 | 413 | Request exceeds the 16,000-byte body limit |
