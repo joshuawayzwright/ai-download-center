@@ -4,17 +4,29 @@ on:
     branches: [main]
     paths:
       - 'powerhouse-website/api/solo-chat.js'
+      - 'powerhouse-website/api/solo-auth.js'
+      - 'powerhouse-website/lib/*.cjs'
+      - 'powerhouse-website/solo-account.js'
+      - 'powerhouse-website/solo-ai.html'
       - 'powerhouse-website/solo-conversation.js'
       - 'powerhouse-website/scripts/solo-private-smoke.cjs'
       - 'powerhouse-website/tests/*.test.cjs'
       - '.github/workflows/solo-api-tests.yml'
+      - 'supabase/migrations/*.sql'
+      - 'tests/solo-database/**'
   pull_request:
     paths:
       - 'powerhouse-website/api/solo-chat.js'
+      - 'powerhouse-website/api/solo-auth.js'
+      - 'powerhouse-website/lib/*.cjs'
+      - 'powerhouse-website/solo-account.js'
+      - 'powerhouse-website/solo-ai.html'
       - 'powerhouse-website/solo-conversation.js'
       - 'powerhouse-website/scripts/solo-private-smoke.cjs'
       - 'powerhouse-website/tests/*.test.cjs'
       - '.github/workflows/solo-api-tests.yml'
+      - 'supabase/migrations/*.sql'
+      - 'tests/solo-database/**'
 permissions:
   contents: read
 jobs:
@@ -26,3 +38,17 @@ jobs:
         with:
           node-version: '22'
       - run: node --test powerhouse-website/tests/*.test.cjs
+  database:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tests/solo-database
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tests/solo-database/package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm test

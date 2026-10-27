@@ -1,6 +1,7 @@
 // SOLO AI v0.1 — server-side chat endpoint.
 // Shared HTTP contract for the web client and a future Android client.
 // Intentionally does not enable unrestricted public paid inference.
+const { HttpError, parseAccessToken, verifyCustomer, reserve, finalize } = require('../lib/solo-customer-access.cjs');
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 1200;
 const MAX_BODY_BYTES = 16000;
@@ -18,6 +19,11 @@ const json = (res,status,body) => {
   res.setHeader("Cache-Control","no-store");
   res.setHeader("X-Content-Type-Options","nosniff");
   res.end(JSON.stringify(body));
+};
+const accessError = (res,error,usage=null) => {
+  const failure=error instanceof HttpError?error:new HttpError(503,'access_unavailable','SOLO account access is temporarily unavailable.');
+  for(const [name,value] of Object.entries(failure.headers))res.setHeader(name,value);
+  return json(res,failure.status,{error:failure.message,code:failure.code,...(usage?{usage}:{})});
 };
 module.exports = async (req,res) => {
   if(req.method!=="POST") return json(res,405,{error:"Method not allowed"});
@@ -63,39 +69,78 @@ module.exports = async (req,res) => {
   // Clients must retain complete turns when trimming their conversation history.
   if(messages[0].role!=="user")return json(res,400,{error:"First message must be from the user"});
   if(messages.some((m,i)=>i>0&&m.role===messages[i-1].role))return json(res,400,{error:"Conversation roles must alternate"});
-  // Private testing only: feature gate plus server-side owner secret.
-  // Do not ship a browser client containing the secret. Public users require
-  // authenticated identities and durable per-user rate limits first.
-  if(process.env.SOLO_PRIVATE_TEST_ENABLED!=="true")
-    return json(res,503,{error:"SOLO chat is in private testing. Public AI conversations are not enabled."});
-  const expected=process.env.SOLO_PRIVATE_TEST_TOKEN;
-  const supplied=String(req.headers["x-solo-test-token"]||"");
-  if(!expected||expected.length<32)return json(res,503,{error:"Private testing credentials are not configured"});
-  const crypto=require("node:crypto");
-  const a=crypto.createHash("sha256").update(supplied).digest();
-  const b=crypto.createHash("sha256").update(expected).digest();
-  if(!supplied||!crypto.timingSafeEqual(a,b))return json(res,401,{error:"Private testing access required"});
+  let customer=null,admittedUsage=null;
+  try {
+    const access=parseAccessToken(req);
+    if(access){
+      // Customer rollout is preview-only until a separate production approval.
+      if(process.env.VERCEL_ENV!=="preview"||process.env.SOLO_CUSTOMER_CHAT_ENABLED!=="true")
+        throw new HttpError(503,'customer_disabled','Customer conversations are not enabled yet.');
+      if((process.env.SOLO_AI_PROVIDER||'gemini')!=='gemini'||
+          (process.env.SOLO_AI_MODEL||'gemini-3.5-flash-lite')!=='gemini-3.5-flash-lite'||
+          typeof process.env.GEMINI_API_KEY!=='string'||!process.env.GEMINI_API_KEY.trim())
+        throw new HttpError(503,'provider_unavailable','The customer AI provider is not configured.');
+      customer=await verifyCustomer(access.token);
+      const admission=await reserve(customer,{requestId:body.requestId,messages,model:'gemini-3.5-flash-lite'});
+      if(Number.isSafeInteger(admission.daily_limit)&&admission.daily_limit>=0&&
+          Number.isSafeInteger(admission.remaining_daily)&&admission.remaining_daily>=0&&
+          admission.remaining_daily<=admission.daily_limit){
+        admittedUsage={remaining_daily:admission.remaining_daily,daily_limit:admission.daily_limit};
+      }
+    }
+  }catch(error){return accessError(res,error);}
+  if(!customer){
+    // Keep owner-only smoke tests separate from customer authentication.
+    // Invalid customer credentials never fall back to this private token.
+    if(process.env.SOLO_PRIVATE_TEST_ENABLED!=="true")
+      return json(res,503,{error:"SOLO chat is in private testing. Public AI conversations are not enabled."});
+    const expected=process.env.SOLO_PRIVATE_TEST_TOKEN;
+    const supplied=String(req.headers["x-solo-test-token"]||"");
+    if(!expected||expected.length<32)return json(res,503,{error:"Private testing credentials are not configured"});
+    const crypto=require("node:crypto");
+    const a=crypto.createHash("sha256").update(supplied).digest();
+    const b=crypto.createHash("sha256").update(expected).digest();
+    if(!supplied||!crypto.timingSafeEqual(a,b))return json(res,401,{error:"Private testing access required"});
+  }
   if((process.env.SOLO_AI_PROVIDER||"gemini")==="gemini"){
     const secret=process.env["GEMINI_API_KEY"];
     if(!secret)return json(res,503,{error:"Gemini provider is not configured"});
     const model=process.env.SOLO_AI_MODEL||"gemini-3.5-flash-lite";
     const controller=new AbortController();
     const timer=setTimeout(()=>controller.abort(),15000);
+    let result,usage=null,completion='provider_error';
     try{
       const url="https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent";
       const response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":secret},
         body:JSON.stringify({systemInstruction:{parts:[{text:SYSTEM}]},contents:messages.map(m=>({role:m.role==="assistant"?"model":"user",parts:[{text:m.content}]})),generationConfig:{maxOutputTokens:320}}),
         signal:controller.signal});
-      if(!response.ok)return json(res,502,{error:"Gemini provider unavailable",upstreamStatus:response.status});
-      const data=await response.json();
-      const parts=data?.candidates?.[0]?.content?.parts;
-      const reply=(Array.isArray(parts)?parts:[])
-        .filter(part=>part&&part.thought!==true&&typeof part.text==="string")
-        .map(part=>part.text).join("").trim();
-      if(!reply)return json(res,502,{error:"Gemini returned no text response"});
-      return json(res,200,{reply,provider:"gemini",model});
-    }catch(e){return json(res,504,{error:"Gemini request timed out or failed"})}
+      if(!response.ok){
+        result={status:502,body:{error:"Gemini provider unavailable",upstreamStatus:response.status}};
+      }else{
+        const data=await response.json();
+        usage=data?.usageMetadata;
+        const parts=data?.candidates?.[0]?.content?.parts;
+        const reply=(Array.isArray(parts)?parts:[])
+          .filter(part=>part&&part.thought!==true&&typeof part.text==="string")
+          .map(part=>part.text).join("").trim();
+        result=reply?{status:200,body:{reply,provider:"gemini",model}}:
+          {status:502,body:{error:"Gemini returned no text response"}};
+        if(reply)completion='succeeded';
+      }
+    }catch(e){
+      result={status:504,body:{error:"Gemini request timed out or failed"}};
+      completion=controller.signal.aborted||e?.name==='AbortError'||e?.name==='TimeoutError'?'timeout':'internal_error';
+    }
     finally{clearTimeout(timer)}
+    if(customer){
+      try{
+        await finalize(customer,{requestId:body.requestId,status:completion,provider:'gemini',model,
+          inputTokens:usage?.promptTokenCount,outputTokens:usage?.candidatesTokenCount});
+      }catch(error){return accessError(res,error,admittedUsage);}
+      if(result.status===200)result.body.requestId=body.requestId;
+      if(admittedUsage)result.body.usage=admittedUsage;
+    }
+    return json(res,result.status,result.body);
   }
   const provider=process.env.SOLO_AI_PROVIDER||"groq";
   if(!["groq","openai"].includes(provider))return json(res,503,{error:"SOLO AI provider is not supported"});

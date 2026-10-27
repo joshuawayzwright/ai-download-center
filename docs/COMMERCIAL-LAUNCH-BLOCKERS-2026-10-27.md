@@ -27,7 +27,8 @@
 
 ## SOLO AI
 - Gemini provider-only Vercel diagnostic previously returned a real model response.
-- SOLO API is private; customer authentication, rate limits and complete end-to-end chat are not verified.
+- The private owner-token SOLO API has a verified real two-turn Gemini conversation; see [the verification record](SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md).
+- Customer sessions and durable quota SQL are implemented with local tests, but the separate commercial Supabase project, live customer login and hosted concurrency verification are still outstanding. See [customer access status](SOLO-CUSTOMER-ACCESS-2026-10-27.md).
 - Keep public inference disabled.
 
 ## Current decision
