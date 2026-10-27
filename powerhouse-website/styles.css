@@ -217,21 +217,22 @@ body{background:var(--ww-charcoal);color:#f4f4f2}
 .solo-skip-link:focus-visible{outline:3px solid #0087ff;outline-offset:3px}
 
 /* Launch collection: equal prominence for the ten planned SOLO products. */
+.heading .store-title{font:800 clamp(32px,4vw,54px)/1.15 Georgia,serif;color:#f2c766;margin:10px 0;letter-spacing:-.025em}
 .launch-summary{max-width:790px;margin:18px auto 0;font-size:17px;line-height:1.75}
 .launch-product{grid-template-columns:minmax(0,1fr);padding:28px;min-height:255px;border-top:2px solid #d4af37}
 .launch-product .info{min-width:0}
 .launch-product .topline{margin-bottom:12px}
-.launch-product h3{font-size:20px;line-height:1.3;margin:10px 0;color:#f2d28d}
+.launch-product h2,.launch-product h3{font-size:20px;line-height:1.3;margin:10px 0;color:#f2d28d}
 .launch-product p{font-size:14px;line-height:1.75;max-width:56ch}
 .launch-product .product-actions{align-items:center;gap:18px;padding-top:24px}
 .launch-product .product-actions a{flex:0 1 auto;padding:12px 16px;font-size:11px;min-height:44px;border-color:#8a8f98}
 .launch-product .pending{font-size:10px;font-weight:800;letter-spacing:.1em;color:#9ccfff}
 .launch-product a:focus-visible,.catalog-follow a:focus-visible{outline:3px solid #0087ff;outline-offset:4px}
 .catalog-note{margin-top:30px;padding:30px;border:1px solid #5b5240;background:linear-gradient(125deg,#14181b,#090b0d)}
-.catalog-note h3{margin:0 0 12px;color:#d4af37;font:700 clamp(24px,3vw,36px)/1.2 Georgia,serif}
+.catalog-note h2,.catalog-note h3{margin:0 0 12px;color:#d4af37;font:700 clamp(24px,3vw,36px)/1.2 Georgia,serif}
 .catalog-note p{max-width:850px;color:#c6c9cc;line-height:1.75}
 .catalog-follow{margin-top:20px}
-@media(max-width:600px){.launch-summary{font-size:16px}.launch-product{grid-template-columns:minmax(0,1fr);padding:22px;min-height:0}.launch-product h3{font-size:19px}.launch-product .product-actions{flex-wrap:wrap;padding-right:0;gap:14px}.launch-product .product-actions a{font-size:11px}.catalog-note{padding:24px}.catalog-follow a{width:100%}}
+@media(max-width:600px){.launch-summary{font-size:16px}.launch-product{grid-template-columns:minmax(0,1fr);padding:22px;min-height:0}.launch-product h2,.launch-product h3{font-size:19px}.launch-product .product-actions{flex-wrap:wrap;padding-right:0;gap:14px}.launch-product .product-actions a{font-size:11px}.catalog-note{padding:24px}.catalog-follow a{width:100%}}
 
 /* Customer policies: readable, branded documents with clear section navigation. */
 .policy-page{background:#0a0a0a;color:#e6e7e9}
