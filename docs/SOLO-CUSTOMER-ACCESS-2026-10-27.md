@@ -125,17 +125,21 @@ No test automatically calls Gemini or requires a real customer/provider secret.
 
 ## Commercial setup still required
 
-The connected Supabase inventory contains only the inactive **Wrightwayz Project**
-in a personal organisation. It was not resumed, queried, migrated or reused.
-A dedicated free commercial organisation/project is required to keep SOLO
-resources, credentials, customers and billing separate.
+The owner has now supplied a dashboard screenshot showing **The Solo Service
+Provider** organisation on the **Free** plan, with **0 projects** and its new-project
+form open. Reuse that organisation; do not create another one.
 
-The Supabase connector cannot create an organisation, and the browser dashboard
-is signed out. Secure dashboard sign-in is the current infrastructure blocker.
+A fresh connector inventory still exposes only the inactive **Wrightwayz Project**
+in the older personal organisation. It was not resumed, queried, migrated or
+reused. The new commercial organisation is not accessible through this connection
+yet. Its account/organisation authorization must be checked before automated
+project creation can continue. The earlier secure browser sign-in request was
+declined and was not repeated; the owner's mobile browser session is separate.
 No new Gemini key, OpenAI billing setup or Groq registration is needed.
 
-After the commercial organisation is available, verify its Free plan and Sydney
-region before creating the project; ask before any nonzero charge. Inspect the
+After the existing commercial organisation is available to the connection,
+verify its Free plan and Sydney region before creating **SOLO AI Production**;
+ask before any nonzero charge. Inspect the
 new project's existing schemas, roles and Auth session columns before applying
 `supabase/migrations/20261027034444_solo_customer_admission.sql`. Do not apply the
 local test Auth fixtures to a remote project.
