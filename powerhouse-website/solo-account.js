@@ -56,7 +56,7 @@
       ? 'SOLO AI is in private testing. Account access is not available here yet.'
       : authenticated
         ? `${address ? `Signed in as ${address}.` : 'Signed in.'} ${state.chatEnabled ? 'Chat is available within your account limits.' : 'Chat remains in private testing.'}`
-        : 'Invited testers can sign in below. New account registration is not available here.';
+        : 'Invited testers can sign in below. Available account setup and password help appear below.';
     // This public UI state contains no credentials or session tokens.
     window.soloAccountState = Object.freeze({...state});
     window.dispatchEvent(new CustomEvent('solo:account', {detail: window.soloAccountState}));
@@ -195,7 +195,14 @@
   form.addEventListener('submit', event => { event.preventDefault(); return run('login'); });
   refresh.addEventListener('click', () => run(state.authenticated ? 'refresh' : 'check'));
   logout.addEventListener('click', () => run('logout'));
-  window.addEventListener('solo:account-stale', invalidateAndCheck);
+  window.addEventListener('solo:account-stale', event => {
+    if (event.detail?.notifyPeers === true) {
+      // Onboarding asks this channel's owner to notify other windows once.
+      // The fixed signal contains no account identity or credentials.
+      try { channel?.postMessage('account-changed'); } catch { /* Local invalidation still applies. */ }
+    }
+    return invalidateAndCheck();
+  });
   window.addEventListener('solo:session-expired', () => { if (state.enabled) return run('refresh'); });
   window.addEventListener('focus', wakeCheck);
   // Initial navigation already has the startup check below. A restored page

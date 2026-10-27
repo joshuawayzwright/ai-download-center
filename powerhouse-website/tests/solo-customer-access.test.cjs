@@ -147,6 +147,71 @@ test('anonymous Auth users and anonymous JWT claims cannot access customer infer
   }
 });
 
+test('email confirmation must be an actual valid past Auth timestamp, not a metadata claim', async () => {
+  const clock = Date.parse('2026-10-27T12:00:00Z');
+  for (const email_confirmed_at of [undefined, null, '', ' ', false, 1793102400,
+    'not-a-date', '2026-10-27', '2026-02-30T00:00:00Z', '2026-10-27T25:00:00Z',
+    '2026-10-27T12:00:01Z']) {
+    const network = transport({ auth: () => response(200, { ...user, email_confirmed_at,
+      confirmed_at: '2026-10-27T00:00:00Z', user_metadata: { email_verified: true } }) });
+    await assert.rejects(verifyCustomer(jwt({ email_verified: true, exp: clock / 1000 + 3600 }),
+      { env: ENV, fetcher: network.fetcher, now: () => clock }),
+    error => error.status === 403 && error.code === 'access_denied', String(email_confirmed_at));
+    assert.deepEqual(network.calls.map(call => call.phase), ['auth']);
+  }
+});
+
+test('email-based SOLO access requires a usable email on the online Auth user', async () => {
+  for (const email of [undefined, null, '', ' ', 123, [], 'invalid', 'unit-test@',
+    'unit-test@example.invalid ', 'unit\u0000test@example.invalid', 'unit test@example.invalid']) {
+    const network = transport({ auth: () => response(200, { ...user, email }) });
+    await assert.rejects(verifyCustomer(jwt({ email: user.email }), { env: ENV, fetcher: network.fetcher }),
+      error => error.status === 403 && error.code === 'access_denied', String(email));
+  }
+});
+
+test('confirmed Auth email accepts valid precision and timezone offsets without an age cutoff', async () => {
+  const clock = Date.parse('2026-10-27T12:00:00Z');
+  for (const email_confirmed_at of ['2000-01-01T00:00:00Z', '2024-02-29T12:34:56Z',
+    '2026-10-27T00:00:00.123456Z', '2026-10-27T10:00:00+10:00', '2026-10-27T12:00:00Z']) {
+    const network = transport({ auth: () => response(200, { ...user, email_confirmed_at,
+      user_metadata: { email_verified: false } }) });
+    const identity = await verifyCustomer(jwt({ email: user.email.toUpperCase(), exp: clock / 1000 + 3600 }),
+      { env: ENV, fetcher: network.fetcher, now: () => clock });
+    assert.equal(identity.userId, USER);
+  }
+});
+
+test('an optional JWT email must agree with the online verified identity', async () => {
+  for (const email of ['another@example.invalid', '', null, 123]) {
+    const network = transport();
+    await assert.rejects(verifyCustomer(jwt({ email }), { env: ENV, fetcher: network.fetcher }),
+      error => error.status === 401 && error.code === 'invalid_session');
+    assert.deepEqual(network.calls.map(call => call.phase), ['auth']);
+  }
+});
+
+test('unconfirmed, anonymous and mismatched identities cannot reserve quota or reach Gemini', async () => {
+  const cases = [
+    { onlineUser: { ...user, email_confirmed_at: null }, status: 403 },
+    { onlineUser: { ...user, email: null }, status: 403 },
+    { onlineUser: { ...user, is_anonymous: true }, status: 403 },
+    { onlineUser: { ...user, id: SESSION }, status: 401 },
+    { token: jwt({ email: 'another@example.invalid' }), status: 401 }
+  ];
+  for (const entry of cases) {
+    const network = transport({ auth: () => response(200, entry.onlineUser || user) });
+    await isolated(async () => {
+      const result = await chat({ headers: { authorization: `Bearer ${entry.token || TOKEN}`,
+        'x-solo-test-token': ENV.SOLO_PRIVATE_TEST_TOKEN } });
+      assert.equal(result.status, entry.status);
+      assert.deepEqual(network.calls.map(call => call.phase), ['auth']);
+      assert.equal(network.counts.admit, 0);
+      assert.equal(network.counts.provider, 0);
+    }, {}, network);
+  }
+});
+
 test('customer gate defaults off and production cannot enable it', async () => {
   for (const env of [{ SOLO_CUSTOMER_CHAT_ENABLED: undefined }, { SOLO_CUSTOMER_CHAT_ENABLED: 'false' }, { VERCEL_ENV: 'production' }]) {
     await isolated(async network => {

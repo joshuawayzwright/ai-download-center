@@ -1,5 +1,10 @@
 # SOLO production access preparation
 
+**Later same-day update:** gated signup, email verification and password recovery
+are now implemented separately. See [the account implementation](SOLO-ACCOUNT-ONBOARDING-2026-10-28.md)
+for their current scope. The 214-test and migration-blocker evidence below is the
+original production-gate milestone; it is not a new hosted onboarding result.
+
 This change prepares the existing commercial API for production activation after
 the remaining account, usage and spending requirements have been verified. It does not enable accounts or inference, provision accounts,
 change billing, or replace the existing Vercel, Supabase or Gemini services.

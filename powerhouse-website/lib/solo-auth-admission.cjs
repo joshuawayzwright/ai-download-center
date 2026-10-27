@@ -1,4 +1,4 @@
-// Server-only admission before a password login. No account credentials or raw
+// Server-only admission before login, signup or recovery. No account credentials or raw
 // identifiers are stored. Missing configuration/storage always blocks login.
 const {createHmac} = require('node:crypto');
 const {isIP} = require('node:net');
@@ -42,7 +42,8 @@ function trustedIp(req) {
 
 async function admitAuthRequest(req, input, {env = process.env, fetcher = globalThis.fetch} = {}) {
   const config = configuration(env);
-  if (input?.action !== 'login' || typeof input.email !== 'string') throw unavailable();
+  if (!['login', 'signup', 'verify_email', 'request_reset', 'reset_password'].includes(input?.action) ||
+      typeof input.email !== 'string') throw unavailable();
   const email = input.email.trim().toLowerCase();
   if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
       /[\x00-\x1f\x7f]/.test(email)) throw unavailable();
@@ -63,7 +64,7 @@ async function admitAuthRequest(req, input, {env = process.env, fetcher = global
   if (result.allowed === true && result.code === 'admitted' && result.retry_after_seconds === 0) return result;
   if (result.allowed === false && result.code === 'rate_limited' &&
       Number.isInteger(result.retry_after_seconds) && result.retry_after_seconds > 0 && result.retry_after_seconds <= 86400) {
-    throw new HttpError(429, 'auth_rate_limited', 'Too many sign-in attempts. Please wait before trying again.',
+    throw new HttpError(429, 'auth_rate_limited', 'Too many account requests. Please wait before trying again.',
       {'Retry-After': String(result.retry_after_seconds)});
   }
   throw unavailable();

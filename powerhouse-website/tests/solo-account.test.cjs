@@ -160,6 +160,31 @@ test('disabled account gate stays a private preview without sign-in or sign-out 
   assert.equal(h.calls[0].cache, 'no-store');
 });
 
+test('onboarding invalidation clears local conversation and requests exactly one fixed peer signal', async () => {
+  const hub = channelHub();
+  let accountChecks = 0;
+  const h = harness(async (_options, _number, url) => {
+    if (url === '/api/solo-chat') return response({reply: 'PRIOR_ACCOUNT_REPLY'});
+    return response(++accountChecks === 1 ? signedIn : signedOut);
+  }, {BroadcastChannel: hub.BroadcastChannel, conversation: true});
+  await h.ready();
+  await h.chat.send('PRIOR_ACCOUNT_QUESTION');
+  h.chat.input.value = 'PRIOR_ACCOUNT_DRAFT';
+  h.dispatch('solo:account-stale', {notifyPeers: true});
+  assert.equal(h.window.soloAccountState.authenticated, false);
+  assert.equal(h.chat.input.value, '');
+  assert.doesNotMatch(JSON.stringify(h.chat.transcript.children), /PRIOR_ACCOUNT/);
+  await h.ready();
+  assert.equal(accountChecks, 2);
+  assert.deepEqual(hub.messages, [{name: 'solo-account-events-v1', data: 'account-changed'}]);
+  h.dispatch('solo:account-stale');
+  await h.ready();
+  h.dispatch('solo:account-stale', {notifyPeers: 'true', email: 'must-not-be-broadcast@example.com'});
+  await h.ready();
+  assert.equal(accountChecks, 4);
+  assert.deepEqual(hub.messages, [{name: 'solo-account-events-v1', data: 'account-changed'}]);
+});
+
 test('enabled signed-out account shows invited login without registering or sending email', async () => {
   const h = harness();
   await h.ready();

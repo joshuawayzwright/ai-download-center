@@ -69,7 +69,7 @@ test('bad URL, RPC key or missing independent hashing secret fails before networ
 
 test('unsupported actions and malformed identities never reserve',async()=>{
   let calls=0;
-  for(const input of [null,{...INPUT,action:'signup'},{...INPUT,action:'refresh'},
+  for(const input of [null,{...INPUT,action:'unsupported'},{...INPUT,action:'refresh'},
     {...INPUT,email:'missing-at'},{...INPUT,email:'a\u0000@example.invalid'},
     {...INPUT,email:'a'.repeat(255)+'@example.invalid'}])
     await assert.rejects(admitAuthRequest(REQUEST,input,{env:ENV,fetcher:async()=>{calls++;return response();}}),unavailable);
@@ -106,4 +106,19 @@ test('each login reserves independently; changing RPC credentials does not chang
     await admitAuthRequest(REQUEST,INPUT,{env:{...ENV,SOLO_SUPABASE_SECRET_KEY:key},
       fetcher:async(_url,options)=>{bodies.push(options.body);return response();}});
   assert.equal(bodies.length,2); assert.equal(bodies[0],bodies[1]);
+});
+
+test('login, signup and every recovery action share the same durable email/IP budget',async()=>{
+  const bodies=[];
+  for(const action of ['login','signup','verify_email','request_reset','reset_password']) {
+    await admitAuthRequest(REQUEST,{...INPUT,action,code:'123456',password:'never-record-this'},
+      {env:ENV,fetcher:async(_url,options)=>{bodies.push(options.body);return response();}});
+  }
+  assert.equal(bodies.length,5);
+  assert.equal(new Set(bodies).size,1,'changing action must not create a fresh quota key');
+  assert.doesNotMatch(bodies[0],/123456|never-record|person@example/);
+  for(const action of ['signup','verify_email','request_reset','reset_password']) {
+    await assert.rejects(admitAuthRequest(REQUEST,{...INPUT,action},{env:ENV,fetcher:async()=>response(
+      {allowed:false,code:'rate_limited',retry_after_seconds:37})}),error=>error.status===429);
+  }
 });

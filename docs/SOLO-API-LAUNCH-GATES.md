@@ -1,12 +1,12 @@
 # SOLO AI — Launch Gates and Shared API
 
-**28 October update:** the commercial website is live with ten COMING SOON products. The customer branch now has explicit production-origin gates, shutdown-safe logout and persistent login-admission code, with 214 local tests passing. Its new Auth-admission migration is **not applied**: the connector returned an expired-request error twice and readback confirms no new RPC/table. Public AI remains closed. See [production preparation](SOLO-PRODUCTION-ACCESS-PREPARATION-2026-10-28.md) and the current section of issue #31; earlier milestones below retain their original scope.
+**28 October update:** the commercial website is live with ten COMING SOON products. The customer branch has explicit production-origin gates, shutdown-safe logout, persistent account admission and new gated email verification/password recovery. See [account implementation and verification scope](SOLO-ACCOUNT-ONBOARDING-2026-10-28.md). The Auth-admission migration is **not applied**: the connector returned `Invalid or expired requestState` twice and readback confirms no new RPC/table. Read-only investigation found no supported alternate write path; this does not establish expired OAuth. Public AI remains closed. The current section of issue #31 is authoritative; earlier milestones below retain their original scope.
 
 Updated 27 October 2026. The authoritative current release checklist is
 [GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 Its current-status section supersedes the historical execution log.
 
-## Current status
+## Verified milestone snapshot — 27 October 2026
 - API: `powerhouse-website/api/solo-chat.js`, deployed to private Vercel previews.
 - Current provider: **Gemini**, default model `gemini-3.5-flash-lite`, with the existing server-side Preview key. OpenAI/Groq code paths are retained but are not the selected provider.
 - Public inference: **OFF**. A private owner token is not customer authentication.
@@ -14,7 +14,7 @@ Its current-status section supersedes the historical execution log.
 - The existing commercial database is Supabase project `tymayhazawkofmiypeqt`, organisation `txfdoppxcbylrguxsjod` (The Solo Service Provider), Free plan, existing `ap-northeast-1` region. Its migration, server credential and hosted permission boundaries are verified; unrestricted signup is disabled. Reuse it; no new account or database setup is required.
 - Both customer Preview flags and the SQL policy were restored disabled after testing. The last completed Gemini window retained 15 ledger rows: 11 earlier admission-only reservations and four Gemini successes. The first two Gemini calls have ledger-only evidence after lost client output; the later two have captured HTTP/context assertions.
 - The account-isolation update at `057ed6114206fa0b0ab2c2ed094596410f2bdb76` and its earlier 179-test/closed-gate browser evidence are preserved. The subsequent immediate sign-out fix at `1a2738816fe764ec5ac1723fef377aca5f505ee0` passes 181 automated tests and is deployed in protected Preview. Actual signed-in website chat, live session changes/cross-tab behavior, Samsung/device acceptance, real provider-error/timeout and finalization-failure accounting, and monetary/public-launch controls remain open.
-- Production serves the approved maintenance deployment `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. Do not promote a development branch wholesale.
+- At this earlier milestone production served maintenance deployment `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. It was superseded by the separately approved website release `dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt`; do not promote a development branch wholesale.
 - Android client: not yet connected to an authenticated production API.
 
 ## Private test contract

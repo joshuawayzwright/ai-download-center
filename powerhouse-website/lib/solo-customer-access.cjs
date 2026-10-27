@@ -86,6 +86,27 @@ async function fetchJSON(fetcher, url, options, unavailable) {
   return { response, data };
 }
 
+function normalizedEmail(value) {
+  if (typeof value !== 'string' || value.length > 254 || value !== value.trim() ||
+      /[\x00-\x1f\x7f]/.test(value) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return null;
+  return value.toLowerCase();
+}
+
+function validEmailConfirmation(value, nowMs) {
+  if (typeof value !== 'string' || !Number.isFinite(nowMs)) return false;
+  const parts = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,9})?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/i.exec(value);
+  if (!parts) return false;
+  const year = Number(parts[1]);
+  const month = Number(parts[2]);
+  const day = Number(parts[3]);
+  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const confirmedAt = Date.parse(value);
+  // Date.parse alone normalises invalid dates such as 30 February. Accept real
+  // RFC3339 timestamps, including provider precision/offsets, with no age cutoff.
+  return day <= days[month - 1] && Number.isFinite(confirmedAt) && confirmedAt <= nowMs;
+}
+
 async function verifyCustomer(token, { env = process.env, fetcher = globalThis.fetch, now = Date.now } = {}) {
   if (typeof token !== 'string' || !token || token.length > MAX_TOKEN_LENGTH || /[\s,\x00-\x1f\x7f]/.test(token)) throw sessionError();
   const { origin } = configuration(env);
@@ -107,7 +128,8 @@ async function verifyCustomer(token, { env = process.env, fetcher = globalThis.f
     if (parts.length !== 3 || parts.some(part => !/^[A-Za-z0-9_-]+$/.test(part))) throw Error();
     claims = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
   } catch { throw sessionError(); }
-  const timestamp = Math.floor(now() / 1000);
+  const nowMs = now();
+  const timestamp = Math.floor(nowMs / 1000);
   if (!claims || claims.sub !== user.id || claims.iss !== `${origin}/auth/v1` ||
       claims.role !== 'authenticated' || !UUID.test(claims.session_id) ||
       !Number.isInteger(claims.exp) || claims.exp <= timestamp ||
@@ -115,9 +137,14 @@ async function verifyCustomer(token, { env = process.env, fetcher = globalThis.f
       !(claims.aud === 'authenticated' || (Array.isArray(claims.aud) && claims.aud.includes('authenticated')))) {
     throw sessionError();
   }
-  if (claims.is_anonymous === true || user.is_anonymous === true) {
+  const email = normalizedEmail(user.email);
+  // SOLO currently admits email-based customers. Confirmation must come from
+  // this online Auth response, never JWT/user metadata or phone confirmed_at.
+  if (claims.is_anonymous === true || user.is_anonymous === true || !email ||
+      !validEmailConfirmation(user.email_confirmed_at, nowMs)) {
     throw new HttpError(403, 'access_denied', 'This account does not have SOLO chat access.');
   }
+  if (claims.email !== undefined && normalizedEmail(claims.email) !== email) throw sessionError();
   return { userId: user.id, sessionId: claims.session_id, user, claims };
 }
 

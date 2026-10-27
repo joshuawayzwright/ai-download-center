@@ -200,7 +200,8 @@ async function withCustomer(run,overrides={}){
     if(url===origin+'/auth/v1/user'){
       calls.push('auth');
       assert.equal(options.headers.Authorization,'Bearer '+token);
-      return {ok:true,status:200,json:async()=>({id:CUSTOMER_USER,is_anonymous:false})};
+      return {ok:true,status:200,json:async()=>({id:CUSTOMER_USER,email:'bound-customer@example.invalid',
+        email_confirmed_at:'2026-01-01T00:00:00Z',is_anonymous:false})};
     }
     if(url===origin+'/rest/v1/rpc/solo_admit_request'){
       calls.push('admit');

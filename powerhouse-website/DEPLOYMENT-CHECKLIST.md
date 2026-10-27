@@ -3,10 +3,13 @@
 The single current checklist is [GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 Use its current-status section and retain its historical audit trail.
 
-As of 27 October 2026, production is in maintenance. The original A$79 Marketing
-Kit is withdrawn according to the latest commerce audit; do not reactivate or
-replace its checkout automatically. Ten newer product cards are drafts.
+As of 28 October 2026 (Brisbane), the commercial website is live with all ten
+launch products marked COMING SOON. Runtime commit `eabe97a` is deployed as
+`dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt`. The original A$79 Marketing Kit remains
+withdrawn; do not reactivate or replace its checkout automatically.
 
-Private SOLO chat verification does not authorize a public AI release, storefront
-cutover, purchase activation or Android publication. Those require the separate
-release gates and approved branding review recorded in issue #31.
+The website cutover was explicitly authorized and verified. SOLO AI customer
+access remains a separate unfinished release: account onboarding code is gated,
+the new login-admission migration is unapplied, and hosted account delivery,
+spending controls and signed-in device acceptance remain open. Purchase
+activation and Android publication retain their own gates in issue #31.
