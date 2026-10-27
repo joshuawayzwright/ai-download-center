@@ -1,102 +1,265 @@
 {
+  "schema_version": 2,
+  "updated_at": "2026-10-28",
   "currency": "AUD",
-  "pricing_status": "proposed_pending_owner_approval",
-  "existing_product": {
-    "name": "AI Marketing Kit",
-    "price": 79,
-    "status": "existing_checkout_link_requires_fulfilment_verification",
-    "checkout_url": "https://buy.stripe.com/4gM8wP2qK0mDaww1XpeAg01"
+  "pricing_status": "not_announced",
+  "catalogue_status": "initial_ten_product_collection_coming_soon",
+  "plan_source": "docs/SOLO-10-PRODUCT-RESET.md",
+  "collection": {
+    "name": "The SOLO launch collection",
+    "product_count": 10,
+    "availability": "coming_soon_not_for_sale",
+    "development_note": "All ten digital products are coming soon, with more tools and resources planned as development continues. Prices and release dates are not announced; no included future products are promised."
   },
-  "upcoming_products": [
+  "launch_products": [
+    {
+      "id": "solo-cashflow-control",
+      "name": "SOLO Cashflow Control",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Australian sole traders: forecast money in and out",
+      "planned_deliverables": [
+        "Excel/Sheets-compatible cashflow workbook",
+        "Invoice tracker",
+        "Guide and sample data"
+      ]
+    },
+    {
+      "id": "solo-quote-invoice-builder",
+      "name": "SOLO Quote & Invoice Builder",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Tradies and mobile service providers: price jobs and issue quotes",
+      "planned_deliverables": [
+        "Editable quote/invoice spreadsheet",
+        "Job costing calculator",
+        "Instructions"
+      ]
+    },
+    {
+      "id": "solo-client-booking-follow-up",
+      "name": "SOLO Client Booking & Follow-Up",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Cleaners, coaches and local services: track enquiries and follow-up",
+      "planned_deliverables": [
+        "Lead tracker",
+        "Follow-up templates",
+        "Appointment tracker",
+        "Standard operating procedure"
+      ]
+    },
+    {
+      "id": "solo-job-application-command-centre",
+      "name": "SOLO Job Application Command Centre",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Job seekers: tailor and track applications",
+      "planned_deliverables": [
+        "ATS-friendly CV template",
+        "Cover letter worksheet",
+        "Application tracker",
+        "Interview preparation"
+      ]
+    },
+    {
+      "id": "solo-content-repurposing-studio",
+      "name": "SOLO Content Repurposing Studio",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Creators: adapt one idea into multiple content formats",
+      "planned_deliverables": [
+        "Platform-specific scripts",
+        "Editorial calendar",
+        "Reusable workflows"
+      ]
+    },
+    {
+      "id": "solo-customer-support-desk",
+      "name": "SOLO Customer Support Desk",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Online shops: answer routine queries consistently",
+      "planned_deliverables": [
+        "FAQ builder",
+        "Reply library",
+        "Escalation decision tree",
+        "Ticket tracker"
+      ]
+    },
+    {
+      "id": "solo-small-business-operations-hub",
+      "name": "SOLO Small Business Operations Hub",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Solo operators: organise recurring administration",
+      "planned_deliverables": [
+        "Task dashboard",
+        "Standard operating procedure templates",
+        "Weekly planner",
+        "Operations checklist"
+      ]
+    },
+    {
+      "id": "solo-digital-product-launch-system",
+      "name": "SOLO Digital Product Launch System",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "First-time creators: prepare a product launch",
+      "planned_deliverables": [
+        "Product brief",
+        "Validation tracker",
+        "Launch checklist",
+        "Pricing calculator"
+      ]
+    },
+    {
+      "id": "solo-business-research-dashboard",
+      "name": "SOLO Business Research Dashboard",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Freelancers: compare opportunities using recorded evidence",
+      "planned_deliverables": [
+        "Competitor matrix",
+        "Research log",
+        "Scoring spreadsheet",
+        "Citation checklist"
+      ]
+    },
+    {
+      "id": "solo-ai-workflow-starter-pack",
+      "name": "SOLO AI Workflow Starter Pack",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
+      "checkout_url": null,
+      "intended_use": "Beginners: apply AI to repetitive work with review and privacy checks",
+      "planned_deliverables": [
+        "10 workflows to be tested before release",
+        "Input/output examples",
+        "Privacy checks",
+        "Templates"
+      ]
+    }
+  ],
+  "retired_products": [
+    {
+      "id": "ai-marketing-kit",
+      "name": "AI Marketing Kit",
+      "status": "retired_from_new_sales",
+      "checkout_url": null,
+      "historical_reference": {
+        "price_aud": 79,
+        "checkout_url": "https://buy.stripe.com/4gM8wP2qK0mDaww1XpeAg01",
+        "checkout_status": "inactive_as_recorded_in_2026_10_27_commerce_audit",
+        "source": "docs/COMMERCIAL-LAUNCH-BLOCKERS-2026-10-27.md",
+        "usage": "Historical reference only; not a current purchase destination."
+      },
+      "support_policy": "Preserve historical customer access, refunds, payment records and fulfilment files."
+    }
+  ],
+  "historical_product_concepts": [
     {
       "id": "ai-content-engine",
       "name": "AI Content Engine",
-      "price": 39,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 39,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-lead-generation-playbook",
       "name": "AI Lead Generation Playbook",
-      "price": 39,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 39,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-client-onboarding-system",
       "name": "AI Client Onboarding System",
-      "price": 29,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 29,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-automation-starter-kit",
       "name": "AI Automation Starter Kit",
-      "price": 49,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 49,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-website-conversion-toolkit",
       "name": "AI Website Conversion Toolkit",
-      "price": 39,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 39,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-customer-support-toolkit",
       "name": "AI Customer Support Toolkit",
-      "price": 29,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 29,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-digital-product-launch-kit",
       "name": "AI Digital Product Launch Kit",
-      "price": 49,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 49,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-business-research-toolkit",
       "name": "AI Business Research Toolkit",
-      "price": 39,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 39,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     },
     {
       "id": "ai-productivity-command-centre",
       "name": "AI Productivity Command Centre",
-      "price": 29,
-      "status": "draft_not_for_sale",
+      "historical_proposed_price_aud": 29,
+      "status": "superseded_concept_not_for_sale",
       "checkout_url": null
     }
   ],
-  "subscription_concepts": [
+  "historical_subscription_concepts": [
     {
       "name": "SOLO Updates",
-      "price_monthly": 0,
+      "historical_proposed_price_monthly_aud": 0,
       "description": "Opt-in launch news and product updates",
-      "status": "proposed"
+      "status": "unapproved_concept_not_available",
+      "checkout_url": null
     },
     {
       "name": "SOLO Toolkit Club",
-      "price_monthly": 19,
+      "historical_proposed_price_monthly_aud": 19,
       "description": "A monthly new toolkit or updated resource with a members archive, subject to content capacity",
-      "status": "proposed"
+      "status": "unapproved_concept_not_available",
+      "checkout_url": null
     },
     {
       "name": "SOLO Creator",
-      "price_monthly": 39,
+      "historical_proposed_price_monthly_aud": 39,
       "description": "Toolkit Club plus templates and monthly group Q&A, subject to service capacity",
-      "status": "proposed"
+      "status": "unapproved_concept_not_available",
+      "checkout_url": null
     },
     {
       "name": "SOLO AI Pro",
-      "price_monthly": 29,
+      "historical_proposed_price_monthly_aud": 29,
       "description": "Metered AI chat access with published fair-use caps, only after model service and metering work",
-      "status": "future_not_available"
+      "status": "unapproved_concept_not_available",
+      "checkout_url": null
     }
   ],
-  "sales_policy": "Do not publish live buy buttons for unverified product delivery or subscriptions before entitlements and cancellation are operational."
+  "sales_policy": "All launch product names and prices are provisional. Do not enable checkout until each deliverable, listing, licence, support/refund information and payment-confirmed delivery has passed review and testing. No subscription or automatic future-product entitlement is currently offered."
 }
