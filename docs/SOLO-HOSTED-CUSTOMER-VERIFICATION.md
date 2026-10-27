@@ -1,7 +1,11 @@
 # Hosted customer verification harness
 
-The Auth/race harness is an **opt-in tool with hosted customer verification still
-pending**. The harness is
+The Auth/race harness has **passed actual hosted authentication and all five
+admission race scenarios**. A separate actual customer API check returned 429
+before inference, and final cleanup is verified. See
+[the live verification record](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md).
+Customer Gemini replies and provider-outcome failures remain unverified; zero
+provider calls were made. The harness is
 `powerhouse-website/scripts/solo-customer-hosted-smoke.cjs`; its nine local tests
 use simulated services. No new CI workflow or automatic deployment hook runs it.
 
@@ -11,7 +15,16 @@ It never calls `/api/solo-chat`, Gemini, signup, invitations, password resets or
 Auth administration. It never edits policy, membership, environment variables or
 schema. Test credentials and cookies stay in memory and are not printed.
 
-## Read-only configuration probe — hosted access verified
+Current source is `0af8d9c263a1653128786061f3ffacea99b36894`.
+[CI run 40478171099](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171099)
+passed **137 API/browser/smoke + 21 SQL = 158 tests**, zero failures/skips;
+[quality run 40478171124](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171124)
+passed. Final normal Preview `dpl_BDfkTt3NR4rJwy9XoBT9tJwsLnx8` is **READY**:
+[current SOLO Preview](https://solo-provider-industrial-9i280wcne-wrightwayz.vercel.app/solo-ai.html#conversation).
+Both customer flags and the SQL policy are disabled; both test members are
+blocked/expired, fixture sessions are zero, and 11 reservations remain recorded.
+
+## Earlier read-only configuration probe — hosted access verified
 
 The existing commercial server key is saved as sensitive
 `SOLO_SUPABASE_SECRET_KEY` in Vercel Preview. **Its hosted status-RPC access is
@@ -27,7 +40,7 @@ and `mailer_autoconfirm:false`. A separate actual Auth settings GET also
 confirmed `external.anonymous_users:false`. Fresh SQL inspection retained
 **policy disabled, zero members and zero ledger rows**.
 
-The normal deployment `dpl_B1YYM8g9s9TfoLHGJtFw5ZLr2bCm` is **READY** at that
+The earlier normal deployment `dpl_B1YYM8g9s9TfoLHGJtFw5ZLr2bCm` was **READY** at that
 same commit: [SOLO preview](https://solo-provider-industrial-8ig3nmuwt-wrightwayz.vercel.app/solo-ai.html#conversation).
 It used no build override and logs confirm no probe ran. Actual HTTP checks
 returned account GET **200** with all three status booleans false and
@@ -39,9 +52,9 @@ customer Bearer chat POST **503 `customer_disabled`**; marker
 [CI run 40476932755](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40476932755)
 passed **132 API/browser/smoke + 21 SQL = 153 tests**, zero failures or skipped
 tests; [repository quality run 40476932720](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40476932720)
-also passed. The five new probe tests use mocks. The hosted results above prove
-server access and closed gates; customer login, quota races and Gemini remain
-unverified.
+also passed. The five probe tests use mocks. These earlier hosted results prove
+server access and closed gates only. Later login and quota-race evidence is
+recorded separately in the live verification record.
 
 Run it in a scoped server-side Preview build with the existing commercial
 `SOLO_SUPABASE_URL`, modern `SOLO_SUPABASE_SECRET_KEY` and
@@ -65,10 +78,10 @@ On a real pass it prints `SOLO_COMMERCIAL_SERVER_KEY_PASS` plus the validated
 boolean settings `disable_signup`, `email`, `anonymous` and
 `mailer_autoconfirm`. Credentials, raw service bodies and raw exceptions are
 never printed. The marker establishes server-key access and observed settings
-only; it does not require signup to be disabled. The last verified setting is
-still `disable_signup=false`, which must become `true` before the pilot. Live
-customer login, active admission, concurrent quotas and customer-authenticated
-Gemini chat remain separate unverified gates.
+only; it does not require signup to be disabled. The later actual Auth settings
+GET verified `disable_signup=true` before the controlled pilot. Keep signup
+disabled. Customer-authenticated Gemini replies and provider-outcome failures
+remain unverified despite the completed login and quota checks.
 
 ## Prerequisites controlled by the operator
 
