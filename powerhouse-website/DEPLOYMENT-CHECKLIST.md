@@ -1,7 +1,12 @@
-## Prelaunch checks
-- [ ] Verify screenshot fidelity on Samsung S26 Ultra
-- [ ] Preserve Stripe A$79 checkout and verify fulfilment
-- [ ] Test every link and downloadable file
-- [ ] Deploy via Vercel preview and inspect mobile before promoting
-- [ ] Nine new products: do not activate until secure paid delivery works
-- [ ] SOLO generative AI: do not claim enabled until backend tested
+# Powerhouse release checklist
+
+The single current checklist is [GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
+Use its current-status section and retain its historical audit trail.
+
+As of 27 October 2026, production is in maintenance. The original A$79 Marketing
+Kit is withdrawn according to the latest commerce audit; do not reactivate or
+replace its checkout automatically. Ten newer product cards are drafts.
+
+Private SOLO chat verification does not authorize a public AI release, storefront
+cutover, purchase activation or Android publication. Those require the separate
+release gates and approved branding review recorded in issue #31.

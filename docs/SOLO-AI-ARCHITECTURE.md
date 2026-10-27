@@ -1,14 +1,17 @@
 # SOLO AI — Shared Product Architecture
 
-Status: planning and integration specification (not a live generative AI service).
+Status: private Gemini integration and development clients; no public generative AI service.
+Current release evidence and remaining gates: [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 
 ## Mission
 SOLO AI will serve both The Solo Service Provider Powerhouse website and a future standalone mobile application.
 
 ## Current foundations
 - AI Download Centre provides a public catalogue in `data/tools.json`.
-- Powerhouse uses a catalogue-connected site guide and has an experimental Vercel `/api/solo-chat` endpoint.
-- No OpenAI API key is currently configured in the Powerhouse Vercel project.
+- Powerhouse has a catalogue-connected site guide plus a separate conversation UI and private Vercel `/api/solo-chat` endpoint.
+- The endpoint uses the existing Gemini Preview key, with `gemini-3.5-flash-lite` as its default model. Existing OpenAI credentials are retained; no new OpenAI billing or Groq signup is required.
+- Production is under maintenance; development previews are not a public release.
+- No commercial customer identity or durable quota database was found in the current code or connected Supabase inventory. Keep the inactive WrightWayz database separate.
 - A live generative AI service must not be claimed until authenticated API calls and safety/cost controls are tested.
 
 ## Architecture
@@ -26,9 +29,6 @@ SOLO AI will serve both The Solo Service Provider Powerhouse website and a futur
 - Cite catalogue sources and distinguish listings from verified recommendations.
 
 ## Release criteria
-- [ ] Real model configured server-side and tested.
-- [ ] Rate limits, logging and cost controls validated.
-- [ ] Privacy notice updated for AI interactions.
-- [ ] Standalone app icon, manifest and mobile usability checked.
-- [ ] Stripe webhook/fulfilment audited independently.
-- [ ] Production launch approved after preview testing.
+Track completion only in the current section of issue #31. A ready Vercel build,
+a provider-only diagnostic and a successful private API conversation are distinct
+milestones; none proves customer login, paid fulfilment or a production launch.

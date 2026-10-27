@@ -30,19 +30,38 @@ module.exports = async (req,res) => {
     if(url.host!==host) return json(res,403,{error:"Cross-origin requests are not enabled"});
   }
   const type=String(req.headers["content-type"]||"");
-  if(!type.toLowerCase().startsWith("application/json"))return json(res,415,{error:"JSON required"});
+  if(type.split(";",1)[0].trim().toLowerCase()!=="application/json")return json(res,415,{error:"JSON required"});
   const len=Number(req.headers["content-length"]||0);
   if(!Number.isFinite(len)||len<0||len>MAX_BODY_BYTES)return json(res,413,{error:"Conversation request is too large"});
   let body=req.body;
-  try {if(typeof body==="string")body=JSON.parse(body)}catch{return json(res,400,{error:"Invalid JSON"})}
-  if(body===undefined){
-    let raw="";
-    try{for await(const chunk of req){raw+=chunk.toString();if(Buffer.byteLength(raw)>MAX_BODY_BYTES)return json(res,413,{error:"Conversation request is too large"});}body=JSON.parse(raw);}catch{return json(res,400,{error:"Invalid JSON"})}
-  }
+  // Enforce bytes even when Vercel already parsed the body or no length was sent.
+  try {
+    if(body===undefined){
+      const chunks=[];
+      let bytes=0;
+      for await(const chunk of req){
+        const buffer=Buffer.isBuffer(chunk)?chunk:Buffer.from(chunk);
+        bytes+=buffer.length;
+        if(bytes>MAX_BODY_BYTES)return json(res,413,{error:"Conversation request is too large"});
+        chunks.push(buffer);
+      }
+      // Decode once so a multi-byte character split across chunks stays intact.
+      body=JSON.parse(Buffer.concat(chunks,bytes).toString("utf8"));
+    }else if(typeof body==="string"||Buffer.isBuffer(body)){
+      if(Buffer.byteLength(body)>MAX_BODY_BYTES)return json(res,413,{error:"Conversation request is too large"});
+      body=JSON.parse(Buffer.isBuffer(body)?body.toString("utf8"):body);
+    }else{
+      const encoded=JSON.stringify(body);
+      if(typeof encoded!=="string")return json(res,400,{error:"Invalid JSON"});
+      if(Buffer.byteLength(encoded)>MAX_BODY_BYTES)return json(res,413,{error:"Conversation request is too large"});
+    }
+  }catch{return json(res,400,{error:"Invalid JSON"})}
+  if(!body||typeof body!=="object"||Array.isArray(body))return json(res,400,{error:"Invalid conversation body"});
   const messages=body?.messages;
-  if(!Array.isArray(messages)||messages.length<1||messages.length>MAX_MESSAGES||messages.some(m=>!m||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||!m.content.trim()||m.content.length>MAX_CHARS))return json(res,400,{error:"Invalid conversation. Limit 12 messages and 1,200 characters each."});
+  if(!Array.isArray(messages)||messages.length<1||messages.length>MAX_MESSAGES||Array.from(messages).some(m=>!m||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||!m.content.trim()||m.content.length>MAX_CHARS))return json(res,400,{error:"Invalid conversation. Limit 12 messages and 1,200 characters each."});
   if(messages[messages.length-1].role!=="user")return json(res,400,{error:"Last message must be from the user"});
-  // Enforce alternating roles; reject fabricated or malformed conversation turns.
+  // Clients must retain complete turns when trimming their conversation history.
+  if(messages[0].role!=="user")return json(res,400,{error:"First message must be from the user"});
   if(messages.some((m,i)=>i>0&&m.role===messages[i-1].role))return json(res,400,{error:"Conversation roles must alternate"});
   // Private testing only: feature gate plus server-side owner secret.
   // Do not ship a browser client containing the secret. Public users require
@@ -69,7 +88,10 @@ module.exports = async (req,res) => {
         signal:controller.signal});
       if(!response.ok)return json(res,502,{error:"Gemini provider unavailable",upstreamStatus:response.status});
       const data=await response.json();
-      const reply=(data.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("").trim();
+      const parts=data?.candidates?.[0]?.content?.parts;
+      const reply=(Array.isArray(parts)?parts:[])
+        .filter(part=>part&&part.thought!==true&&typeof part.text==="string")
+        .map(part=>part.text).join("").trim();
       if(!reply)return json(res,502,{error:"Gemini returned no text response"});
       return json(res,200,{reply,provider:"gemini",model});
     }catch(e){return json(res,504,{error:"Gemini request timed out or failed"})}
