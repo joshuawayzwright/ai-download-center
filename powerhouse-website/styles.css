@@ -206,3 +206,85 @@ body{background:var(--ww-charcoal);color:#f4f4f2}
 .social-icon:focus-visible{outline:3px solid #44adff;outline-offset:3px}
 @media(max-width:850px){.social-icons{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:550px){.social-connect{padding:48px 0}.social-icons{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.social-icon{min-height:87px;padding:12px 5px}.social-icon>span.social-mark{width:34px;height:34px}.social-icon .social-mark svg{width:29px;height:29px}.social-icon small{font-size:11px}}
+
+/* SOLO conversation entry and keyboard access; approved artwork is unchanged. */
+#conversation{scroll-margin-top:100px}
+#solo-account-status{overflow-wrap:anywhere}
+#solo-account .actions button{min-height:44px}
+#solo-account input:focus-visible,#solo-account button:focus-visible,.solo-chat-transcript:focus-visible{outline:3px solid #0087ff;outline-offset:3px}
+.solo-skip-link{position:fixed;top:8px;left:12px;z-index:20;transform:translateY(-160%);padding:12px 18px;background:#0a0a0a;color:#d4af37;border:1px solid #d4af37}
+.solo-skip-link:focus{transform:translateY(0)}
+.solo-skip-link:focus-visible{outline:3px solid #0087ff;outline-offset:3px}
+
+/* Launch collection: equal prominence for the ten planned SOLO products. */
+.heading .store-title{font:800 clamp(32px,4vw,54px)/1.15 Georgia,serif;color:#f2c766;margin:10px 0;letter-spacing:-.025em}
+.launch-summary{max-width:790px;margin:18px auto 0;font-size:17px;line-height:1.75}
+.launch-product{grid-template-columns:minmax(0,1fr);padding:28px;min-height:255px;border-top:2px solid #d4af37}
+.launch-product .info{min-width:0}
+.launch-product .topline{margin-bottom:12px}
+.launch-product h2,.launch-product h3{font-size:20px;line-height:1.3;margin:10px 0;color:#f2d28d}
+.launch-product p{font-size:14px;line-height:1.75;max-width:56ch}
+.launch-product .product-actions{align-items:center;gap:18px;padding-top:24px}
+.launch-product .product-actions a{flex:0 1 auto;padding:12px 16px;font-size:11px;min-height:44px;border-color:#8a8f98}
+.launch-product .pending{font-size:10px;font-weight:800;letter-spacing:.1em;color:#9ccfff}
+.launch-product a:focus-visible,.catalog-follow a:focus-visible{outline:3px solid #0087ff;outline-offset:4px}
+.catalog-note{margin-top:30px;padding:30px;border:1px solid #5b5240;background:linear-gradient(125deg,#14181b,#090b0d)}
+.catalog-note h2,.catalog-note h3{margin:0 0 12px;color:#d4af37;font:700 clamp(24px,3vw,36px)/1.2 Georgia,serif}
+.catalog-note p{max-width:850px;color:#c6c9cc;line-height:1.75}
+.catalog-follow{margin-top:20px}
+@media(max-width:600px){.launch-summary{font-size:16px}.launch-product{grid-template-columns:minmax(0,1fr);padding:22px;min-height:0}.launch-product h2,.launch-product h3{font-size:19px}.launch-product .product-actions{flex-wrap:wrap;padding-right:0;gap:14px}.launch-product .product-actions a{font-size:11px}.catalog-note{padding:24px}.catalog-follow a{width:100%}}
+
+/* Customer policies: readable, branded documents with clear section navigation. */
+.policy-page{background:#0a0a0a;color:#e6e7e9}
+.policy-page a{ text-underline-offset:4px }
+.policy-page a:focus-visible{outline:3px solid #0087ff;outline-offset:4px}
+.policy-header .nav{gap:18px}
+.policy-hero{padding:28px 0 42px;background:radial-gradient(ellipse at 90% 0%,#102b3b70,transparent 65%),linear-gradient(120deg,#131517,#080a0c);border-bottom:1px solid #5b5240}
+.policy-breadcrumb{display:flex;gap:12px;align-items:center;margin-bottom:32px;font-size:12px;color:#aeb5bd}
+.policy-breadcrumb a{color:#d4af37}
+.policy-hero h1{font:700 clamp(36px,5vw,64px)/1.12 Georgia,serif;letter-spacing:-.035em;margin:14px 0 22px;color:#f3f0e8}
+.policy-hero h1 span{color:#d4af37}
+.policy-intro{max-width:760px;font-size:18px;line-height:1.8;color:#c6c9cc;margin:0}
+.policy-meta{display:flex;flex-wrap:wrap;gap:24px 46px;margin:28px 0 0}
+.policy-meta div{min-width:150px}
+.policy-meta dt{font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#929ba5;margin-bottom:6px}
+.policy-meta dd{margin:0;font-size:13px;color:#ece7dc}
+.policy-release-note{margin-top:30px;max-width:1000px;padding:20px 24px;border:1px solid #5b5240;border-left:3px solid #d4af37;background:#0a0d10}
+.policy-status{display:block;font-size:10px;letter-spacing:.12em;font-weight:800;color:#9ccfff}
+.policy-release-note p{margin:9px 0 0;color:#c6c9cc;font-size:14px;line-height:1.75}
+.policy-release-note a{color:#e7c86a;white-space:normal}
+.policy-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:54px;padding-top:48px;padding-bottom:54px;align-items:start}
+.policy-sidebar{position:sticky;top:102px}
+.policy-contents{padding:24px;border:1px solid #3b4047;background:#101315}
+.policy-contents h2{margin:0 0 16px;font-size:13px;letter-spacing:.08em;color:#e7c86a}
+.policy-contents ol{padding-left:20px;margin:0;color:#8a8f98;font-size:12px}
+.policy-contents li{padding:5px 0}
+.policy-contents a{display:block;min-height:34px;padding:5px 0;color:#d7dbe0;text-decoration:none;line-height:1.5}
+.policy-contents a:hover{color:#e7c86a;text-decoration:underline}
+.policy-help{padding:26px 0;color:#b8c0c8;font-size:13px;line-height:1.75}
+.policy-help a{display:block;overflow-wrap:anywhere;color:#e7c86a;font-size:12px}
+.policy-document{min-width:0;max-width:780px}
+.policy-section{scroll-margin-top:104px;padding:0 0 30px;margin:0 0 30px;border-bottom:1px solid #30353a}
+.policy-section:last-child{margin-bottom:0}
+.policy-section h2{font-size:23px;line-height:1.35;font-weight:650;letter-spacing:-.02em;color:#f2eee5;margin:0 0 18px}
+.policy-section h2>span{font-size:12px;letter-spacing:.1em;color:#d4af37;vertical-align:middle;display:inline-block;min-width:33px}
+.policy-section p,.policy-section li{font-size:16px;line-height:1.85;color:#c6c9cc;overflow-wrap:anywhere}
+.policy-section p{margin:14px 0}
+.policy-section a:not(.outline){color:#e7c86a}
+.policy-rights{border-left:3px solid #0087ff;background:#101b23;padding:4px 20px;margin:18px 0}
+.policy-rights p{color:#e2eaf2}
+.policy-related{display:flex;gap:14px 32px;flex-wrap:wrap;padding-top:22px;padding-bottom:32px;border-top:1px solid #3b4047}
+.policy-related a{display:inline-flex;align-items:center;min-height:44px;color:#c6c9cc;font-size:13px}
+.policy-related a[aria-current=page]{color:#e7c86a;font-weight:700}
+.policy-simple{max-width:860px;padding-top:48px;padding-bottom:36px}
+.policy-page footer a{overflow-wrap:anywhere}
+@media(max-width:900px){.policy-layout{grid-template-columns:210px minmax(0,1fr);gap:30px}.policy-contents{padding:20px}.policy-section h2{font-size:21px}}
+@media(max-width:720px){.policy-layout{grid-template-columns:minmax(0,1fr);padding-top:30px;gap:26px}.policy-sidebar{position:static}.policy-contents ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 25px}.policy-help{padding:20px 0 0}.policy-section{scroll-margin-top:90px}.policy-intro{font-size:16px}.policy-hero{padding-bottom:32px}.policy-release-note{padding:18px}.policy-simple{padding-top:30px}}
+@media(max-width:450px){.policy-contents ol{grid-template-columns:1fr}.policy-meta{gap:20px}.policy-hero .eyebrow{font-size:9px;letter-spacing:.14em}.policy-section h2{font-size:20px}.policy-related{gap:6px 22px}.policy-header .outline{padding:10px 12px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Public SOLO AI availability panel, using the approved chat shell. */
+.solo-launch-status{padding:clamp(22px,4vw,36px)}
+.solo-launch-status h3{margin-top:0}
+.solo-launch-status p{max-width:70ch}
+.solo-launch-status .actions{flex-wrap:wrap}
