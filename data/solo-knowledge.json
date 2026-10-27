@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "updated_at": "2026-10-25",
+  "schema_version": 2,
+  "updated_at": "2026-10-27",
   "brand": {
     "name": "The Solo Service Provider",
     "assistant": "SOLO AI",
@@ -11,16 +11,95 @@
   },
   "products": [
     {
-      "id": "ai-marketing-kit",
-      "name": "AI Marketing Kit",
-      "price_aud": 79,
-      "payment_type": "one_time",
-      "status": "checkout_active_fulfilment_unverified",
-      "url": "https://thesoloserviceprovider.com.au/marketing-kit.html",
-      "free_sample": "https://thesoloserviceprovider.com.au/downloads/five-minute-ai-marketing-fix.pdf"
+      "id": "solo-cashflow-control",
+      "name": "SOLO Cashflow Control",
+      "proposed_price_aud": 19,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-quote-invoice-builder",
+      "name": "SOLO Quote & Invoice Builder",
+      "proposed_price_aud": 29,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-client-booking-follow-up",
+      "name": "SOLO Client Booking & Follow-Up",
+      "proposed_price_aud": 29,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-job-application-command-centre",
+      "name": "SOLO Job Application Command Centre",
+      "proposed_price_aud": 19,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-content-repurposing-studio",
+      "name": "SOLO Content Repurposing Studio",
+      "proposed_price_aud": 29,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-customer-support-desk",
+      "name": "SOLO Customer Support Desk",
+      "proposed_price_aud": 29,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-small-business-operations-hub",
+      "name": "SOLO Small Business Operations Hub",
+      "proposed_price_aud": 39,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-digital-product-launch-system",
+      "name": "SOLO Digital Product Launch System",
+      "proposed_price_aud": 39,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-business-research-dashboard",
+      "name": "SOLO Business Research Dashboard",
+      "proposed_price_aud": 29,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
+    },
+    {
+      "id": "solo-ai-workflow-starter-pack",
+      "name": "SOLO AI Workflow Starter Pack",
+      "proposed_price_aud": 19,
+      "status": "in_development_not_for_sale",
+      "checkout_url": null,
+      "collection_url": "https://thesoloserviceprovider.com.au/digital-products.html"
     }
   ],
   "projects": [
+    {
+      "id": "solo-ai",
+      "name": "SOLO AI",
+      "status": "private_preview_not_publicly_available",
+      "repo": "https://github.com/joshuawayzwright/ai-download-center",
+      "description": "The shared website and future Android assistant is in ongoing development. Customer authentication, durable request limits and a private two-turn Gemini API conversation have been verified; public access remains disabled and signed-in browser/device acceptance is unfinished.",
+      "evidence": "docs/SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md"
+    },
     {
       "id": "sudo-hq",
       "name": "Sudo HQ",
@@ -67,10 +146,36 @@
     "refunds": "https://thesoloserviceprovider.com.au/refunds.html"
   },
   "assistant_rules": [
-    "Do not claim unfinished applications are available for sale.",
-    "Do not assert paid kit delivery is working until fulfilment is tested.",
+    "Present the full initial ten-product launch collection, with more tools and resources in ongoing development.",
+    "Treat launch product names, prices and deliverables as provisional plans; none is currently available for checkout.",
+    "Do not promote the retired AI Marketing Kit as a launch, flagship or available product; preserve historical customer support.",
+    "Do not claim unfinished applications, Android releases, subscriptions or autonomous tools are available for sale.",
+    "Do not assert paid delivery is working until each product has passed payment-confirmed fulfilment testing.",
+    "Do not promise release dates, guaranteed business outcomes, recurring content or automatic rights to future products.",
+    "Distinguish verified private SOLO AI API testing from public availability and signed-in browser/device acceptance.",
     "Do not describe WrightWayz as part of the commercial business.",
     "Do not ask for card numbers, passwords, or sensitive personal data.",
     "Use verified links and distinguish public directory entries from endorsements."
+  ],
+  "catalogue": {
+    "name": "The SOLO launch collection",
+    "url": "https://thesoloserviceprovider.com.au/digital-products.html",
+    "product_count": 10,
+    "status": "in_development_not_for_sale",
+    "pricing_status": "proposed_pending_owner_approval",
+    "plan_source": "docs/SOLO-10-PRODUCT-RESET.md",
+    "development_note": "Ten initial digital products are planned for launch, with further tools and resources in ongoing development. Checkout and future release dates are not announced."
+  },
+  "retired_products": [
+    {
+      "id": "ai-marketing-kit",
+      "name": "AI Marketing Kit",
+      "status": "retired_from_new_sales",
+      "checkout_url": null,
+      "historical_price_aud": 79,
+      "legacy_free_resource_url": "https://thesoloserviceprovider.com.au/downloads/five-minute-ai-marketing-fix.pdf",
+      "support_contact": "hello@thesoloserviceprovider.com.au",
+      "note": "Do not promote as a launch or flagship product. Preserve support and historical customer access; direct catalogue enquiries to the full launch collection."
+    }
   ]
 }
