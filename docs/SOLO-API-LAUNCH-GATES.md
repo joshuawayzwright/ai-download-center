@@ -8,7 +8,7 @@ Its current-status section supersedes the historical execution log.
 - API: `powerhouse-website/api/solo-chat.js`, deployed to private Vercel previews.
 - Current provider: **Gemini**, default model `gemini-3.5-flash-lite`, with the existing server-side Preview key. OpenAI/Groq code paths are retained but are not the selected provider.
 - Public inference: **OFF**. A private owner token is not customer authentication.
-- The development website has a conversation UI; real customer login and durable quotas remain unfinished.
+- The development website has a conversation UI. [Draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34) implements customer sessions and durable quotas, with 148 automated checks recorded; it remains unmerged. Real customer login, independent hosted quota races and customer-authenticated Gemini chat remain unverified.
 - Production serves the approved maintenance deployment `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. Do not promote a development branch wholesale.
 - Android client: not yet connected to an authenticated production API.
 
@@ -44,8 +44,12 @@ the diagnostic must not become an automatic build command.
 
 Customer identity, durable atomic quotas, cost ceilings, privacy safeguards,
 device verification and owner approval remain release gates in issue #31.
-The only connected Supabase project found during the 27 October inventory was
-`Wrightwayz Project` (inactive). It is not a commercial SOLO customer database
-and must not be repurposed for this release.
+The initial 27 October inventory only exposed the inactive WrightWayz project.
+Later same-day evidence in [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31)
+confirms the existing commercial Supabase project is accessible and its admission
+migration is applied. Reuse that commercial project; WrightWayz remains separate.
+Customer verification still requires the missing server-side Preview secret,
+restricted pilot signup and the remaining live test gates. Preserve disabled
+customer gates until the controlled pilot is ready.
 
 **Do not set `SOLO_PRIVATE_TEST_ENABLED=true` in production until rate limits and authentication are ready.** Preview-only owner tests must not be mistaken for a public product.

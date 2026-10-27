@@ -1,5 +1,37 @@
 # Cross-project audit and controlled cleanup — 27 October 2026
 
+## Current information and profile audit — later on 27 October 2026
+
+This section supersedes the older live-store and private-chat observations in the historical snapshot below. The release authority remains the current section of [master issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
+
+| Area | Current verified information |
+| --- | --- |
+| Public maintainer contact | Joshua Wright, **superadmin2712@gmail.com**, **0452 272 820** / +61 452 272 820; Gold Coast, Queensland, Australia. Contact destinations have been inspected; no email or call was sent. |
+| GitHub profile | [Original SOLO and WrightWayz banners, current contacts and portfolio status](https://github.com/joshuawayzwright/joshuawayzwright/commit/44341a4cbc7f05753ddd2bb3c310cf23e9d0708a) published; browser rendering and both source image dimensions verified. |
+| AI Download Centre | Public directory responds successfully. Current contact source/configuration is updated in this information refresh. Featured listings remain separate from the withdrawn Marketing Kit; payment configuration is unchanged. |
+| ProjectForge AI | Existing Pages deployment is live with eight browser tools. README and knowledge-base updates correct older setup-blocked wording and the six-tool count. |
+| Commercial production | The Solo Service Provider displays maintenance, with new orders paused. The original A$79 Marketing Kit is withdrawn. Source/contact edits do not end maintenance or promote the development website. |
+| SOLO private conversation | Prior owner-authenticated two-turn Gemini API test is verified; see [the evidence](SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md). |
+| SOLO customer access | Session/quota work and hosted commercial database setup are in [draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34), still unmerged. 148 automated checks are recorded; live customer login, hosted quota races and customer Gemini chat remain unverified. |
+| Vercel failed attempts | The separate business-command project still fails on missing `apps/solo-suite`. The latest inspected industrial-project redeploy also failed on missing `powerhouse-website` in that redeploy's source. Neither failure removes the earlier READY private preview or the maintenance production deployment. No Vercel project setting was changed in this audit. |
+
+### GitHub refresh checklist
+
+- [x] Inspect all seven accessible repositories and current Vercel/project evidence.
+- [x] Publish exact original artwork and current public contact information in the profile.
+- [x] Verify the profile's rendered content, email destination and fully loaded banner dimensions.
+- [x] Mark the old 25-repository migration and 15-app expansion as plans, not completed releases.
+- [x] Prepare current directory/commercial contact corrections without changing checkout configuration.
+- [ ] Verify this source refresh's GitHub Actions and published directory contact after the commit.
+- [ ] Finish account sidebar bio, public-email selection and pins through an authenticated GitHub browser session; the repository connector does not expose these settings.
+- [ ] Correct older WrightWayz website contact/registration wording under its existing website change controls; this profile refresh does not alter charity production.
+- [ ] Resolve the existing WrightWayz CI canonical-domain mismatch before calling its quality gates green.
+- [ ] Complete the remaining customer, commerce, mobile and Android release gates in issue #31.
+
+No deletion, archiving, repository-visibility change, payment activation or production cutover was performed. The original brand assets remain byte-for-byte intact.
+
+## Historical snapshot from the earlier 27 October audit
+
 ## Operating rule
 **No deletion, archiving, domain changes, Stripe changes or production cutover without explicit owner approval and a rollback plan.** Keep WrightWayz charity operations and The Solo Service Provider commercial operations financially and technically distinct. Share design tokens and visual quality standards, **not** legal identities, credentials, customer data, donation flows or accounting.
 
@@ -37,7 +69,8 @@ Vercel team projects (6):
 - [x] Verify both primary public websites respond.
 - [x] Stage WrightWayz-inspired commercial palette without changing identity.
 - [ ] Preview CSS regression: mobile 390px and desktop 1440px, contrast, focus, text clipping, logo fidelity.
-- [x] Identify `solo-ai-business-command` build failure: configured `apps/solo-suite` directory is absent.\n- [ ] Decide correct source directory or retire duplicate project only after mapping its domains and purpose.
+- [x] Identify `solo-ai-business-command` build failure: configured `apps/solo-suite` directory is absent.
+- [ ] Decide correct source directory or retire duplicate project only after mapping its domains and purpose.
 - [ ] Run actual SOLO API POST and CI tests; authenticate users and enforce durable quotas.
 - [ ] Verify Stripe payment-to-file delivery with an authorised test transaction.
 - [ ] Verify all commercial product assets are complete and readable.

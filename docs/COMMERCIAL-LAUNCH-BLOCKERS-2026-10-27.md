@@ -26,8 +26,9 @@
 - [ ] Review the other nine products separately; do not activate unfinished items.
 
 ## SOLO AI
-- Gemini provider-only Vercel diagnostic previously returned a real model response.
-- SOLO API is private; customer authentication, rate limits and complete end-to-end chat are not verified.
+- Later same-day evidence verifies an owner-authenticated two-turn conversation through the deployed SOLO API, not only a provider diagnostic. See [private API verification](SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md).
+- SOLO remains private. Customer session/quota implementation is in [unmerged draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34), with 148 automated checks recorded. Live customer login, independent hosted quota enforcement and customer-authenticated chat remain unverified.
+- The existing commercial Supabase project has been accessed and its admission migration applied. The missing server-side Preview secret and unrestricted signup configuration remain blockers before a controlled pilot. See the current section of [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 - Keep public inference disabled.
 
 ## Current decision

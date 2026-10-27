@@ -77,6 +77,8 @@ remains enabled; production `SOLO_PRIVATE_TEST_ENABLED` remains `false`.
 
 ## Production and next gate
 
+**Later status note — 27 October 2026:** the private-chat evidence above remains valid. The database inventory/provisioning observations below record the state at the time of that test. Later same-day work found and reused the existing commercial Supabase project, applied the admission migration and implemented customer sessions/quotas in [draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34). The branch records 148 automated checks; live customer login, hosted quota races and customer Gemini chat remain unverified. The current section of [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31) supersedes the older next-step wording below. Production still serves maintenance.
+
 Production remains the maintenance deployment
 `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. No production promotion, checkout change,
 artwork replacement or WrightWayz database change was performed.

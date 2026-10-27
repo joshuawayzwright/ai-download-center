@@ -4,11 +4,28 @@ A public directory for discovering major AI models, assistants, self-hosted tool
 
 **Live site:** https://joshuawayzwright.github.io/ai-download-center/
 
-**Featured listing:** $99 USD/month after a 7-day free trial, securely billed through Stripe.
+**Configured featured-listing offer:** $99 USD/month after a 7-day free trial through Stripe. Checkout completion and fulfilment were not re-tested in the 27 October information audit.
 
 **Manage billing:** https://billing.stripe.com/p/login/eVq00je9s5GX8oobxZeAg00
 
-**Support:** hello@thesoloserviceprovider.com.au
+**Maintainer and support:** [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com) · [0452 272 820](tel:+61452272820)
+
+## Current portfolio status — 27 October 2026
+
+The public AI directory is live on GitHub Pages. This repository also contains commercial SOLO development source; a working directory deployment does not establish that those separate products are released.
+
+| Area | Source | Current status |
+| --- | --- | --- |
+| AI Download Centre | Repository root | Live public directory; latest audited Pages deployment succeeded. |
+| The Solo Service Provider / SOLO AI | [powerhouse-website/](powerhouse-website/) | Commercial production serves a maintenance notice. New orders are paused; the former A$79 AI Marketing Kit is withdrawn. |
+| SOLO customer access | [Draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34) | Login/session and durable quota implementation is under review, not merged. Live customer login, hosted concurrency and customer Gemini conversation remain unverified. |
+| Android work | [Master release checklist](https://github.com/joshuawayzwright/ai-download-center/issues/31) | Source/build work exists; Google Play publication is not verified. |
+
+The earlier owner-authenticated two-turn Gemini conversation is documented in [private API verification](docs/SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md). It is separate from customer authentication or a public AI launch. The customer branch records 148 automated checks; those checks do not close the remaining live customer gates.
+
+Use the **current section of [master issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31)** for release decisions; its later evidence supersedes older execution logs. The commercial Supabase project is separate from WrightWayz. Existing charity and commercial identities, data, payments and governance remain separate.
+
+Directory featured listings are a separate offer from the withdrawn A$79 Marketing Kit. This information refresh does not activate, deactivate or substitute any payment link.
 
 ## Features
 
@@ -64,7 +81,7 @@ Settings live in [config.js](config.js).
 - **Free submissions:** the "Submit a tool" button opens a GitHub issue form ([submit-tool.yml](.github/ISSUE_TEMPLATE/submit-tool.yml)). To accept a submission, add an entry to `data/tools.json`.
 - **Featured listings:** the public "Start 7-day free trial" button opens the live Stripe subscription checkout at $99 USD/month after trial. Paid entries use `"sponsored": true` and are clearly labeled Sponsored.
 - **Customer billing:** sponsors can update payment details, view invoices, or cancel through the Stripe customer portal linked from the site and confirmation page.
-- **Customer support:** billing and listing support uses `hello@thesoloserviceprovider.com.au`.
+- **Customer support:** billing and listing enquiries use [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com), phone **0452 272 820**. Please name AI Download Centre in the enquiry.
 - **Affiliate links:** add `"affiliateUrl": "https://..."` to an entry. The card's link uses it (marked `rel="sponsored"`) instead of the plain `url`.
 
 The footer tells visitors that sponsored placements are paid and that some links are affiliate links. Keep it there: advertising rules in most countries require that disclosure.

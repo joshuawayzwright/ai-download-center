@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25",
+  "updated_at": "2026-10-27",
   "brand": {
     "name": "The Solo Service Provider",
     "assistant": "SOLO AI",
     "owner": "Joshua Wright",
-    "contact": "hello@thesoloserviceprovider.com.au",
+    "contact": "superadmin2712@gmail.com",
     "site": "https://thesoloserviceprovider.com.au",
     "location": "Gold Coast, Queensland, Australia"
   },
@@ -15,7 +15,9 @@
       "name": "AI Marketing Kit",
       "price_aud": 79,
       "payment_type": "one_time",
-      "status": "checkout_active_fulfilment_unverified",
+      "status": "withdrawn",
+      "status_as_of": "2026-10-27",
+      "availability_note": "Legacy AI Marketing Kit withdrawn; new orders are paused. The price and resource URLs are retained for historical reference and do not indicate current availability. Replacement products remain drafts pending review and verified delivery.",
       "url": "https://thesoloserviceprovider.com.au/marketing-kit.html",
       "free_sample": "https://thesoloserviceprovider.com.au/downloads/five-minute-ai-marketing-fix.pdf"
     }
@@ -54,11 +56,11 @@
   "services": [
     {
       "name": "AI workflow enquiries",
-      "contact": "mailto:hello@thesoloserviceprovider.com.au?subject=AI%20workflow%20enquiry"
+      "contact": "mailto:superadmin2712@gmail.com?subject=AI%20workflow%20enquiry"
     },
     {
       "name": "Website and app project enquiries",
-      "contact": "mailto:hello@thesoloserviceprovider.com.au?subject=Development%20enquiry"
+      "contact": "mailto:superadmin2712@gmail.com?subject=Development%20enquiry"
     }
   ],
   "policies": {
