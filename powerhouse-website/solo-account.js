@@ -109,6 +109,12 @@
     } else if (action !== 'check') body = {action};
     busy = true;
     controls();
+    if (action === 'logout') {
+      // Stop local chat now; remote session revocation is still pending.
+      generation++;
+      publish({enabled: state.enabled, authenticated: false, chatEnabled: false}, true);
+      status.textContent = 'Signing out. Conversation cleared.';
+    }
     const startedGeneration = generation;
     // Logout can clear cookies even when server revocation fails. Other tabs
     // must recheck the actual cookie session rather than trust this response.

@@ -1,6 +1,12 @@
 # SOLO customer access — 27 October 2026
 
-## Release status
+## Recorded customer access and Gemini milestones
+
+This record covers the customer access implementation through the captured
+Gemini verification cycle. Later account-binding changes and their separate
+browser evidence are recorded in
+[browser isolation](SOLO-BROWSER-ISOLATION-2026-10-27.md); the historical source,
+deployment and test totals below are not pointers to the latest release.
 
 Customer login, secure session handling, durable request admission and the web
 account panel are implemented for a Preview-only pilot. The existing commercial
@@ -24,15 +30,16 @@ The previous owner-token Gemini two-turn HTTP result remains recorded in
 [the private API verification](SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md).
 This work extends that same `/api/solo-chat`; it does not create another AI backend.
 
-Current commits, preview deployment, test totals and remaining release gates are
-recorded in [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
+The authoritative current commits, preview deployment, test totals and remaining
+release gates are recorded in
+[issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 
 ## GitHub and deployed evidence
 
-- Current verified source: [`f4ba7c22e6976c127aefb55a1c0479686cad16f0`](https://github.com/joshuawayzwright/ai-download-center/commit/f4ba7c22e6976c127aefb55a1c0479686cad16f0), with unchanged runtime implementation `0af8d9c`. The [customer Gemini record](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md) verifies two captured HTTP 200 turns, exact context recall, allowance **2 → 1 → 0**, logout 200 and two matching succeeded SQL rows. Marker: `SOLO_CUSTOMER_GEMINI_TWO_TURN_PASS`.
+- Gemini-cycle verified source: [`f4ba7c22e6976c127aefb55a1c0479686cad16f0`](https://github.com/joshuawayzwright/ai-download-center/commit/f4ba7c22e6976c127aefb55a1c0479686cad16f0), with runtime implementation unchanged during that cycle at `0af8d9c`. The [customer Gemini record](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md) verifies two captured HTTP 200 turns, exact context recall, allowance **2 → 1 → 0**, logout 200 and two matching succeeded SQL rows. Marker: `SOLO_CUSTOMER_GEMINI_TWO_TURN_PASS`.
 - Four actual Gemini requests were made across two bounded windows. The first two have durable success records but lost client output; no HTTP/context assertions are claimed for that attempt. All four successes and the prior 11 reservations are retained.
 - Existing CI baseline: [run 40478171099](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171099) at `0af8d9c` passed **137 API/browser/smoke + 21 SQL = 158 tests**, zero failures/skips; jobs `122101471635` and `122101471320`. [Repository quality run 40478171124](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171124) also passed. No runtime changes or new test run are claimed for this Gemini cycle.
-- Current normal protected Preview: `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM`, **READY** at `f4ba7c2`: [SOLO preview](https://solo-provider-industrial-qoyn70gb8-wrightwayz.vercel.app/solo-ai.html#conversation). No build override. Actual HTTP checks returned account GET **200**, all three status booleans false and private/no-store caching; refresh **503 `auth_disabled`**; customer chat **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`.
+- Gemini-cycle final normal protected Preview: `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM`, **READY** at `f4ba7c2`: [SOLO preview](https://solo-provider-industrial-qoyn70gb8-wrightwayz.vercel.app/solo-ai.html#conversation). No build override. Actual HTTP checks returned account GET **200**, all three status booleans false and private/no-store caching; refresh **503 `auth_disabled`**; customer chat **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`.
 - Final SQL state: disabled policy, restored caps **3/20/20/200**, two blocked/expired members with zero eligible, zero sessions, and 15 retained rows: 11 admission-only reservations plus four Gemini successes. Production remains `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`.
 
 Earlier Auth/quota cycle:
@@ -164,9 +171,9 @@ GET verified `disable_signup=true`, email authentication enabled, anonymous
 users disabled and email auto-confirmation disabled. Keep provider signup closed;
 the absence of an application signup action alone does not close that endpoint.
 
-## Automated verification
+## Automated verification for the recorded cycle
 
-The existing CI baseline `40478171099` at `0af8d9c` verifies **158 passing tests**: 137
+The CI baseline used for this cycle, `40478171099` at `0af8d9c`, verifies **158 passing tests**: 137
 API/browser/smoke tests and 21 SQL tests, with zero failures or skipped tests.
 This includes the previous 153-test baseline plus five guarded-fixture tests.
 The harness tests use mocked services; actual hosted authentication and quota
@@ -222,11 +229,11 @@ The Node 24 local sandbox may summarize each isolated test file as one test.
 Run an individual `.test.cjs` directly to see its assertion count. CI uses Node 22.
 No test automatically calls Gemini or requires a real customer/provider secret.
 
-## Remaining commercial configuration
+## Commercial configuration at the close of the Gemini cycle
 
 The commercial connection now reaches the existing project above. Project
-creation and organisation authorization are no longer blockers. The current
-connector does not expose retrieval of the modern server secret key or mutation
+creation and organisation authorization are no longer blockers. The connector
+inspected in this cycle did not expose retrieval of the modern server secret key or mutation
 of Auth signup settings. The existing project's server key has now been saved
 securely in Vercel Preview and its hosted status-RPC access verified by the
 read-only configuration probe in
@@ -234,13 +241,13 @@ read-only configuration probe in
 signup is now disabled and verified. Do not request another
 Gemini key or repeat OpenAI/Groq setup.
 
-Vercel **Preview** configuration now contains all six variables below. The
-current normal deployment `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM` consumes the restored
-disabled customer flags, and its closed gates passed actual HTTP checks.
+At the close of this cycle, Vercel **Preview** configuration contained all six
+variables below. Its final normal deployment `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM`
+consumed the restored disabled customer flags, and its closed gates passed actual HTTP checks.
 Any new controlled verification window will require deliberate gate settings
 and a fresh deployment.
 
-| Variable | Current state and purpose |
+| Variable | Recorded state and purpose |
 | --- | --- |
 | `SOLO_CUSTOMER_AUTH_ENABLED` | Configured sensitive for Preview; **false** |
 | `SOLO_CUSTOMER_CHAT_ENABLED` | Configured sensitive for Preview; **false** |
@@ -261,7 +268,7 @@ remain open. Actual branded website sign-in/chat and Samsung/desktop acceptance
 also remain unverified. Future verification windows require deliberate settings
 and monetary controls. Keep public inference disabled.
 
-## Remaining release gates
+## Release gates recorded at the close of this cycle
 
 - [x] Existing separate commercial project accessed and its schema/security advisors inspected.
 - [x] Migration `20261027071534` applied; hosted grants/RLS and disabled service-role RPC outcomes verified.

@@ -1,5 +1,12 @@
 # SOLO private API verification — 27 October 2026
 
+This historical record covers the owner-token API verification cycle. Later
+[customer authentication/quota evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md),
+[customer Gemini evidence](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md) and
+[browser-isolation evidence](SOLO-BROWSER-ISOLATION-2026-10-27.md) extend it.
+[Issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31) is
+authoritative for the current release checklist.
+
 ## Outcome
 
 The deployed SOLO endpoint returned two real Gemini responses over HTTP, using
@@ -75,17 +82,22 @@ successful test. It is Preview-only and unused by the API or browser. No real
 provider/test credentials were rotated or duplicated. Deployment protection
 remains enabled; production `SOLO_PRIVATE_TEST_ENABLED` remains `false`.
 
-## Production and next gate
+## Production and next gate at the close of this cycle
 
-Production remains the maintenance deployment
+Production remained the maintenance deployment
 `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. No production promotion, checkout change,
 artwork replacement or WrightWayz database change was performed.
 
-The next gate is commercial customer identity plus durable atomic request
-admission and usage accounting. The only visible Supabase project is the inactive
-`Wrightwayz Project`; it must stay separate. The connected personal organization
-has a Free plan and a read-only quote of 0/month for a new project, but a separate
-commercial organization/project has not been provisioned. No paid plan was
-authorized or purchased.
+At that point, the next gate was commercial customer identity plus durable atomic
+request admission and usage accounting. The only then-visible Supabase project
+was the inactive `Wrightwayz Project`; it must stay separate. The connected
+personal organization had a Free plan and a read-only quote of 0/month for a new
+project, but no separate commercial organization/project had been provisioned in
+that cycle. No paid plan was authorized or purchased.
+
+The later customer evidence above resolved that inventory limitation using the
+existing commercial project and verified authentication, quotas and customer
+Gemini success. This historical next-gate description is not an instruction to
+repeat setup or reopen those completed milestones.
 
 Track all remaining work in the current section of [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).

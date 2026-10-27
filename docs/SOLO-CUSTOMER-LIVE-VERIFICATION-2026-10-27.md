@@ -1,12 +1,21 @@
 # SOLO live customer verification — 27 October 2026
 
-## Current result
+## Auth/quota cycle result (historical)
 
 **Real customer authentication, all five hosted admission race scenarios and
 actual API quota rejection passed on the protected commercial Preview.** The
 verification window is closed and cleanup is verified. No AI provider call was
-made. Customer-authenticated Gemini replies, provider-outcome error handling,
-mobile acceptance, monetary controls and public release remain unverified.
+made. At the close of this cycle, customer-authenticated Gemini replies,
+provider-outcome error handling, mobile acceptance, monetary controls and public
+release were unverified.
+
+The subsequent [customer Gemini record](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md)
+verifies successful customer API conversation and finalization. The later
+[browser-isolation record](SOLO-BROWSER-ISOLATION-2026-10-27.md) distinguishes
+automated and closed-gate browser checks from signed-in website acceptance.
+[Issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31) is
+authoritative for current status; the results and deployment below belong to
+this earlier zero-provider-call cycle.
 
 This record extends the [server-key evidence](evidence/solo-server-key-2026-10-27.json)
 and follows the existing [hosted verification harness](SOLO-HOSTED-CUSTOMER-VERIFICATION.md).
@@ -108,7 +117,7 @@ The denied request created zero ledger rows and made zero provider calls. This
 verifies the customer API rejects exhausted quota before inference; it is not
 evidence of a successful customer Gemini conversation.
 
-## Final cleanup and current deployment — verified
+## Cycle-closing cleanup and deployment — verified
 
 - SQL policy is disabled and caps are restored to **3/user/minute,
   20/user/day, 20/global/minute and 200/global/day**.
@@ -120,7 +129,7 @@ evidence of a successful customer Gemini conversation.
   identity and target values were cleared.
 - Final normal deployment `dpl_BDfkTt3NR4rJwy9XoBT9tJwsLnx8` is **READY** at
   commit `0af8d9c263a1653128786061f3ffacea99b36894`:
-  [current protected SOLO Preview](https://solo-provider-industrial-9i280wcne-wrightwayz.vercel.app/solo-ai.html#conversation).
+  [Auth/quota-cycle protected SOLO Preview](https://solo-provider-industrial-9i280wcne-wrightwayz.vercel.app/solo-ai.html#conversation).
   It has no build override and normal build logs.
 - Actual final HTTP checks passed: account GET **200** with all three status
   booleans false and private/no-store caching; refresh POST **503 `auth_disabled`**;
@@ -129,7 +138,7 @@ evidence of a successful customer Gemini conversation.
 - Production still points to maintenance deployment
   `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`; no production promotion occurred.
 
-## Outstanding evidence
+## Checklist at the close of this cycle
 
 - [x] Unrestricted signup disabled and actual Auth settings re-read.
 - [x] Controlled identities created without email and given expiring membership.
@@ -145,5 +154,7 @@ evidence of a successful customer Gemini conversation.
 - [ ] Actual desktop/Samsung customer experience.
 - [ ] Monetary controls and production/public release approval.
 
-This Auth/quota verification cycle is complete. Customer chat remains disabled;
-the outstanding product-release gates above are still open.
+This Auth/quota verification cycle is complete. Customer chat was disabled at
+its close. The unchecked items record that cycle's outstanding work; the later
+Gemini evidence above closes successful API generation, while provider-error
+accounting and actual customer browser acceptance remain separate gates.

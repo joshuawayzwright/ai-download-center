@@ -43,10 +43,11 @@ function harness(responder = async () => response(signedOut), options = {}) {
       this.attributes = {};
       this.listeners = {};
       this.children = [];
+      this.focusCount = 0;
     }
     append(...nodes) { this.children.push(...nodes); }
     replaceChildren(...nodes) { this.children = [...nodes]; }
-    focus() {}
+    focus() { this.focusCount++; }
     get scrollHeight() { return this.children.length; }
     addEventListener(name, listener) { this.listeners[name] = listener; }
     setAttribute(name, value) { this.attributes[name] = value; }
@@ -242,6 +243,85 @@ test('sign-out is confirmed by server status and increments the conversation ses
   assert.equal(h.window.soloAccountState.sessionVersion, 2);
   assert.equal(h.logout.hidden, true);
   assert.equal(h.email.value, '');
+});
+
+test('sign-out clears immediately before its network request and blocks chat until it settles', async () => {
+  let finishLogout, finishChat, stateAtLogout;
+  const logoutResponse = new Promise(resolve => { finishLogout = resolve; });
+  const chatResponse = new Promise(resolve => { finishChat = resolve; });
+  const h = harness(async (options, _number, url) => {
+    if (url === '/api/solo-chat') return chatResponse;
+    const action = options.body && JSON.parse(options.body).action;
+    if (action === 'logout') {
+      stateAtLogout = {...h.window.soloAccountState};
+      return logoutResponse;
+    }
+    return response(signedIn);
+  }, {conversation: true});
+  await h.ready();
+  const version = h.window.soloAccountState.sessionVersion;
+  const chat = h.chat.send('Old account private question');
+  h.chat.input.value = 'Old account unsent draft';
+  const signingOut = h.signOut();
+  try {
+    assert.equal(stateAtLogout.authenticated, false, 'invalidate before dispatching logout');
+    assert.equal(stateAtLogout.chatEnabled, false);
+    assert.equal(stateAtLogout.userId, null);
+    assert.equal(stateAtLogout.sessionVersion, version + 1);
+    assert.equal(h.form.hidden, false);
+    assert.equal(h.submit.disabled, true);
+    assert.equal(h.panel.attributes['aria-busy'], 'true');
+    const chatCall = h.calls.find(call => call.url === '/api/solo-chat');
+    assert.equal(chatCall.signal.aborted, true);
+    assert.equal(h.chat.input.value, '');
+    assert.doesNotMatch(JSON.stringify(h.chat.transcript.children), /Old account/);
+    finishChat(response({reply: 'Old account private answer'}));
+    await chat;
+    assert.equal(h.chat.input.value, '');
+    assert.equal(h.chat.input.focusCount, 0, 'a late reply must not steal focus after sign-out starts');
+    assert.doesNotMatch(JSON.stringify(h.chat.transcript.children), /Old account/);
+    await h.chat.send('New draft while sign-out is pending');
+    assert.equal(h.calls.filter(call => call.url === '/api/solo-chat').length, 1);
+    assert.equal(h.window.soloAccountState.authenticated, false);
+    finishLogout(response(signedOut));
+    await signingOut;
+    assert.equal(h.window.soloAccountState.sessionVersion, version + 1);
+    assert.equal(h.window.soloAccountState.authenticated, false);
+    assert.equal(h.panel.attributes['aria-busy'], 'false');
+  } finally {
+    finishChat(response({reply: 'Old account private answer'}));
+    finishLogout(response(signedOut));
+    await Promise.all([chat, signingOut]);
+  }
+});
+
+test('pending sign-out failure stays locally signed out and notifies peers only after settlement', async () => {
+  const hub = channelHub();
+  let rejectLogout;
+  const logoutResponse = new Promise((_resolve, reject) => { rejectLogout = reject; });
+  const h = harness(async options => options.body && JSON.parse(options.body).action === 'logout'
+    ? logoutResponse : response(signedIn), hub);
+  await h.ready();
+  const version = h.window.soloAccountState.sessionVersion;
+  const signingOut = h.signOut();
+  try {
+    assert.equal(h.window.soloAccountState.authenticated, false);
+    assert.equal(h.window.soloAccountState.sessionVersion, version + 1);
+    assert.equal(hub.messages.length, 0, 'peers must not recheck still-valid cookies before logout settles');
+    rejectLogout(new Error('Synthetic logout transport failure'));
+    await signingOut;
+    assert.equal(h.window.soloAccountState.authenticated, false);
+    assert.equal(h.window.soloAccountState.chatEnabled, false);
+    assert.equal(h.window.soloAccountState.userId, null);
+    assert.equal(h.window.soloAccountState.sessionVersion, version + 1);
+    assert.match(h.status.textContent, /Server sign-out could not be confirmed/);
+    assert.equal(h.refresh.disabled, false);
+    assert.equal(h.calls.length, 2, 'failure alone must not initiate a new account check');
+    assert.deepEqual(hub.messages, [{name: 'solo-account-events-v1', data: 'account-changed'}]);
+  } finally {
+    rejectLogout(new Error('Synthetic logout transport failure'));
+    await signingOut;
+  }
 });
 
 test('failed sign-out clears local account state without falsely confirming server revocation', async () => {

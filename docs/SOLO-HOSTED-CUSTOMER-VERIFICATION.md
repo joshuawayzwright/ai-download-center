@@ -1,5 +1,11 @@
 # Hosted customer verification harness
 
+This document preserves the Auth/quota and customer Gemini verification cycles.
+[Issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31) is
+authoritative for current commits, deployments and release gates. The later
+[browser-isolation record](SOLO-BROWSER-ISOLATION-2026-10-27.md) covers the
+subsequent account-binding implementation and its separate acceptance evidence.
+
 The Auth/race harness has **passed actual hosted authentication and all five
 admission race scenarios**. A separate actual customer API check returned 429
 before inference, and final cleanup is verified. See
@@ -19,16 +25,18 @@ It never calls `/api/solo-chat`, Gemini, signup, invitations, password resets or
 Auth administration. It never edits policy, membership, environment variables or
 schema. Test credentials and cookies stay in memory and are not printed.
 
-Current source is `f4ba7c22e6976c127aefb55a1c0479686cad16f0`; runtime implementation
-is unchanged at `0af8d9c263a1653128786061f3ffacea99b36894`.
+The recorded Gemini-cycle source was `f4ba7c22e6976c127aefb55a1c0479686cad16f0`;
+runtime implementation remained unchanged during that cycle at
+`0af8d9c263a1653128786061f3ffacea99b36894`.
 [CI run 40478171099](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171099)
 passed **137 API/browser/smoke + 21 SQL = 158 tests**, zero failures/skips;
 [quality run 40478171124](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40478171124)
 passed. That existing 158-test baseline was not rerun for the Gemini cycle.
-Final normal Preview `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM` is **READY** at `f4ba7c2`:
-[current SOLO Preview](https://solo-provider-industrial-qoyn70gb8-wrightwayz.vercel.app/solo-ai.html#conversation).
-Both customer flags and the SQL policy are disabled; both test members are
-blocked/expired, sessions are zero, and 15 rows remain: the 11 prior admission-only
+That cycle's final normal Preview `dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM` reached
+**READY** at `f4ba7c2`:
+[Gemini-cycle SOLO Preview](https://solo-provider-industrial-qoyn70gb8-wrightwayz.vercel.app/solo-ai.html#conversation).
+At closure, both customer flags and the SQL policy were disabled; both test
+members were blocked/expired, sessions were zero, and 15 rows remained: the 11 prior admission-only
 reservations and four succeeded Gemini requests. The final normal Preview's
 three disabled HTTP checks passed. The prior Auth/quota cycle's 11-row cleanup
 and zero-call evidence remain historical facts in its original record.
