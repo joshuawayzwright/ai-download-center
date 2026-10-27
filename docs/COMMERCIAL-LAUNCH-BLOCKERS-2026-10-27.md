@@ -28,7 +28,11 @@
 ## SOLO AI
 - Gemini provider-only Vercel diagnostic previously returned a real model response.
 - The private owner-token SOLO API has a verified real two-turn Gemini conversation; see [the verification record](SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md).
-- Customer sessions and durable quota SQL are implemented with local tests, but the separate commercial Supabase project, live customer login and hosted concurrency verification are still outstanding. See [customer access status](SOLO-CUSTOMER-ACCESS-2026-10-27.md).
+- Customer sessions and durable quota SQL are implemented. The existing commercial Supabase project `tymayhazawkofmiypeqt` is accessible in The Solo Service Provider organisation `txfdoppxcbylrguxsjod`, Free plan, existing region `ap-northeast-1`. Reuse it; no new organisation or replacement project is needed.
+- Migration `20261027071534` (`solo_customer_admission`) is applied. Live checks verified FORCE RLS on three tables, restricted invoker functions, denied client privileges and required runtime grants. Rolled-back service-role checks exercised disabled/error outcomes; anonymous HTTPS RPC/private-schema calls were rejected. Policy remains false, with zero members and ledger rows.
+- Five sensitive Vercel Preview variables are configured: commercial URL, publishable key, independent usage hash secret and both customer flags **false**. **`SOLO_SUPABASE_SECRET_KEY` is still absent.** The connector does not expose server-key retrieval.
+- Actual Supabase Auth settings report **`disable_signup=false`**. Unrestricted signup must be disabled before the pilot; the current connector does not expose Auth configuration updates. The absence of signup in our application does not disable the provider endpoint.
+- Real customer login, refresh/logout/revocation, independent hosted quota races and customer-authenticated Gemini chat remain **unverified**. The new hosted-verification harness has nine passing local mocked tests; these add no hosted evidence or new CI total. See [customer access status](SOLO-CUSTOMER-ACCESS-2026-10-27.md).
 - Keep public inference disabled.
 
 ## Current decision

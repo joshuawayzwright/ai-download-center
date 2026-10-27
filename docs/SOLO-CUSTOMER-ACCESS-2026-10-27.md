@@ -3,10 +3,15 @@
 ## Release status
 
 Customer login, secure session handling, durable request admission and the web
-account panel are implemented for a Preview-only pilot. The separate commercial
-Supabase project is not connected. **Live customer login and hosted quotas are
-not yet verified or released.** Production remains the existing maintenance
-deployment; public inference stays off.
+account panel are implemented for a Preview-only pilot. The existing commercial
+Supabase project is now accessible and its admission migration has been applied
+and checked on the hosted database. **Live customer login, concurrent hosted
+quotas and customer-authenticated Gemini chat remain unverified.**
+
+Two configuration blockers remain: the server-side Supabase secret key is not
+configured in Vercel, and actual Auth settings show unrestricted signup is still
+enabled. Both customer Preview flags and the hosted SQL policy remain disabled.
+Production remains the existing maintenance deployment; public inference stays off.
 
 The previous owner-token Gemini two-turn HTTP result remains recorded in
 [the private API verification](SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md).
@@ -70,10 +75,9 @@ server-role execution grants.
 
 The runtime may read policy/membership, reserve requests and finalize outcomes.
 The new grants do not permit it to enable the policy, alter caps, enrol members,
-delete reservations or write Supabase Auth data. The migration adds read access
-only to the Auth session columns needed for the live-session check; existing
-hosted grants must also be inspected before rollout. No new Auth tables are
-created by the migration.
+delete reservations or write Supabase Auth data. Hosted inspection confirmed
+these boundaries and exactly three readable `auth.sessions` columns: `id`,
+`user_id` and `not_after`. No new Auth tables are created by the migration.
 
 The ledger stores user/session/request identifiers, HMAC fingerprints, timestamps,
 outcomes, model and token observations. It stores no prompt/reply text, email,
@@ -81,9 +85,57 @@ IP address, password or API key. Session/account deletion does not erase global
 usage or reset its allowance. A reviewed retention/deletion process and
 provider-side privacy disclosure remain release requirements.
 
-## Local verification
+## Hosted commercial database verification
 
-All **139 tests pass**: 118 API/browser/smoke tests and 21 SQL tests.
+The existing project `tymayhazawkofmiypeqt` is `ACTIVE_HEALTHY` in **The Solo
+Service Provider** organisation `txfdoppxcbylrguxsjod`, on the **Free** plan in
+its existing `ap-northeast-1` region. Reuse this project and region. WrightWayz
+resources, credentials, data and billing were not used.
+
+The hosted migration is version **`20261027071534`**, name
+`solo_customer_admission`. The matching source is
+[`supabase/migrations/20261027071534_solo_customer_admission.sql`](../supabase/migrations/20261027071534_solo_customer_admission.sql).
+The local file was renamed to match the applied version without changing its SQL.
+The sanitized [hosted database evidence](evidence/solo-commercial-database-2026-10-27.json)
+records the observed grants, disabled-state calls and HTTP boundaries.
+
+Live database inspection verified:
+
+- All three `solo_private` tables have RLS enabled and forced.
+- The checked functions use `SECURITY INVOKER` and an empty search path.
+- `PUBLIC`, `anon` and `authenticated` lack the private schema/table/RPC permissions.
+- Runtime grants do not allow changing policy settings, enrolling members,
+  deleting ledger rows or writing Auth data; the session read grant is limited
+  to the three columns listed above.
+- Service-role calls inside rolled-back SQL transactions returned the expected
+  disabled status, disabled admission, `invalid_request` for an invalid
+  fingerprint, and `request_not_found` for an unknown finalization target.
+- The final state is **policy disabled, zero members, zero ledger rows**.
+
+Actual HTTPS requests using the commercial publishable key also verified all
+three SOLO RPCs reject anonymous calls with **HTTP 401 / SQL code `42501`**,
+and requests selecting the private schema return **HTTP 406 / `PGRST106`**.
+The check logged `SOLO_COMMERCIAL_ANON_BOUNDARY_PASS`; no key was logged.
+
+Advisor results contain no warning/error findings. The five informational
+findings are three RLS-without-policy notices, expected for these service-only
+tables, and two unused indexes on the empty ledger. These results verify the
+inspected grants and disabled boundaries, not a successful customer session or
+simultaneous hosted admission.
+
+An actual Auth settings GET returned HTTP 200 with `disable_signup=false`,
+email authentication enabled, anonymous users disabled, and email
+auto-confirmation disabled. **Unrestricted signup must be disabled before the
+pilot.** The application itself has no signup action, but that does not close
+Supabase's own signup endpoint.
+
+## Automated verification
+
+The established CI baseline is **139 passing tests**: 118 API/browser/smoke tests
+and 21 SQL tests, at run `40449786312` linked above. The new opt-in hosted
+verification runner has **nine additional passing local mocked tests**. The CI
+evidence above covers the 139-test baseline; those additional nine tests have
+only been verified locally and do not prove a hosted customer session.
 
 | Suite | Passing tests |
 | --- | ---: |
@@ -94,6 +146,10 @@ All **139 tests pass**: 118 API/browser/smoke tests and 21 SQL tests.
 | Conversation browser controller | 21 |
 | Existing opt-in owner smoke runner | 4 |
 | Actual SQL migration in PGlite | 21 |
+
+The new runner and its prerequisites are documented in
+[hosted customer verification](SOLO-HOSTED-CUSTOMER-VERIFICATION.md). Its mocked
+tests exercise the harness, not real account creation, login or inference.
 
 API and browser-controller tests use dummy credentials and simulated service
 responses. They cover session/cookie/Origin boundaries, production disablement,
@@ -109,8 +165,10 @@ storage failure and usage persistence after account deletion.
 
 PGlite has one connection. Queued simultaneous JavaScript calls prove the tested
 SQL outcomes, but **do not prove overlapping independent hosted PostgreSQL
-transactions**. The hosted project's actual schema, roles and server version
-also remain to be checked. See [SQL test instructions](../tests/solo-database/README.md).
+transactions**. The hosted schema/grants and disabled SQL boundaries are now
+checked separately as recorded above. Live session rotation, active admission
+and independent concurrent transactions remain to be verified. See
+[SQL test instructions](../tests/solo-database/README.md).
 
 ```sh
 node --test powerhouse-website/tests/*.test.cjs
@@ -123,54 +181,51 @@ The Node 24 local sandbox may summarize each isolated test file as one test.
 Run an individual `.test.cjs` directly to see its assertion count. CI uses Node 22.
 No test automatically calls Gemini or requires a real customer/provider secret.
 
-## Commercial setup still required
+## Remaining commercial configuration
 
-The owner has now supplied a dashboard screenshot showing **The Solo Service
-Provider** organisation on the **Free** plan, with **0 projects** and its new-project
-form open. Reuse that organisation; do not create another one.
+The commercial connection now reaches the existing project above. Project
+creation and organisation authorization are no longer blockers. The current
+connector does not expose retrieval of the modern server secret key or mutation
+of Auth signup settings. Complete those two existing-project settings securely
+before enabling account access; do not request another Gemini key or repeat
+OpenAI/Groq setup.
 
-A fresh connector inventory still exposes only the inactive **Wrightwayz Project**
-in the older personal organisation. It was not resumed, queried, migrated or
-reused. The new commercial organisation is not accessible through this connection
-yet. Its account/organisation authorization must be checked before automated
-project creation can continue. The earlier secure browser sign-in request was
-declined and was not repeated; the owner's mobile browser session is separate.
-No new Gemini key, OpenAI billing setup or Groq registration is needed.
+Vercel **Preview** configuration now contains five newly created sensitive
+variables. Their creation does not change the immutable deployment listed above;
+a fresh Preview deployment is needed to consume new environment settings.
 
-After the existing commercial organisation is available to the connection,
-verify its Free plan and Sydney region before creating **SOLO AI Production**;
-ask before any nonzero charge. Inspect the
-new project's existing schemas, roles and Auth session columns before applying
-`supabase/migrations/20261027034444_solo_customer_admission.sql`. Do not apply the
-local test Auth fixtures to a remote project.
-
-Use sensitive Vercel **Preview** variables only:
-
-| Variable | Purpose |
+| Variable | Current state and purpose |
 | --- | --- |
-| `SOLO_CUSTOMER_AUTH_ENABLED` | Explicitly enables the account pilot in Preview |
-| `SOLO_CUSTOMER_CHAT_ENABLED` | Independently enables customer inference in Preview |
-| `SOLO_SUPABASE_URL` | Dedicated commercial `https://<project-ref>.supabase.co` URL |
-| `SOLO_SUPABASE_PUBLISHABLE_KEY` | Modern `sb_publishable_` key for server Auth exchange |
-| `SOLO_SUPABASE_SECRET_KEY` | Modern `sb_secret_` key, server-only RPC access via `apikey` |
-| `SOLO_USAGE_HASH_SECRET` | Separate cryptographically random secret, at least 32 characters |
+| `SOLO_CUSTOMER_AUTH_ENABLED` | Configured sensitive for Preview; **false** |
+| `SOLO_CUSTOMER_CHAT_ENABLED` | Configured sensitive for Preview; **false** |
+| `SOLO_SUPABASE_URL` | Configured for the existing commercial project |
+| `SOLO_SUPABASE_PUBLISHABLE_KEY` | Configured sensitive; modern key for server Auth exchange |
+| `SOLO_SUPABASE_SECRET_KEY` | **Absent; blocker.** Modern server key is required for RPC access via `apikey` |
+| `SOLO_USAGE_HASH_SECRET` | Configured sensitive; independently generated from 48 random bytes |
 
 Keep the existing Gemini Preview configuration and private owner token. Never
 copy charity keys or grant its resources to SOLO. Do not expose the server key
 or owner token to the website, Android, source control, logs or issue comments.
 
-Before enabling even the customer pilot, disable unrestricted signup in the
-dedicated Auth project, create controlled test identities without unsolicited
-emails, and explicitly enrol expiring test members. Enable the SQL policy only
-for the bounded verification window. Validate login, refresh, logout and stale
-JWT rejection against the real service, then exercise overlapping HTTP requests,
-duplicate IDs, exhausted user/global allowances and outages. Verify one complete
+Before enabling the pilot, verify `disable_signup=true` in actual Auth settings,
+configure the missing sensitive Preview server key, and create controlled test
+identities without unsolicited emails. Explicitly enrol expiring members. The
+account endpoint requires an active SQL policy/member even for login, so enable
+that policy only for a bounded verification window; the customer chat flag can
+remain off during auth-only checks. Validate login, refresh, logout and stale-JWT
+rejection against the real service, then exercise overlapping HTTP requests,
+duplicate IDs, exhausted user/global allowances and outages. Verify a complete
 customer-authenticated Gemini conversation and accurate ledger outcomes.
 
 ## Remaining release gates
 
-- [ ] Separate commercial project provisioned and its schema/security advisors inspected.
-- [ ] Migration applied and real hosted grants/RLS verified.
+- [x] Existing separate commercial project accessed and its schema/security advisors inspected.
+- [x] Migration `20261027071534` applied; hosted grants/RLS and disabled service-role RPC outcomes verified.
+- [x] Anonymous HTTPS calls to all three RPCs/private schema rejected with expected permission errors.
+- [x] Five sensitive Preview variables configured; both customer flags remain false.
+- [ ] Configure `SOLO_SUPABASE_SECRET_KEY` securely for Preview.
+- [ ] Disable unrestricted Supabase signup and re-read actual Auth settings.
+- [ ] Create controlled test identities and expiring memberships; redeploy and verify the bounded pilot.
 - [ ] Live customer login, cookie rotation and logout/revoked-session rejection verified.
 - [ ] Independent concurrent requests demonstrate strict caps and duplicate suppression.
 - [ ] Customer-authenticated Gemini conversation and error accounting verified end to end.

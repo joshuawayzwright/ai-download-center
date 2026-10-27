@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
 import {PGlite} from '@electric-sql/pglite';
 
-const migration = new URL('../../supabase/migrations/20261027034444_solo_customer_admission.sql', import.meta.url);
+const migration = new URL('../../supabase/migrations/20261027071534_solo_customer_admission.sql', import.meta.url);
 const db = new PGlite();
 const fingerprint = 'a'.repeat(64);
 const users = Array.from({length: 12}, () => ({user: randomUUID(), session: randomUUID()}));

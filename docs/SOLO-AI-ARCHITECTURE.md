@@ -1,6 +1,6 @@
 # SOLO AI — Shared Product Architecture
 
-Status: verified private Gemini API; customer sessions and durable admission implemented for a disabled preview pilot. No public generative AI service.
+Status: verified private Gemini API; customer sessions and durable admission implemented for a disabled preview pilot. The existing commercial database migration and hosted permission boundaries are verified. Live customer login, hosted quota races and customer Gemini chat remain unverified. No public generative AI service.
 Current release evidence and remaining gates: [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 
 ## Mission
@@ -11,7 +11,8 @@ SOLO AI will serve both The Solo Service Provider Powerhouse website and a futur
 - Powerhouse has a catalogue-connected site guide plus a separate conversation UI and private Vercel `/api/solo-chat` endpoint.
 - The endpoint uses the existing Gemini Preview key, with `gemini-3.5-flash-lite` as its default model. Existing OpenAI credentials are retained; no new OpenAI billing or Groq signup is required.
 - Production is under maintenance; development previews are not a public release.
-- Customer identity, session lifecycle, usage admission and a web account panel are now implemented. The separate commercial Supabase project has not been provisioned or connected, so live customer login and hosted quotas are still unverified. Keep the inactive WrightWayz database separate.
+- Customer identity, session lifecycle, usage admission and a web account panel are implemented. The existing commercial Supabase project `tymayhazawkofmiypeqt` belongs to The Solo Service Provider organisation `txfdoppxcbylrguxsjod`, on the Free plan in `ap-northeast-1`. Its migration is applied; reuse this project and keep WrightWayz resources separate.
+- Sensitive Preview configuration now includes the commercial URL, publishable key, independent usage-hash secret and both customer flags set false. The server secret key is absent, and actual Auth settings still allow unrestricted signup. These settings block the live customer pilot.
 - A live generative AI service must not be claimed until authenticated API calls and safety/cost controls are tested.
 
 ## Architecture
@@ -41,6 +42,23 @@ check in SQL. The `solo_private` schema is denied to client roles. Three public
 RPCs run as their caller and are executable only by the server role. A short
 policy-row transaction serializes check-and-reserve. The runtime cannot enable
 the policy, change caps or enrol users.
+
+Hosted migration `20261027071534_solo_customer_admission.sql` is applied. Actual
+inspection verified all three FORCE RLS tables, invoker/empty-search-path
+functions, denied client privileges and runtime grants limited to the required
+operations. Service-role checks in rolled-back transactions verified disabled
+and invalid-request paths; the policy is false with zero members and ledger rows.
+Actual HTTPS calls also confirmed anonymous denial of all three RPCs and the
+private schema. These checks do not establish concurrent hosted admission or
+customer-authenticated inference.
+
+The account route requires the live SQL policy and an unblocked, unexpired
+membership before returning an authenticated session. A controlled auth-only
+test may keep the customer chat flag off while the policy is enabled for that
+verification window. Both application customer paths additionally require
+`VERCEL_ENV=preview`. Configure the missing server key and disable unrestricted
+Supabase signup before activating that window, then redeploy to consume the new
+Preview variables. No provider or session secret belongs in browser code.
 
 Every admitted request consumes allowance, even if Gemini fails or the client
 disconnects. Duplicate IDs cannot dispatch another inference. Only request and
