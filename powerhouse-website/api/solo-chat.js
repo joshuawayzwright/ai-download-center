@@ -2,6 +2,7 @@
 // Shared HTTP contract for the web client and a future Android client.
 // Intentionally does not enable unrestricted public paid inference.
 const { HttpError, parseAccessToken, verifyCustomer, reserve, finalize } = require('../lib/solo-customer-access.cjs');
+const { customerRelease } = require('../lib/solo-release-policy.cjs');
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 1200;
 const MAX_BODY_BYTES = 16000;
@@ -75,8 +76,8 @@ module.exports = async (req,res) => {
     const access=parseAccessToken(req);
     const customerIntent=Object.prototype.hasOwnProperty.call(body,'expectedUserId');
     if(access||customerIntent){
-      // Customer rollout is preview-only until a separate production approval.
-      if(process.env.VERCEL_ENV!=="preview"||process.env.SOLO_CUSTOMER_CHAT_ENABLED!=="true")
+      // Production also needs separate approval and the canonical SOLO origin.
+      if(!customerRelease(req).chatEnabled)
         throw new HttpError(503,'customer_disabled','Customer conversations are not enabled yet.');
       // The access cookie can expire while its refresh cookie remains. A browser
       // account binding signals customer intent, never owner authorization.
@@ -105,6 +106,8 @@ module.exports = async (req,res) => {
   if(!customer){
     // Keep owner-only smoke tests separate from customer authentication.
     // Invalid customer credentials never fall back to this private token.
+    if(process.env.VERCEL_ENV==="production")
+      return json(res,503,{error:"Private owner testing is not available on production.",code:"private_testing_disabled"});
     if(process.env.SOLO_PRIVATE_TEST_ENABLED!=="true")
       return json(res,503,{error:"SOLO chat is in private testing. Public AI conversations are not enabled."});
     const expected=process.env.SOLO_PRIVATE_TEST_TOKEN;

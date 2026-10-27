@@ -1,22 +1,22 @@
 {
   "schema_version": 2,
-  "updated_at": "2026-10-27",
+  "updated_at": "2026-10-28",
   "currency": "AUD",
-  "pricing_status": "proposed_pending_owner_approval",
-  "catalogue_status": "initial_ten_product_collection_in_development",
+  "pricing_status": "not_announced",
+  "catalogue_status": "initial_ten_product_collection_coming_soon",
   "plan_source": "docs/SOLO-10-PRODUCT-RESET.md",
   "collection": {
     "name": "The SOLO launch collection",
     "product_count": 10,
-    "availability": "in_development_not_for_sale",
-    "development_note": "An initial collection of ten practical digital products, with more tools and resources planned as development continues. No additional release dates or included future products are promised."
+    "availability": "coming_soon_not_for_sale",
+    "development_note": "All ten digital products are coming soon, with more tools and resources planned as development continues. Prices and release dates are not announced; no included future products are promised."
   },
   "launch_products": [
     {
       "id": "solo-cashflow-control",
       "name": "SOLO Cashflow Control",
-      "proposed_price_aud": 19,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Australian sole traders: forecast money in and out",
       "planned_deliverables": [
@@ -28,8 +28,8 @@
     {
       "id": "solo-quote-invoice-builder",
       "name": "SOLO Quote & Invoice Builder",
-      "proposed_price_aud": 29,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Tradies and mobile service providers: price jobs and issue quotes",
       "planned_deliverables": [
@@ -41,8 +41,8 @@
     {
       "id": "solo-client-booking-follow-up",
       "name": "SOLO Client Booking & Follow-Up",
-      "proposed_price_aud": 29,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Cleaners, coaches and local services: track enquiries and follow-up",
       "planned_deliverables": [
@@ -55,8 +55,8 @@
     {
       "id": "solo-job-application-command-centre",
       "name": "SOLO Job Application Command Centre",
-      "proposed_price_aud": 19,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Job seekers: tailor and track applications",
       "planned_deliverables": [
@@ -69,8 +69,8 @@
     {
       "id": "solo-content-repurposing-studio",
       "name": "SOLO Content Repurposing Studio",
-      "proposed_price_aud": 29,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Creators: adapt one idea into multiple content formats",
       "planned_deliverables": [
@@ -82,8 +82,8 @@
     {
       "id": "solo-customer-support-desk",
       "name": "SOLO Customer Support Desk",
-      "proposed_price_aud": 29,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Online shops: answer routine queries consistently",
       "planned_deliverables": [
@@ -96,8 +96,8 @@
     {
       "id": "solo-small-business-operations-hub",
       "name": "SOLO Small Business Operations Hub",
-      "proposed_price_aud": 39,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Solo operators: organise recurring administration",
       "planned_deliverables": [
@@ -110,8 +110,8 @@
     {
       "id": "solo-digital-product-launch-system",
       "name": "SOLO Digital Product Launch System",
-      "proposed_price_aud": 39,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "First-time creators: prepare a product launch",
       "planned_deliverables": [
@@ -124,8 +124,8 @@
     {
       "id": "solo-business-research-dashboard",
       "name": "SOLO Business Research Dashboard",
-      "proposed_price_aud": 29,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Freelancers: compare opportunities using recorded evidence",
       "planned_deliverables": [
@@ -138,8 +138,8 @@
     {
       "id": "solo-ai-workflow-starter-pack",
       "name": "SOLO AI Workflow Starter Pack",
-      "proposed_price_aud": 19,
-      "status": "in_development_not_for_sale",
+      "proposed_price_aud": null,
+      "status": "coming_soon_not_for_sale",
       "checkout_url": null,
       "intended_use": "Beginners: apply AI to repetitive work with review and privacy checks",
       "planned_deliverables": [

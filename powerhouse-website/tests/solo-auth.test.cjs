@@ -5,6 +5,8 @@ const { createAuthHandler } = require('../api/solo-auth.js');
 const { HttpError } = require('../lib/solo-customer-access.cjs');
 
 const ORIGIN = 'https://solo-preview.example';
+const PRODUCTION_ORIGIN = 'https://thesoloserviceprovider.com.au';
+const PRODUCTION_HEADERS = { host: 'thesoloserviceprovider.com.au', origin: PRODUCTION_ORIGIN };
 const SUPABASE = 'https://abcdefghijklmnopqrst.supabase.co';
 const ACCESS = 'dummy-access-token-for-tests';
 const REFRESH = 'dummy-refresh-token-for-tests';
@@ -19,12 +21,14 @@ const login = { action: 'login', email: ' pilot@example.test ', password: ' test
 
 function setup(overrides = {}) {
   const calls = [];
+  const admissions = [];
   const handler = createAuthHandler({ env: { ...ENV },
     fetcher: async (url, options) => { calls.push({ url, options }); return response(SESSION); },
+    admit: async (req, attempt) => { admissions.push(attempt); },
     verify: async (token) => { assert.equal(token, ACCESS); return IDENTITY; },
     status: async (identity) => { assert.equal(identity, IDENTITY); return { active: true, code: 'active', remaining_daily: 19, daily_limit: 20 }; },
     ...overrides });
-  return { calls, async request({ method = 'POST', body = login, headers = {}, chunks } = {}) {
+  return { calls, admissions, async request({ method = 'POST', body = login, headers = {}, chunks } = {}) {
     const req = Readable.from(chunks || []);
     req.method = method;
     req.headers = { host: 'solo-preview.example', origin: ORIGIN, 'content-type': 'application/json', ...headers };
@@ -49,6 +53,48 @@ test('production and disabled preview never contact account services', async () 
     assert.equal((await api.request()).status, 503);
     assert.equal(api.calls.length, 0);
   }
+});
+
+test('production login requires separate release approval and the exact commercial host', async () => {
+  const production = { ...ENV, VERCEL_ENV: 'production' };
+  for (const flag of [undefined, 'false', 'TRUE', '1']) {
+    const api = setup({ env: { ...production, SOLO_CUSTOMER_PRODUCTION_ENABLED: flag } });
+    const result = await api.request({ headers: PRODUCTION_HEADERS });
+    assert.equal(result.status, 503);
+    assert.equal(result.body.enabled, false);
+    assert.equal(api.calls.length, 0);
+  }
+  const api = setup({ env: { ...production, SOLO_CUSTOMER_PRODUCTION_ENABLED: 'true' } });
+  for (const host of ['solo-preview.example', 'www.thesoloserviceprovider.com.au', 'thesoloserviceprovider.com.au.attacker.test']) {
+    const result = await api.request({ headers: { host, origin: 'https://' + host } });
+    assert.equal(result.status, 503);
+    assert.equal(result.headers['Set-Cookie'], undefined);
+  }
+  assert.equal(api.calls.length, 0);
+  const result = await api.request({ headers: PRODUCTION_HEADERS });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.authenticated, true);
+  assert.equal(result.body.chatEnabled, true);
+  assert.equal(api.calls.length, 1);
+  assert.ok(result.headers['Set-Cookie'].every(cookie => cookie.includes('Secure; HttpOnly; SameSite=Strict')));
+});
+
+test('approved production retains exact HTTPS Origin checks and independent Auth and Chat switches', async () => {
+  const env = { ...ENV, VERCEL_ENV: 'production', SOLO_CUSTOMER_PRODUCTION_ENABLED: 'true' };
+  const api = setup({ env: { ...env, SOLO_CUSTOMER_CHAT_ENABLED: 'false' } });
+  for (const origin of [undefined, 'http://thesoloserviceprovider.com.au', PRODUCTION_ORIGIN + '/', 'https://attacker.test']) {
+    assert.equal((await api.request({ headers: { ...PRODUCTION_HEADERS, origin } })).status, 403);
+  }
+  assert.equal(api.calls.length, 0);
+  const signedIn = await api.request({ headers: PRODUCTION_HEADERS });
+  assert.equal(signedIn.status, 200);
+  assert.equal(signedIn.body.authenticated, true);
+  assert.equal(signedIn.body.chatEnabled, false);
+  const closed = setup({ env: { ...env, SOLO_CUSTOMER_AUTH_ENABLED: 'false' } });
+  assert.equal((await closed.request({ headers: PRODUCTION_HEADERS })).status, 503);
+  assert.deepEqual((await closed.request({ method: 'GET', headers: { ...PRODUCTION_HEADERS, origin: undefined } })).body,
+    { enabled: false, authenticated: false, chatEnabled: false });
+  assert.equal(closed.calls.length, 0);
 });
 
 test('unsupported methods are explicit and never contact Auth', async () => {
@@ -101,6 +147,82 @@ test('login verifies account and membership before issuing secure cookies', asyn
   assert.match(result.headers['Set-Cookie'][1], /Max-Age=2592000/);
   const json = JSON.stringify(result.body);
   for (const secret of [ACCESS, REFRESH, login.password, ENV.SOLO_SUPABASE_PUBLISHABLE_KEY]) assert.equal(json.includes(secret), false);
+});
+
+test('durable login admission happens before the password grant and receives no password', async () => {
+  const order = [];
+  const api = setup({
+    admit: async (req, attempt, options) => {
+      order.push('admit');
+      assert.equal(req.headers.origin, ORIGIN);
+      assert.deepEqual(attempt, { email: 'pilot@example.test', action: 'login' });
+      assert.equal(options.env.SOLO_SUPABASE_URL, SUPABASE);
+      assert.equal(typeof options.fetcher, 'function');
+    },
+    fetcher: async () => { order.push('password'); return response(SESSION); },
+    verify: async () => { order.push('verify'); return IDENTITY; },
+    status: async () => { order.push('status'); return { active: true, code: 'active' }; }
+  });
+  assert.equal((await api.request()).status, 200);
+  assert.deepEqual(order, ['admit', 'password', 'verify', 'status']);
+});
+
+test('admission limits and unavailable storage block password verification and cookie issuance', async () => {
+  for (const failure of [
+    new HttpError(429, 'auth_rate_limited', 'Too many sign-in attempts.', { 'Retry-After': '37' }),
+    new HttpError(503, 'auth_admission_unavailable', 'Sign-in admission is unavailable.')
+  ]) {
+    const api = setup({ admit: async () => { throw failure; },
+      verify: async () => assert.fail('Admission denied before password verification') });
+    const result = await api.request();
+    assert.equal(result.status, failure.status);
+    assert.equal(result.body.code, failure.code);
+    assert.equal(api.calls.length, 0);
+    assert.equal(result.headers['Set-Cookie'], undefined);
+    if (failure.status === 429) assert.equal(result.headers['Retry-After'], '37');
+  }
+});
+
+test('default login admission adapter contacts its RPC before Auth and stops a denied request', async () => {
+  for (const allowed of [true, false]) {
+    const calls = [];
+    const env = { ...ENV, VERCEL: '1', SOLO_SUPABASE_SECRET_KEY: 'sb_secret_unit_test_only',
+      SOLO_USAGE_HASH_SECRET: 'unit-test-only-hmac-secret-0123456789abcdefghijklmnopqrstuvwxyz' };
+    const api = setup({ env, admit: undefined, fetcher: async (url, options) => {
+      calls.push(url);
+      if (url === SUPABASE + '/rest/v1/rpc/solo_admit_auth_attempt') {
+        const body = JSON.parse(options.body);
+        assert.deepEqual(Object.keys(body).sort(), ['p_email_key', 'p_ip_key']);
+        assert.match(body.p_email_key, /^[0-9a-f]{64}$/);
+        assert.match(body.p_ip_key, /^[0-9a-f]{64}$/);
+        assert.doesNotMatch(options.body, /pilot@example|192\.0\.2\.10|test password/);
+        assert.equal(options.headers.apikey, env.SOLO_SUPABASE_SECRET_KEY);
+        assert.equal(options.headers.Authorization, undefined);
+        return response({ allowed, code: allowed ? 'admitted' : 'rate_limited', retry_after_seconds: allowed ? 0 : 37 });
+      }
+      assert.equal(allowed, true, 'Denied admission must not request a password grant');
+      assert.equal(url, SUPABASE + '/auth/v1/token?grant_type=password');
+      return response(SESSION);
+    } });
+    const result = await api.request({ headers: { 'x-vercel-forwarded-for': '192.0.2.10' } });
+    assert.equal(result.status, allowed ? 200 : 429);
+    assert.equal(calls.length, allowed ? 2 : 1);
+    if (!allowed) {
+      assert.equal(result.headers['Retry-After'], '37');
+      assert.equal(result.headers['Set-Cookie'], undefined);
+    }
+  }
+});
+
+test('status, refresh, logout and disabled login never spend a login admission', async () => {
+  const api = setup({ admit: async () => assert.fail('Not a password login attempt') });
+  assert.equal((await api.request({ method: 'GET', headers: { cookie: '__Host-solo-access=' + ACCESS } })).status, 200);
+  assert.equal((await api.request({ body: { action: 'refresh' }, headers: { cookie: '__Host-solo-refresh=' + REFRESH } })).status, 200);
+  assert.equal((await api.request({ body: { action: 'logout' }, headers: { cookie: '__Host-solo-access=' + ACCESS } })).status, 200);
+  const disabled = setup({ env: { ...ENV, SOLO_CUSTOMER_AUTH_ENABLED: 'false' },
+    admit: async () => assert.fail('Disabled password login') });
+  assert.equal((await disabled.request()).status, 503);
+  assert.equal(disabled.calls.length, 0);
 });
 
 test('verified status exposes only identity and quota, and respects chat-off flag', async () => {
@@ -207,6 +329,71 @@ test('failed revocation clears local cookies but never claims successful server 
   assert.equal(result.body.code, 'auth_unavailable');
   assert.ok(result.headers['Set-Cookie'].every(value => value.includes('Max-Age=0')));
   assert.doesNotMatch(JSON.stringify(result.body), /secret server failure/);
+});
+
+test('disabled release or Auth still revokes a customer session and clears cookies', async () => {
+  for (const env of [
+    { ...ENV, SOLO_CUSTOMER_AUTH_ENABLED: 'false' },
+    { ...ENV, VERCEL_ENV: 'production' },
+    { ...ENV, VERCEL_ENV: 'production', SOLO_CUSTOMER_PRODUCTION_ENABLED: 'true', SOLO_CUSTOMER_AUTH_ENABLED: 'false' }
+  ]) {
+    const api = setup({ env, verify: async () => assert.fail('Logout does not authenticate for new access'),
+      status: async () => assert.fail('Logout does not require chat membership') });
+    const result = await api.request({ body: { action: 'logout' }, headers: {
+      ...(env.VERCEL_ENV === 'production' ? PRODUCTION_HEADERS : {}),
+      cookie: '__Host-solo-access=' + ACCESS + '; __Host-solo-refresh=' + REFRESH
+    } });
+    assert.equal(result.status, 200);
+    assert.deepEqual(result.body, { enabled: false, authenticated: false, chatEnabled: false });
+    assert.equal(api.calls.length, 1);
+    assert.equal(api.calls[0].url, SUPABASE + '/auth/v1/logout?scope=local');
+    assert.equal(api.calls[0].options.headers.Authorization, 'Bearer ' + ACCESS);
+    assert.ok(result.headers['Set-Cookie'].every(cookie => cookie.includes('Max-Age=0')));
+  }
+});
+
+test('disabled logout rotates an expired access session only to revoke it', async () => {
+  const api = setup({ env: { ...ENV, SOLO_CUSTOMER_AUTH_ENABLED: 'false' } });
+  const result = await api.request({ body: { action: 'logout' }, headers: { cookie: '__Host-solo-refresh=' + REFRESH } });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.enabled, false);
+  assert.equal(api.calls.length, 2);
+  assert.match(api.calls[0].url, /grant_type=refresh_token$/);
+  assert.match(api.calls[1].url, /logout\?scope=local$/);
+  assert.ok(result.headers['Set-Cookie'].every(cookie => cookie.includes('Max-Age=0')));
+});
+
+test('disabled logout clears cookies but reports an honest upstream revocation failure', async () => {
+  const api = setup({ env: { ...ENV, SOLO_CUSTOMER_AUTH_ENABLED: 'false' },
+    fetcher: async () => { throw new Error('secret upstream failure ' + ACCESS); } });
+  const result = await api.request({ body: { action: 'logout' }, headers: { cookie: '__Host-solo-access=' + ACCESS } });
+  assert.equal(result.status, 503);
+  assert.equal(result.body.code, 'auth_unavailable');
+  assert.equal(result.body.enabled, false);
+  assert.equal(result.body.authenticated, false);
+  assert.match(result.body.error, /server sign-out could not be confirmed/i);
+  assert.ok(result.headers['Set-Cookie'].every(cookie => cookie.includes('Max-Age=0')));
+  assert.doesNotMatch(JSON.stringify(result.body), /secret upstream|dummy-access/);
+});
+
+test('disabled signed-out logout clears local cookies without configured services', async () => {
+  const api = setup({ env: {}, fetcher: async () => assert.fail('No session to revoke') });
+  const result = await api.request({ body: { action: 'logout' } });
+  assert.equal(result.status, 200);
+  assert.deepEqual(result.body, { enabled: false, authenticated: false, chatEnabled: false });
+  assert.ok(result.headers['Set-Cookie'].every(cookie => cookie.includes('Max-Age=0')));
+});
+
+test('disabled logout still rejects cross-origin requests before cookie clearing or Auth', async () => {
+  const api = setup({ env: { ...ENV, SOLO_CUSTOMER_AUTH_ENABLED: 'false' } });
+  for (const origin of [undefined, 'http://solo-preview.example', 'https://attacker.test']) {
+    const result = await api.request({ body: { action: 'logout' }, headers: {
+      origin, cookie: '__Host-solo-access=' + ACCESS
+    } });
+    assert.equal(result.status, 403);
+    assert.equal(result.headers['Set-Cookie'], undefined);
+  }
+  assert.equal(api.calls.length, 0);
 });
 
 test('JSON shape, MIME and actual UTF-8 body limits apply before any Auth request', async () => {

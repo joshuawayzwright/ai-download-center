@@ -1,6 +1,8 @@
-// Preview-only account sessions for the existing SOLO API. No public signup.
+// Gated account sessions for the existing SOLO API. No public signup.
 // Provider and Supabase privileged credentials are never sent to the browser.
 const access = require('../lib/solo-customer-access.cjs');
+const { customerRelease } = require('../lib/solo-release-policy.cjs');
+const { admitAuthRequest } = require('../lib/solo-auth-admission.cjs');
 const ACCESS_COOKIE = '__Host-solo-access';
 const REFRESH_COOKIE = '__Host-solo-refresh';
 const MAX_BODY_BYTES = 8192;
@@ -103,7 +105,7 @@ function setSession(res, session) {
 }
 
 function createAuthHandler({ env = process.env, fetcher = (...args) => globalThis.fetch(...args),
-  verify = access.verifyCustomer, status = access.customerStatus } = {}) {
+  verify = access.verifyCustomer, status = access.customerStatus, admit = admitAuthRequest } = {}) {
   async function authRequest(path, body, token) {
     const config = authConfig(env);
     let response;
@@ -120,7 +122,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
     if (path.startsWith('logout')) return {};
     try { return await response.json(); } catch { throw fail(503, 'auth_unavailable', 'Account service returned an invalid response.'); }
   }
-  async function validatedStatus(token) {
+  async function validatedStatus(token, chatEnabled) {
     const options = { env, fetcher };
     const identity = await verify(token, options);
     const usage = await status(identity, options);
@@ -128,13 +130,14 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
     return { enabled: true, authenticated: true,
       user: { id: identity.userId, email: identity.user.email || '' },
       usage: { remaining_daily: usage.remaining_daily ?? null, daily_limit: usage.daily_limit ?? null },
-      chatEnabled: env.SOLO_CUSTOMER_CHAT_ENABLED === 'true' };
+      chatEnabled };
   }
   async function revoke(token) {
     if (token) await authRequest('logout?scope=local', null, token);
   }
   return async (req, res) => {
-    const enabled = env.VERCEL_ENV === 'preview' && env.SOLO_CUSTOMER_AUTH_ENABLED === 'true';
+    const release = customerRelease(req, env);
+    const enabled = release.authEnabled;
     const disabled = { enabled: false, authenticated: false, chatEnabled: false };
     if (!['GET', 'POST'].includes(req.method)) {
       res.setHeader('Allow', 'GET, POST');
@@ -143,18 +146,21 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
     let action;
     try {
       sameOrigin(req);
-      if (!enabled) return req.method === 'GET' ? reply(res, 200, disabled)
-        : reply(res, 503, { ...disabled, error: 'SOLO accounts are in private testing.', code: 'auth_disabled' });
       if (req.method === 'GET') {
+        if (!enabled) return reply(res, 200, disabled);
         const token = access.parseAccessToken(req);
         // A normal access-cookie expiry must trigger the client's one refresh
         // attempt; a genuinely signed-out visitor needs no upstream request.
         if (!token && readCookie(req, REFRESH_COOKIE)) throw fail(401, 'session_expired', 'Please sign in again.');
-        return reply(res, 200, token ? await validatedStatus(token.token)
+        return reply(res, 200, token ? await validatedStatus(token.token, release.chatEnabled)
           : { enabled: true, authenticated: false, chatEnabled: false });
       }
       const body = await readBody(req);
       action = body.action;
+      // Disabling access must not trap an existing session. Same-origin logout
+      // can only revoke/clear credentials; it never grants membership or chat.
+      if (!enabled && action !== 'logout') return reply(res, 503,
+        { ...disabled, error: 'SOLO accounts are in private testing.', code: 'auth_disabled' });
       if (!['login', 'refresh', 'logout'].includes(action)) throw fail(400, 'invalid_action', 'Unsupported account action.');
       if (action === 'logout') {
         const current = access.parseAccessToken(req);
@@ -175,7 +181,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
           await revoke(session.access_token);
         }
         clearCookies(res);
-        return reply(res, 200, { enabled: true, authenticated: false, chatEnabled: false });
+        return reply(res, 200, { enabled, authenticated: false, chatEnabled: false });
       }
       let session;
       if (action === 'login') {
@@ -183,6 +189,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
             typeof body.password !== 'string' || !body.password || body.password.length > 1024) {
           throw fail(400, 'invalid_credentials', 'Enter your account email and password.');
         }
+        await admit(req, { email: body.email.trim(), action: 'login' }, { env, fetcher });
         session = await authRequest('token?grant_type=password', { email: body.email.trim(), password: body.password });
       } else {
         const refresh = readCookie(req, REFRESH_COOKIE);
@@ -191,7 +198,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
       }
       if (!validSession(session)) throw fail(503, 'auth_unavailable', 'Account service returned an invalid response.');
       let view;
-      try { view = await validatedStatus(session.access_token); }
+      try { view = await validatedStatus(session.access_token, release.chatEnabled); }
       catch (error) {
         // A signed-in Supabase account still needs current SOLO membership.
         // Revoke a newly issued but denied session without exposing its tokens.
@@ -205,9 +212,14 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
       const code = known ? error.code : 'auth_unavailable';
       const httpStatus = known ? error.status : 503;
       if ((action === 'refresh' && httpStatus === 401) || action === 'logout') clearCookies(res);
-      if (httpStatus === 429) res.setHeader('Retry-After', '60');
+      if (httpStatus === 429) {
+        const delay = known ? Number(error.headers['Retry-After']) : NaN;
+        res.setHeader('Retry-After', Number.isInteger(delay) && delay > 0 && delay <= 86400 ? String(delay) : '60');
+      }
       return reply(res, httpStatus, { enabled, authenticated: false, chatEnabled: false,
-        error: known ? error.message : 'Account service is temporarily unavailable.', code });
+        error: action === 'logout'
+          ? 'Local account cookies were cleared, but server sign-out could not be confirmed.'
+          : known ? error.message : 'Account service is temporarily unavailable.', code });
     }
   };
 }

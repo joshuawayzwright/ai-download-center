@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node quota.test.mjs"
+    "test": "node --test quota.test.mjs auth-admission.test.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.12"

@@ -187,7 +187,7 @@ async function withCustomer(run,overrides={}){
   const token=[encode({alg:'RS256'}),encode({sub:CUSTOMER_USER,
     session_id:'22222222-2222-4222-8222-222222222222',iss:origin+'/auth/v1',
     role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600}),'unit_test'].join('.');
-  const env={VERCEL_ENV:'preview',SOLO_CUSTOMER_CHAT_ENABLED:'true',SOLO_SUPABASE_URL:origin,
+  const env={VERCEL_ENV:'preview',SOLO_CUSTOMER_CHAT_ENABLED:'true',SOLO_CUSTOMER_PRODUCTION_ENABLED:'false',SOLO_SUPABASE_URL:origin,
     SOLO_SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test_only',SOLO_SUPABASE_SECRET_KEY:'sb_secret_test_only',
     SOLO_USAGE_HASH_SECRET:'unit-test-hmac-only-0123456789abcdefghijklmnopqrstuvwxyz',
     SOLO_PRIVATE_TEST_ENABLED:'true',SOLO_PRIVATE_TEST_TOKEN:TEST_TOKEN,
@@ -235,6 +235,67 @@ test('matching customer cookie binding is checked before the normal reservation 
     assert.equal(result.body.reply,'Bound customer reply');
     assert.deepEqual(calls,['auth','admit','provider','finish']);
   });
+});
+
+const PRODUCTION_HEADERS={host:'thesoloserviceprovider.com.au',origin:'https://thesoloserviceprovider.com.au'};
+test('production customer chat requires its separate release flag before any upstream access',async()=>{
+  for(const flag of ['false','TRUE','1']){
+    await withCustomer(async({calls,body,headers})=>{
+      const result=await request({body,headers:{...headers,...PRODUCTION_HEADERS}});
+      assert.equal(result.status,503);
+      assert.equal(result.body.code,'customer_disabled');
+      assert.deepEqual(calls,[]);
+    },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:flag});
+  }
+});
+
+test('approved production cookie chat retains account binding, reservation and finalization',async()=>{
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body,headers:{...headers,...PRODUCTION_HEADERS}});
+    assert.equal(result.status,200);
+    assert.equal(result.body.requestId,CUSTOMER_REQUEST);
+    assert.deepEqual(calls,['auth','admit','provider','finish']);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true'});
+});
+
+test('production release rejects other hosts and noncanonical origins before upstream access',async()=>{
+  await withCustomer(async({calls,body,headers,token})=>{
+    for(const extra of [
+      {host:'solo.example',origin:'https://solo.example'},
+      {host:'www.thesoloserviceprovider.com.au',origin:'https://www.thesoloserviceprovider.com.au'},
+      {...PRODUCTION_HEADERS,origin:'http://thesoloserviceprovider.com.au'},
+      {...PRODUCTION_HEADERS,origin:'https://thesoloserviceprovider.com.au/'}
+    ]){
+      // Explicit bearer isolates release-origin enforcement from cookie CSRF checks.
+      const result=await request({body,headers:{...headers,cookie:undefined,authorization:'Bearer '+token,...extra}});
+      assert.equal(result.status,503);
+      assert.equal(result.body.code,'customer_disabled');
+    }
+    assert.deepEqual(calls,[]);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true'});
+});
+
+test('approved production bearer chat may omit Origin while the Chat switch remains independent',async()=>{
+  await withCustomer(async({calls,body,token})=>{
+    delete body.expectedUserId;
+    const result=await request({body,headers:{...PRODUCTION_HEADERS,origin:undefined,authorization:'Bearer '+token}});
+    assert.equal(result.status,200);
+    assert.deepEqual(calls,['auth','admit','provider','finish']);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true',SOLO_CUSTOMER_AUTH_ENABLED:'false'});
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body,headers:{...headers,...PRODUCTION_HEADERS}});
+    assert.equal(result.status,503);
+    assert.deepEqual(calls,[]);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true',SOLO_CUSTOMER_CHAT_ENABLED:'false'});
+});
+
+test('production never enables owner-token inference even with both private and release flags',async()=>{
+  await withCustomer(async({calls,body})=>{
+    const result=await request({body:{messages:body.messages},headers:{...PRODUCTION_HEADERS,'x-solo-test-token':TEST_TOKEN}});
+    assert.equal(result.status,503);
+    assert.equal(result.body.code,'private_testing_disabled');
+    assert.deepEqual(calls,[]);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true'});
 });
 
 test('missing or malformed cookie account binding cannot reserve quota or fall back to owner access',async()=>{
