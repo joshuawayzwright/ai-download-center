@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-28",
+  "timezone": "Australia/Brisbane",
+  "verified_at_utc": "2026-10-28 00:18:42 UTC",
+  "project_ref": "tymayhazawkofmiypeqt",
+  "source_file": "powerhouse-website/scripts/solo-member-access.cjs",
+  "source_sha256": "eead74a81f69e54a03e249cebaf6174ffb1bdcedbd44e2d5a2330c880eebad4c",
+  "local_tests": {
+    "javascript": {
+      "tests": 246,
+      "pass": 246,
+      "fail": 0,
+      "skipped": 0
+    },
+    "sql": {
+      "tests": 45,
+      "pass": 45,
+      "fail": 0,
+      "skipped": 0
+    },
+    "new_membership_sql": 15,
+    "regression_before": {
+      "pass": 28,
+      "fail": 1
+    },
+    "onboarding_after": {
+      "pass": 29,
+      "fail": 0
+    }
+  },
+  "hosted_check": {
+    "operation": "grant",
+    "mode": "dry-run",
+    "fixture_scope": "one pre-existing confirmed nonanonymous blocked and expired SOLO verification account",
+    "projection_verified": true,
+    "policy_unchanged": true,
+    "members_unchanged": true,
+    "ledger_unchanged": true,
+    "fixture_sessions_unchanged": true,
+    "policy_enabled": false,
+    "member_count": 2,
+    "ledger_count": 15,
+    "fixture_sessions": 0,
+    "members_hash": "8620508cb983494dab688a0f933fd8c4",
+    "ledger_hash": "161e66d23206b56f0e821ad056b8c1aa"
+  },
+  "runtime_and_client_membership_grants": [
+    {
+      "rolname": "anon",
+      "can_insert_member": false,
+      "can_delete_member": false,
+      "can_change_blocked": false,
+      "can_change_expiry": false
+    },
+    {
+      "rolname": "authenticated",
+      "can_insert_member": false,
+      "can_delete_member": false,
+      "can_change_blocked": false,
+      "can_change_expiry": false
+    },
+    {
+      "rolname": "service_role",
+      "can_insert_member": false,
+      "can_delete_member": false,
+      "can_change_blocked": false,
+      "can_change_expiry": false
+    }
+  ],
+  "scope": {
+    "membership_changes_committed": false,
+    "new_accounts": 0,
+    "auth_requests": 0,
+    "emails_sent": 0,
+    "model_calls": 0,
+    "new_migrations": 0,
+    "production_cutover": false,
+    "independent_concurrency_verified": false,
+    "live_customer_onboarding_verified": false
+  },
+  "migration_blocker": {
+    "attempts_observed": 3,
+    "additional_attempts_this_cycle": 0,
+    "error": "Invalid or expired requestState",
+    "auth_policy_present": false,
+    "auth_counters_present": false,
+    "auth_rpc_present": false
+  },
+  "production": {
+    "deployment_id": "dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt",
+    "runtime_sha": "eabe97ad26141c8096fc533951dbc6482fb78f74",
+    "url": "https://thesoloserviceprovider.com.au/"
+  },
+  "ci_and_preview": "Recorded separately after the runtime commit is created."
+}

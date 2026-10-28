@@ -52,9 +52,12 @@ Before registration, the handler reads Auth settings and requires email Auth on,
 signup permitted, and automatic email confirmation off. An unexpected session
 returned by signup is cleaned up and rejected instead of being issued to the
 browser. A newly confirmed Supabase user still has **no SOLO membership** unless
-separately provisioned through the controlled operator process. Client input,
-user metadata, confirmation and password reset cannot enable chat or change
-quotas. Automated membership provisioning remains unfinished.
+separately provisioned through the controlled operator process. The
+[membership operations workflow](SOLO-MEMBER-OPERATIONS.md) provides private,
+reviewable inspect/grant/renew/block transactions for the existing schema, with
+rollback as the default. Client input, user metadata, confirmation and password
+reset cannot enable chat or change quotas. Automated subscription entitlements
+remain unfinished; the operator workflow does not approve customers by itself.
 
 ## Email verification and password reset
 
@@ -177,7 +180,8 @@ Before customer activation:
 3. Keep email confirmation required. Verify a new account, duplicate registration,
    invalid/expired codes, password reset, password-change failure and global
    session revocation against the hosted Auth service.
-4. Complete controlled membership provisioning, production provider cost controls,
+4. Use the reviewed controlled membership workflow only for specifically approved
+   customers after production provider cost controls are established. Complete
    operational monitoring and remaining signed-in desktop/Samsung acceptance.
 5. Enable production customer access only after those gates pass. Earlier private
    Gemini responses and this gated implementation do not prove a public product.

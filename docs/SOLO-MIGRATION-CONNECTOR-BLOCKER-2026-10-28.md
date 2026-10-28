@@ -1,10 +1,34 @@
 # SOLO migration connector blocker
 
+## Follow-up — 28 October 2026, 04:07 AEST
+
+The owner explicitly requested `apply_migration` after the earlier audit below.
+Fresh project, history, object, privilege and advisor checks confirmed that the
+same reviewed migration was still pending. The newly exposed tool schema used
+`name`, `project_id` and `query` without the earlier `link_id` argument.
+
+One additional call began at **04:03:37 AEST / 27 October 18:03:37 UTC** and
+returned the same `McpServerError: Invalid or expired requestState`, JSON-RPC
+`-32602`, reason `invalid_request_state`. Readback at **04:06:57 AEST** confirmed
+that both Auth-limiter tables and the RPC remained absent, migration history
+still contained only `20261027071534 solo_customer_admission`, and the existing
+chat policy remained disabled. There have now been **three observed failed
+attempts**, not two. No further attempt was made during the subsequent member
+workflow/cooldown work. The statements below about no third attempt describe
+the original audit, not this later execution.
+
+The current checklist records that outcome. This is a connector error, not an
+automatic approval-review rejection or proof of expired OAuth. No DDL via
+`execute_sql`, manual migration-history write, new project or extra API key
+was used as a workaround.
+
+## Earlier read-only audit
+
 Read-only audit: 27 October 2026 UTC / 28 October 2026 Brisbane.
 Scope: the existing commercial Supabase project `tymayhazawkofmiypeqt` only.
 No WrightWayz database or data was inspected.
 
-## Current evidence
+### Evidence at the earlier audit
 
 The commercial connection successfully returned these results:
 

@@ -138,6 +138,7 @@ function harness(responder = async () => response(enabled), options = {}) {
       return item.form.listeners.submit({preventDefault() {}});
     },
     emit(type, fields = {}) { window.dispatchEvent({type, ...fields}); },
+    advance(milliseconds) { now += milliseconds; },
     fireTimer(delay) {
       const entry = [...timers].find(([, value]) => value.delay === delay);
       assert.ok(entry, `Expected ${delay} ms timer`);
@@ -456,7 +457,7 @@ test('safe validation errors do not render upstream text and still require re-en
   }
 });
 
-test('actual Retry-After pauses submissions without automatic retry and permits a later deliberate request', async () => {
+test('actual Retry-After remains visible across forms and expires without retries or erasing a later outcome', async () => {
   const h = harness(async (_request, number) => number === 1 ? response(enabled) : number === 2
     ? response({ok: false, code: 'rate_limited'}, 429, '12') : response({ok: true, code: 'check_email'}, 202));
   await h.ready(); h.open('request_reset'); await h.submit('request_reset', {email: 'person@example.com'});
@@ -464,11 +465,44 @@ test('actual Retry-After pauses submissions without automatic retry and permits 
   assert.equal(h.forms.request_reset.submit.disabled, true);
   await h.submit('request_reset', {email: 'person@example.com'});
   assert.equal(h.calls.length, 2);
-  h.fireTimer(12000);
-  assert.equal(h.forms.request_reset.submit.disabled, false);
+  h.advance(4000);
+  h.open('reset_password');
+  assert.equal(h.forms.reset_password.form.hidden, false);
+  assert.equal(h.forms.reset_password.submit.disabled, true);
+  assert.match(h.status.textContent, /wait 8 seconds/);
+  await h.submit('reset_password');
   assert.equal(h.calls.length, 2);
+  h.advance(7000);
+  h.open('verify_email');
+  assert.equal(h.forms.verify_email.submit.disabled, true);
+  assert.match(h.status.textContent, /wait 1 second before/);
+  h.fireTimer(12000);
+  assert.equal(h.forms.verify_email.submit.disabled, false);
+  assert.equal(h.status.textContent, '');
+  assert.equal(h.status.attributes['data-error'], 'false');
+  assert.equal(h.calls.length, 2);
+  h.open('request_reset');
   await h.submit('request_reset', {email: 'person@example.com'});
   assert.equal(h.calls.length, 3);
+
+  // Background tabs can deliver a timer late. A new manual request after the
+  // deadline may finish first; its success or error must remain readable.
+  for (const outcome of [response({ok: true, code: 'email_verified'}), response({ok: false, code: 'invalid_code'}, 401)]) {
+    const delayed = harness(async (_request, number) => number === 1 ? response(enabled) : number === 2
+      ? response({ok: false, code: 'rate_limited'}, 429, '12') : outcome);
+    await delayed.ready(); delayed.open('request_reset');
+    await delayed.submit('request_reset', {email: 'person@example.com'});
+    delayed.advance(12000);
+    delayed.open('verify_email');
+    await delayed.submit('verify_email', {email: 'person@example.com', code: '123456'});
+    const message = delayed.status.textContent;
+    assert.match(message, outcome.ok ? /Email verified/ : /invalid or has expired/);
+    const errorState = delayed.status.attributes['data-error'];
+    delayed.fireTimer(12000);
+    assert.equal(delayed.status.textContent, message);
+    assert.equal(delayed.status.attributes['data-error'], errorState);
+    assert.equal(delayed.calls.length, 3);
+  }
 });
 
 test('invalid or excessive Retry-After values cannot create a false countdown', async () => {

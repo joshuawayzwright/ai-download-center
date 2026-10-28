@@ -44,6 +44,7 @@
   let busy = false;
   let retryAt = 0;
   let retryTimer;
+  let cooldownNotice = '';
   let exposed = false;
   let generation = 0;
   let activeRequest;
@@ -95,13 +96,16 @@
     status.setAttribute('data-error', String(error));
     if (focus) status.focus();
   };
+  const waitText = seconds => `Too many account requests. Please wait ${seconds} ${seconds === 1 ? 'second' : 'seconds'} before trying again.`;
   const select = (action, focus = true) => {
     if (busy || (action && !allowed(action))) return;
     if (active) rememberEmail(forms[active].email.value.trim());
     clearSecrets();
     clearInvalid();
     active = action;
-    say('');
+    const remaining = Math.max(0, Math.ceil((retryAt - Date.now()) / 1000));
+    cooldownNotice = remaining ? waitText(remaining) : '';
+    say(cooldownNotice, remaining > 0);
     controls();
     if (focus && action) forms[action].email.focus();
   };
@@ -135,8 +139,18 @@
     const seconds = Number(value);
     if (seconds > 86400) return null;
     retryAt = Date.now() + seconds * 1000;
+    cooldownNotice = waitText(seconds);
+    const deadline = retryAt;
     clearTimeout(retryTimer);
-    retryTimer = setTimeout(() => { retryAt = 0; controls(); }, seconds * 1000);
+    retryTimer = setTimeout(() => {
+      if (retryAt !== deadline) return;
+      retryAt = 0;
+      // A throttled timer may run after a newer request has already completed.
+      // Remove only this wait notice, preserving any later success or error.
+      if (cooldownNotice && status.textContent === cooldownNotice) say('');
+      cooldownNotice = '';
+      controls();
+    }, seconds * 1000);
     return seconds;
   };
   const uncertain = action => {
@@ -169,7 +183,7 @@
     if (result.status === 400 && data.code === 'invalid_request') return 'Check your email and the required fields, then enter your password or code again.';
     if (result.status === 429) {
       const wait = applyWait(result.retryAfter);
-      return wait ? `Too many account requests. Please wait ${wait} ${wait === 1 ? 'second' : 'seconds'} before trying again.`
+      return wait ? cooldownNotice
         : 'Too many account requests. Please wait before trying again.';
     }
     if (result.status === 503 && ['disabled', 'onboarding_disabled', 'signup_disabled', 'recovery_disabled'].includes(data.code)) {
