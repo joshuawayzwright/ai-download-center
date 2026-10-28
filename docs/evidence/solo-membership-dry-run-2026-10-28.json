@@ -91,5 +91,23 @@
     "runtime_sha": "eabe97ad26141c8096fc533951dbc6482fb78f74",
     "url": "https://thesoloserviceprovider.com.au/"
   },
-  "ci_and_preview": "Recorded separately after the runtime commit is created."
+  "ci_and_preview": {
+    "api_sql_run_id": 40610633207,
+    "quality_run_id": 40610633182,
+    "javascript_job_id": 122561030111,
+    "database_job_id": 122561029855,
+    "javascript_tests": 246,
+    "sql_tests": 45,
+    "failures": 0,
+    "skips": 0,
+    "actual_job_logs_inspected": true,
+    "preview_deployment": "dpl_8bpvb8yQuvuVwUYFFPQMApD5c3cN",
+    "preview_url": "https://solo-provider-industrial-qgmf0sfeq-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "static_files_matching_source": 5,
+    "closed_gate_http_checks": 12,
+    "temporary_share_revoked": true,
+    "cached_cookie_invalidation_independently_verified": false,
+    "http_evidence": "solo-member-preview-2026-10-28.json"
+  },
+  "runtime_commit": "3c9b214cf115f4b4e27373975b8737b45d5bee4c"
 }

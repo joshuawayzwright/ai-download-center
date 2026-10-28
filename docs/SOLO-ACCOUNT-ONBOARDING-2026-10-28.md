@@ -2,6 +2,13 @@
 
 ## Implementation status
 
+**Later 28 October update:** controlled membership operations are implemented and
+verified with a hosted rollback-only grant, preserving existing records and
+permissions. The form-switch cooldown explanation is also fixed. Runtime
+`3c9b214` passes 291 tests and is deployed to a new protected Preview; see
+[the current verification record](SOLO-MEMBER-OPERATIONS.md#committed-source-ci-and-protected-preview).
+Earlier onboarding/Preview evidence below retains its original scope.
+
 This is an additional gated implementation on `feat/solo-customer-access`, not a
 public account launch. It reuses the existing Vercel API, Supabase Auth project,
 login-session controller and durable admission function. The commercial website

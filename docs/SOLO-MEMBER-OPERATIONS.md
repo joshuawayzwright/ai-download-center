@@ -128,9 +128,35 @@ was created or changed. This checks the hosted operator transaction and rollback
 it does not approve a real customer or establish independent transaction races.
 
 The complete local suite passed **246 JavaScript + 45 SQL = 291 tests**, including
-15 new membership cases, with zero failures or skips. The sandbox initially
-blocked a nested CLI test process; the normal approved execution path completed
+15 new membership cases, with zero failures or skips. The initial restricted
+local run stalled in a nested CLI test; the normal approved execution path completed
 all 45 SQL cases successfully. The local subprocess case now has a five-second
 timeout so a similar environment failure cannot stall the suite indefinitely.
 
 See [sanitized verification evidence](evidence/solo-membership-dry-run-2026-10-28.json).
+
+### Committed source, CI and protected Preview
+
+Runtime commit: `3c9b214cf115f4b4e27373975b8737b45d5bee4c`, on the existing
+customer branch in draft PR #34. Both actual logs from
+[CI 40610633207](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40610633207)
+confirm **246 JavaScript + 45 SQL = 291 tests**, zero failures or skips.
+[Repository quality 40610633182](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40610633182)
+also passed.
+
+The same commit fixes a reproduced account-form cooldown defect: switching to
+another form no longer hides the explanation while its submit control remains
+disabled. Remaining seconds are shown on navigation; expiry clears only the wait
+notice, preserving a newer success/error. The extended regression failed against
+the original controller and passed after the fix, without automatic retries.
+
+Protected Preview `dpl_8bpvb8yQuvuVwUYFFPQMApD5c3cN` is READY at that runtime:
+[SOLO Preview — Vercel access required](https://solo-provider-industrial-qgmf0sfeq-wrightwayz.vercel.app/solo-ai.html#conversation).
+Five deployed files match the commit exactly, and twelve actual closed-gate HTTP
+checks passed. The temporary share was revoked afterward and its bypass map was
+empty; cached-cookie invalidation was not independently tested. See
+[HTTP evidence](evidence/solo-member-preview-2026-10-28.json).
+
+Production still points to `dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt`. No customer
+access switch was enabled. These checks do not establish live customer signup,
+email recovery, signed-in browser/device acceptance or a completed public AI service.

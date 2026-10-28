@@ -6,6 +6,11 @@ Updated 27 October 2026. The authoritative current release checklist is
 [GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 Its current-status section supersedes the historical execution log.
 
+The subsequent [controlled membership workflow and cooldown fix](SOLO-MEMBER-OPERATIONS.md)
+are committed at `3c9b214`, pass 291 automated tests, and have their own hosted
+rollback and protected-Preview evidence. They do not resolve the separate
+Auth-admission migration or open public customer access.
+
 ## Verified milestone snapshot — 27 October 2026
 - API: `powerhouse-website/api/solo-chat.js`, deployed to private Vercel previews.
 - Current provider: **Gemini**, default model `gemini-3.5-flash-lite`, with the existing server-side Preview key. OpenAI/Groq code paths are retained but are not the selected provider.
