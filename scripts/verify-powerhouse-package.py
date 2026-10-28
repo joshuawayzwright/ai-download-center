@@ -138,8 +138,13 @@ def main():
             for node in card.nodes():
                 if node.tag == "form" or (node.tag == "button" and "disabled" not in node.attrs):
                     issues.append(f"{name}: {product} has an unexpected active product control")
-                if node.tag == "a" and not node.attrs.get("href", "").startswith("mailto:"):
-                    issues.append(f"{name}: {product} may offer an email enquiry, not a purchase action")
+                if node.tag == "a":
+                    email_enquiry = node.attrs.get("href", "").startswith("mailto:")
+                    launch_enquiry = (node.attrs.get("href") == "#launch-notify"
+                                      and node.attrs.get("data-launch-interest") == card.attrs.get("id")
+                                      and "launch-notify" in ids[name])
+                    if not (email_enquiry or launch_enquiry):
+                        issues.append(f"{name}: {product} may offer an email or launch enquiry, not a purchase action")
 
     for filename, key in (("solo-commerce-catalogue.json", "launch_products"), ("solo-knowledge.json", "products")):
         try:
@@ -164,3 +169,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

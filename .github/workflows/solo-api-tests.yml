@@ -1,19 +1,21 @@
-name: SOLO AI API security tests
+name: SOLO website and API tests
 on:
   push:
     branches: [main]
     paths:
-      - 'powerhouse-website/api/solo-chat.js'
-      - 'powerhouse-website/solo-conversation.js'
-      - 'powerhouse-website/scripts/solo-private-smoke.cjs'
-      - 'powerhouse-website/tests/*.test.cjs'
+      - 'powerhouse-website/**'
+      - 'scripts/verify-powerhouse-package.py'
+      - 'scripts/summarize-launch-interest.cjs'
+      - 'data/solo-commerce-catalogue.json'
+      - 'data/solo-knowledge.json'
       - '.github/workflows/solo-api-tests.yml'
   pull_request:
     paths:
-      - 'powerhouse-website/api/solo-chat.js'
-      - 'powerhouse-website/solo-conversation.js'
-      - 'powerhouse-website/scripts/solo-private-smoke.cjs'
-      - 'powerhouse-website/tests/*.test.cjs'
+      - 'powerhouse-website/**'
+      - 'scripts/verify-powerhouse-package.py'
+      - 'scripts/summarize-launch-interest.cjs'
+      - 'data/solo-commerce-catalogue.json'
+      - 'data/solo-knowledge.json'
       - '.github/workflows/solo-api-tests.yml'
 permissions:
   contents: read
@@ -26,3 +28,4 @@ jobs:
         with:
           node-version: '22'
       - run: node --test powerhouse-website/tests/*.test.cjs
+      - run: python3 scripts/verify-powerhouse-package.py
