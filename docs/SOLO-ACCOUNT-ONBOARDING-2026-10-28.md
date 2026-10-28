@@ -2,6 +2,16 @@
 
 ## Implementation status
 
+**Hosted update — 28 October:** Auth admission is applied as managed version
+`20261028030527`. Sequential rollback checks and six independent overlapping
+database backends verified five admissions/one denial; guarded cleanup left
+zero Auth counters. Chat and provider signup remain closed. Auth `site_url`
+now uses `https://thesoloserviceprovider.com.au` and `password_min_length` is
+12. See [the deployment record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
+and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+SMTP/OTP delivery, live onboarding/recovery, signed-in browser acceptance and
+cost controls remain open.
+
 **Later 28 October update:** controlled membership operations are implemented and
 verified with a hosted rollback-only grant, preserving existing records and
 permissions. The form-switch cooldown explanation is also fixed. Runtime
@@ -12,8 +22,9 @@ Earlier onboarding/Preview evidence below retains its original scope.
 This is an additional gated implementation on `feat/solo-customer-access`, not a
 public account launch. It reuses the existing Vercel API, Supabase Auth project,
 login-session controller and durable admission function. The commercial website
-continues to show all ten products as COMING SOON. No provider settings,
-memberships, billing settings or production release switches are changed.
+continues to show all ten products as COMING SOON. The original implementation
+changed no provider settings, memberships, billing settings or production
+release switches. The later hosted Auth configuration changes are recorded above.
 
 The new `/api/solo-onboarding` endpoint supports:
 
@@ -50,10 +61,12 @@ new allowance. Storage errors, missing migration or invalid trusted Vercel IP
 configuration block the action. No password, code, raw email or raw IP is stored
 by that limiter. Its original fixed-window limits and no-refund policy remain.
 
-The pending migration is still
-`supabase/migrations/20261028010000_solo_auth_admission.sql`. No additional schema
-change is needed for these action types. Its hosted application remains blocked;
-see [the connector investigation](SOLO-MIGRATION-CONNECTOR-BLOCKER-2026-10-28.md).
+The applied source is
+`supabase/migrations/20261028010000_solo_auth_admission.sql`; the Management API
+recorded it as `20261028030527 solo_auth_admission`. No additional schema change
+is needed for these action types. Do not reapply it or repair history merely
+to match the source filename. Hosted lock-timeout and storage-failure behavior
+remain unverified despite the successful admission and concurrency checks.
 
 Before registration, the handler reads Auth settings and requires email Auth on,
 signup permitted, and automatic email confirmation off. An unexpected session
@@ -78,6 +91,13 @@ They retain the approved business emblem and palette. They are **prepared files,
 not installed or delivery-tested templates**. Their ordinary site links contain
 no credentials. No callback consumes a code on GET, and no token hash, access
 token or refresh token is accepted from a query string, fragment or form.
+
+The hosted configuration still has default link templates without `{{.Token}}`
+and no custom SMTP fields. Existing commercial DNS points to Namecheap Private
+Email; mailbox access, SMTP authentication and delivery remain unverified.
+Configure that existing service and install the committed templates before
+opening signup. The observed eight-digit OTP setting fits the implemented
+code-length validation.
 
 Verification uses `POST /auth/v1/verify` with the purpose-specific `signup` or
 `recovery` type. This matters because GoTrue's generic `email` type can validate
@@ -179,11 +199,13 @@ OTP/password reset or signed-in customer conversation test.
 
 Before customer activation:
 
-1. Restore the connector's supported migration write path, apply the saved Auth
-   admission migration once, and verify hosted privileges/concurrency/failures.
-2. Inspect and configure the existing commercial SMTP service, verified sender,
-   email templates and canonical Auth URLs; prove delivery with an authorized
-   test address. The prepared templates alone do not configure Supabase.
+1. Configure the existing commercial SMTP service and verified sender, install
+   the committed confirmation/recovery OTP templates, and prove delivery with
+   an authorized test address. The canonical Auth site URL and 12-character
+   minimum are already verified; prepared templates alone do not configure
+   Supabase. Keep signup closed until email acceptance is complete.
+2. Complete the remaining hosted Auth-admission lock-timeout and storage-failure
+   checks without repeating the already verified migration and quota race.
 3. Keep email confirmation required. Verify a new account, duplicate registration,
    invalid/expired codes, password reset, password-change failure and global
    session revocation against the hosted Auth service.

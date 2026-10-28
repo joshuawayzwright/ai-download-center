@@ -1,5 +1,17 @@
 # SOLO production access preparation
 
+**Current hosted status — 28 October:** Auth admission is applied as managed
+version `20261028030527`. Hosted sequential rollback and concurrency across six
+independent backends passed (five admissions/one denial); cleanup left zero Auth
+counters. Customer chat, the SQL policy and provider signup remain closed.
+Auth `site_url` is `https://thesoloserviceprovider.com.au` and
+`password_min_length` is 12. See [the deployment record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
+and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+Existing SMTP configuration, OTP template installation, delivery/recovery,
+signed-in browser and cost acceptance remain prerequisites. Hosted lock-timeout
+and storage-failure checks remain unverified. The original execution outcome at
+the end of this document is preserved as history.
+
 **Later same-day update:** gated signup, email verification and password recovery
 are now implemented separately. See [the account implementation](SOLO-ACCOUNT-ONBOARDING-2026-10-28.md)
 for their current scope. The 214-test and migration-blocker evidence below is the
@@ -62,8 +74,9 @@ login, status or inference.
 
 The login handler uses the server-only `solo-auth-admission.cjs` adapter before
 the Supabase password grant. The adapter calls the service-role-only
-`solo_admit_auth_attempt` RPC. Apply
-`supabase/migrations/20261028010000_solo_auth_admission.sql` before enabling login.
+`solo_admit_auth_attempt` RPC. Source
+`supabase/migrations/20261028010000_solo_auth_admission.sql` is now applied as
+managed history version `20261028030527`; do not reapply it to match its filename.
 An absent/unavailable RPC or invalid admission configuration must return an error
 before a password grant or new session is requested. There is no bypass switch.
 
@@ -83,9 +96,10 @@ response supplies a bounded `Retry-After` value.
 
 1. Review the source, new migration and targeted automated results. Keep all
    customer feature switches and the production release switch disabled.
-2. Apply the new Auth admission migration only to the existing commercial
-   Supabase project. Verify service-role execution and client-role denial, then
-   verify the deployed handler's fail-closed behavior without model calls.
+2. The commercial Auth admission migration, runtime/client permission boundaries,
+   sequential admission and hosted concurrency are verified. Preserve this
+   completed dependency; verify remaining hosted lock/storage-failure behavior
+   without model calls.
 3. Configure the existing commercial server variables for the intended deployment
    environment through authorized secret-management controls. Do not retrieve or
    print credential values, or copy any WrightWayz resources.
@@ -95,8 +109,9 @@ response supplies a bounded `Retry-After` value.
    requirements pass. The database inference policy and eligible memberships are
    additional independent prerequisites; this code change does not enable them.
 
-The current migration deployment and production activation are not established
-by local tests. A Ready deployment alone does not establish working customer AI.
+Migration deployment now has separate hosted evidence; local tests alone would
+not establish it. Production activation remains incomplete. A Ready deployment
+alone does not establish working customer AI.
 
 ## Verification scope
 
@@ -127,13 +142,14 @@ must be recorded separately before reporting a successful release.
 - Verify a zero-charge Gemini entitlement or obtain an explicit spending ceiling
   and complete the corresponding durable cost controls. Request caps alone are
   not a currency budget. This preparation does not approve spending.
-- Complete the intended customer onboarding and recovery flow. Public signup,
-  confirmation/recovery callbacks and paid subscription entitlements are not
-  implemented by this change. Keep provider signup closed until the intended
-  flow, delivery and abuse controls are verified.
-- Verify production SMTP/sender configuration and Auth callback URLs if email
-  confirmation, invitations or recovery will be offered. Existing services must
-  be inspected before adding infrastructure.
+- Complete hosted acceptance of the existing gated code-entry onboarding and
+  recovery flow. Paid subscription entitlements remain unfinished. Keep provider
+  signup closed until delivery, account/session outcomes and abuse controls pass.
+- Configure the existing commercial SMTP service and verified sender, install
+  the committed confirmation/recovery OTP templates, and verify delivery. The
+  canonical Auth site URL and 12-character minimum are already corrected and
+  verified; current hosted templates still use links instead of the required
+  OTP text. A replacement email provider has not been shown to be necessary.
 - Complete actual signed-in browser, live session-change/cross-tab and mobile
   acceptance using supported secure credential entry. Earlier API verification
   and mocked UI tests do not replace this evidence.

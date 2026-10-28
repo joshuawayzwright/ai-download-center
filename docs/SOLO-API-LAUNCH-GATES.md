@@ -1,15 +1,34 @@
 # SOLO AI — Launch Gates and Shared API
 
-**28 October update:** the commercial website is live with ten COMING SOON products. The customer branch has explicit production-origin gates, shutdown-safe logout, persistent account admission and new gated email verification/password recovery. See [account implementation and verification scope](SOLO-ACCOUNT-ONBOARDING-2026-10-28.md). The Auth-admission migration is **not applied**: two earlier calls and a later explicitly requested retry returned `Invalid or expired requestState`; independent readback confirms no new RPC/table. See [the dated connector investigation and follow-up](SOLO-MIGRATION-CONNECTOR-BLOCKER-2026-10-28.md). This does not establish expired OAuth. Public AI remains closed. The current section of issue #31 is authoritative; earlier milestones below retain their original scope.
+**28 October update:** the commercial website is live with ten COMING SOON products. The customer branch has explicit production-origin gates, shutdown-safe logout, persistent account admission and gated email verification/password recovery. See [account implementation and verification scope](SOLO-ACCOUNT-ONBOARDING-2026-10-28.md).
 
-Updated 27 October 2026. The authoritative current release checklist is
+The Auth-admission migration is **applied**, with managed history version
+`20261028030527`. Hosted permissions and sequential rollback checks passed;
+six independent, overlapping database backends produced five admissions and
+one denial. Guarded cleanup and independent readback confirmed zero Auth
+counters. See [the deployment record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
+and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+The three earlier connector failures remain historical; connector repair is
+not claimed.
+
+Auth `site_url` is now `https://thesoloserviceprovider.com.au` and
+`password_min_length` is **12**. Customer chat, its SQL policy and provider
+signup remain closed. Configure the existing commercial SMTP service and
+install the committed OTP templates before verifying delivery, onboarding,
+recovery and signed-in browser/device behavior. Hosted lock-timeout and
+storage-failure tests, provider-failure accounting and cost acceptance remain
+open; these database results do not establish public onboarding or launch.
+
+Current status updated 28 October 2026. The authoritative release checklist is
 [GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
-Its current-status section supersedes the historical execution log.
+Its current-status section supersedes the historical execution log; earlier
+milestones below retain their original scope.
 
 The subsequent [controlled membership workflow and cooldown fix](SOLO-MEMBER-OPERATIONS.md)
 are committed at `3c9b214`, pass 291 automated tests, and have their own hosted
-rollback and protected-Preview evidence. They do not resolve the separate
-Auth-admission migration or open public customer access.
+rollback and protected-Preview evidence. The Auth-admission dependency was
+subsequently verified separately as recorded above. Neither milestone opens
+public customer access.
 
 ## Verified milestone snapshot — 27 October 2026
 - API: `powerhouse-website/api/solo-chat.js`, deployed to private Vercel previews.

@@ -1,5 +1,32 @@
 # SOLO migration connector blocker
 
+## Resolved migration deployment — 28 October 2026 UTC
+
+The reviewed Auth admission migration was applied successfully through the
+official Supabase Management API at **03:05:25–03:05:27 UTC**, after
+owner-approved sign-in. One migration request returned HTTP 200. Independent
+reads confirmed `20261028030527 solo_auth_admission`, both tables and the
+function. Hosted permission, rollback-only admission and true concurrent
+admission checks passed; guarded cleanup and a **03:16:59 UTC** read confirmed
+zero Auth counters, disabled chat and unchanged memberships, request ledger
+and session count.
+
+See [the current deployment and verification record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
+and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+The managed history timestamp differs from the source filename
+`20261028010000_solo_auth_admission.sql`; do not blindly reapply, rename or
+repair history to make them match.
+
+**The migration dependency is resolved; the connector itself is not verified
+as repaired.** Its three failed calls below remain valid historical evidence.
+Statements below that the migration is pending or authentication is unavailable
+describe those earlier audits and are superseded by this section. All original
+historical sections are preserved.
+
+Customer release gates remain closed. SMTP/OTP delivery, actual onboarding and
+signed-in browser acceptance, and provider/cost requirements remain open; this
+database deployment is not a public SOLO AI launch.
+
 ## Follow-up — 28 October 2026, 04:07 AEST
 
 The owner explicitly requested `apply_migration` after the earlier audit below.
