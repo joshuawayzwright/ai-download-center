@@ -296,7 +296,7 @@ body{background:var(--ww-charcoal);color:#f4f4f2}
 
 
 /* Accessible, progressively enhanced navigation, shared by public pages. */
-.nav-toggle{display:none}
+.nav-toggle{display:none;background:transparent;font-family:inherit;cursor:pointer}
 .nav a:focus-visible,.nav-toggle:focus-visible{outline:3px solid #44adff;outline-offset:4px}
 footer p,.section a[href^="mailto:"],.founder-email{overflow-wrap:anywhere}
 @media(max-width:800px){
