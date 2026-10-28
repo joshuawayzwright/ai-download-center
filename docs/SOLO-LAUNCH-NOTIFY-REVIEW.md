@@ -74,3 +74,6 @@ The summarizer marks missing pagination metadata and truncated/excluded results,
 Sources:
 https://vercel.com/docs/logs/runtime
 https://vercel.com/docs/cli/logs
+
+## Unapplied aggregate SQL proposal
+docs/PROPOSED-SOLO-INTEREST-AGGREGATES.sql is review material only, outside automatic migrations. It proposes a private aggregate table with row-level security and no browser roles; a narrowly parameterized increment function is executable only by the existing server service role. No new key is created and no key may be placed in browser code. Existing production server credential availability must be verified securely before adapter implementation. The draft does not add the adapter or pretend logs are durable. Apply/test/retention choices and authenticated admin reporting still need approval and implementation.
