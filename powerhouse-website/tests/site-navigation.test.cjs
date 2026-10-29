@@ -51,6 +51,6 @@ test('public pages share navigation and business email; launch restrictions rema
     if (['index.html', 'digital-products.html'].includes(file)) assert.equal((html.match(/class="pending"/g) || []).length, 10);
   }
   assert.match(fs.readFileSync(path.join(root, 'contact.html'), 'utf8'), /href="tel:\+61452272820">0452 272 820/);
-  assert.match(fs.readFileSync(path.join(root, 'solo-ai.html'), 'utf8'), /Public chat is not open yet/);
+  assert.match(fs.readFileSync(path.join(root, 'solo-ai.html'), 'utf8'), /(Public chat is not open yet|Private testing — public access not enabled)/);
   assert.doesNotMatch(fs.readFileSync(path.join(root, 'styles.css'), 'utf8'), /\.links a:not\(:last-child\)\{display:none\}/);
 });
