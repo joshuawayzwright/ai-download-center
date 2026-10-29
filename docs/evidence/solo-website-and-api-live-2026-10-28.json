@@ -1,0 +1,237 @@
+{
+  "verified_at_utc": "2026-10-27T16:14:46.971263+00:00",
+  "production": {
+    "commit": "eabe97ad26141c8096fc533951dbc6482fb78f74",
+    "deployment": "dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt",
+    "url": "https://thesoloserviceprovider.com.au",
+    "files": [
+      {
+        "path": "/",
+        "status": 200,
+        "bytes": 18751,
+        "sha256": "a46307ca65e97db7c60113015554dac1cd95e12c3c3f5cdfd00281ceed204a1c",
+        "exact_source_match": true
+      },
+      {
+        "path": "/digital-products.html",
+        "status": 200,
+        "bytes": 9819,
+        "sha256": "add9d1fe2c375f4b63660a932c37599ce1d78978007da883abdc054ef38a39f9",
+        "exact_source_match": true
+      },
+      {
+        "path": "/solo-ai.html",
+        "status": 200,
+        "bytes": 5019,
+        "sha256": "e425bc7f3be9c3d8bcb4eb96d7e1fcf3e64836c31a3490862e493fb92a00aa0b",
+        "exact_source_match": true
+      },
+      {
+        "path": "/contact.html",
+        "status": 200,
+        "bytes": 4752,
+        "sha256": "71755d9b81f210660704613538f3ba3b79999b47be83b71308e9c91cf3c67b2f",
+        "exact_source_match": true
+      },
+      {
+        "path": "/terms.html",
+        "status": 200,
+        "bytes": 9840,
+        "sha256": "e6aa51df50fa511f87dca0aeb8b78cc2a0a926ed200069ba3b40843663462df7",
+        "exact_source_match": true
+      },
+      {
+        "path": "/privacy.html",
+        "status": 200,
+        "bytes": 3999,
+        "sha256": "001a9bfaf5e6bcead84165fdc7af1d580b5de1a30d5cc2d828f8a5713537b861",
+        "exact_source_match": true
+      },
+      {
+        "path": "/refunds.html",
+        "status": 200,
+        "bytes": 4042,
+        "sha256": "ae17c1b9e16e23109970ca19b691e0af876d162beea2b275c8b6bc23e685cf7d",
+        "exact_source_match": true
+      },
+      {
+        "path": "/thank-you.html",
+        "status": 200,
+        "bytes": 1290,
+        "sha256": "70178df906a98026aaf3fdad4d3ea58537e5fc1d8cf19af1152510cea558ab12",
+        "exact_source_match": true
+      },
+      {
+        "path": "/styles.css",
+        "status": 200,
+        "bytes": 31837,
+        "sha256": "0099bf40abed2e93ff795fba51ebe9725c62bc32db3790535fabb317c15eb0f9",
+        "exact_source_match": true
+      },
+      {
+        "path": "/solo-chat.js",
+        "status": 200,
+        "bytes": 1593,
+        "sha256": "2675379f201aa0c1e64401e4fd5d800a3eded61cdcd45a0966b6ae4f712a4e8f",
+        "exact_source_match": true
+      },
+      {
+        "path": "/assets/approved-stage/business-app-icon-512.png",
+        "status": 200,
+        "bytes": 331752,
+        "sha256": "862f45f749206980316509f7cf5604b0844f1794d4b6220800194157bb478c02",
+        "exact_source_match": true
+      },
+      {
+        "path": "/assets/approved-stage/solo-ai-app-icon-512.png",
+        "status": 200,
+        "bytes": 400839,
+        "sha256": "95faefa19c79c06a8bc48856b2db3a68bb9f18ce562a0231ef8e8b032956236f",
+        "exact_source_match": true
+      },
+      {
+        "path": "/assets/approved-stage/business-emblem.png",
+        "status": 200,
+        "bytes": 147538,
+        "sha256": "9fa592c2d1e4284272b9c60b887da3d447513ab93a5e732a88b732e799d4c3f3",
+        "exact_source_match": true
+      },
+      {
+        "path": "/downloads/five-minute-ai-marketing-fix.pdf",
+        "status": 200,
+        "bytes": 379422,
+        "sha256": "a06b1ef7b7fd308b7c687d467dffc1557199a07d59c0c49560fca035dd23160d",
+        "exact_source_match": true
+      }
+    ],
+    "api_access_boundary": {
+      "get_status": 405,
+      "unauthenticated_post_status": 503,
+      "unauthenticated_post": {
+        "error": "SOLO chat is in private testing. Public AI conversations are not enabled."
+      }
+    }
+  },
+  "protected_preview": {
+    "commit": "9a4c04823fe130ef5f93421fc9538af6f4e1015e",
+    "deployment": "dpl_3fTVU8E1i1NogJuNbq5iV8EEkJah",
+    "url": "https://solo-provider-industrial-3vrqz2vs0-wrightwayz.vercel.app",
+    "checks": [
+      {
+        "check": "account_disabled",
+        "status": 200,
+        "code": null,
+        "enabled": false,
+        "authenticated": false,
+        "chatEnabled": false,
+        "solo_cookies_cleared": 0
+      },
+      {
+        "check": "logout_while_disabled",
+        "status": 200,
+        "code": null,
+        "enabled": false,
+        "authenticated": false,
+        "chatEnabled": false,
+        "solo_cookies_cleared": 2
+      },
+      {
+        "check": "cross_origin_logout",
+        "status": 403,
+        "code": "invalid_origin",
+        "enabled": false,
+        "authenticated": false,
+        "chatEnabled": false,
+        "solo_cookies_cleared": 0
+      },
+      {
+        "check": "login_disabled",
+        "status": 503,
+        "code": "auth_disabled",
+        "enabled": false,
+        "authenticated": false,
+        "chatEnabled": false,
+        "solo_cookies_cleared": 0
+      },
+      {
+        "check": "customer_chat_disabled",
+        "status": 503,
+        "code": "customer_disabled",
+        "enabled": null,
+        "authenticated": null,
+        "chatEnabled": null,
+        "solo_cookies_cleared": 0
+      },
+      {
+        "check": "chat_method",
+        "status": 405,
+        "code": null,
+        "enabled": null,
+        "authenticated": null,
+        "chatEnabled": null,
+        "solo_cookies_cleared": 0
+      }
+    ]
+  },
+  "scope": "No customer credentials, account creation, email or model call. Public AI remains disabled.",
+  "browser": {
+    "browser": "Chrome",
+    "viewport": {
+      "width": 1363,
+      "height": 936
+    },
+    "homepage_product_count": 10,
+    "homepage_all_products_coming_soon": true,
+    "store_product_count": 10,
+    "store_all_products_coming_soon": true,
+    "approved_images_loaded": 3,
+    "homepage_horizontal_overflow": false,
+    "terms_horizontal_overflow": false,
+    "terms_contents_links": 8,
+    "product_navigation": {
+      "header_bottom_px": 77,
+      "product_label_top_px": 170.65625,
+      "section_top_px": 99.65625
+    },
+    "screenshots": [
+      "solo-coming-soon-live-2026-10-28.jpg",
+      "solo-terms-live-2026-10-28.jpg"
+    ],
+    "not_verified": [
+      "actual Samsung device layout",
+      "signed-in customer browser conversation"
+    ]
+  },
+  "ci": {
+    "commit": "9a4c04823fe130ef5f93421fc9538af6f4e1015e",
+    "api_sql_workflow": 40537911464,
+    "javascript": {
+      "job": 122308066671,
+      "tests": 184,
+      "passed": 184,
+      "failed": 0
+    },
+    "database": {
+      "job": 122308067101,
+      "tests": 30,
+      "passed": 30,
+      "failed": 0
+    },
+    "repository_quality": 40537911429,
+    "website_pr35_quality": 40534241787,
+    "website_pr35_catalogue": 40534241851
+  },
+  "auth_migration": {
+    "file": "supabase/migrations/20261028010000_solo_auth_admission.sql",
+    "applied": false,
+    "attempts": 2,
+    "connector_error": "McpServerError: Invalid or expired requestState",
+    "readback": {
+      "new_table_exists": false,
+      "new_rpc_exists": false,
+      "chat_policy_enabled": false
+    },
+    "history_version": "20261027071534",
+    "no_schema_or_history_bypass": true
+  }
+}

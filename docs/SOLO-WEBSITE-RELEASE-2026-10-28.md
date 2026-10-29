@@ -43,9 +43,57 @@ that entire development branch.
   the three contact regions. Final PDF SHA-256:
   `a06b1ef7b7fd308b7c687d467dffc1557199a07d59c0c49560fca035dd23160d`.
 
-Deployment readiness, browser verification and the production alias must be
-recorded separately after the deployment completes. These source checks alone
-do not prove a live website or working customer AI service.
+## Verified production outcome
+
+- Website release [PR #35](https://github.com/joshuawayzwright/ai-download-center/pull/35)
+  merged as `fc35fc3e6872268b07c401822d41b3a2bb77e697`.
+- A real browser check found the sticky header covering a product label after
+  anchor navigation. Follow-up `eabe97ad26141c8096fc533951dbc6482fb78f74`
+  corrected section offsets; the label is now below the header on the live site.
+- Production deployment **`dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt`** is Ready at that
+  runtime commit. Fresh Vercel alias inspection maps the commercial domain to it.
+- [Homepage](https://thesoloserviceprovider.com.au/),
+  [store](https://thesoloserviceprovider.com.au/digital-products.html) and
+  [Terms](https://thesoloserviceprovider.com.au/terms.html) were opened in Chrome.
+  Each listing has ten COMING SOON cards. Approved images load; the tested
+  1363 × 936 desktop viewport has no horizontal overflow. Terms has its eight
+  contents links and professional policy layout. Actual Samsung acceptance
+  remains unverified.
+- Fourteen production HTML/style/script/image/PDF requests returned HTTP 200
+  and their bytes match source exactly. The legacy chat route returns GET 405;
+  an unauthenticated POST returns 503 with public AI disabled.
+- [Sanitized live results](evidence/solo-website-and-api-live-2026-10-28.json)
+  include source hashes, browser observations and verification scope.
+- [Collection screenshot](evidence/solo-coming-soon-live-2026-10-28.jpg) and
+  [Terms screenshot](evidence/solo-terms-live-2026-10-28.jpg) capture the real
+  production pages, not a design mockup.
+
+## Separately implemented SOLO access work
+
+The customer branch at `9a4c04823fe130ef5f93421fc9538af6f4e1015e` preserves the
+published website and current contacts. It adds an explicit production-origin
+release rule, prohibits owner-token inference in Production, fixes logout while
+sign-in is disabled, and implements persistent login admission using keyed
+identifiers. It remains in draft PR #34; it is not the public customer release.
+
+[CI 40537911464](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40537911464)
+passed **184 JavaScript + 30 SQL = 214 tests**, zero failures or skips.
+Repository quality `40537911429` also passed. Website PR #35 quality
+`40534241787` and catalogue `40534241851` passed before cutover.
+
+Protected Preview **`dpl_3fTVU8E1i1NogJuNbq5iV8EEkJah`** is Ready at `9a4c048`.
+Six actual HTTP checks passed: disabled account status 200; same-origin logout
+200 with both cookie slots cleared; cross-origin logout 403 without clearing;
+login 503/auth_disabled; customer-intent chat 503/customer_disabled; chat GET 405.
+No signed-in session, email or inference was used in these checks. They do not
+replace actual signed-in browser or provider-error acceptance.
+
+The new Auth-admission migration **was not applied**. Two `apply_migration`
+requests returned `McpServerError: Invalid or expired requestState`; SQL readback
+confirms no new table/RPC, unchanged migration history and disabled chat policy.
+The migration is saved and tested. No unmanaged schema/history edit was used.
+Customer onboarding/recovery code, production mail delivery, provider charging
+controls and actual signed-in/mobile acceptance remain unfinished.
 
 ## SOLO AI remains a separate release gate
 
