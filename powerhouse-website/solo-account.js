@@ -17,6 +17,8 @@
   let generation = 0;
   let queuedCheck = false;
   let lastWakeCheck = -Infinity;
+  let suppressWakeUntil = 0;
+  let warmStarted = false;
   let channel;
 
   const safeUsage = value => value && Number.isInteger(value.daily_limit) && value.daily_limit >= 0 &&
@@ -47,6 +49,9 @@
       usage: authenticated ? safeUsage(data.usage) : null, sessionVersion
     };
     form.hidden = !enabled || authenticated;
+    panel.setAttribute('data-authenticated', authenticated ? 'true' : 'false');
+    refresh.hidden = authenticated;
+    refresh.style.display = authenticated ? 'none' : '';
     logout.hidden = !authenticated;
     logout.style.display = authenticated ? '' : 'none';
     refresh.textContent = authenticated ? 'REFRESH SESSION' : 'CHECK ACCESS';
@@ -150,6 +155,9 @@
       }
       else {
         publish(result.data);
+        if ((action === 'login' || action === 'refresh') && result.data.authenticated === true) {
+          suppressWakeUntil = Date.now() + 30000;
+        }
         if (action === 'logout') {
           email.value = '';
           password.value = '';
@@ -185,6 +193,7 @@
   const wakeCheck = () => {
     if (document.visibilityState === 'hidden' || busy) return;
     const now = Date.now();
+    if (now < suppressWakeUntil) return;
     // Browsers commonly deliver focus and visibility/pageshow together.
     if (now - lastWakeCheck < 250) return;
     lastWakeCheck = now;
@@ -200,6 +209,15 @@
     }
   } catch { /* Older/restricted browsers still recheck on focus and restoration. */ }
 
+  const warmAccountServices = () => {
+    if (warmStarted || !state.enabled || state.authenticated) return;
+    warmStarted = true;
+    fetch('/api/solo-auth?warm=1', {method:'GET', credentials:'same-origin', cache:'no-store'})
+      .catch(() => { /* Login remains available if warm-up fails. */ });
+  };
+  email.addEventListener('focus', warmAccountServices);
+  password.addEventListener('focus', warmAccountServices);
+  form.addEventListener('pointerdown', warmAccountServices);
   form.addEventListener('submit', event => { event.preventDefault(); return run('login'); });
   refresh.addEventListener('click', () => run(state.authenticated ? 'refresh' : 'check'));
   logout.addEventListener('click', () => run('logout'));
