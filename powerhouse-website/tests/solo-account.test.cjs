@@ -551,6 +551,29 @@ test('external changes during login queue one recheck and ignore the delayed log
   assert.equal(hub.messages.length, 3);
 });
 
+
+test('mobile wake events during login do not queue a redundant post-login status check', async () => {
+  let finishLogin;
+  const pendingLogin = new Promise(resolve => { finishLogin = resolve; });
+  const h = harness(async (_options, number) => number === 1 ? response(signedOut)
+    : number === 2 ? pendingLogin : response(signedIn));
+  await h.ready();
+  const pending = h.login();
+  await Promise.resolve();
+  assert.match(h.status.textContent, /Signing in securely/);
+  assert.equal(h.submit.textContent, 'SIGNING IN…');
+  h.emit('focus');
+  h.visibility('hidden');
+  h.visibility('visible');
+  h.emit('pageshow', {persisted: true});
+  finishLogin(response(signedIn));
+  await pending;
+  await h.ready();
+  assert.equal(h.calls.length, 2);
+  assert.equal(h.window.soloAccountState.authenticated, true);
+  assert.equal(h.submit.textContent, 'SIGN IN');
+});
+
 test('same-user refresh and coalesced wake checks preserve the conversation version without broadcasts', async () => {
   const hub = channelHub();
   const h = harness(async () => response(signedIn), hub);
