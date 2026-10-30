@@ -289,9 +289,11 @@ test('invited account login and customer chat gates are respected before sending
   assert.equal(h.input.value, 'Keep this draft');
   assert.equal(h.status.textContent, 'Sign-in required');
   h.setAccount({enabled: true, authenticated: true, chatEnabled: false, sessionVersion: 1, userId: USER});
+  assert.equal(h.input.disabled, true);
+  assert.equal(h.button.disabled, true);
   await h.submit('Wait for chat approval');
   assert.equal(h.calls.length, 0);
-  assert.equal(h.status.textContent, 'Development access only');
+  assert.equal(h.status.textContent, 'Signed in — chat remains in private testing');
 });
 
 
