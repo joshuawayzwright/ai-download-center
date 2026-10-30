@@ -618,7 +618,7 @@ test('the HTML keeps controls hidden by default, labelled and purpose-specific w
   assert.match(html, /id="solo-onboarding-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"/);
   assert.match(html, /I have read and accept the <a href="\/terms.html">Terms<\/a>/);
   assert.match(html, /<a href="\/privacy.html">Privacy Policy<\/a>/);
-  assert.match(html, /\/assets\/approved-stage\/solo-ai-app-icon-512.png/);
+  assert.match(html, /\/assets\/approved-stage\/solo-ai-mark-v4\.svg/);
   assert.match(html, /\/solo-onboarding.css/);
   assert.ok(html.indexOf('/solo-account.js') < html.indexOf('/solo-onboarding.js'));
   assert.ok(html.indexOf('/solo-onboarding.js') < html.indexOf('/solo-conversation.js'));
