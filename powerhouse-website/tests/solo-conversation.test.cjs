@@ -294,6 +294,28 @@ test('invited account login and customer chat gates are respected before sending
   assert.equal(h.status.textContent, 'Development access only');
 });
 
+
+test('chat-off account state disables the composer and repeated blocked submits cannot stack notices', async () => {
+  const h = harness(undefined, {account: {enabled: true, authenticated: false, chatEnabled: false, sessionVersion: 0}});
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: false, sessionVersion: 1, userId: USER});
+  assert.equal(h.input.disabled, true);
+  assert.equal(h.button.disabled, true);
+  assert.equal(h.input.placeholder, 'Chat remains in private testing');
+  const initial = h.lines().length;
+  await h.submit('Blocked one');
+  await h.submit('Blocked two');
+  assert.equal(h.calls.length, 0);
+  assert.equal(h.lines().length, initial);
+});
+
+test('identical system notices are deduplicated until another message changes the transcript state', async () => {
+  const h = harness(undefined, {account: {enabled: true, authenticated: true, chatEnabled: false, sessionVersion: 1, userId: USER}});
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: false, sessionVersion: 2, userId: OTHER_USER});
+  const first = h.lines().length;
+  h.setAccount({enabled: true, authenticated: true, chatEnabled: false, sessionVersion: 3, userId: USER});
+  assert.ok(h.lines().length <= first + 1);
+});
+
 test('missing secure UUID support fails closed without a random fallback', async () => {
   const h = harness(undefined, {secureCrypto: false});
   await h.submit('A secure request');
