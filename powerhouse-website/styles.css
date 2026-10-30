@@ -726,3 +726,26 @@ footer{
   .hero h1{font-size:clamp(42px,13.4vw,54px)}
   .hero h1 em{font-size:.86em}
 }
+
+/* v4.2 visual acceptance: contain the desktop heading and keep the vector art fully framed. */
+@media(min-width:961px){
+  .hero-grid{grid-template-columns:minmax(0,1.14fr) minmax(360px,.86fr);gap:clamp(30px,4vw,56px)}
+  .hero h1{font-size:clamp(54px,5.35vw,82px)}
+}
+.hero-art-frame img{max-width:100%!important}
+
+/* Floating guide: readable, keyboard-visible controls that never cover mobile product cards. */
+.solo-guide-trigger{transition:opacity .16s ease,visibility .16s ease,transform .16s ease}
+.solo-guide-trigger.solo-guide-products-hidden{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.solo-guide-panel{box-sizing:border-box;max-height:calc(100dvh - 90px);overflow-y:auto}
+.solo-guide-panel h2{align-items:center;gap:12px}
+.solo-guide-panel h2 button{min-width:44px;min-height:44px;flex:0 0 44px;display:grid;place-items:center;cursor:pointer}
+.solo-guide-panel form{min-width:0;align-items:stretch}
+.solo-guide-panel form input{min-width:0;flex:1 1 auto;width:100%;box-sizing:border-box}
+.solo-guide-panel form button{min-width:56px;min-height:44px;cursor:pointer}
+.solo-guide-trigger:focus-visible,.solo-guide-panel button:focus-visible,.solo-guide-panel input:focus-visible,.solo-guide-panel a:focus-visible{outline:3px solid #49bcff;outline-offset:3px}
+@media(max-width:360px){
+  .solo-guide-panel{padding:14px}
+  .solo-guide-panel form{flex-wrap:wrap}
+  .solo-guide-panel form button{width:100%}
+}
