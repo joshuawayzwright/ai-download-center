@@ -574,7 +574,7 @@ test('mobile wake events during login do not queue a redundant post-login status
   assert.equal(h.submit.textContent, 'SIGN IN');
 });
 
-test('same-user refresh and coalesced wake checks preserve the conversation version without broadcasts', async () => {
+test('same-user refresh suppresses immediate wake churn and preserves the conversation version without broadcasts', async () => {
   const hub = channelHub();
   const h = harness(async () => response(signedIn), hub);
   await h.ready();
@@ -584,11 +584,16 @@ test('same-user refresh and coalesced wake checks preserve the conversation vers
   h.emit('pageshow', {persisted: true});
   h.visibility('visible');
   await h.ready();
-  assert.equal(h.calls.length, 3);
-  assert.equal(h.calls[2].method, 'GET');
+  assert.equal(h.calls.length, 2);
   assert.equal(h.window.soloAccountState.sessionVersion, version);
   assert.equal(h.window.soloAccountState.userId, USER_A);
   assert.equal(hub.messages.length, 0);
+  h.advance(30000);
+  h.emit('focus');
+  await h.ready();
+  assert.equal(h.calls.length, 3);
+  assert.equal(h.calls[2].method, 'GET');
+  assert.equal(h.window.soloAccountState.sessionVersion, version);
 });
 
 test('successful login suppresses mobile wake rechecks for 30 seconds and warms on form interaction', async () => {
