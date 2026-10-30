@@ -81,3 +81,12 @@ and [SQL tests](../tests/solo-database/README.md) for evidence and remaining gat
 Track completion only in the current section of issue #31. A ready Vercel build,
 a provider-only diagnostic and a successful private API conversation are distinct
 milestones; none proves customer login, paid fulfilment or a production launch.
+
+
+## Canonical SOLO AI app icon
+
+The canonical customer-facing SOLO AI app icon for the website assistant control and the future Google Play application is:
+
+`powerhouse-website/assets/approved-stage/solo-ai-app-icon-512.png`
+
+Do not substitute `business-app-icon-512.png`; that asset represents The Solo Service Provider business, not the standalone SOLO AI application.
