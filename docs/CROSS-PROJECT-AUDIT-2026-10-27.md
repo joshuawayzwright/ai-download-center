@@ -1,5 +1,7 @@
 # Cross-project audit and controlled cleanup — 27 October 2026
 
+**Historical audit:** the following tables record earlier 27 October observations. The [current checklist](https://github.com/joshuawayzwright/ai-download-center/issues/31) and [28 October website release](SOLO-WEBSITE-RELEASE-2026-10-28.md) supersede their maintenance/customer-verification statuses. Preserve the recorded profile/contact work; do not repeat completed customer API tests based on this earlier snapshot.
+
 ## Current information and profile audit — later on 27 October 2026
 
 This section supersedes the older live-store and private-chat observations in the historical snapshot below. The release authority remains the current section of [master issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).

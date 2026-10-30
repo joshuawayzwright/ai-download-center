@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "timezone": "Australia/Brisbane",
+  "repository": "joshuawayzwright/ai-download-center",
+  "branch": "feat/solo-customer-access",
+  "pullRequest": 34,
+  "sourceCommit": "1a2738816fe764ec5ac1723fef377aca5f505ee0",
+  "scope": "Immediate local chat invalidation at sign-out; mocked regression verification and actual closed-gate deployment checks. No live signed-in browser acceptance claimed.",
+  "implementation": {
+    "runtimeFile": "powerhouse-website/solo-account.js",
+    "addedRuntimeLines": 6,
+    "localStateInvalidatedBeforeLogoutRequest": true,
+    "sessionVersionAdvanced": true,
+    "pendingConversationLocallyAborted": true,
+    "lateReplyDraftAndFocusSuppressed": true,
+    "newChatRequestsBlockedWhileLogoutPending": true,
+    "serverSignOutNotFalselyConfirmed": true,
+    "peerSignalAfterSettlement": true,
+    "automaticInferenceRetry": false
+  },
+  "tests": {
+    "baselineNewRegressionFailures": 2,
+    "newRegressionCount": 2,
+    "targeted": {
+      "account": 29,
+      "conversation": 26,
+      "passed": 55,
+      "failed": 0,
+      "transport": "mocked"
+    },
+    "ci": {
+      "runId": 40512204310,
+      "jobIds": [
+        122216729482,
+        122216730012
+      ],
+      "javascriptTests": 160,
+      "sqlTests": 21,
+      "passed": 181,
+      "failed": 0,
+      "skipped": 0,
+      "logCountsVerified": true
+    },
+    "qualityRun": {
+      "id": 40512204274,
+      "conclusion": "success"
+    },
+    "catalogueRun": {
+      "id": 40512204359,
+      "conclusion": "success"
+    },
+    "independentReview": "No material issue identified in the focused patch"
+  },
+  "deployment": {
+    "id": "dpl_Dr62bzK8kLsqyXaoZUQfNbacjUsc",
+    "state": "READY",
+    "sourceCommit": "1a2738816fe764ec5ac1723fef377aca5f505ee0",
+    "origin": "https://solo-provider-industrial-pf0z4q0gh-wrightwayz.vercel.app",
+    "url": "https://solo-provider-industrial-pf0z4q0gh-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "buildOverride": false,
+    "protectionRetained": true
+  },
+  "http": [
+    {
+      "path": "/solo-ai.html",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 6770,
+      "sha256": "194f777d7614f5783f5caceb1d05973fcf0504a610d4d2a5f60f2da44d189924"
+    },
+    {
+      "path": "/solo-account.js",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 9985,
+      "sha256": "cd94e30e32c6bd392df5c4015c546ab4d0d1efbb7cc45d0f09fcbed9f4341746"
+    },
+    {
+      "path": "/solo-conversation.js",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 9284,
+      "sha256": "54ffd3cb48ab71a24d37b9607458d8fcd6d80eb1d93017d40793b13e5eedbb96"
+    },
+    {
+      "path": "/styles.css",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 31336,
+      "sha256": "77ab4ff1bdbb4beffeb8bfc961d1440bc1b1e7b48f2fef52fe2aac04bed11a68"
+    },
+    {
+      "method": "GET",
+      "path": "/api/solo-auth",
+      "status": 200,
+      "allCustomerFlagsFalse": true,
+      "privateNoStore": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/solo-auth",
+      "action": "refresh",
+      "status": 503,
+      "code": "auth_disabled"
+    },
+    {
+      "method": "POST",
+      "path": "/api/solo-chat",
+      "case": "dummy-bearer",
+      "status": 503,
+      "code": "customer_disabled",
+      "noModelCall": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/solo-chat",
+      "case": "expected-account-without-cookie",
+      "status": 503,
+      "code": "customer_disabled",
+      "noModelCall": true
+    }
+  ],
+  "browser": {
+    "engine": "Chrome",
+    "viewport": {
+      "width": 1363,
+      "height": 936
+    },
+    "checkAccess": "Private testing; account access unavailable",
+    "loginFormHidden": true,
+    "signOutHidden": true,
+    "horizontalOverflow": false,
+    "actualSignedInLogoutTest": false,
+    "screenshot": {
+      "path": "docs/evidence/solo-logout-preview-2026-10-27.jpg",
+      "bytes": 96564,
+      "sha256": "af7c8f5e7fe34e78de9db144a7487231100cd93c4966a6236362431bb50bea8e"
+    }
+  },
+  "commercialDatabase": {
+    "observedAtUtc": "2026-10-27T13:18:57.905261Z",
+    "observedAtBrisbane": "2026-10-27T23:18:57.905261+10:00",
+    "project": "tymayhazawkofmiypeqt",
+    "policyEnabled": false,
+    "limits": {
+      "userMinute": 3,
+      "userDay": 20,
+      "globalMinute": 20,
+      "globalDay": 200
+    },
+    "eligibleMembers": 0,
+    "memberSessions": 0,
+    "retainedLedgerRows": 15,
+    "priorSucceededRows": 4,
+    "hostedWritesThisCycle": 0
+  },
+  "production": {
+    "deploymentId": "dpl_9KijhLqwcEABqisC59RiLYJgyeV8",
+    "maintenance": true,
+    "promoted": false
+  },
+  "boundaries": {
+    "providerCallsThisCycle": 0,
+    "accountCreationOrCredentialChanges": false,
+    "environmentChanges": false,
+    "backendApiChanges": false,
+    "stripeChanges": false,
+    "billingChanges": false,
+    "artworkChanges": false,
+    "wrightWayzChanges": false
+  },
+  "documentation": "Four earlier verification records now label historical source, deployments, test counts and next gates explicitly; all original outcomes preserved.",
+  "remaining": [
+    "Secure browser sign-in using retained commercial test identities",
+    "Live signed-in account/chat, account-switch and session-expiry acceptance",
+    "Verified zero-cost provider entitlement or approved monetary ceiling before further model calls",
+    "Samsung/device acceptance and remaining public release controls"
+  ],
+  "limits": [
+    "Local abort cannot cancel or refund a provider request already admitted.",
+    "Fresh account revalidation after a failed logout can truthfully rediscover a valid server session.",
+    "Mocked controller tests do not establish live signed-in browser behavior."
+  ],
+  "verificationMarker": "SOLO_LOGOUT_PREVIEW_CLOSED_GATE_PASS"
+}

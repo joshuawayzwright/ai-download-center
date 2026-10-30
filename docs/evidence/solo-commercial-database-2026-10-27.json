@@ -1,0 +1,121 @@
+{
+  "evidence_version": 1,
+  "date": "2026-10-27",
+  "scope": "Commercial database deployment and unauthenticated HTTP boundaries; this record does not verify a customer chat release.",
+  "project": {
+    "organization": "The Solo Service Provider",
+    "organization_id": "txfdoppxcbylrguxsjod",
+    "project_id": "tymayhazawkofmiypeqt",
+    "postgresql_version": "17.11"
+  },
+  "database": {
+    "observed_by": "identity_inventory",
+    "tools": ["supabase_execute_sql", "supabase_list_migrations", "supabase_get_advisors"],
+    "latest_state_checked_at": "2026-10-27T07:17:39.814965Z",
+    "migration": {
+      "version": "20261027071534",
+      "name": "solo_customer_admission",
+      "repository_file": "supabase/migrations/20261027071534_solo_customer_admission.sql"
+    },
+    "state": {
+      "policy_rows": 1,
+      "policy_enabled": false,
+      "member_count": 0,
+      "ledger_count": 0,
+      "user_minute_limit": 3,
+      "user_day_limit": 20,
+      "global_minute_limit": 20,
+      "global_day_limit": 200
+    },
+    "schema": {
+      "tables": ["solo_private.chat_policy", "solo_private.chat_members", "solo_private.chat_requests"],
+      "expected_columns_constraints_indexes_verified": true,
+      "all_tables_rls_enabled": true,
+      "all_tables_rls_forced": true,
+      "client_rls_policies": 0,
+      "auth_users_id": "uuid primary key",
+      "auth_sessions_required_columns": {
+        "id": "uuid not null primary key",
+        "user_id": "uuid not null; foreign key to auth.users(id)",
+        "not_after": "timestamp with time zone nullable"
+      }
+    },
+    "functions": {
+      "names": ["public.solo_customer_status", "public.solo_admit_request", "public.solo_finish_request", "solo_private.customer_access_code"],
+      "all_security_invoker": true,
+      "all_search_paths_empty": true,
+      "admission_and_completion_lock_timeout": "2s",
+      "execute": {"PUBLIC": false, "anon": false, "authenticated": false, "service_role": true},
+      "owner": "postgres"
+    },
+    "runtime_sql_privileges": {
+      "role": "service_role",
+      "bypass_rls": true,
+      "inherited_roles": [],
+      "private_schema_usage": true,
+      "private_schema_create": false,
+      "private_table_select": true,
+      "policy_update_columns": ["id"],
+      "policy_enable_or_limit_writes": false,
+      "member_writes": false,
+      "request_insert_columns": ["user_id", "session_id", "request_id", "fingerprint", "created_at"],
+      "request_update_columns": ["status", "completed_at", "provider", "model", "input_tokens", "output_tokens"],
+      "private_table_delete_or_truncate": false,
+      "auth_sessions_select_columns": ["id", "user_id", "not_after"],
+      "other_auth_sessions_column_select": false,
+      "auth_table_or_column_writes": false,
+      "auth_schema_create": false,
+      "anon_and_authenticated_private_schema_or_table_access": false
+    },
+    "service_role_checks": {
+      "executing_role_verified": "service_role",
+      "transaction_rolled_back": true,
+      "statement_timeout": "5s",
+      "status": {"active": false, "code": "disabled"},
+      "admission": {"allowed": false, "code": "disabled", "retry_after_seconds": 0},
+      "malformed_fingerprint": {"allowed": false, "code": "invalid_request", "retry_after_seconds": 0},
+      "nonexistent_completion": {"ok": false, "code": "request_not_found"},
+      "three_column_auth_sessions_query_succeeded": true,
+      "auth_rows_read": 0,
+      "persistent_data_changes": 0
+    },
+    "advisors": {
+      "security_info": {"rls_enabled_no_policy": 3},
+      "performance_info": {"unused_index": 2},
+      "warning_count": 0,
+      "error_count": 0,
+      "interpretation": "No client policies is intentional for the service-only private tables. The two quota indexes are new and the ledger is empty.",
+      "references": [
+        "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+        "https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index"
+      ]
+    }
+  },
+  "http_boundaries": {
+    "observed_by": "root",
+    "transport": "HTTPS",
+    "marker": "SOLO_COMMERCIAL_ANON_BOUNDARY_PASS",
+    "publishable_anon_rpc_checks": [
+      {"rpc": "solo_customer_status", "http_status": 401, "sqlstate": "42501"},
+      {"rpc": "solo_admit_request", "http_status": 401, "sqlstate": "42501"},
+      {"rpc": "solo_finish_request", "http_status": 401, "sqlstate": "42501"}
+    ],
+    "private_schema_exposure_check": {"accept_profile": "solo_private", "http_status": 406, "code": "PGRST106"},
+    "auth_settings": {
+      "http_status": 200,
+      "disable_signup": false,
+      "email": true,
+      "anonymous": false,
+      "mailer_autoconfirm": false
+    }
+  },
+  "live_customer_login": false,
+  "independent_quota_races": false,
+  "provider_calls": 0,
+  "limitations": [
+    "Disabled-state SQL calls and unauthenticated HTTP boundaries do not prove a complete authenticated customer conversation.",
+    "Customer login, live-session revocation and independent simultaneous HTTPS admission tests remain unverified in this record.",
+    "SQL privilege checks describe database role permissions; they do not assert restrictions on separate Supabase Auth Admin API capabilities.",
+    "No credentials, access tokens, refresh tokens, prompts, replies or customer rows are included."
+  ]
+}
