@@ -85,8 +85,10 @@ milestones; none proves customer login, paid fulfilment or a production launch.
 
 ## Canonical SOLO AI app icon
 
-The canonical customer-facing SOLO AI app icon for the website assistant control and the future Google Play application is:
+The canonical customer-facing SOLO AI identity master is now the crisp vector artwork:
 
-`powerhouse-website/assets/approved-stage/solo-ai-app-icon-512.png`
+`powerhouse-website/assets/approved-stage/solo-ai-mark-v4.svg`
+
+The website assistant control, SOLO AI page and future app-store artwork must derive from this master. For Google Play, export the required raster icon sizes from this vector master rather than enlarging an older PNG. The legacy `solo-ai-app-icon-512.png` remains an archive/source asset only.
 
 Do not substitute `business-app-icon-512.png`; that asset represents The Solo Service Provider business, not the standalone SOLO AI application.
