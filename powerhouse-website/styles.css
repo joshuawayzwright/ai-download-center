@@ -714,3 +714,15 @@ footer{
   *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
   .button:hover,.outline:hover,.launch-product:hover,.lab-grid article:hover{transform:none}
 }
+
+
+/* v4.1 mobile acceptance fixes */
+.hero h1,.hero h1 em{overflow-wrap:normal;word-break:normal;hyphens:none}
+@media(max-width:760px){
+  .hero h1 em{display:inline-block;white-space:nowrap;font-size:.88em}
+  .solo-ai-page .solo-guide-trigger,.solo-ai-page .solo-guide-panel{display:none!important}
+}
+@media(max-width:420px){
+  .hero h1{font-size:clamp(42px,13.4vw,54px)}
+  .hero h1 em{font-size:.86em}
+}
