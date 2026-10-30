@@ -12,7 +12,7 @@ const ACCESS = 'dummy-access-token-for-tests';
 const REFRESH = 'dummy-refresh-token-for-tests';
 const IDENTITY = { userId: '00000000-0000-4000-8000-000000000001',
   sessionId: '00000000-0000-4000-8000-000000000002', user: { email: 'pilot@example.test' } };
-const SESSION = { access_token: ACCESS, refresh_token: REFRESH, expires_in: 3600 };
+const SESSION = { access_token: ACCESS, refresh_token: REFRESH, expires_in: 3600, user: { id: IDENTITY.userId, email: IDENTITY.user.email, email_confirmed_at: '2026-10-27T00:00:00Z', is_anonymous: false } };
 const ENV = { VERCEL_ENV: 'preview', SOLO_CUSTOMER_AUTH_ENABLED: 'true',
   SOLO_CUSTOMER_CHAT_ENABLED: 'true', SOLO_SUPABASE_URL: SUPABASE,
   SOLO_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_dummy_only' };
@@ -26,6 +26,7 @@ function setup(overrides = {}) {
     fetcher: async (url, options) => { calls.push({ url, options }); return response(SESSION); },
     admit: async (req, attempt) => { admissions.push(attempt); },
     verify: async (token) => { assert.equal(token, ACCESS); return IDENTITY; },
+    freshIdentity: session => { assert.equal(session, SESSION); return IDENTITY; },
     status: async (identity) => { assert.equal(identity, IDENTITY); return { active: true, code: 'active', remaining_daily: 19, daily_limit: 20 }; },
     ...overrides });
   return { calls, admissions, async request({ method = 'POST', body = login, headers = {}, chunks } = {}) {
@@ -160,11 +161,11 @@ test('durable login admission happens before the password grant and receives no 
       assert.equal(typeof options.fetcher, 'function');
     },
     fetcher: async () => { order.push('password'); return response(SESSION); },
-    verify: async () => { order.push('verify'); return IDENTITY; },
+    freshIdentity: () => { order.push('freshIdentity'); return IDENTITY; },
     status: async () => { order.push('status'); return { active: true, code: 'active' }; }
   });
   assert.equal((await api.request()).status, 200);
-  assert.deepEqual(order, ['admit', 'password', 'verify', 'status']);
+  assert.deepEqual(order, ['admit', 'password', 'freshIdentity', 'status']);
 });
 
 test('admission limits and unavailable storage block password verification and cookie issuance', async () => {
@@ -173,7 +174,7 @@ test('admission limits and unavailable storage block password verification and c
     new HttpError(503, 'auth_admission_unavailable', 'Sign-in admission is unavailable.')
   ]) {
     const api = setup({ admit: async () => { throw failure; },
-      verify: async () => assert.fail('Admission denied before password verification') });
+      freshIdentity: async () => assert.fail('Admission denied before password verification') });
     const result = await api.request();
     assert.equal(result.status, failure.status);
     assert.equal(result.body.code, failure.code);
