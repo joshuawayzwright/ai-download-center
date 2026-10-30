@@ -107,6 +107,39 @@ function validEmailConfirmation(value, nowMs) {
   return day <= days[month - 1] && Number.isFinite(confirmedAt) && confirmedAt <= nowMs;
 }
 
+function validatedProviderIdentity(token, user, origin, nowMs) {
+  if (!user || typeof user !== 'object' || !UUID.test(user.id)) throw authUnavailable();
+  let claims;
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3 || parts.some(part => !/^[A-Za-z0-9_-]+$/.test(part))) throw Error();
+    claims = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+  } catch { throw sessionError(); }
+  const timestamp = Math.floor(nowMs / 1000);
+  if (!claims || claims.sub !== user.id || claims.iss !== `${origin}/auth/v1` ||
+      claims.role !== 'authenticated' || !UUID.test(claims.session_id) ||
+      !Number.isInteger(claims.exp) || claims.exp <= timestamp ||
+      (claims.nbf !== undefined && (!Number.isInteger(claims.nbf) || claims.nbf > timestamp)) ||
+      !(claims.aud === 'authenticated' || (Array.isArray(claims.aud) && claims.aud.includes('authenticated')))) {
+    throw sessionError();
+  }
+  const email = normalizedEmail(user.email);
+  if (claims.is_anonymous === true || user.is_anonymous === true || !email ||
+      !validEmailConfirmation(user.email_confirmed_at, nowMs)) {
+    throw new HttpError(403, 'access_denied', 'This account does not have SOLO chat access.');
+  }
+  if (claims.email !== undefined && normalizedEmail(claims.email) !== email) throw sessionError();
+  return { userId: user.id, sessionId: claims.session_id, user, claims };
+}
+
+function identityFromSession(session, { env = process.env, now = Date.now } = {}) {
+  if (!session || typeof session !== 'object' || typeof session.access_token !== 'string' ||
+      !session.access_token || session.access_token.length > MAX_TOKEN_LENGTH ||
+      /[\s,\x00-\x1f\x7f]/.test(session.access_token)) throw sessionError();
+  const { origin } = configuration(env);
+  return validatedProviderIdentity(session.access_token, session.user, origin, now());
+}
+
 async function verifyCustomer(token, { env = process.env, fetcher = globalThis.fetch, now = Date.now } = {}) {
   if (typeof token !== 'string' || !token || token.length > MAX_TOKEN_LENGTH || /[\s,\x00-\x1f\x7f]/.test(token)) throw sessionError();
   const { origin } = configuration(env);
@@ -118,34 +151,7 @@ async function verifyCustomer(token, { env = process.env, fetcher = globalThis.f
   if (response.status === 401 || response.status === 403) throw sessionError();
   if (!response.ok) throw authUnavailable();
   const user = data?.user || data;
-  if (!user || typeof user !== 'object' || !UUID.test(user.id)) throw authUnavailable();
-
-  // This is decoding, not local signature verification. It deliberately happens
-  // only after Supabase Auth has validated this exact token online.
-  let claims;
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3 || parts.some(part => !/^[A-Za-z0-9_-]+$/.test(part))) throw Error();
-    claims = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
-  } catch { throw sessionError(); }
-  const nowMs = now();
-  const timestamp = Math.floor(nowMs / 1000);
-  if (!claims || claims.sub !== user.id || claims.iss !== `${origin}/auth/v1` ||
-      claims.role !== 'authenticated' || !UUID.test(claims.session_id) ||
-      !Number.isInteger(claims.exp) || claims.exp <= timestamp ||
-      (claims.nbf !== undefined && (!Number.isInteger(claims.nbf) || claims.nbf > timestamp)) ||
-      !(claims.aud === 'authenticated' || (Array.isArray(claims.aud) && claims.aud.includes('authenticated')))) {
-    throw sessionError();
-  }
-  const email = normalizedEmail(user.email);
-  // SOLO currently admits email-based customers. Confirmation must come from
-  // this online Auth response, never JWT/user metadata or phone confirmed_at.
-  if (claims.is_anonymous === true || user.is_anonymous === true || !email ||
-      !validEmailConfirmation(user.email_confirmed_at, nowMs)) {
-    throw new HttpError(403, 'access_denied', 'This account does not have SOLO chat access.');
-  }
-  if (claims.email !== undefined && normalizedEmail(claims.email) !== email) throw sessionError();
-  return { userId: user.id, sessionId: claims.session_id, user, claims };
+  return validatedProviderIdentity(token, user, origin, now());
 }
 
 function identityParams(identity) {
@@ -228,4 +234,4 @@ async function finalize(identity, { requestId, status, provider, model, inputTok
   return result;
 }
 
-module.exports = { HttpError, parseAccessToken, verifyCustomer, customerStatus, reserve, finalize };
+module.exports = { HttpError, parseAccessToken, identityFromSession, verifyCustomer, customerStatus, reserve, finalize };
