@@ -53,7 +53,10 @@
     const next = event.detail;
     if (!next || typeof next.enabled !== 'boolean') return;
     if (next.sessionVersion !== account.sessionVersion || next.authenticated !== account.authenticated || next.userId !== account.userId) {
-      clearConversation('Conversation cleared after the account changed.');
+      const signedInNow = !account.authenticated && next.authenticated;
+      clearConversation(signedInNow
+        ? (next.chatEnabled ? 'Signed in. SOLO is ready.' : 'Signed in. Chat remains in private testing.')
+        : 'Conversation cleared after the account changed.');
     }
     account = next;
     status.textContent = !account.enabled ? 'Private testing — public access not enabled'
