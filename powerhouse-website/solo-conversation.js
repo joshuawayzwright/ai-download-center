@@ -12,8 +12,11 @@
   let retryAfter = 0;
   let activeController;
   let conversationVersion = 0;
+  let lastNotice = '';
   const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const add = (role, value) => {
+    if (role === 'notice' && lastNotice === value) return;
+    lastNotice = role === 'notice' ? value : '';
     const line = document.createElement('div');
     line.className = 'solo-message ' + (role === 'user' ? 'from-user' : role === 'notice' ? 'system-notice' : 'from-solo');
     const label = document.createElement('strong');
@@ -39,6 +42,7 @@
     messages.length = 0;
     input.value = '';
     transcript.replaceChildren();
+    lastNotice = '';
     add('notice', notice);
   };
   const recheckAccount = () => {
@@ -47,6 +51,15 @@
     account = {...account, authenticated: false, chatEnabled: false, userId: null};
     status.textContent = 'Checking account access…';
     window.dispatchEvent(new CustomEvent('solo:account-stale'));
+  };
+  const syncComposer = () => {
+    if (account.enabled !== true) return;
+    const available = account.authenticated === true && account.chatEnabled === true;
+    input.disabled = !available;
+    if (!activeController) submit.disabled = !available;
+    input.placeholder = available
+      ? 'Ask SOLO a question...'
+      : account.authenticated ? 'Chat remains in private testing' : 'Sign in to use SOLO chat';
   };
   input.addEventListener('input', () => { retry = null; });
   window.addEventListener('solo:account', event => {
@@ -59,6 +72,7 @@
         : 'Conversation cleared after the account changed.');
     }
     account = next;
+    syncComposer();
     status.textContent = !account.enabled ? 'Private testing — public access not enabled'
       : !account.authenticated ? 'Sign in with an invited account'
         : account.chatEnabled ? 'Signed in — ready to chat' : 'Signed in — chat remains in private testing';
@@ -182,8 +196,8 @@
       const sameConversation = version === conversationVersion && sessionVersion === account.sessionVersion;
       if (!succeeded && input.value === '' && sameConversation) input.value = prompt;
       activeController = null;
-      submit.disabled = false;
-      if (sameConversation) input.focus();
+      syncComposer();
+      if (sameConversation && !input.disabled) input.focus();
     }
   });
 })();
