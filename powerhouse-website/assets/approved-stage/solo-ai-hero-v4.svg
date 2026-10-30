@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-labelledby="t d">
+<title id="t">SOLO AI hero artwork</title><desc id="d">Futuristic hooded AI sentinel in black, gold and electric blue.</desc>
+<defs>
+ <radialGradient id="space"><stop stop-color="#123451"/><stop offset=".43" stop-color="#07131e"/><stop offset="1" stop-color="#020406"/></radialGradient>
+ <linearGradient id="gold" x1=".15" y1="0" x2=".9" y2="1"><stop stop-color="#fff1a6"/><stop offset=".18" stop-color="#f0c45e"/><stop offset=".55" stop-color="#a86e1a"/><stop offset="1" stop-color="#f1bd4e"/></linearGradient>
+ <linearGradient id="armor" x1=".2" y1="0" x2=".8" y2="1"><stop stop-color="#26323d"/><stop offset=".38" stop-color="#080d12"/><stop offset=".72" stop-color="#151c23"/><stop offset="1" stop-color="#030507"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="16" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="soft"><feGaussianBlur stdDeviation="45"/></filter>
+</defs>
+<rect width="1600" height="1200" rx="64" fill="url(#space)"/>
+<circle cx="800" cy="480" r="430" fill="none" stroke="#d69a2e" stroke-width="18" opacity=".75"/>
+<circle cx="800" cy="480" r="386" fill="none" stroke="#1c9cea" stroke-width="8" opacity=".75" filter="url(#glow)"/>
+<ellipse cx="800" cy="1040" rx="580" ry="90" fill="#147bc0" opacity=".18" filter="url(#soft)"/>
+<!-- hood -->
+<path d="M440 900Q430 365 800 150q370 215 360 750l-184-92-176 78-176-78Z" fill="url(#armor)" stroke="#b9852d" stroke-width="12"/>
+<path d="M520 782Q520 376 800 232q280 144 280 550L930 700 800 760 670 700Z" fill="#05080c" stroke="#e2af4b" stroke-width="7"/>
+<!-- face -->
+<path d="M590 515 800 370l210 145-72 266-138 92-138-92Z" fill="#070b10" stroke="#273848" stroke-width="9"/>
+<path d="M632 582 754 548 710 621 618 642Z" fill="#21a8ff" filter="url(#glow)"/>
+<path d="M968 582 846 548 890 621 982 642Z" fill="#21a8ff" filter="url(#glow)"/>
+<path d="M800 538 870 688 800 754 730 688Z" fill="url(#armor)" stroke="#815914" stroke-width="5"/>
+<!-- forehead monogram -->
+<path d="M800 394 719 441l-35 62 37 21 34-59 45-26 37 22-21 36h-50l-36 62-10 17 80 47 81-47 37-64-38-22-34 59-46 26-37-22 22-37h49l36-62 10-17Z"
+ fill="url(#gold)" stroke="#ffe080" stroke-width="5"/>
+<!-- shoulders -->
+<path d="M376 1082 440 786l220-73 140 160 140-160 220 73 64 296Z" fill="url(#armor)" stroke="#71501f" stroke-width="9"/>
+<path d="M425 1040 610 772M1175 1040 990 772" stroke="#d7a343" stroke-width="13" opacity=".8"/>
+<path d="M500 1016H1100" stroke="#198fe0" stroke-width="5" opacity=".65" filter="url(#glow)"/>
+</svg>
