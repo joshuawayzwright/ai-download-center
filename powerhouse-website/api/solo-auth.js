@@ -6,7 +6,8 @@ const { admitAuthRequest } = require('../lib/solo-auth-admission.cjs');
 const { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, readBody, authConfig, validSession, setSession } = require('../lib/solo-auth-http.cjs');
 
 function createAuthHandler({ env = process.env, fetcher = (...args) => globalThis.fetch(...args),
-  verify = access.verifyCustomer, status = access.customerStatus, admit = admitAuthRequest } = {}) {
+  verify = access.verifyCustomer, freshIdentity = access.identityFromSession,
+  status = access.customerStatus, admit = admitAuthRequest } = {}) {
   async function authRequest(path, body, token) {
     const config = authConfig(env);
     let response;
@@ -23,13 +24,13 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
     if (path.startsWith('logout')) return {};
     try { return await response.json(); } catch { throw fail(503, 'auth_unavailable', 'Account service returned an invalid response.'); }
   }
-  async function validatedStatus(token, chatEnabled) {
+  async function validatedStatus(token, chatEnabled, identity = null) {
     const options = { env, fetcher };
-    const identity = await verify(token, options);
-    const usage = await status(identity, options);
+    const verifiedIdentity = identity || await verify(token, options);
+    const usage = await status(verifiedIdentity, options);
     if (usage.active !== true) throw fail(403, 'access_denied', 'This account does not have SOLO preview access.');
     return { enabled: true, authenticated: true,
-      user: { id: identity.userId, email: identity.user.email || '' },
+      user: { id: verifiedIdentity.userId, email: verifiedIdentity.user.email || '' },
       usage: { remaining_daily: usage.remaining_daily ?? null, daily_limit: usage.daily_limit ?? null },
       chatEnabled };
   }
@@ -99,7 +100,10 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
       }
       if (!validSession(session)) throw fail(503, 'auth_unavailable', 'Account service returned an invalid response.');
       let view;
-      try { view = await validatedStatus(session.access_token, release.chatEnabled); }
+      try {
+        const identity = freshIdentity(session, { env });
+        view = await validatedStatus(session.access_token, release.chatEnabled, identity);
+      }
       catch (error) {
         // A signed-in Supabase account still needs current SOLO membership.
         // Revoke a newly issued but denied session without exposing its tokens.
