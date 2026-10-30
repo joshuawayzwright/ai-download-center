@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { Readable } = require('node:stream');
-const { HttpError, parseAccessToken, verifyCustomer, customerStatus, reserve, finalize } = require('../lib/solo-customer-access.cjs');
+const { HttpError, parseAccessToken, identityFromSession, verifyCustomer, customerStatus, reserve, finalize } = require('../lib/solo-customer-access.cjs');
 const handler = require('../api/solo-chat.js');
 
 // Deliberately unsigned test JWTs. Only the mocked Auth service accepts them.
@@ -114,6 +114,18 @@ test('ambiguous and malformed customer credentials cannot become owner requests'
   for (const authorization of ['', 'Basic abc', 'Bearer one,two', 'Bearer token with spaces']) {
     assert.throws(() => parseAccessToken({ headers: { authorization } }), error => error.status === 401);
   }
+});
+
+test('fresh provider session identity avoids a redundant Auth user lookup while preserving identity checks', () => {
+  const session = { access_token: TOKEN, refresh_token: 'refresh-token-for-test', expires_in: 3600, user };
+  const identity = identityFromSession(session, { env: ENV });
+  assert.equal(identity.userId, USER);
+  assert.equal(identity.sessionId, SESSION);
+  assert.equal(identity.user.email, user.email);
+  assert.throws(() => identityFromSession({ ...session, user: { ...user, email_confirmed_at: null } }, { env: ENV }),
+    error => error.status === 403 && error.code === 'access_denied');
+  assert.throws(() => identityFromSession({ ...session, user: { ...user, id: REQUEST } }, { env: ENV }),
+    error => error.status === 401 && error.code === 'invalid_session');
 });
 
 test('verified identity comes from an online Auth check of the exact bearer token', async () => {
