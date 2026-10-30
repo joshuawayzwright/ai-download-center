@@ -29,9 +29,10 @@ function setup(overrides = {}) {
     freshIdentity: session => { assert.equal(session, SESSION); return IDENTITY; },
     status: async (identity) => { assert.equal(identity, IDENTITY); return { active: true, code: 'active', remaining_daily: 19, daily_limit: 20 }; },
     ...overrides });
-  return { calls, admissions, async request({ method = 'POST', body = login, headers = {}, chunks } = {}) {
+  return { calls, admissions, async request({ method = 'POST', body = login, headers = {}, chunks, url = '/api/solo-auth' } = {}) {
     const req = Readable.from(chunks || []);
     req.method = method;
+    req.url = url;
     req.headers = { host: 'solo-preview.example', origin: ORIGIN, 'content-type': 'application/json', ...headers };
     req.body = chunks === undefined ? body : undefined;
     let result;
@@ -113,6 +114,30 @@ test('account mutations require exact HTTPS Origin before parsing or Auth', asyn
   }
   assert.equal((await api.request({ headers: { 'sec-fetch-site': 'cross-site' } })).status, 403);
   assert.equal(api.calls.length, 0);
+});
+
+test('preview sign-in warm-up primes Supabase without authenticating or exposing credentials', async () => {
+  const calls = [];
+  const env = {...ENV, SOLO_SUPABASE_SECRET_KEY: 'sb_secret_warm_test_only'};
+  const api = setup({env, fetcher: async (url, options) => {
+    calls.push({url, options});
+    assert.equal(url, SUPABASE + '/rest/v1/rpc/solo_customer_status');
+    assert.equal(options.headers.apikey, env.SOLO_SUPABASE_SECRET_KEY);
+    assert.equal(options.headers.Authorization, undefined);
+    const body = JSON.parse(options.body);
+    assert.match(body.p_user_id, /^[0-9a-f-]{36}$/);
+    assert.match(body.p_session_id, /^[0-9a-f-]{36}$/);
+    return response({active:false,code:'invalid_session'});
+  }});
+  const result = await api.request({method:'GET', url:'/api/solo-auth?warm=1',
+    headers:{origin:undefined,'sec-fetch-site':'same-origin'}});
+  assert.equal(result.status, 200);
+  assert.deepEqual(result.body,{enabled:true,warmed:true});
+  assert.equal(calls.length,1);
+  const crossSite = await api.request({method:'GET', url:'/api/solo-auth?warm=1',
+    headers:{origin:undefined,'sec-fetch-site':'cross-site'}});
+  assert.equal(crossSite.status,403);
+  assert.equal(calls.length,1);
 });
 
 test('signed-out status is local; expired access cookie signals one refresh', async () => {
