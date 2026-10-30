@@ -591,6 +591,32 @@ test('same-user refresh and coalesced wake checks preserve the conversation vers
   assert.equal(hub.messages.length, 0);
 });
 
+test('successful login suppresses mobile wake rechecks for 30 seconds and warms on form interaction', async () => {
+  const h = harness(async (_options, number, url) => {
+    if (url.includes('warm=1')) return response({enabled:true,warmed:true});
+    return response(number === 1 ? signedOut : signedIn);
+  });
+  await h.ready();
+  h.email.listeners.focus();
+  await Promise.resolve();
+  assert.ok(h.calls.some(call => call.url === '/api/solo-auth?warm=1'));
+  await h.login();
+  const afterLogin = h.calls.length;
+  h.emit('focus');
+  h.visibility('hidden');
+  h.visibility('visible');
+  h.emit('pageshow',{persisted:true});
+  await h.ready();
+  assert.equal(h.calls.length, afterLogin);
+  h.advance(30000);
+  h.emit('focus');
+  await h.ready();
+  assert.equal(h.calls.length, afterLogin + 1);
+  assert.equal(h.refresh.hidden, true);
+  assert.equal(h.refresh.style.display, 'none');
+  assert.equal(h.panel.attributes['data-authenticated'], 'true');
+});
+
 test('focus and restored-page checks discover changed accounts when BroadcastChannel is unavailable', async () => {
   const h = harness(async (_options, number) => response({...signedIn,
     user: {id: number === 2 ? USER_B : USER_A, email: 'tester@example.com'}}), {
