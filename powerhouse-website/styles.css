@@ -321,3 +321,396 @@ footer p,.section a[href^="mailto:"],.founder-email{overflow-wrap:anywhere}
 @media(max-width:600px){
   #solo-account[data-authenticated="true"]{padding:12px 14px!important}
 }
+
+
+/* ============================================================
+   Visual system v4 — crisp SOLO flagship overhaul
+   Final override layer. Core identity is vector-first so high-DPI
+   phones and desktop displays remain sharp without raster scaling.
+   ============================================================ */
+:root{
+  --solo-ink:#050607;
+  --solo-panel:#0c1014;
+  --solo-panel-2:#111820;
+  --solo-line:#4a4f56;
+  --solo-gold:#c99734;
+  --solo-gold-hi:#f2c766;
+  --solo-blue:#159eea;
+  --solo-blue-hi:#49bcff;
+  --solo-text:#f7f4ed;
+  --solo-muted:#b7c0c9;
+  --solo-radius:18px;
+  --solo-shadow:0 24px 70px rgba(0,0,0,.46);
+}
+html{scroll-behavior:smooth;background:#050607}
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  background:
+    linear-gradient(rgba(4,6,8,.93),rgba(4,6,8,.96)),
+    url("/assets/approved-stage/solo-ai-bg-v4.svg") center top/cover fixed,
+    #050607;
+  color:var(--solo-text);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+body::selection{background:#c99734;color:#050607}
+img,svg{max-width:100%;height:auto}
+.wrap{width:min(1180px,calc(100% - 40px));margin-inline:auto}
+.section{padding:clamp(68px,8vw,110px) 0}
+.lower{background:linear-gradient(180deg,rgba(14,18,22,.9),rgba(6,8,10,.96))}
+.top{
+  position:sticky;top:0;z-index:80;
+  background:rgba(5,7,9,.88);
+  border-bottom:1px solid rgba(201,151,52,.62);
+  box-shadow:0 12px 35px rgba(0,0,0,.28);
+  backdrop-filter:blur(18px) saturate(125%);
+  -webkit-backdrop-filter:blur(18px) saturate(125%);
+}
+.nav{min-height:82px;gap:24px}
+.brand{gap:12px;text-decoration:none}
+.brand img{
+  width:52px;height:52px;border-radius:12px;
+  filter:drop-shadow(0 6px 15px rgba(201,151,52,.18));
+}
+.brand span{font-weight:900;line-height:1.05;letter-spacing:.08em}
+.brand small{margin-top:6px;color:#9eabb6;letter-spacing:.15em}
+.links{gap:8px}
+.links a{
+  border-radius:10px;
+  transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
+}
+.links a:hover{background:rgba(242,199,102,.07);color:#fff;transform:translateY(-1px)}
+.button,.outline{
+  border-radius:11px;
+  min-height:48px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-weight:900;letter-spacing:.035em;
+  box-shadow:none;
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;
+}
+.button:hover,.outline:hover{transform:translateY(-2px)}
+.button:hover{box-shadow:0 12px 28px rgba(201,151,52,.22)}
+.outline:hover{border-color:var(--solo-gold-hi);background:rgba(242,199,102,.06)}
+.eyebrow{letter-spacing:.18em;font-size:10px}
+.note{color:#8f9aa4!important;line-height:1.6}
+
+/* Hero */
+.hero{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:clamp(680px,82vh,900px);
+  display:flex;align-items:center;
+  background:
+    radial-gradient(circle at 75% 35%,rgba(20,133,205,.17),transparent 36%),
+    radial-gradient(circle at 75% 52%,rgba(201,151,52,.11),transparent 43%),
+    linear-gradient(120deg,rgba(4,6,8,.98),rgba(9,14,18,.91));
+  border-bottom:1px solid rgba(201,151,52,.58);
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:url("/assets/approved-stage/solo-ai-bg-v4.svg") center/cover no-repeat;
+  opacity:.14;mix-blend-mode:screen;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.02fr) minmax(400px,.98fr);
+  gap:clamp(44px,7vw,90px);
+  align-items:center;
+  padding-block:clamp(72px,8vw,110px);
+}
+.hero-copy{min-width:0;max-width:660px}
+.hero h1{
+  font-size:clamp(58px,7vw,102px);
+  line-height:.88;
+  letter-spacing:-.055em;
+  margin:18px 0 26px;
+  text-wrap:balance;
+}
+.hero h1 em{font-style:normal;color:var(--solo-gold-hi)}
+.hero-copy>strong{
+  display:block;
+  color:#f0d492;
+  font-size:clamp(13px,1.35vw,18px);
+  letter-spacing:.06em;
+  margin-bottom:18px;
+}
+.hero-copy>p:not(.note){
+  max-width:620px;
+  color:#c5ced6;
+  font-size:clamp(16px,1.45vw,19px);
+  line-height:1.75;
+}
+.modes{display:flex;flex-wrap:wrap;gap:12px 20px;margin:28px 0}
+.modes span{font-size:10px;letter-spacing:.1em;color:#bfc9d1}
+.modes b{color:var(--solo-gold-hi);margin-right:6px}
+.actions{gap:12px}
+.hero-art{
+  min-width:0;
+  display:flex;flex-direction:column;align-items:stretch;
+  gap:11px;
+  perspective:1200px;
+}
+.hero-art-frame{
+  position:relative;
+  overflow:hidden;
+  aspect-ratio:4/3;
+  border:1px solid rgba(242,199,102,.65);
+  border-radius:26px;
+  background:#06090c;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.56),
+    0 0 0 1px rgba(28,156,234,.12) inset,
+    0 0 50px rgba(18,133,209,.10);
+}
+.hero-art-frame::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.07),transparent 22%,transparent 70%,rgba(20,157,235,.08));
+}
+.hero-art-frame img{
+  width:100%;height:100%;display:block;object-fit:cover;
+  image-rendering:auto;
+  transform:scale(1.003);
+}
+.hero-art-label{
+  align-self:flex-end;
+  color:#8ea2b2;
+  font-size:9px;font-weight:900;letter-spacing:.18em;
+}
+
+/* Feature band */
+.features{
+  border-bottom:1px solid rgba(80,86,93,.55);
+  background:rgba(9,12,15,.94);
+}
+.feature-grid{gap:1px;background:#34393e;border:1px solid #34393e}
+.feature{
+  min-height:104px;
+  background:linear-gradient(150deg,#11161b,#090c0f);
+  padding:22px 24px;
+}
+.feature>b{color:var(--solo-blue-hi);font-size:20px}
+.feature strong{color:#f0d291;letter-spacing:.025em}
+.feature small{margin-top:5px;color:#8f9aa5}
+
+/* Shared cards */
+.product,.lab-grid article,.solo-capabilities article,.founder-panel,.catalog-note{
+  border-radius:var(--solo-radius);
+  overflow:hidden;
+  background:linear-gradient(155deg,rgba(20,25,30,.96),rgba(8,11,14,.98));
+  border:1px solid rgba(102,104,104,.62);
+  box-shadow:0 16px 45px rgba(0,0,0,.24);
+}
+.grid{gap:18px}
+.launch-product{
+  min-height:270px;
+  border-top:1px solid rgba(242,199,102,.78);
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.launch-product:hover{
+  transform:translateY(-3px);
+  border-color:rgba(242,199,102,.72);
+  box-shadow:0 22px 55px rgba(0,0,0,.36);
+}
+.launch-product h3{font-size:clamp(19px,1.7vw,23px)}
+.launch-product p{color:#b7c1ca}
+.pending{
+  padding:7px 10px;border-radius:999px;
+  background:rgba(21,158,234,.08);
+  border:1px solid rgba(21,158,234,.25);
+}
+.catalog-note{border-color:rgba(201,151,52,.45)}
+.heading{max-width:850px;margin-inline:auto;text-align:center}
+.heading h2,.heading .store-title{letter-spacing:-.035em}
+
+/* Development / founder */
+.development-lab,.founder-section,.solo-product,.solo-conversation{
+  position:relative;isolation:isolate;
+}
+.development-lab::before,.solo-product::before,.solo-conversation::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:url("/assets/approved-stage/solo-ai-bg-v4.svg") center/cover no-repeat;
+  opacity:.055;
+}
+.lab-grid article,.solo-capabilities article{border-radius:16px}
+.lab-grid article{transition:transform .18s ease,border-color .18s ease}
+.lab-grid article:hover{transform:translateY(-2px);border-color:#8b7041}
+.founder-panel{border-color:rgba(201,151,52,.42)}
+.founder-next{border-radius:16px}
+
+/* SOLO account + conversation */
+.solo-conversation{padding-top:clamp(66px,7vw,96px)}
+.solo-conversation>.wrap>p{font-size:16px}
+.solo-chat-shell{
+  max-width:920px;
+  border-radius:22px;
+  border:1px solid rgba(201,151,52,.58);
+  background:rgba(7,10,13,.96);
+  box-shadow:var(--solo-shadow);
+}
+.solo-chat-top{
+  padding:18px 22px;
+  background:linear-gradient(115deg,#101a24,#090d12 60%,#101710);
+  border-bottom:1px solid rgba(83,101,120,.55);
+}
+.solo-chat-top img{
+  width:56px;height:56px;
+  border-radius:14px;
+  box-shadow:0 0 0 1px rgba(242,199,102,.45),0 8px 22px rgba(0,0,0,.35);
+}
+#solo-account{
+  background:linear-gradient(180deg,rgba(14,20,26,.88),rgba(8,11,14,.96));
+}
+#solo-account[data-authenticated="true"]{
+  border-left:3px solid var(--solo-gold)!important;
+}
+#solo-account input{
+  min-height:50px;
+  border-radius:10px!important;
+  background:#07131f!important;
+  border:1px solid #4b6175!important;
+  color:#fff!important;
+}
+.solo-chat-transcript{
+  min-height:270px;
+  max-height:520px;
+  padding:26px;
+  gap:18px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(18,126,190,.08),transparent 48%),
+    #070b0f;
+  scrollbar-color:#6b5631 #080b0e;
+}
+.solo-message{
+  max-width:min(82%,720px);
+  padding:16px 18px;
+  border-radius:18px;
+  background:linear-gradient(145deg,#11263a,#0c1925);
+  border:1px solid rgba(65,101,136,.72);
+  box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+.solo-message.from-user{
+  background:linear-gradient(145deg,#2b4050,#1b2a35);
+  border-color:rgba(201,151,52,.62);
+}
+.solo-message p{font-size:16px;line-height:1.7}
+#solo-chat-form{
+  padding:22px 24px 24px;
+  background:#090c10;
+}
+.solo-chat-compose{gap:12px}
+.solo-chat-compose textarea{
+  min-height:94px;
+  border-radius:13px;
+  padding:15px 16px;
+  background:#081827;
+  border:1px solid #526f89;
+  box-shadow:0 0 0 0 rgba(21,158,234,0);
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+.solo-chat-compose textarea:focus{
+  border-color:var(--solo-blue-hi);
+  box-shadow:0 0 0 4px rgba(21,158,234,.13);
+}
+.solo-chat-compose button{min-width:120px}
+.solo-chat-compose textarea:disabled{filter:saturate(.6)}
+
+/* Floating SOLO control */
+.solo-guide-trigger{
+  width:auto!important;height:56px!important;
+  min-width:56px;
+  padding:6px 11px 6px 6px!important;
+  border-radius:14px!important;
+  background:rgba(5,8,10,.94)!important;
+  border:1px solid rgba(242,199,102,.72)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.44)!important;
+  backdrop-filter:blur(12px);
+}
+.solo-guide-trigger img{
+  width:42px!important;height:42px!important;
+  border-radius:10px!important;
+}
+.solo-guide-trigger span{display:inline!important;font-size:11px!important;letter-spacing:.08em!important}
+.solo-guide-panel{
+  border-radius:16px;
+  border-color:rgba(201,151,52,.65);
+  box-shadow:0 24px 70px rgba(0,0,0,.58);
+}
+
+/* Footer + policies + social */
+footer{
+  background:#050607;
+  border-top:1px solid rgba(201,151,52,.42);
+}
+.footerlinks{gap:12px 20px}
+.footerlinks a{color:#b8c2ca}
+.social-icon{border-radius:14px}
+.policy-hero,.policy-contents,.policy-release-note{border-radius:14px}
+
+/* Below-fold rendering optimization */
+#products,#projects,#about,.social-connect,.solo-product{
+  content-visibility:auto;
+  contain-intrinsic-size:1px 850px;
+}
+
+@media(max-width:960px){
+  .hero{min-height:auto}
+  .hero-grid{
+    grid-template-columns:minmax(0,1fr);
+    gap:42px;
+    padding-block:64px 72px;
+  }
+  .hero-copy{max-width:760px}
+  .hero h1{font-size:clamp(58px,10vw,86px)}
+  .hero-art{max-width:760px;width:100%;margin-inline:auto}
+  .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  body{background-attachment:scroll}
+  .wrap{width:min(100% - 28px,1180px)}
+  .top{backdrop-filter:blur(13px)}
+  .nav{min-height:70px}
+  .brand img{width:46px;height:46px}
+  .hero-grid{padding-block:48px 60px;gap:34px}
+  .hero h1{font-size:clamp(48px,14vw,72px);line-height:.9}
+  .hero-copy>p:not(.note){font-size:16px}
+  .modes{gap:9px 14px;margin:22px 0}
+  .hero-art-frame{border-radius:18px}
+  .hero-art-label{align-self:flex-start}
+  .feature-grid{grid-template-columns:1fr}
+  .feature{min-height:86px}
+  .grid{grid-template-columns:1fr}
+  .section{padding:56px 0}
+  .launch-product{min-height:0;padding:22px}
+  .solo-chat-shell{border-radius:16px;margin-top:22px}
+  .solo-chat-transcript{min-height:220px;padding:16px}
+  .solo-message{max-width:94%;padding:14px 15px}
+  .solo-message p{font-size:15px}
+  #solo-chat-form{padding:16px}
+  .solo-chat-compose{flex-direction:column}
+  .solo-chat-compose button{width:100%;min-height:50px}
+  .solo-guide-trigger{
+    width:54px!important;height:54px!important;
+    padding:5px!important;border-radius:14px!important;
+  }
+  .solo-guide-trigger img{width:42px!important;height:42px!important}
+  .solo-guide-trigger span{display:none!important}
+}
+@media(max-width:460px){
+  .wrap{width:calc(100% - 22px)}
+  .hero-grid{padding-top:38px}
+  .hero h1{font-size:clamp(44px,15vw,62px)}
+  .actions{flex-direction:column}
+  .actions>a,.actions>button{width:100%;box-sizing:border-box}
+  .hero-art-frame{border-radius:15px}
+  .catalog-note{padding:21px}
+  .solo-chat-top{padding:13px}
+  .solo-chat-top img{width:48px;height:48px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+  .button:hover,.outline:hover,.launch-product:hover,.lab-grid article:hover{transform:none}
+}
