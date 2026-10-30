@@ -56,8 +56,8 @@ test('public pages share navigation and business email; launch restrictions rema
 });
 
 
-test('floating SOLO guide uses the canonical SOLO AI app icon, not the business app icon', () => {
+test('floating SOLO guide uses the canonical crisp SOLO AI vector mark, not the business app icon', () => {
   const source = fs.readFileSync(path.join(root, 'solo-chat.js'), 'utf8');
-  assert.match(source, /\/assets\/approved-stage\/solo-ai-app-icon-512\.png/);
+  assert.match(source, /\/assets\/approved-stage\/solo-ai-mark-v4\.svg/);
   assert.doesNotMatch(source, /\/assets\/approved-stage\/business-app-icon-512\.png/);
 });
