@@ -311,3 +311,13 @@ footer p,.section a[href^="mailto:"],.founder-email{overflow-wrap:anywhere}
  .nav-enhanced .nav-toggle[aria-expanded="false"]+.links{display:none}
  .nav-enhanced .links{max-height:calc(100dvh - 100px);overflow-y:auto}
 }
+
+/* Compact authenticated account state: avoid large mobile reflow after sign-in. */
+#solo-account[data-authenticated="true"]{padding:14px 18px!important}
+#solo-account[data-authenticated="true"] #solo-account-status{margin:6px 0}
+#solo-account[data-authenticated="true"] #solo-account-usage{margin:6px 0;color:#d6c18d}
+#solo-account[data-authenticated="true"] .actions{margin-top:10px}
+#solo-account[data-authenticated="true"] #solo-account-logout{min-height:40px;padding:9px 14px}
+@media(max-width:600px){
+  #solo-account[data-authenticated="true"]{padding:12px 14px!important}
+}
