@@ -53,7 +53,12 @@
     window.dispatchEvent(new CustomEvent('solo:account-stale'));
   };
   const syncComposer = () => {
-    if (account.enabled !== true) return;
+    if (account.enabled !== true) {
+      input.disabled = false;
+      if (!activeController) submit.disabled = false;
+      input.placeholder = 'Ask SOLO a question...';
+      return;
+    }
     const available = account.authenticated === true && account.chatEnabled === true;
     input.disabled = !available;
     if (!activeController) submit.disabled = !available;
