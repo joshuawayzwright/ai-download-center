@@ -126,15 +126,14 @@ for (const [name, content] of [
 }
 
 for (const status of [401, 503]) {
-  test(`HTTP ${status} gives private-testing status and restores a retry without failed context`, async () => {
+  test(`HTTP ${status} reports the correct customer state and restores a retry without failed context`, async () => {
     const h = harness(async (_options, number) => response(`Reply ${number}`, number === 2 ? status : 200));
     await h.submit('Successful question');
     await h.submit('Retry this question');
-    assert.equal(h.status.textContent, 'Development access only');
+    assert.equal(h.status.textContent, status === 401 ? 'Sign-in required' : 'Response unavailable');
     assert.equal(h.input.value, 'Retry this question');
     assert.equal(h.lines().at(-1).label, 'STATUS');
-    assert.match(h.lines().at(-1).text, /private testing/);
-    assert.doesNotMatch(h.lines().at(-1).text, /log ?in|sign ?in/i);
+    assert.match(h.lines().at(-1).text, status === 401 ? /session|Sign in/i : /could not respond/i);
     await h.submit(h.input.value);
     assert.deepEqual(h.history(2), [
       {role: 'user', content: 'Successful question'},
