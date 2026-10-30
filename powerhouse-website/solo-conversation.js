@@ -54,9 +54,9 @@
   };
   const syncComposer = () => {
     if (account.enabled !== true) {
-      input.disabled = false;
-      if (!activeController) submit.disabled = false;
-      input.placeholder = 'Ask SOLO a question...';
+      input.disabled = true;
+      if (!activeController) submit.disabled = true;
+      input.placeholder = 'SOLO chat is not publicly available yet';
       return;
     }
     const available = account.authenticated === true && account.chatEnabled === true;
