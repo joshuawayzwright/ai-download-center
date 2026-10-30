@@ -8,6 +8,22 @@ const { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, readB
 function createAuthHandler({ env = process.env, fetcher = (...args) => globalThis.fetch(...args),
   verify = access.verifyCustomer, freshIdentity = access.identityFromSession,
   status = access.customerStatus, admit = admitAuthRequest } = {}) {
+  async function warmAccountServices() {
+    if (env.VERCEL_ENV !== 'preview') return;
+    const config = authConfig(env);
+    const key = env.SOLO_SUPABASE_SECRET_KEY;
+    if (typeof key !== 'string' || !key.startsWith('sb_secret_') || /[\s\x00-\x1f\x7f]/.test(key)) return;
+    try {
+      await fetcher(config.origin + '/rest/v1/rpc/solo_customer_status', {
+        method: 'POST', redirect: 'error', signal: AbortSignal.timeout(2500),
+        headers: { apikey: key, 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          p_user_id: '00000000-0000-4000-8000-000000000001',
+          p_session_id: '00000000-0000-4000-8000-000000000002'
+        })
+      });
+    } catch { /* Best-effort connection warm-up only. */ }
+  }
   async function authRequest(path, body, token) {
     const config = authConfig(env);
     let response;
@@ -49,6 +65,14 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
     try {
       sameOrigin(req);
       if (req.method === 'GET') {
+        const warm = typeof req.url === 'string' && /(?:^|[?&])warm=1(?:&|$)/.test(req.url.split('?', 2)[1] || '');
+        if (warm) {
+          if (!enabled || env.VERCEL_ENV !== 'preview' || req.headers['sec-fetch-site'] !== 'same-origin') {
+            throw fail(403, 'invalid_origin', 'Same-origin account access required.');
+          }
+          await warmAccountServices();
+          return reply(res, 200, { enabled: true, warmed: true });
+        }
         if (!enabled) return reply(res, 200, disabled);
         const token = access.parseAccessToken(req);
         // A normal access-cookie expiry must trigger the client's one refresh
