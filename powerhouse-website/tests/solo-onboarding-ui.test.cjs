@@ -602,7 +602,7 @@ test('absence of the onboarding panel makes no network request', async () => {
   await tick(); assert.equal(h.calls.length, 0);
 });
 
-test('the HTML keeps controls hidden by default, labelled and purpose-specific without changing approved artwork', () => {
+test('the HTML keeps controls hidden by default, labelled and purpose-specific with the approved crisp SOLO artwork', () => {
   const html = fs.readFileSync(path.join(__dirname, '../solo-ai.html'), 'utf8');
   const css = fs.readFileSync(path.join(__dirname, '../solo-onboarding.css'), 'utf8');
   assert.match(html, /id="solo-onboarding"[^>]* hidden>/);
