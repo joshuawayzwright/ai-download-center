@@ -43,7 +43,9 @@ function harness(responder = async (_options, number) => response(`Reply ${numbe
   const events = [];
   const windowListeners = {};
   const window = {
-    soloAccountState: options.account,
+    soloAccountState: options.account === undefined
+      ? {enabled:true,authenticated:true,chatEnabled:true,sessionVersion:1,userId:USER}
+      : options.account,
     addEventListener(name, listener) { (windowListeners[name] ||= []).push(listener); },
     dispatchEvent(event) { events.push(event); for (const listener of windowListeners[event.type] || []) listener(event); }
   };
@@ -280,6 +282,16 @@ test('401 requests account refresh only when customer accounts are enabled', asy
   assert.match(h.lines().at(-1).text, /Sign in/);
   assert.equal(h.events.filter(event => event.type === 'solo:session-expired').length, 1);
   assert.equal(h.calls.length, 1);
+});
+
+test('closed public account state keeps the composer disabled without sending', async () => {
+  const h = harness(undefined, {account:{enabled:false,authenticated:false,chatEnabled:false,sessionVersion:0}});
+  h.setAccount({enabled:false,authenticated:false,chatEnabled:false,sessionVersion:0});
+  assert.equal(h.input.disabled,true);
+  assert.equal(h.button.disabled,true);
+  assert.match(h.input.placeholder,/not publicly available/);
+  await h.submit('Do not send');
+  assert.equal(h.calls.length,0);
 });
 
 test('invited account login and customer chat gates are respected before sending', async () => {
