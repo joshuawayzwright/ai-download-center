@@ -54,3 +54,10 @@ test('public pages share navigation and business email; launch restrictions rema
   assert.match(fs.readFileSync(path.join(root, 'solo-ai.html'), 'utf8'), /(Public chat is not open yet|Private testing — public access not enabled)/);
   assert.doesNotMatch(fs.readFileSync(path.join(root, 'styles.css'), 'utf8'), /\.links a:not\(:last-child\)\{display:none\}/);
 });
+
+
+test('floating SOLO guide uses the canonical SOLO AI app icon, not the business app icon', () => {
+  const source = fs.readFileSync(path.join(root, 'solo-chat.js'), 'utf8');
+  assert.match(source, /\/assets\/approved-stage\/solo-ai-app-icon-512\.png/);
+  assert.doesNotMatch(source, /\/assets\/approved-stage\/business-app-icon-512\.png/);
+});
