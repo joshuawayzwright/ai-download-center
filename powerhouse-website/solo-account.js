@@ -13,6 +13,7 @@
   let state = {enabled: false, authenticated: false, userId: null, chatEnabled: false, usage: null, sessionVersion: 0};
   let identity = '';
   let busy = false;
+  let activeAction = null;
   let generation = 0;
   let queuedCheck = false;
   let lastWakeCheck = -Infinity;
@@ -108,7 +109,12 @@
       password.value = '';
     } else if (action !== 'check') body = {action};
     busy = true;
+    activeAction = action;
     controls();
+    if (action === 'login') {
+      status.textContent = 'Signing in securely…';
+      submit.textContent = 'SIGNING IN…';
+    }
     if (action === 'logout') {
       // Stop local chat now; remote session revocation is still pending.
       generation++;
@@ -157,6 +163,8 @@
         try { channel?.postMessage('account-changed'); } catch { /* Focus checks remain available. */ }
       }
       busy = false;
+      activeAction = null;
+      submit.textContent = 'SIGN IN';
       controls();
       if (queuedCheck) {
         queuedCheck = false;
@@ -175,7 +183,7 @@
     return run('check');
   };
   const wakeCheck = () => {
-    if (document.visibilityState === 'hidden') return;
+    if (document.visibilityState === 'hidden' || busy) return;
     const now = Date.now();
     // Browsers commonly deliver focus and visibility/pageshow together.
     if (now - lastWakeCheck < 250) return;
