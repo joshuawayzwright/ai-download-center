@@ -8,3 +8,6 @@ node_modules/
 oracleJdk-*/
 link-report.md
 marketing/drafts/
+
+# Reviewed Pages artifact staging only
+_site/
