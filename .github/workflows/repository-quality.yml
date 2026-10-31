@@ -71,6 +71,9 @@ jobs:
           grep -q 'superadmin2712@gmail.com' privacy.html
           grep -q 'superadmin2712@gmail.com' terms.html
 
+      - name: Test directory privacy controls
+        run: node --test scripts/test-directory-privacy.cjs
+
       - name: Validate catalog
         run: node scripts/validate-catalog.mjs
 

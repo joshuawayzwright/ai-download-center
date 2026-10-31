@@ -1571,3 +1571,6 @@ h3 {
     font-size: 0.86rem;
   }
 }
+
+/* Privacy: no remote font request; use installed system fonts. */
+body, button, input, select, textarea, h1, h2, h3 { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }

@@ -6,12 +6,12 @@ const countCategories = document.getElementById('count-categories');
 const filterButtons = document.querySelectorAll('.filter-btn');
 const liveSearchStatus = document.getElementById('liveSearchStatus');
 const loadMoreModels = document.getElementById('loadMoreModels');
+const searchLiveButton = document.getElementById('searchLiveModels');
 
 let currentFilter = 'all';
 let tools = [];
 let curatedTools = [];
 let liveTools = [];
-let liveSearchTimer;
 let liveSearchController;
 let liveSearchRequest = 0;
 let liveSearchQuery = '';
@@ -66,7 +66,11 @@ function setLiveSearchStatus(message) {
 
 function getNextModelPage(linkHeader) {
   const nextLink = linkHeader?.match(/<([^>]+)>\s*;\s*rel="next"/);
-  return nextLink?.[1] || null;
+  if (!nextLink) return null;
+  try {
+    const url = new URL(nextLink[1]);
+    return url.origin === 'https://huggingface.co' && url.pathname === '/api/models' ? url.href : null;
+  } catch { return null; }
 }
 
 async function loadTools() {
@@ -112,7 +116,7 @@ async function loadTools() {
 
   const params = new URLSearchParams(window.location.search);
   const requestedFilter = params.get('filter');
-  const requestedSearch = params.get('q') || '';
+  const requestedSearch = ''; // Never restore potentially private text from URL parameters.
 
   if (requestedFilter && [...filterButtons].some((button) => button.dataset.filter === requestedFilter)) {
     currentFilter = requestedFilter;
@@ -142,10 +146,7 @@ async function loadTools() {
   toolGrid.removeAttribute('aria-busy');
   if (usingCachedCatalog) setLiveSearchStatus('Offline mode: showing the last saved catalog.');
 
-  if (requestedSearch.trim().length >= 2) {
-    liveSearchQuery = requestedSearch.trim();
-    liveSearchTimer = setTimeout(() => searchLiveModels(liveSearchQuery), 350);
-  }
+  syncUrlState({ replace: true }); // Drop legacy q parameters without transmitting them.
 }
 
 // A filter is 'all' or a space-separated list of categories/tags; a tool matches if it has any of them.
@@ -157,7 +158,6 @@ function matchesFilter(tool, filter) {
 function syncUrlState({ replace = false } = {}) {
   const params = new URLSearchParams();
   if (currentFilter !== 'all') params.set('filter', currentFilter);
-  if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
   const query = params.toString();
   const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash || ''}`;
   window.history[replace ? 'replaceState' : 'pushState']({}, '', url);
@@ -303,7 +303,6 @@ async function searchLiveModels(query, pageUrl = null) {
 }
 
 function handleSearchInput() {
-  clearTimeout(liveSearchTimer);
   liveSearchController?.abort();
   liveSearchRequest += 1;
   liveTools = [];
@@ -316,16 +315,13 @@ function handleSearchInput() {
   renderTools();
   syncUrlState({ replace: true });
 
-  const query = searchInput.value.trim();
-  if (query.length < 2) return;
-  liveSearchQuery = query;
-  liveSearchTimer = setTimeout(() => searchLiveModels(query), 350);
+  // Typing filters bundled metadata only. External search requires a separate click.
 }
 
 function restoreUrlState() {
   const params = new URLSearchParams(window.location.search);
   const requestedFilter = params.get('filter');
-  const requestedSearch = params.get('q') || '';
+  const requestedSearch = ''; // Never restore potentially private text from URL parameters.
   if (requestedFilter && [...filterButtons].some((button) => button.dataset.filter === requestedFilter)) {
     currentFilter = requestedFilter;
   } else {
@@ -394,8 +390,21 @@ function setupListingLinks() {
   });
 }
 
+// Remove legacy query text immediately; the original network request/history cannot be undone.
+if (new URLSearchParams(window.location.search).has('q')) {
+  const clean = new URL(window.location.href); clean.searchParams.delete('q');
+  window.history.replaceState({}, '', clean.pathname + clean.search + clean.hash);
+}
 setupListingLinks();
 searchInput.addEventListener('input', handleSearchInput);
+searchLiveButton.addEventListener('click', () => {
+  const query = searchInput.value.trim();
+  if (query.length < 2) { setLiveSearchStatus('Enter at least two characters to search Hugging Face.'); return; }
+  liveSearchQuery = query;
+  liveTools = [];
+  liveNextPageUrl = null;
+  searchLiveModels(query);
+});
 loadMoreModels.addEventListener('click', () => {
   if (liveSearchQuery && liveNextPageUrl) {
     searchLiveModels(liveSearchQuery, liveNextPageUrl);
@@ -410,6 +419,6 @@ document.querySelectorAll('[data-collection]').forEach((card) => {
   card.addEventListener('click', () => setFilter(card.dataset.collection));
 });
 
-window.addEventListener('popstate', restoreUrlState);
+window.addEventListener('popstate', () => { restoreUrlState(); handleSearchInput(); syncUrlState({ replace: true }); });
 
 loadTools();
