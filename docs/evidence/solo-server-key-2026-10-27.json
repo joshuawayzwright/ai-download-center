@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-27",
+  "scope": "Commercial SOLO Preview configuration and disabled-gate verification",
+  "commit": "415cc0df3217c4e0cec83e390122e6af99bfcf4b",
+  "supabase_project": "tymayhazawkofmiypeqt",
+  "supabase_organisation": "txfdoppxcbylrguxsjod",
+  "diagnostic": {
+    "deployment_id": "dpl_Ght3B9TdBX37zQyHAKWvxm3tmGnR",
+    "state": "READY",
+    "marker": "SOLO_COMMERCIAL_SERVER_KEY_PASS",
+    "rpc": "solo_customer_status",
+    "rpc_http_status": 200,
+    "adapter_expected_status": 503,
+    "adapter_expected_code": "disabled",
+    "server_key_status_rpc_access_verified": true,
+    "auth_settings": {
+      "disable_signup": false,
+      "email": true,
+      "anonymous": false,
+      "mailer_autoconfirm": false
+    },
+    "separate_auth_settings_check": {
+      "http_status": 200,
+      "external_anonymous_users": false
+    }
+  },
+  "normal_deployment": {
+    "deployment_id": "dpl_B1YYM8g9s9TfoLHGJtFw5ZLr2bCm",
+    "state": "READY",
+    "url": "https://solo-provider-industrial-8ig3nmuwt-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "build_override": false,
+    "probe_ran": false,
+    "disabled_gate_marker": "SOLO_CUSTOMER_CONFIG_DISABLED_PASS",
+    "http_checks": [
+      {
+        "method": "GET",
+        "path": "/api/solo-auth",
+        "status": 200,
+        "enabled": false,
+        "authenticated": false,
+        "chatEnabled": false,
+        "cache_control_directives": ["private", "no-store"]
+      },
+      {
+        "method": "POST",
+        "path": "/api/solo-auth",
+        "action": "refresh",
+        "status": 503,
+        "code": "auth_disabled"
+      },
+      {
+        "method": "POST",
+        "path": "/api/solo-chat",
+        "credential_type": "dummy customer Bearer",
+        "status": 503,
+        "code": "customer_disabled"
+      }
+    ]
+  },
+  "sql_state_after_probe": {
+    "policy_enabled": false,
+    "member_rows": 0,
+    "ledger_rows": 0
+  },
+  "ci": {
+    "run_id": 40476932755,
+    "job_ids": [122097356611, 122097356702],
+    "api_browser_smoke_passed": 132,
+    "sql_passed": 21,
+    "total_passed": 153,
+    "failed": 0,
+    "skipped": 0,
+    "quality_run_id": 40476932720,
+    "quality_conclusion": "success"
+  },
+  "remaining_configuration": [
+    "Disable unrestricted Supabase signup and verify disable_signup=true before the pilot."
+  ],
+  "not_verified_by_this_evidence": [
+    "Live customer login, cookie rotation and logout or revoked-session rejection",
+    "Active hosted admission and concurrent quota or duplicate-request checks",
+    "Customer-authenticated Gemini conversation and provider-error accounting",
+    "Public or production SOLO AI release"
+  ],
+  "sensitive_values_included": false
+}

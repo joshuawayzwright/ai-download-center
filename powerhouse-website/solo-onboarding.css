@@ -1,0 +1,24 @@
+/* Account setup shares the approved SOLO account panel and existing artwork. */
+.solo-onboarding{margin-top:22px;padding-top:20px;border-top:1px solid #5b5240;min-width:0}
+.solo-onboarding[hidden],.solo-onboarding [hidden]{display:none!important}
+.solo-onboarding h4{margin:0 0 10px;color:#f2c766;font-size:17px;line-height:1.4}
+.solo-onboarding p{max-width:70ch;line-height:1.6;color:#c9d9e8;overflow-wrap:anywhere}
+.solo-onboarding .solo-onboarding-options{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.solo-onboarding button{font:inherit;cursor:pointer;min-height:44px;white-space:normal}
+.solo-onboarding .solo-onboarding-option{padding:10px 14px;border:1px solid #7e612d;border-radius:6px;background:#111417;color:#f2c766;text-align:left}
+.solo-onboarding .solo-onboarding-option[aria-expanded="true"]{border-color:#0087ff;background:#0c2035}
+.solo-onboarding button:disabled{opacity:.55;cursor:wait}
+.solo-onboarding form{margin-top:18px;max-width:630px}
+.solo-onboarding .solo-onboarding-field{display:block;margin:16px 0;color:#f2d28d;font-weight:600}
+.solo-onboarding .solo-onboarding-field input{display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;margin-top:7px;padding:12px;border:1px solid #5c7895;border-radius:8px;background:#0c2035;color:#fff;font:inherit}
+.solo-onboarding .solo-onboarding-help{font-size:14px;color:#bdcad9;margin:8px 0}
+.solo-onboarding .solo-onboarding-terms{display:flex;align-items:flex-start;gap:12px;margin:18px 0;line-height:1.6;color:#d9e2eb}
+.solo-onboarding .solo-onboarding-terms input{flex:0 0 auto;width:20px;height:20px;margin:3px 0 0;accent-color:#d4af37}
+.solo-onboarding a{color:#f2c766;text-decoration:underline;text-underline-offset:3px}
+.solo-onboarding input:focus-visible,.solo-onboarding button:focus-visible,.solo-onboarding a:focus-visible,.solo-onboarding [tabindex="-1"]:focus{outline:3px solid #0087ff;outline-offset:3px}
+.solo-onboarding input[aria-invalid="true"]{border-color:#f2c766}
+#solo-onboarding-status{min-height:0;scroll-margin-top:110px}
+#solo-onboarding-status:empty{margin:0}
+#solo-onboarding-status[data-error="true"]{color:#ffcf85}
+#solo-onboarding-back{margin-top:16px}
+@media(max-width:600px){.solo-onboarding .solo-onboarding-options{flex-direction:column}.solo-onboarding button{width:100%}.solo-onboarding form{max-width:100%}}
