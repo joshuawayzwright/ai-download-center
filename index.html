@@ -16,12 +16,12 @@
     <meta property="og:title" content="AI Download Center | AI Models, Tools & Assistants" />
     <meta property="og:description" content="Discover and compare AI models, chatbots, assistants, and creative tools in one searchable directory." />
     <meta property="og:url" content="https://joshuawayzwright.github.io/ai-download-center/" />
-    <meta property="og:image" content="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&h=630&q=85" />
-    <meta property="og:image:alt" content="Abstract visualization of an artificial neural network" />
+    <meta property="og:image" content="favicon.svg" />
+    <meta property="og:image:alt" content="AI Download Center emblem" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="AI Download Center | AI Models, Tools & Assistants" />
     <meta name="twitter:description" content="Discover and compare AI models, chatbots, assistants, and creative tools in one searchable directory." />
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&h=630&q=85" />
+    <meta name="twitter:image" content="favicon.svg" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,12 +36,6 @@
         }
       }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="styles.css?v=20261001-editorial2" />
   </head>
   <body>
@@ -74,7 +68,7 @@
             <p>
               Compare AI models, assistants, self-hosted apps, and creative tools in one place.
               Hand-picked listings link to the official source, community model cards link to
-              Hugging Face, and search also covers every public model there.
+              Hugging Face, and optional online search also covers public models there.
             </p>
             <div class="hero-actions">
               <a class="primary-btn" href="#catalog">Explore catalog</a>
@@ -90,8 +84,8 @@
           <div class="hero-panel" id="featured">
             <div class="hero-art">
               <img
-                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=85"
-                alt="Abstract visualization of an artificial neural network"
+                src="favicon.svg"
+                alt="AI Download Center emblem"
                 loading="eager"
               />
               <span class="hero-art-caption">Intelligence, mapped</span>
@@ -231,10 +225,12 @@
               <input
                 id="searchInput"
                 type="search"
-                placeholder="Search tools and the live public model registry..."
+                placeholder="Filter the catalog on this device..." autocomplete="off"
                 aria-label="Search catalog"
               />
             </label>
+            <p class="live-search-status">Typing filters this catalog locally. Only the button below sends your query to Hugging Face. Do not enter personal, sensitive or confidential information.</p>
+            <button id="searchLiveModels" class="secondary-btn" type="button">Search Hugging Face online</button>
             <p id="liveSearchStatus" class="live-search-status" aria-live="polite" hidden></p>
 
             <div class="results-row">
