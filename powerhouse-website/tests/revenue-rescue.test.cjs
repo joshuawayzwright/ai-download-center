@@ -25,6 +25,12 @@ test('Revenue Rescue page exposes the approved metadata and local brand asset', 
   assert.match(html, /href="\/revenue-rescue\.css"/);
 });
 
+test('Revenue Rescue desktop navigation hides the mobile menu toggle', () => {
+  const css = read('revenue-rescue.css');
+  assert.match(css, /\.nav \.nav-toggle\{display:none\}/);
+  assert.match(css, /@media\(max-width:980px\)[\s\S]*\.nav-enhanced \.nav-toggle\{display:inline-flex/);
+});
+
 test('Revenue Rescue page contains the three approved packages and exact commercial boundaries', () => {
   const html = page();
   assert.match(html, /Conversion Leak Audit/);
