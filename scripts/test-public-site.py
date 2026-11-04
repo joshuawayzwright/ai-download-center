@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Offline regression checks for the Pages artifact boundary and dependencies."""
+import base64
+import hashlib
 import importlib.util
 from pathlib import Path
 import re
 import tempfile
 import unittest
 from urllib.parse import urlsplit, unquote
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('public_site', ROOT / 'scripts/build-public-site.py')
@@ -72,6 +75,16 @@ class PublicSiteTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 module.build(root)
             self.assertTrue((root / 'data/tools.json').exists())
+
+    def test_directory_emblem_matches_approved_business_artwork(self):
+        # SHA-256 of approved-stage/business-emblem.png from the SOLO brand board.
+        source_digest = '9fa592c2d1e4284272b9c60b887da3d447513ab93a5e732a88b732e799d4c3f3'
+        svg = ET.parse(ROOT / 'favicon.svg').getroot()
+        image = svg.find('{http://www.w3.org/2000/svg}image')
+        self.assertIsNotNone(image)
+        prefix, encoded = image.attrib['href'].split(',', 1)
+        self.assertEqual(prefix, 'data:image/png;base64')
+        self.assertEqual(hashlib.sha256(base64.b64decode(encoded, validate=True)).hexdigest(), source_digest)
 
     def test_public_html_avoids_google_fonts_and_unsplash(self):
         for name in module.PUBLIC_FILES:

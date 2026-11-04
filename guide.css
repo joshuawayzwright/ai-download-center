@@ -41,7 +41,7 @@
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: rgba(17, 31, 44, 0.9);
+  background: var(--panel);
 }
 .guide table {
   width: 100%;
@@ -67,13 +67,18 @@
 }
 .app-list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
 }
 .app {
   padding: 18px 20px;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: rgba(17, 31, 44, 0.9);
+  background: var(--panel);
+}
+.app .hero-actions a {
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .app p {
   margin: 0 0 10px;
@@ -91,13 +96,13 @@
 .guide-cta {
   margin-top: 44px;
   padding: 24px;
-  border: 1px solid rgba(94, 199, 255, 0.35);
+  border: 1px solid var(--gold);
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(94, 199, 255, 0.1), rgba(122, 140, 255, 0.1));
+  background: linear-gradient(135deg, rgba(201, 151, 52, 0.09), var(--panel));
 }
 .guide-cta h2 {
   margin-top: 0;
 }
 .guide-cta .primary-btn {
-  color: #07111f;
+  color: var(--bg);
 }
