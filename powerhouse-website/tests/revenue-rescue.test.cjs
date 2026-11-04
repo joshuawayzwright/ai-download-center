@@ -22,6 +22,7 @@ test('Revenue Rescue page exposes the approved metadata and local brand asset', 
   assert.match(html, /aria-controls="primary-links" hidden/);
   assert.match(html, /id="primary-links"/);
   assert.match(html, /src="\/site-navigation\.js" defer/);
+  assert.match(html, /href="\/revenue-rescue\.css"/);
 });
 
 test('Revenue Rescue page contains the three approved packages and exact commercial boundaries', () => {
