@@ -18,6 +18,10 @@ test('Revenue Rescue page exposes the approved metadata and local brand asset', 
   assert.match(html, /"@type": "Service"/);
   assert.match(html, /\/assets\/approved-stage\/business-app-icon-512\.png/);
   assert.doesNotMatch(html, /src="https:\/\/thesoloserviceprovider\.com\.au\/assets\//);
+  assert.match(html, /aria-label="Primary navigation"/);
+  assert.match(html, /aria-controls="primary-links" hidden/);
+  assert.match(html, /id="primary-links"/);
+  assert.match(html, /src="\/site-navigation\.js" defer/);
 });
 
 test('Revenue Rescue page contains the three approved packages and exact commercial boundaries', () => {
