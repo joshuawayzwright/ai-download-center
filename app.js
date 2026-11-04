@@ -4,11 +4,12 @@ const resultsText = document.getElementById('resultsText');
 const countModels = document.getElementById('count-models');
 const countCategories = document.getElementById('count-categories');
 const filterButtons = document.querySelectorAll('.filter-btn');
+const collectionCards = document.querySelectorAll('[data-collection]');
 const liveSearchStatus = document.getElementById('liveSearchStatus');
 const loadMoreModels = document.getElementById('loadMoreModels');
 const searchLiveButton = document.getElementById('searchLiveModels');
 
-let currentFilter = 'all';
+let currentFilter = filterFromUrl();
 let tools = [];
 let curatedTools = [];
 let liveTools = [];
@@ -114,15 +115,6 @@ async function loadTools() {
     }
   }
 
-  const params = new URLSearchParams(window.location.search);
-  const requestedFilter = params.get('filter');
-  const requestedSearch = ''; // Never restore potentially private text from URL parameters.
-
-  if (requestedFilter && [...filterButtons].some((button) => button.dataset.filter === requestedFilter)) {
-    currentFilter = requestedFilter;
-  }
-  searchInput.value = requestedSearch;
-
   // Sponsored listings always come first; the sort is stable, so the rest keep their order.
   curatedTools = [...data.tools].sort((a, b) => Number(Boolean(b.sponsored)) - Number(Boolean(a.sponsored)));
   tools = [...curatedTools, ...liveTools];
@@ -155,11 +147,18 @@ function matchesFilter(tool, filter) {
   return filter.split(' ').some((value) => tool.category === value || (tool.tags || []).includes(value));
 }
 
-function syncUrlState({ replace = false } = {}) {
+function filterFromUrl() {
+  const filter = new URLSearchParams(window.location.search).get('filter');
+  const knownFilter = [...filterButtons].some((button) => button.dataset.filter === filter)
+    || [...collectionCards].some((card) => card.dataset.collection === filter);
+  return knownFilter ? filter : 'all';
+}
+
+function syncUrlState({ replace = false, hash = window.location.hash || '' } = {}) {
   const params = new URLSearchParams();
   if (currentFilter !== 'all') params.set('filter', currentFilter);
   const query = params.toString();
-  const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash || ''}`;
+  const url = `${window.location.pathname}${query ? `?${query}` : ''}${hash}`;
   window.history[replace ? 'replaceState' : 'pushState']({}, '', url);
 }
 
@@ -319,21 +318,14 @@ function handleSearchInput() {
 }
 
 function restoreUrlState() {
-  const params = new URLSearchParams(window.location.search);
-  const requestedFilter = params.get('filter');
-  const requestedSearch = ''; // Never restore potentially private text from URL parameters.
-  if (requestedFilter && [...filterButtons].some((button) => button.dataset.filter === requestedFilter)) {
-    currentFilter = requestedFilter;
-  } else {
-    currentFilter = 'all';
-  }
-  searchInput.value = requestedSearch;
+  currentFilter = filterFromUrl();
+  searchInput.value = '';
   filterButtons.forEach((button) => {
     const selected = button.dataset.filter === currentFilter;
     button.classList.toggle('active', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
-  renderTools();
+  handleSearchInput();
 }
 
 function renderSpotlightAndRanking() {
@@ -397,7 +389,7 @@ if (new URLSearchParams(window.location.search).has('q')) {
 }
 setupListingLinks();
 searchInput.addEventListener('input', handleSearchInput);
-searchLiveButton.addEventListener('click', () => {
+searchLiveButton?.addEventListener('click', () => {
   const query = searchInput.value.trim();
   if (query.length < 2) { setLiveSearchStatus('Enter at least two characters to search Hugging Face.'); return; }
   liveSearchQuery = query;
@@ -415,10 +407,17 @@ filterButtons.forEach((button) => {
   button.addEventListener('click', () => setFilter(button.dataset.filter));
 });
 
-document.querySelectorAll('[data-collection]').forEach((card) => {
-  card.addEventListener('click', () => setFilter(card.dataset.collection));
+collectionCards.forEach((card) => {
+  card.addEventListener('click', (event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    setFilter(card.dataset.collection, { hash: '#catalog' });
+    const catalog = document.getElementById('catalog');
+    catalog.focus({ preventScroll: true });
+    catalog.scrollIntoView();
+  });
 });
 
-window.addEventListener('popstate', () => { restoreUrlState(); handleSearchInput(); syncUrlState({ replace: true }); });
+window.addEventListener('popstate', restoreUrlState);
 
 loadTools();
