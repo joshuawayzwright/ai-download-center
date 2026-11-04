@@ -33,7 +33,7 @@ jobs:
           test -d "$ANDROID_HOME/build-tools" || exit 1
       - name: Build SOLO debug APK
         run: gradle -p apps/solo-android :app:assembleDebug --stacktrace --no-daemon
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: solo-ai-debug-apk
           path: apps/solo-android/app/build/outputs/apk/debug/*.apk
