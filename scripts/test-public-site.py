@@ -73,6 +73,12 @@ class PublicSiteTests(unittest.TestCase):
                 module.build(root)
             self.assertTrue((root / 'data/tools.json').exists())
 
+    def test_public_html_avoids_google_fonts_and_unsplash(self):
+        for name in module.PUBLIC_FILES:
+            if name.endswith('.html'):
+                with self.subTest(page=name):
+                    self.assertNotRegex((ROOT / name).read_text(), r'fonts\.(?:googleapis|gstatic)\.com|images\.unsplash\.com')
+
     def test_real_asset_bytes_and_local_dependencies(self):
         out = module.build(ROOT)
         for name in module.PUBLIC_FILES:
