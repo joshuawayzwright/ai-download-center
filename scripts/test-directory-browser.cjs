@@ -84,14 +84,23 @@ test('directory upgrade, slow input, external requests and responsive layout', a
   assert.deepEqual(await page.evaluate(() => window.blocked), []);
 
   await search.fill('');
+  const audioResults = await page.locator('#resultsText').innerText();
+  assert.match(audioResults, /^Showing [1-9]\d* entries$/);
   await page.locator('[data-collection="image video"]').click();
   assert.equal(new URL(page.url()).searchParams.get('filter'), 'image video');
   const count = await page.locator('[data-count-for="image video"]').innerText();
-  assert.equal(await page.locator('#resultsText').innerText(), 'Showing ' + parseInt(count, 10) + ' entries');
-  await page.goBack();
-  assert.equal(new URL(page.url()).searchParams.get('filter'), 'audio');
-  await page.goForward();
-  assert.equal(new URL(page.url()).searchParams.get('filter'), 'image video');
+  const collectionResults = 'Showing ' + parseInt(count, 10) + ' entries';
+  assert.equal(await page.locator('#resultsText').innerText(), collectionResults);
+  // Same-document history traversal is asynchronous. Wait for the restored
+  // catalogue as well as the URL before issuing the next browser action.
+  const traversals = [[-1, 'audio', audioResults], [1, 'image video', collectionResults]];
+  for (const [delta, filter, results] of traversals) {
+    await Promise.all([
+      page.waitForURL((url) => url.searchParams.get('filter') === filter && url.hash === '#catalog'),
+      page.evaluate((offset) => window.history.go(offset), delta),
+    ]);
+    await page.waitForFunction((expected) => document.querySelector('#resultsText').textContent === expected, results);
+  }
 
   for (const name of await readdir(site)) {
     if (!name.endsWith('.html')) continue;
