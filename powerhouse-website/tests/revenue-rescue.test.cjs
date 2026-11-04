@@ -67,7 +67,7 @@ test('Existing site script adds one Services link, retargets Work With Me, and g
   assert.match(script, /SERVICES/);
   assert.match(script, /WORK WITH ME/);
   assert.match(script, /footer \.footerlinks/);
-  assert.match(script, /querySelector\([^\n]*revenue-rescue\.html/);
+  assert.match(script, /querySelector\?\.\('a\[href="\/revenue-rescue\.html"\]'\)/);
 });
 
 test('Sitemap includes the Revenue Rescue route exactly once', () => {
