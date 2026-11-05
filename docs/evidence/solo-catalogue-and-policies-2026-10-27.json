@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "scope": "Protected Preview: ten-product catalogue, customer policy presentation and free sampler; no production promotion",
+  "repository": "joshuawayzwright/ai-download-center",
+  "branch": "feat/solo-customer-access",
+  "pullRequest": 34,
+  "sourceCommits": {
+    "implementation": "c5a25e1827a13f38ba77855a28a9d17a56eb2cad",
+    "finalRuntime": "76af5a3902a491cc4b15350c0b06c05495804ebb"
+  },
+  "deployment": {
+    "id": "dpl_HvF4Hwh5bzrZHcG7bWBEKaE2eGPF",
+    "state": "READY",
+    "sourceCommit": "76af5a3902a491cc4b15350c0b06c05495804ebb",
+    "origin": "https://solo-provider-industrial-f22obagei-wrightwayz.vercel.app",
+    "buildOverride": false,
+    "protectionRetained": true
+  },
+  "production": {
+    "mainCommit": "6865ddeac8ab0a925223dd24c41b90618fd6facf",
+    "deploymentId": "dpl_9KijhLqwcEABqisC59RiLYJgyeV8",
+    "maintenance": true,
+    "promoted": false
+  },
+  "http": [
+    {
+      "path": "/index.html",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 19012,
+      "sha256": "3864e66d37c75b2ae67ddba6f0871fb335bef6e529c39a1d892a85781a480839"
+    },
+    {
+      "path": "/digital-products.html",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 10011,
+      "sha256": "323e4a0be5a37960e009f70c1778e322ac51395bd01b48c9de3c5a75330519ed"
+    },
+    {
+      "path": "/terms.html",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 9920,
+      "sha256": "f4d4c9e0fb4887e5165d4fb9b682f39282a4d8992b11eba2229d0e63e041208b"
+    },
+    {
+      "path": "/privacy.html",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 4065,
+      "sha256": "e51eee937c41a97b8dc89b5c164b2306efea44d39b2e745c2d5b10ddd3992cfb"
+    },
+    {
+      "path": "/refunds.html",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 4108,
+      "sha256": "369a76632915572c5bd19ce41515c117d1bedc7d86a612bb1b8540c0bb20cc8f"
+    },
+    {
+      "path": "/styles.css",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 31336,
+      "sha256": "77ab4ff1bdbb4beffeb8bfc961d1440bc1b1e7b48f2fef52fe2aac04bed11a68"
+    },
+    {
+      "path": "/downloads/five-minute-ai-marketing-fix.pdf",
+      "status": 200,
+      "matchesCommittedFile": true,
+      "bytes": 88489,
+      "sha256": "c930e6262495941a0cedd4b06804af46670a37293f1574d558da2e09d2d9a44c"
+    },
+    {
+      "path": "/api/solo-auth",
+      "status": 200,
+      "customerAccessDisabled": true
+    },
+    {
+      "path": "/api/solo-chat",
+      "status": 503,
+      "code": "customer_disabled",
+      "noModelCall": true
+    }
+  ],
+  "browser": {
+    "engine": "Chrome",
+    "viewport": {
+      "width": 1363,
+      "height": 936
+    },
+    "terms": {
+      "mainCount": 1,
+      "sections": 8,
+      "contentsLinks": 8,
+      "skipLinkFocus": "policy-main",
+      "horizontalOverflow": false,
+      "earlierImplementationAnchorCheck": {
+        "sourceCommit": "c5a25e1827a13f38ba77855a28a9d17a56eb2cad",
+        "deploymentId": "dpl_CsEiSeaTX4gDPcBwrZWFnWiu1J9u",
+        "target": "consumer-rights",
+        "targetTopPx": 103.890625,
+        "headerBottomPx": 77
+      }
+    },
+    "collection": {
+      "cards": 10,
+      "equalPresentation": true,
+      "allMarkedInDevelopment": true,
+      "productHeadingLevel": 2,
+      "headingFont": "Georgia, serif",
+      "headingFontSizePx": 54,
+      "headingColor": "rgb(242, 199, 102)",
+      "horizontalOverflow": false
+    },
+    "homepage": {
+      "cards": 10,
+      "alwaysBuildingCopy": true,
+      "marketingKitPromoted": false,
+      "horizontalOverflow": false
+    },
+    "relatedPolicies": {
+      "privacy": {
+        "mainCount": 1,
+        "horizontalOverflow": false
+      },
+      "refunds": {
+        "mainCount": 1,
+        "horizontalOverflow": false
+      }
+    },
+    "deviceEmulationPerformed": false,
+    "actualSamsungAcceptance": false
+  },
+  "copy": {
+    "primaryHeadings": [
+      "TEN PRODUCTS. ONE GROWING PLATFORM.",
+      "ALWAYS BUILDING. MORE TO COME."
+    ],
+    "sourceOfProductDecision": "docs/SOLO-10-PRODUCT-RESET.md",
+    "noActiveCheckoutForPlannedProducts": true,
+    "publicProvisionalPrices": false,
+    "twentyFourHourSupportPromise": false,
+    "approvedBrandArtworkPreserved": true
+  },
+  "sampler": {
+    "path": "powerhouse-website/downloads/five-minute-ai-marketing-fix.pdf",
+    "bytes": 88489,
+    "pages": 2,
+    "prompts": 5,
+    "plannedProductNames": 10,
+    "sha256": "c930e6262495941a0cedd4b06804af46670a37293f1574d558da2e09d2d9a44c",
+    "retiredMarketingKitUpsellRemoved": true,
+    "renderedPagesReviewed": true,
+    "links": [
+      "https://thesoloserviceprovider.com.au/digital-products.html",
+      "mailto:hello@thesoloserviceprovider.com.au"
+    ]
+  },
+  "ci": {
+    "sourceCommit": "76af5a3902a491cc4b15350c0b06c05495804ebb",
+    "apiAndDatabase": {
+      "runId": 40508107002,
+      "conclusion": "success",
+      "javascriptTests": 158,
+      "sqlTests": 21,
+      "totalTests": 179,
+      "failures": 0,
+      "skipped": 0,
+      "jobIds": [
+        122202559941,
+        122202560417
+      ]
+    },
+    "repositoryQuality": {
+      "runId": 40508106970,
+      "conclusion": "success"
+    },
+    "catalogue": {
+      "runId": 40508107154,
+      "conclusion": "success"
+    }
+  },
+  "screenshots": [
+    {
+      "path": "docs/evidence/solo-terms-preview-2026-10-27.jpg",
+      "bytes": 94828,
+      "sha256": "c851e9ba20305b717a60e8c2158f77e234502ae4d0476e6feb627e8ae71dec36"
+    },
+    {
+      "path": "docs/evidence/solo-launch-collection-preview-2026-10-27.jpg",
+      "bytes": 114669,
+      "sha256": "2635d61c8287a7051e96de9fcf8ceb3d7554923ca9314240cb26f1c59c6185c5"
+    }
+  ],
+  "changesExcluded": {
+    "apiAndAccountControllers": true,
+    "hostedDatabaseWrites": true,
+    "modelCalls": true,
+    "credentialOrEnvironmentChanges": true,
+    "stripeChanges": true,
+    "billingChanges": true,
+    "productionPromotion": true,
+    "wrightWayzChanges": true
+  },
+  "remaining": [
+    "Owner final visual and release approval",
+    "Actual Samsung device acceptance and full website accessibility acceptance",
+    "Complete ten product deliverables and verify payment-confirmed protected fulfilment before opening purchase",
+    "SOLO AI signed-in browser acceptance, provider-failure accounting, monetary ceilings and other existing release gates"
+  ],
+  "verificationMarker": "SOLO_CATALOGUE_POLICY_PREVIEW_PASS"
+}

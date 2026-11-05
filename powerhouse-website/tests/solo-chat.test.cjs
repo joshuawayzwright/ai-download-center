@@ -176,3 +176,179 @@ test('malformed Gemini parts fail as empty provider responses',async()=>{
     });
   }
 });
+
+const CUSTOMER_USER='11111111-1111-4111-8111-111111111111';
+const OTHER_USER='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+const CUSTOMER_REQUEST='33333333-3333-4333-8333-333333333333';
+async function withCustomer(run,overrides={}){
+  const origin='https://abcdefghijklmnopqrst.supabase.co';
+  // Unsigned fixtures are accepted only by the mocked online Auth response.
+  const encode=value=>Buffer.from(JSON.stringify(value)).toString('base64url');
+  const token=[encode({alg:'RS256'}),encode({sub:CUSTOMER_USER,
+    session_id:'22222222-2222-4222-8222-222222222222',iss:origin+'/auth/v1',
+    role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600}),'unit_test'].join('.');
+  const env={VERCEL_ENV:'preview',SOLO_CUSTOMER_CHAT_ENABLED:'true',SOLO_CUSTOMER_PRODUCTION_ENABLED:'false',SOLO_SUPABASE_URL:origin,
+    SOLO_SUPABASE_PUBLISHABLE_KEY:'sb_publishable_test_only',SOLO_SUPABASE_SECRET_KEY:'sb_secret_test_only',
+    SOLO_USAGE_HASH_SECRET:'unit-test-hmac-only-0123456789abcdefghijklmnopqrstuvwxyz',
+    SOLO_PRIVATE_TEST_ENABLED:'true',SOLO_PRIVATE_TEST_TOKEN:TEST_TOKEN,
+    SOLO_AI_PROVIDER:'gemini',SOLO_AI_MODEL:'gemini-3.5-flash-lite',GEMINI_API_KEY:'test-only',...overrides};
+  const previousEnv=new Map(Object.keys(env).map(key=>[key,process.env[key]]));
+  const previousFetch=global.fetch;
+  Object.assign(process.env,env);
+  const calls=[];
+  global.fetch=async(url,options)=>{
+    if(url===origin+'/auth/v1/user'){
+      calls.push('auth');
+      assert.equal(options.headers.Authorization,'Bearer '+token);
+      return {ok:true,status:200,json:async()=>({id:CUSTOMER_USER,email:'bound-customer@example.invalid',
+        email_confirmed_at:'2026-01-01T00:00:00Z',is_anonymous:false})};
+    }
+    if(url===origin+'/rest/v1/rpc/solo_admit_request'){
+      calls.push('admit');
+      assert.equal(JSON.parse(options.body).p_user_id,CUSTOMER_USER);
+      return {ok:true,status:200,json:async()=>({allowed:true,code:'admitted',request_id:CUSTOMER_REQUEST,remaining_daily:19,daily_limit:20})};
+    }
+    if(url===origin+'/rest/v1/rpc/solo_finish_request'){
+      calls.push('finish');
+      return {ok:true,status:200,json:async()=>({ok:true,code:'completed'})};
+    }
+    assert.match(url,/^https:\/\/generativelanguage\.googleapis\.com\//);
+    calls.push('provider');
+    return geminiReply([{text:'Bound customer reply'}]);
+  };
+  const body={requestId:CUSTOMER_REQUEST,expectedUserId:CUSTOMER_USER,
+    messages:[{role:'user',content:'Customer conversation'}]};
+  const headers={cookie:'__Host-solo-access='+token,'x-solo-test-token':TEST_TOKEN};
+  try{return await run({calls,body,headers,token});}
+  finally{
+    global.fetch=previousFetch;
+    for(const [key,value] of previousEnv){
+      if(value===undefined)delete process.env[key];else process.env[key]=value;
+    }
+  }
+}
+
+test('matching customer cookie binding is checked before the normal reservation and provider path',async()=>{
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body,headers});
+    assert.equal(result.status,200);
+    assert.equal(result.body.requestId,CUSTOMER_REQUEST);
+    assert.equal(result.body.reply,'Bound customer reply');
+    assert.deepEqual(calls,['auth','admit','provider','finish']);
+  });
+});
+
+const PRODUCTION_HEADERS={host:'thesoloserviceprovider.com.au',origin:'https://thesoloserviceprovider.com.au'};
+test('production customer chat requires its separate release flag before any upstream access',async()=>{
+  for(const flag of ['false','TRUE','1']){
+    await withCustomer(async({calls,body,headers})=>{
+      const result=await request({body,headers:{...headers,...PRODUCTION_HEADERS}});
+      assert.equal(result.status,503);
+      assert.equal(result.body.code,'customer_disabled');
+      assert.deepEqual(calls,[]);
+    },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:flag});
+  }
+});
+
+test('approved production cookie chat retains account binding, reservation and finalization',async()=>{
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body,headers:{...headers,...PRODUCTION_HEADERS}});
+    assert.equal(result.status,200);
+    assert.equal(result.body.requestId,CUSTOMER_REQUEST);
+    assert.deepEqual(calls,['auth','admit','provider','finish']);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true'});
+});
+
+test('production release rejects other hosts and noncanonical origins before upstream access',async()=>{
+  await withCustomer(async({calls,body,headers,token})=>{
+    for(const extra of [
+      {host:'solo.example',origin:'https://solo.example'},
+      {host:'www.thesoloserviceprovider.com.au',origin:'https://www.thesoloserviceprovider.com.au'},
+      {...PRODUCTION_HEADERS,origin:'http://thesoloserviceprovider.com.au'},
+      {...PRODUCTION_HEADERS,origin:'https://thesoloserviceprovider.com.au/'}
+    ]){
+      // Explicit bearer isolates release-origin enforcement from cookie CSRF checks.
+      const result=await request({body,headers:{...headers,cookie:undefined,authorization:'Bearer '+token,...extra}});
+      assert.equal(result.status,503);
+      assert.equal(result.body.code,'customer_disabled');
+    }
+    assert.deepEqual(calls,[]);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true'});
+});
+
+test('approved production bearer chat may omit Origin while the Chat switch remains independent',async()=>{
+  await withCustomer(async({calls,body,token})=>{
+    delete body.expectedUserId;
+    const result=await request({body,headers:{...PRODUCTION_HEADERS,origin:undefined,authorization:'Bearer '+token}});
+    assert.equal(result.status,200);
+    assert.deepEqual(calls,['auth','admit','provider','finish']);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true',SOLO_CUSTOMER_AUTH_ENABLED:'false'});
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body,headers:{...headers,...PRODUCTION_HEADERS}});
+    assert.equal(result.status,503);
+    assert.deepEqual(calls,[]);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true',SOLO_CUSTOMER_CHAT_ENABLED:'false'});
+});
+
+test('production never enables owner-token inference even with both private and release flags',async()=>{
+  await withCustomer(async({calls,body})=>{
+    const result=await request({body:{messages:body.messages},headers:{...PRODUCTION_HEADERS,'x-solo-test-token':TEST_TOKEN}});
+    assert.equal(result.status,503);
+    assert.equal(result.body.code,'private_testing_disabled');
+    assert.deepEqual(calls,[]);
+  },{VERCEL_ENV:'production',SOLO_CUSTOMER_PRODUCTION_ENABLED:'true'});
+});
+
+test('missing or malformed cookie account binding cannot reserve quota or fall back to owner access',async()=>{
+  for(const expectedUserId of [undefined,null,'',OTHER_USER+'x',42,{}]){
+    await withCustomer(async({calls,body,headers})=>{
+      const result=await request({body:{...body,expectedUserId},headers});
+      assert.equal(result.status,400);
+      assert.equal(result.body.code,'expected_account_required');
+      assert.equal(result.body.reply,undefined);
+      assert.deepEqual(calls,['auth']);
+    });
+  }
+});
+
+test('a stale browser account binding rejects changed cookies before quota or provider access',async()=>{
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body:{...body,expectedUserId:OTHER_USER},headers});
+    assert.equal(result.status,409);
+    assert.equal(result.body.code,'account_changed');
+    assert.equal(result.body.reply,undefined);
+    assert.equal(result.body.usage,undefined);
+    assert.deepEqual(calls,['auth']);
+    assert.equal(JSON.stringify(result.body).includes(CUSTOMER_USER),false);
+  });
+});
+
+test('Android bearer requests remain valid without an ambient-cookie account binding',async()=>{
+  await withCustomer(async({calls,body,token})=>{
+    delete body.expectedUserId;
+    const result=await request({body,headers:{authorization:'Bearer '+token,origin:undefined}});
+    assert.equal(result.status,200);
+    assert.deepEqual(calls,['auth','admit','provider','finish']);
+  });
+});
+
+test('expired customer cookies return session expiry without using a supplied owner token',async()=>{
+  await withCustomer(async({calls,body})=>{
+    const result=await request({body,headers:{cookie:'__Host-solo-refresh=test-refresh-only','x-solo-test-token':TEST_TOKEN}});
+    assert.equal(result.status,401);
+    assert.equal(result.body.code,'session_expired');
+    assert.equal(result.body.reply,undefined);
+    assert.deepEqual(calls,[]);
+  });
+});
+
+test('customer intent with expired cookies remains disabled when the customer gate is closed',async()=>{
+  for(const env of [{SOLO_CUSTOMER_CHAT_ENABLED:'false'},{VERCEL_ENV:'production'}]){
+    await withCustomer(async({calls,body})=>{
+      const result=await request({body,headers:{'x-solo-test-token':TEST_TOKEN}});
+      assert.equal(result.status,503);
+      assert.equal(result.body.code,'customer_disabled');
+      assert.deepEqual(calls,[]);
+    },env);
+  }
+});

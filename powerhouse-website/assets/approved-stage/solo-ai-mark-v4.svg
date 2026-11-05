@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="t d">
+<title id="t">SOLO AI emblem</title><desc id="d">Gold angular SOLO monogram with electric blue highlights on a dark industrial field.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050709"/><stop offset=".55" stop-color="#0a1118"/><stop offset="1" stop-color="#020304"/></linearGradient>
+ <linearGradient id="gold" x1=".1" y1=".05" x2=".9" y2=".95"><stop stop-color="#fff0a1"/><stop offset=".16" stop-color="#f2c766"/><stop offset=".42" stop-color="#c99734"/><stop offset=".72" stop-color="#7d5615"/><stop offset="1" stop-color="#f0c35d"/></linearGradient>
+ <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#222a30"/><stop offset=".5" stop-color="#0c1115"/><stop offset="1" stop-color="#35414a"/></linearGradient>
+ <filter id="blueGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="11" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse"><path d="M54 0H0V54" fill="none" stroke="#1d2c38" stroke-width="1" opacity=".32"/></pattern>
+</defs>
+<rect width="1024" height="1024" rx="176" fill="url(#bg)"/>
+<rect x="42" y="42" width="940" height="940" rx="146" fill="none" stroke="#d5a74b" stroke-width="10"/>
+<rect x="66" y="66" width="892" height="892" rx="126" fill="url(#grid)" stroke="#5e4825" stroke-width="2"/>
+<path d="M178 310 512 116 846 310v404L512 908 178 714Z" fill="#060b10" stroke="#158ee5" stroke-width="7" opacity=".95" filter="url(#blueGlow)"/>
+<path d="M231 338 512 176 793 338v348L512 848 231 686Z" fill="none" stroke="#c99734" stroke-width="12" opacity=".72"/>
+<!-- angular S -->
+<path d="M702 284 512 174 322 284 236 435 326 490 406 351 512 290 598 340 548 428 431 428 346 575 322 616 512 726 702 616 790 464 700 410 618 552 512 614 425 564 476 476 593 476 678 329Z"
+ fill="url(#gold)" stroke="#ffd977" stroke-width="8" stroke-linejoin="round" filter="url(#goldGlow)"/>
+<path d="M322 284 512 174 702 284 656 363 512 280 368 363Z" fill="url(#steel)" opacity=".65"/>
+<path d="M322 616 512 726 702 616 656 537 512 620 368 537Z" fill="#080b0e" opacity=".56"/>
+<path d="M315 445 361 365M663 659 709 579M444 455H582" stroke="#22aaff" stroke-width="13" stroke-linecap="round" filter="url(#blueGlow)"/>
+<circle cx="191" cy="512" r="7" fill="#22aaff"/><circle cx="833" cy="512" r="7" fill="#f2c766"/>
+</svg>

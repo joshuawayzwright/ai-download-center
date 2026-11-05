@@ -41,6 +41,8 @@ test('link selection, outside click, focus leaving, history and resize close men
 test('public pages share navigation and business email; launch restrictions remain', () => {
   for (const file of ['index.html', 'digital-products.html', 'contact.html', 'solo-ai.html', 'terms.html', 'privacy.html', 'refunds.html']) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
+    assert.ok(html.includes('<link rel="icon" type="image/svg+xml" href="/assets/approved-stage/business-mark-v4.svg">'), file + ' must use approved SVG business favicon');
+    assert.ok(html.includes('<meta name="theme-color" content="#050607">'), file + ' must have matching Android browser theme');
     assert.match(html, /aria-label="Primary navigation"/);
     assert.match(html, /aria-controls="primary-links" hidden/);
     assert.match(html, /id="primary-links"/);
@@ -51,6 +53,23 @@ test('public pages share navigation and business email; launch restrictions rema
     if (['index.html', 'digital-products.html'].includes(file)) assert.equal((html.match(/class="pending"/g) || []).length, 10);
   }
   assert.match(fs.readFileSync(path.join(root, 'contact.html'), 'utf8'), /href="tel:\+61452272820">0452 272 820/);
-  assert.match(fs.readFileSync(path.join(root, 'solo-ai.html'), 'utf8'), /Public chat is not open yet/);
+  assert.match(fs.readFileSync(path.join(root, 'solo-ai.html'), 'utf8'), /(Public chat is not open yet|Private testing — public access not enabled)/);
   assert.doesNotMatch(fs.readFileSync(path.join(root, 'styles.css'), 'utf8'), /\.links a:not\(:last-child\)\{display:none\}/);
+});
+
+
+test('floating SOLO guide uses the canonical crisp SOLO AI vector mark, not the business app icon', () => {
+  const source = fs.readFileSync(path.join(root, 'solo-chat.js'), 'utf8');
+  assert.match(source, /\/assets\/approved-stage\/solo-ai-mark-v4\.svg/);
+  assert.doesNotMatch(source, /\/assets\/approved-stage\/business-app-icon-512\.png/);
+});
+
+test('floating SOLO guide has keyboard close and avoids mobile product overlays', () => {
+  const source = fs.readFileSync(path.join(root, 'solo-chat.js'), 'utf8');
+  assert.ok(source.includes("event.key === 'Escape'"));
+  assert.ok(source.includes('IntersectionObserver'));
+  assert.ok(source.includes('mobile.matches && productsVisible'));
+  assert.ok(source.includes('trigger.disabled = hidden'));
+  assert.ok(source.includes('solo-guide-products-hidden'));
+  assert.doesNotMatch(source, /\/api\/solo-chat|checkout\.stripe\.com/);
 });
