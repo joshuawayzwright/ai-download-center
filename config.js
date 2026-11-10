@@ -18,5 +18,5 @@ window.SITE_CONFIG = {
 
   // Google Analytics 4 Measurement ID (Admin > Data streams > Web), e.g. 'G-ABC123XYZ9'.
   // While it is empty, no analytics code loads.
-  gaMeasurementId: '',
+  gaMeasurementId: 'G-18D31VQ9SB',
 };
