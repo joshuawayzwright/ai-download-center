@@ -15,4 +15,8 @@ window.SITE_CONFIG = {
   supportEmail: 'superadmin2712@gmail.com',
   // The business name customers see on Stripe checkout and their card statement.
   merchantName: 'The Solo Service Provider',
+
+  // Google Analytics 4 Measurement ID (Admin > Data streams > Web), e.g. 'G-ABC123XYZ9'.
+  // While it is empty, no analytics code loads.
+  gaMeasurementId: 'G-18D31VQ9SB',
 };
