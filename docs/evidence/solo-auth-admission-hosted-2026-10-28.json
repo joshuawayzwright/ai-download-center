@@ -1,0 +1,763 @@
+{
+  "schema_version": 1,
+  "title": "SOLO Auth admission: hosted migration, behavior and configuration verification",
+  "verification_date_utc": "2026-10-28",
+  "project_id": "tymayhazawkofmiypeqt",
+  "organization_id": "txfdoppxcbylrguxsjod",
+  "scope": "Existing commercial SOLO project only. No WrightWayz project or data.",
+  "outcome": {
+    "migration_applied": true,
+    "hosted_schema_and_acl_verified": true,
+    "hosted_rollback_test_passed": true,
+    "hosted_concurrent_admission_passed": true,
+    "canonical_auth_url_and_password_minimum_verified": true,
+    "customer_email_delivery_verified": false,
+    "customer_signup_enabled": false,
+    "public_chat_enabled": false,
+    "production_ai_release": false
+  },
+  "source": {
+    "branch": "feat/solo-customer-access",
+    "runtime_commit": "3c9b214cf115f4b4e27373975b8737b45d5bee4c",
+    "evidence_checkout_before_this_record": "c7c0ecc9accc04dbd70b8940a1998f4c1b7f3677",
+    "migration_path": "supabase/migrations/20261028010000_solo_auth_admission.sql",
+    "sql_sha256": "790ea7c1d4adf90f79104927418cb292c2df58a87740981198b5bd3f16d00c95",
+    "managed_history_version": "20261028030527",
+    "version_mapping": "The supported migration API assigned its application timestamp. Do not blindly reapply, rename source or repair history merely to align the filename timestamp."
+  },
+  "administrative_authentication": {
+    "completed": true,
+    "method": "Owner-approved official CLI protocol, using a temporary persisted-state wrapper; Node --use-env-proxy resolved the verified direct-DNS transport failure.",
+    "wrapper_is_official_cli_resume_feature": false,
+    "local_synthetic_restart_recovery_tests_passed": 10,
+    "credential_scope": "account-level",
+    "operation_scope": "commercial project only",
+    "credential_material_in_record": false,
+    "earlier_unclaimed_token_cleanup_verified": false
+  },
+  "migration_application": {
+    "started_at_utc": "2026-10-28T03:05:25.230985+00:00",
+    "project_id": "tymayhazawkofmiypeqt",
+    "migration_name": "solo_auth_admission",
+    "sql_sha256": "790ea7c1d4adf90f79104927418cb292c2df58a87740981198b5bd3f16d00c95",
+    "endpoint": "POST /v1/projects/{ref}/database/migrations",
+    "previous_history": [
+      {
+        "version": "20261027071534",
+        "name": "solo_customer_admission"
+      }
+    ],
+    "outcome": "response_received",
+    "http_status": 200,
+    "response_type": "list",
+    "response_keys": null,
+    "returned_version": null,
+    "finished_at_utc": "2026-10-28T03:05:27.974810+00:00"
+  },
+  "independently_read_migration_history": [
+    {
+      "version": "20261027071534",
+      "name": "solo_customer_admission"
+    },
+    {
+      "version": "20261028030527",
+      "name": "solo_auth_admission"
+    }
+  ],
+  "hosted_catalog": {
+    "checked_at": "2026-10-28 03:06:10.809048+00",
+    "migrations": [
+      {
+        "name": "solo_customer_admission",
+        "version": "20261027071534"
+      },
+      {
+        "name": "solo_auth_admission",
+        "version": "20261028030527"
+      }
+    ],
+    "auth_limits": [
+      {
+        "id": true,
+        "ip_hour": 60,
+        "ip_minute": 10,
+        "email_hour": 20,
+        "global_day": 500,
+        "global_hour": 200,
+        "email_minute": 5,
+        "global_minute": 30
+      }
+    ],
+    "counter_count": 0,
+    "new_tables": [
+      {
+        "table": "auth_rate_counters",
+        "force_rls": true,
+        "rls_enabled": true,
+        "anon_any_dml": false,
+        "authenticated_any_dml": false
+      },
+      {
+        "table": "auth_rate_policy",
+        "force_rls": true,
+        "rls_enabled": true,
+        "anon_any_dml": false,
+        "authenticated_any_dml": false
+      }
+    ],
+    "auth_function": {
+      "result": "jsonb",
+      "body_md5": "7e89cd38d51465e551046e96f4ffd692",
+      "identity": "solo_admit_auth_attempt(text,text)",
+      "settings": [
+        "search_path=\"\"",
+        "lock_timeout=2s"
+      ],
+      "anon_execute": false,
+      "security_definer": false,
+      "service_role_execute": true,
+      "authenticated_execute": false
+    },
+    "expiry_index": "CREATE INDEX auth_rate_expiry_idx ON solo_private.auth_rate_counters USING btree (expires_at)",
+    "service_role_bypassrls": true
+  },
+  "remaining_catalog_checks": {
+    "columns": [
+      {
+        "name": "scope",
+        "type": "text",
+        "table": "auth_rate_counters",
+        "not_null": true
+      },
+      {
+        "name": "subject_key",
+        "type": "text",
+        "table": "auth_rate_counters",
+        "not_null": true
+      },
+      {
+        "name": "window_seconds",
+        "type": "integer",
+        "table": "auth_rate_counters",
+        "not_null": true
+      },
+      {
+        "name": "window_start",
+        "type": "bigint",
+        "table": "auth_rate_counters",
+        "not_null": true
+      },
+      {
+        "name": "expires_at",
+        "type": "timestamp with time zone",
+        "table": "auth_rate_counters",
+        "not_null": true
+      },
+      {
+        "name": "attempts",
+        "type": "integer",
+        "table": "auth_rate_counters",
+        "not_null": true
+      },
+      {
+        "name": "id",
+        "type": "boolean",
+        "table": "auth_rate_policy",
+        "not_null": true
+      },
+      {
+        "name": "email_minute",
+        "type": "integer",
+        "table": "auth_rate_policy",
+        "not_null": true
+      },
+      {
+        "name": "email_hour",
+        "type": "integer",
+        "table": "auth_rate_policy",
+        "not_null": true
+      },
+      {
+        "name": "ip_minute",
+        "type": "integer",
+        "table": "auth_rate_policy",
+        "not_null": true
+      },
+      {
+        "name": "ip_hour",
+        "type": "integer",
+        "table": "auth_rate_policy",
+        "not_null": true
+      },
+      {
+        "name": "global_minute",
+        "type": "integer",
+        "table": "auth_rate_policy",
+        "not_null": true
+      },
+      {
+        "name": "global_hour",
+        "type": "integer",
+        "table": "auth_rate_policy",
+        "not_null": true
+      },
+      {
+        "name": "global_day",
+        "type": "integer",
+        "table": "auth_rate_policy",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "type": "c",
+        "table": "auth_rate_counters",
+        "definition": "CHECK (((attempts >= 1) AND (attempts <= 1000000)))"
+      },
+      {
+        "type": "p",
+        "table": "auth_rate_counters",
+        "definition": "PRIMARY KEY (scope, subject_key, window_seconds, window_start)"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_counters",
+        "definition": "CHECK ((scope = ANY (ARRAY['email'::text, 'ip'::text, 'global'::text])))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_counters",
+        "definition": "CHECK ((subject_key ~ '^[0-9a-f]{64}$'::text))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_counters",
+        "definition": "CHECK ((window_seconds = ANY (ARRAY[60, 3600, 86400])))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_counters",
+        "definition": "CHECK ((window_start >= 0))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (((email_hour >= 1) AND (email_hour <= 10000)))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (((email_minute >= 1) AND (email_minute <= 1000)))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (((global_day >= 1) AND (global_day <= 1000000)))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (((global_hour >= 1) AND (global_hour <= 100000)))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (((global_minute >= 1) AND (global_minute <= 10000)))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (id)"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (((ip_hour >= 1) AND (ip_hour <= 100000)))"
+      },
+      {
+        "type": "c",
+        "table": "auth_rate_policy",
+        "definition": "CHECK (((ip_minute >= 1) AND (ip_minute <= 10000)))"
+      },
+      {
+        "type": "p",
+        "table": "auth_rate_policy",
+        "definition": "PRIMARY KEY (id)"
+      }
+    ],
+    "expiry_index": "CREATE INDEX auth_rate_expiry_idx ON solo_private.auth_rate_counters USING btree (expires_at)",
+    "public_table_grants": 0,
+    "service_delete_policy": false,
+    "service_delete_counters": true,
+    "service_column_acl_exact": true,
+    "client_column_access_denied": true
+  },
+  "hosted_rollback_test": {
+    "result": "SOLO_AUTH_ADMISSION_ROLLBACK_PASS",
+    "persisted_counter_rows": 0,
+    "role": "service_role",
+    "checks": [
+      "invalid fingerprint rejected without allocation",
+      "five admissions reserve exactly seven counters, each with five attempts",
+      "sixth same-email attempt with a different IP is rate limited with Retry-After in 1..60",
+      "denial changes no counter and allocates no new IP counter",
+      "transaction rolled back; independent count is zero"
+    ],
+    "earlier_precondition_aborts": 2,
+    "precondition_abort_reason": "Both early tests stopped at a minute-boundary safety guard before admission. The subsequent test scheduled a bounded wait before acquiring the mutex and passed."
+  },
+  "hosted_concurrency_test": {
+    "started_at_utc": "2026-10-28T03:13:02.472841+00:00",
+    "project_id": "tymayhazawkofmiypeqt",
+    "target_epoch": 1793157185.35968,
+    "expected_minute": 29885953,
+    "precondition": "zero counters, unchanged caps, chat disabled",
+    "results": [
+      {
+        "worker": 0,
+        "backend_pid": 100561,
+        "db_start": 1793157183.79044,
+        "db_end": 1793157185.98852,
+        "minute": 29885953,
+        "admission": {
+          "code": "admitted",
+          "allowed": true,
+          "retry_after_seconds": 0
+        }
+      },
+      {
+        "worker": 1,
+        "backend_pid": 100558,
+        "db_start": 1793157183.72349,
+        "db_end": 1793157186.40005,
+        "minute": 29885953,
+        "admission": {
+          "code": "admitted",
+          "allowed": true,
+          "retry_after_seconds": 0
+        }
+      },
+      {
+        "worker": 2,
+        "backend_pid": 100562,
+        "db_start": 1793157183.84833,
+        "db_end": 1793157185.78259,
+        "minute": 29885953,
+        "admission": {
+          "code": "admitted",
+          "allowed": true,
+          "retry_after_seconds": 0
+        }
+      },
+      {
+        "worker": 3,
+        "backend_pid": 100560,
+        "db_start": 1793157183.75484,
+        "db_end": 1793157186.60542,
+        "minute": 29885953,
+        "admission": {
+          "code": "rate_limited",
+          "allowed": false,
+          "retry_after_seconds": 54
+        }
+      },
+      {
+        "worker": 4,
+        "backend_pid": 100563,
+        "db_start": 1793157183.99455,
+        "db_end": 1793157185.57656,
+        "minute": 29885953,
+        "admission": {
+          "code": "admitted",
+          "allowed": true,
+          "retry_after_seconds": 0
+        }
+      },
+      {
+        "worker": 5,
+        "backend_pid": 100557,
+        "db_start": 1793157183.72669,
+        "db_end": 1793157186.19456,
+        "minute": 29885953,
+        "admission": {
+          "code": "admitted",
+          "allowed": true,
+          "retry_after_seconds": 0
+        }
+      }
+    ],
+    "cleanup": "committed_targeted_cleanup",
+    "summary": {
+      "valid_responses_and_one_minute": true,
+      "admitted": 5,
+      "rate_limited": 1,
+      "distinct_backends": 6,
+      "overlapping_database_intervals": true
+    },
+    "counter_snapshot": [
+      {
+        "scope": "email",
+        "window_seconds": 60,
+        "window_start": 1793157180,
+        "attempts": 5,
+        "expiry_epoch": 1793157240,
+        "subject_key_label": "synthetic_email"
+      },
+      {
+        "scope": "email",
+        "window_seconds": 3600,
+        "window_start": 1793156400,
+        "attempts": 5,
+        "expiry_epoch": 1793160000,
+        "subject_key_label": "synthetic_email"
+      },
+      {
+        "scope": "global",
+        "window_seconds": 60,
+        "window_start": 1793157180,
+        "attempts": 5,
+        "expiry_epoch": 1793157240,
+        "subject_key_label": "shared_global"
+      },
+      {
+        "scope": "global",
+        "window_seconds": 3600,
+        "window_start": 1793156400,
+        "attempts": 5,
+        "expiry_epoch": 1793160000,
+        "subject_key_label": "shared_global"
+      },
+      {
+        "scope": "global",
+        "window_seconds": 86400,
+        "window_start": 1793145600,
+        "attempts": 5,
+        "expiry_epoch": 1793232000,
+        "subject_key_label": "shared_global"
+      },
+      {
+        "scope": "ip",
+        "window_seconds": 60,
+        "window_start": 1793157180,
+        "attempts": 5,
+        "expiry_epoch": 1793157240,
+        "subject_key_label": "synthetic_ip"
+      },
+      {
+        "scope": "ip",
+        "window_seconds": 3600,
+        "window_start": 1793156400,
+        "attempts": 5,
+        "expiry_epoch": 1793160000,
+        "subject_key_label": "synthetic_ip"
+      }
+    ],
+    "passed": true,
+    "finished_at_utc": "2026-10-28T03:13:09.422388+00:00",
+    "subject_key_handling": "Random synthetic fingerprints only; replaced with labels in this public record."
+  },
+  "preserved_existing_state": {
+    "before": {
+      "checked_at": "2026-10-28 03:04:08.675247+00",
+      "auth_rate_policy": null,
+      "auth_rate_counters": null,
+      "auth_admission": null,
+      "migration_count": 1,
+      "chat_policy": [
+        {
+          "id": true,
+          "enabled": false,
+          "updated_at": "2026-10-27T09:32:37.881436+00:00",
+          "user_day_limit": 20,
+          "global_day_limit": 200,
+          "user_minute_limit": 3,
+          "global_minute_limit": 20
+        }
+      ],
+      "member_count": 2,
+      "member_hash": "8620508cb983494dab688a0f933fd8c4",
+      "request_count": 15,
+      "request_hash": "161e66d23206b56f0e821ad056b8c1aa",
+      "auth_session_count": 0
+    },
+    "after": {
+      "checked_at": "2026-10-28 03:16:59.759374+00",
+      "chat_policy": [
+        {
+          "id": true,
+          "enabled": false,
+          "updated_at": "2026-10-27T09:32:37.881436+00:00",
+          "user_day_limit": 20,
+          "global_day_limit": 200,
+          "user_minute_limit": 3,
+          "global_minute_limit": 20
+        }
+      ],
+      "member_count": 2,
+      "member_hash": "8620508cb983494dab688a0f933fd8c4",
+      "request_count": 15,
+      "request_hash": "161e66d23206b56f0e821ad056b8c1aa",
+      "auth_session_count": 0,
+      "auth_counter_count": 0,
+      "auth_limits": [
+        {
+          "id": true,
+          "ip_hour": 60,
+          "ip_minute": 10,
+          "email_hour": 20,
+          "global_day": 500,
+          "global_hour": 200,
+          "email_minute": 5,
+          "global_minute": 30
+        }
+      ]
+    },
+    "member_ledger_session_and_chat_policy_unchanged": true
+  },
+  "advisors": {
+    "security": [
+      {
+        "name": "rls_enabled_no_policy",
+        "title": "RLS Enabled No Policy",
+        "level": "INFO",
+        "facing": "EXTERNAL",
+        "categories": [
+          "SECURITY"
+        ],
+        "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+        "count": 5,
+        "findings": [
+          {
+            "detail": "Table \\`solo_private.auth_rate_counters\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "auth_rate_counters",
+              "type": "table",
+              "schema": "solo_private"
+            },
+            "observed_at": "2026-10-28T03:06:12.136Z"
+          },
+          {
+            "detail": "Table \\`solo_private.auth_rate_policy\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "auth_rate_policy",
+              "type": "table",
+              "schema": "solo_private"
+            },
+            "observed_at": "2026-10-28T03:06:12.136Z"
+          },
+          {
+            "detail": "Table \\`solo_private.chat_members\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "chat_members",
+              "type": "table",
+              "schema": "solo_private"
+            },
+            "observed_at": "2026-10-28T03:06:12.136Z"
+          },
+          {
+            "detail": "Table \\`solo_private.chat_policy\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "chat_policy",
+              "type": "table",
+              "schema": "solo_private"
+            },
+            "observed_at": "2026-10-28T03:06:12.136Z"
+          },
+          {
+            "detail": "Table \\`solo_private.chat_requests\\` has RLS enabled, but no policies exist",
+            "metadata": {
+              "name": "chat_requests",
+              "type": "table",
+              "schema": "solo_private"
+            },
+            "observed_at": "2026-10-28T03:06:12.136Z"
+          }
+        ]
+      },
+      {
+        "name": "auth_leaked_password_protection",
+        "title": "Leaked Password Protection Disabled",
+        "level": "WARN",
+        "facing": "EXTERNAL",
+        "categories": [
+          "SECURITY"
+        ],
+        "description": "Leaked password protection is currently disabled.",
+        "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection",
+        "count": 1,
+        "findings": [
+          {
+            "detail": "Supabase Auth prevents the use of compromised passwords by checking against HaveIBeenPwned.org. Enable this feature to enhance security.",
+            "metadata": {
+              "type": "auth",
+              "entity": "Auth"
+            }
+          }
+        ]
+      }
+    ],
+    "performance": [
+      {
+        "name": "unused_index",
+        "title": "Unused Index",
+        "level": "INFO",
+        "facing": "EXTERNAL",
+        "categories": [
+          "PERFORMANCE"
+        ],
+        "description": "Detects if an index has never been used and may be a candidate for removal.",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index",
+        "count": 1,
+        "findings": [
+          {
+            "detail": "Index \\`auth_rate_expiry_idx\\` on table \\`solo_private.auth_rate_counters\\` has not been used",
+            "metadata": {
+              "name": "auth_rate_counters",
+              "type": "table",
+              "schema": "solo_private"
+            },
+            "observed_at": "2026-10-28T03:06:11.350Z"
+          }
+        ]
+      }
+    ],
+    "interpretation": "No ERROR-level findings. Five INFO RLS/no-policy findings concern deliberately private tables; a newly unused expiry index is retained. Existing leaked-password-protection WARN remains open."
+  },
+  "auth_configuration": {
+    "audit_before_change": {
+      "checked_at_utc": "2026-10-28T03:11:00.161716+00:00",
+      "project_id": "tymayhazawkofmiypeqt",
+      "http_status": 200,
+      "settings": {
+        "disable_signup": true,
+        "external_email_enabled": true,
+        "external_anonymous_users_enabled": false,
+        "mailer_autoconfirm": false,
+        "mailer_allow_unverified_email_sign_ins": false,
+        "mailer_otp_length": 8,
+        "mailer_otp_exp": 3600,
+        "rate_limit_email_sent": 2,
+        "rate_limit_otp": 30,
+        "rate_limit_verify": 30,
+        "rate_limit_token_refresh": 150,
+        "smtp_max_frequency": 60,
+        "password_min_length": 6,
+        "password_required_characters": null,
+        "security_update_password_require_current_password": false,
+        "security_update_password_require_reauthentication": false,
+        "security_captcha_enabled": false,
+        "hook_send_email_enabled": false,
+        "mailer_notifications_password_changed_enabled": false
+      },
+      "missing_fields": [],
+      "site_url": "http://localhost:3000",
+      "redirect_allow_list": [],
+      "smtp_field_presence": {
+        "smtp_admin_email": false,
+        "smtp_sender_name": false,
+        "smtp_user": false,
+        "smtp_host": false,
+        "smtp_pass": false,
+        "smtp_port": false
+      },
+      "custom_smtp_configuration_complete": false,
+      "templates": {
+        "confirmation": {
+          "field_returned": true,
+          "explicit_content_present": true,
+          "token_placeholder_present": false,
+          "credential_link_placeholder_present": true,
+          "matches_committed_template": false,
+          "configured_sha256": "c495b24123d38e4bc4295f06afe92a3c11e6ce00df09d81e2cb0706e3d7c79d8",
+          "committed_sha256": "af8691b82cd386883a850cb533f7f01f094bb97710b9909b92b55d60ab9ce580"
+        },
+        "recovery": {
+          "field_returned": true,
+          "explicit_content_present": true,
+          "token_placeholder_present": false,
+          "credential_link_placeholder_present": true,
+          "matches_committed_template": false,
+          "configured_sha256": "f452789e6dc74df5d977839e9bff203a03c3477d56f29a851672de8c6fedda21",
+          "committed_sha256": "0312da03dd9b7225d1f112ac2e9dd1cdf3961a06a86506b0d3a8bd96fcf09156"
+        }
+      }
+    },
+    "transient_read_http_502_retried_once": true,
+    "verified_fix": {
+      "checked_at_utc": "2026-10-28T03:16:25.646070+00:00",
+      "project_id": "tymayhazawkofmiypeqt",
+      "patch_sent": true,
+      "patch_http_status": 200,
+      "readback_http_status": 200,
+      "changes": {
+        "site_url": {
+          "before": "http://localhost:3000",
+          "after": "https://thesoloserviceprovider.com.au"
+        },
+        "password_min_length": {
+          "before": 6,
+          "after": 12
+        }
+      },
+      "unexpected_changed_field_names": [],
+      "signup_still_disabled": true,
+      "email_confirmation_still_required": true,
+      "anonymous_signin_still_disabled": true,
+      "verified": true
+    },
+    "raw_configuration_or_secret_values_saved": false,
+    "templates_installed": false,
+    "emails_sent": 0
+  },
+  "existing_commercial_email_dns": {
+    "checked_at_utc": "2026-10-28T03:17:05.977888+00:00",
+    "domain": "thesoloserviceprovider.com.au",
+    "mx_hosts": [
+      "mx1.privateemail.com",
+      "mx2.privateemail.com"
+    ],
+    "mx_priority": 10,
+    "spf": "v=spf1 include:spf.privateemail.com ~all",
+    "inference": "Existing Namecheap Private Email routing; mailbox existence, SMTP credentials, sending rights and delivery are not established.",
+    "smtp_admin_connector_available": false,
+    "provider_created": false
+  },
+  "application_deployments": {
+    "changed_this_cycle": false,
+    "production": {
+      "id": "dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt",
+      "runtime_commit": "eabe97ad26141c8096fc533951dbc6482fb78f74",
+      "url": "https://thesoloserviceprovider.com.au/"
+    },
+    "protected_preview": {
+      "id": "dpl_8bpvb8yQuvuVwUYFFPQMApD5c3cN",
+      "runtime_commit": "3c9b214cf115f4b4e27373975b8737b45d5bee4c",
+      "url": "https://solo-provider-industrial-qgmf0sfeq-wrightwayz.vercel.app/solo-ai.html#conversation"
+    }
+  },
+  "remaining_gates": [
+    "Configure and verify the existing commercial SMTP sender, then install prepared OTP templates.",
+    "Verify delivered signup/confirmation/recovery and session revocation with an authorized test mailbox.",
+    "Verify hosted limiter lock/storage-failure behavior and actual Vercel Auth request-path integration.",
+    "Establish provider zero-charge entitlement or owner-approved budget and durable currency controls before customer activation.",
+    "Complete actual signed-in desktop/Samsung, cross-tab, expiry, logout, provider/storage-failure and operational acceptance.",
+    "Verify production configuration and explicitly release customer access only after the gates pass."
+  ],
+  "observed_side_effect_counts": {
+    "new_customer_accounts": 0,
+    "customer_activations": 0,
+    "customer_emails": 0,
+    "model_requests": 0,
+    "billing_changes": 0,
+    "application_deployments": 0
+  },
+  "provenance": {
+    "migration_api": "https://supabase.com/docs/reference/api/v1-apply-a-migration",
+    "auth_configuration": "https://supabase.com/docs/reference/api/v1-update-auth-service-config",
+    "smtp": "https://supabase.com/docs/guides/auth/auth-smtp",
+    "free_template_policy": "https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier",
+    "namecheap_application_passwords": "https://www.namecheap.com/support/knowledgebase/article.aspx/10816/2178/how-to-use-app-passwords-for-private-email/"
+  }
+}
+
