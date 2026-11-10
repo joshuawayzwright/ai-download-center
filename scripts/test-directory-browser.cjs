@@ -46,6 +46,9 @@ test('directory upgrade, slow input, external requests and responsive layout', a
   const browser = await chromium.launch({ channel: 'chrome' });
   t.after(() => browser.close());
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  // Google Analytics is the only permitted third party. The test server's CSP blocks it,
+  // so no test traffic reaches Google.
+  const isAnalytics = (u) => /^https:\/\/([a-z0-9-]+\.)*(googletagmanager|google-analytics)\.com\//.test(u);
   const errors = [];
   const external = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -81,7 +84,7 @@ test('directory upgrade, slow input, external requests and responsive layout', a
     Object.values(storage).some((value) => value.includes('qa45-private-marker')))), false);
   await search.press('Tab');
   assert.equal(await page.locator('#searchLiveModels').evaluate((button) => button.matches(':focus-visible')), true);
-  assert.deepEqual(await page.evaluate(() => window.blocked), []);
+  assert.deepEqual((await page.evaluate(() => window.blocked)).filter((u) => !isAnalytics(u)), []);
 
   await search.fill('');
   const audioResults = await page.locator('#resultsText').innerText();
@@ -105,7 +108,7 @@ test('directory upgrade, slow input, external requests and responsive layout', a
   for (const name of await readdir(site)) {
     if (!name.endsWith('.html')) continue;
     await page.goto(origin + '/' + name);
-    assert.deepEqual(await page.evaluate(() => window.blocked), [], name);
+    assert.deepEqual((await page.evaluate(() => window.blocked)).filter((u) => !isAnalytics(u)), [], name);
   }
   for (const width of [1280, 412, 360, 320]) {
     await page.setViewportSize({ width, height: 850 });
@@ -122,6 +125,8 @@ test('directory upgrade, slow input, external requests and responsive layout', a
       assert.ok(metrics.page <= metrics.viewport, name + ' overflows at ' + width + 'px');
     }
   }
-  assert.deepEqual(external, []);
+  // Analytics must never receive the search term the directory strips from legacy URLs.
+  assert.deepEqual(external.filter((u) => !isAnalytics(u)), []);
+  for (const u of external) assert.ok(!/legacy/i.test(decodeURIComponent(u)), 'Search term sent to analytics: ' + u);
   assert.deepEqual(errors, []);
 });
