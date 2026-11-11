@@ -29,7 +29,8 @@ depends on the server work in [the Play Console guide](../../docs/SOLO-ANDROID-P
 
 ## Build
 
-Requires JDK 17+ and the Android SDK (platform 36). The Gradle wrapper is included.
+Requires JDK 21 (the Robolectric UI tests for API 36 need it; app bytecode targets Java 17)
+and the Android SDK (platform 36). The Gradle wrapper is included.
 
 ```bash
 cd apps/solo-android

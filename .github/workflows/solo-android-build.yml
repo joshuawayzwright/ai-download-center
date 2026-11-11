@@ -22,7 +22,8 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          # Robolectric's Android 16 (API 36) sandbox requires Java 21.
+          java-version: '21'
       - uses: android-actions/setup-android@v4
       - name: Install Android 16 (API 36) platform
         run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
