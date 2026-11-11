@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Solo" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/solo_bg</item>
+        <item name="android:colorBackground">@color/solo_bg</item>
+        <item name="android:colorPrimary">@color/solo_gold</item>
+        <item name="android:colorPrimaryDark">@color/solo_bg</item>
+        <item name="android:colorAccent">@color/solo_gold</item>
+        <item name="android:colorControlActivated">@color/solo_gold</item>
+        <item name="android:textColorPrimary">@color/solo_text</item>
+        <item name="android:textColorSecondary">@color/solo_text_muted</item>
+        <item name="android:textColorHighlight">#664A3F10</item>
+        <item name="android:statusBarColor">@color/solo_bg</item>
+        <item name="android:navigationBarColor">@color/solo_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

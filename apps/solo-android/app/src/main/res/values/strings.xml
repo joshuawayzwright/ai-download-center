@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SOLO AI</string>
+    <string name="tagline">Your AI guide. Always on.</string>
+    <string name="avatar_description">SOLO AI emblem</string>
+    <string name="menu_description">More options</string>
+    <string name="menu_new_chat">New conversation</string>
+    <string name="menu_ai_hub">AI Download Centre</string>
+    <string name="menu_privacy">Privacy notice</string>
+    <string name="menu_terms">Terms</string>
+    <string name="menu_contact">Contact and support</string>
+    <string name="welcome_title">Hi, I\'m SOLO AI</string>
+    <string name="welcome_body">Ask for help planning, writing, solving problems or choosing AI tools for your work.</string>
+    <string name="suggestion_1">Help me plan my week</string>
+    <string name="suggestion_2">Write a short follow-up email to a client</string>
+    <string name="suggestion_3">Which AI tools suit a solo business?</string>
+    <string name="composer_hint">Message SOLO AI</string>
+    <string name="send">Send</string>
+    <string name="retry">Retry</string>
+    <string name="thinking">SOLO is thinking…</string>
+    <string name="solo">SOLO AI</string>
+    <string name="disclaimer">SOLO AI can make mistakes. Don\'t share passwords, payment or private details.</string>
+    <string name="status_checking">Checking SOLO AI service…</string>
+    <string name="status_unavailable_title">SOLO AI chat isn\'t open yet</string>
+    <string name="status_unavailable_body">Conversations open when customer sign-in and usage controls are ready. Nothing you type is sent until then.</string>
+    <string name="status_offline_title">Can\'t reach SOLO AI</string>
+    <string name="status_offline_body">Check your connection, then try again.</string>
+    <string name="status_try_again">Try again</string>
+    <string name="status_express_interest">Express interest</string>
+    <string name="char_count">%1$d / 1200</string>
+    <plurals name="remaining_today">
+        <item quantity="one">%1$d message left today</item>
+        <item quantity="other">%1$d messages left today</item>
+    </plurals>
+    <string name="copied">Copied</string>
+    <string name="cd_user_message">You said: %1$s</string>
+    <string name="cd_solo_message">SOLO AI said: %1$s</string>
+    <string name="cd_error_message">Not sent. %1$s</string>
+</resources>

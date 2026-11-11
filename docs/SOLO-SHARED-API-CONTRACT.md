@@ -48,8 +48,26 @@ Errors never count as a model reply. Keep failed user messages out of the
 successful conversation history and retain their text for retry. Gemini parts
 marked as thoughts are not included in `reply`.
 
-The current Android starter still reads the obsolete `answer` response field;
-its integration must use `reply` and customer authentication before release.
+## Native Android client (apps/solo-android)
+
+Verified 12 November 2026 (AEST):
+
+- The app reads `reply` (the obsolete `answer` field is no longer used), applies the
+  limits above, sends a fresh UUID `requestId` with every attempt, sends no `Origin`
+  header, and keeps failed turns out of history.
+- When customer sign-in ships, the app sends `Authorization: Bearer <access token>`,
+  the native path `parseAccessToken` already accepts in PR #34. It never sends
+  `expectedUserId` (cookie-only) or the owner `x-solo-test-token`.
+- At start-up it sends `{}` to check that the endpoint is deployed. Request validation
+  rejects that body with 400 before any access gate or provider call, so no
+  conversation text or inference is involved. A 404 means the endpoint is not deployed.
+- **Production status:** `POST https://thesoloserviceprovider.com.au/api/solo-chat`
+  returned **404** on 12 November 2026. The live site is deployed from
+  `solo-commerce/public-static-release`, which has no chat API. The app shows an honest
+  "not open yet" state until the endpoint is deployed.
+- **Open dependency:** PR #34's `/api/solo-auth` only issues HttpOnly browser cookies, so
+  a native client cannot get a Bearer token yet. A native sign-in path is needed before
+  Android customers can chat.
 
 ## Shared implementation plan
 Follow [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31)
