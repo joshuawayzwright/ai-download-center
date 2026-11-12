@@ -7,6 +7,9 @@ const { reply, fail, readBody } = require('../lib/solo-auth-http.cjs');
 
 const MAX_NOTE = 500;
 const MAX_REPLY = 4000;
+// 4,000 characters of non-Latin text plus JSON escaping can exceed the 8 KB account
+// limit, so reports get a larger (still bounded) body.
+const MAX_REPORT_BYTES = 24576;
 // Allow newlines and tabs in free text; reject other control characters.
 const CONTROL = /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/;
 
@@ -42,7 +45,7 @@ function createReportHandler({ env = process.env, verify = access.verifyCustomer
       // the Android app sends an explicit Bearer token and no Origin.
       const token = access.parseAccessToken(req);
       if (!token) throw fail(401, 'session_expired', 'Please sign in to report a reply.');
-      const report = validReport(await readBody(req));
+      const report = validReport(await readBody(req, MAX_REPORT_BYTES));
       const identity = await verify(token.token, { env });
       const result = await submit(identity, report, { env });
       return reply(res, 200, { ok: true, code: result.code });

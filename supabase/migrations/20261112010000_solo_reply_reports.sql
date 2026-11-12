@@ -71,6 +71,9 @@ BEGIN
   ) THEN
     RETURN jsonb_build_object('ok', true, 'code', 'already_reported', 'retry_after_seconds', 0);
   END IF;
+  -- Serialise this customer's reports so concurrent submissions can't all pass the
+  -- daily count. The lock ends with the transaction.
+  PERFORM pg_advisory_xact_lock(hashtext('solo_reply_reports:' || p_user_id::text));
   v_day := date_trunc('day', v_now AT TIME ZONE 'UTC') AT TIME ZONE 'UTC';
   SELECT count(*) INTO v_count FROM solo_private.reply_reports
     WHERE user_id = p_user_id AND created_at >= v_day;

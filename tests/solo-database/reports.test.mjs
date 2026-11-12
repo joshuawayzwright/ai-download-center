@@ -108,3 +108,9 @@ test('the service role cannot change review state or delete reports', async () =
   await assert.rejects(db.query('DELETE FROM solo_private.reply_reports'));
   await db.exec('RESET ROLE');
 });
+
+test('report submission takes a per-customer advisory lock before counting', async () => {
+  const source = await readFile(migrations[1], 'utf8');
+  const lock = source.indexOf('pg_advisory_xact_lock');
+  assert.ok(lock > 0 && lock < source.indexOf('SELECT count(*) INTO v_count'));
+});

@@ -88,3 +88,13 @@ test('only POST is accepted', async () => {
   const result = await setup().request({ method: 'GET' });
   assert.equal(result.status, 405);
 });
+
+test('a full-length non-Latin reply fits within the report body limit', async () => {
+  const api = setup();
+  const reply = '日本語の返信'.repeat(667).slice(0, 4000);
+  const raw = Buffer.from(JSON.stringify({ ...REPORT, reply }));
+  assert.ok(raw.length > 8192, 'larger than the 8 KB account limit');
+  const result = await api.request({ body: raw.toString() });
+  assert.equal(result.status, 200);
+  assert.equal(api.submitted[0].report.replyText.length, 4000);
+});
