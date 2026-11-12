@@ -238,3 +238,30 @@ Required by Google Play's AI-Generated Content policy. It needs a customer sessi
   runtime can only insert reports; changing review status is an operator action.
   Retention for reports still needs an owner decision, and the privacy notice must
   describe it.
+
+## Streaming replies (`"stream": true`, optional)
+
+Add `"stream": true` to a chat request to receive the reply as it is generated. Access
+checks, validation and quota admission run first, so any failure before generation
+starts is still the normal JSON error with its status code. Once generation starts, the
+response is `200 text/event-stream` with these events:
+
+- `event: delta`, `data: {"text":"..."}`: visible text in order. Thought parts are never sent.
+- then exactly one of:
+  - `event: done`, `data: {"reply":"<full text>","provider","model","truncated"?,"requestId"?,"usage"?}`.
+    Only `done` is a successful reply: commit the turn to history using `reply`.
+  - `event: error`, `data: {"error","code"}`, where the code is `timeout`, `interrupted`,
+    `empty_reply` or a usage-recording failure. Treat this exactly like an error
+    response. Even if deltas were shown, the turn is not committed.
+
+A stream that closes without `done` is an error. Closing the connection stops generation,
+but the request still counts toward usage. The stream is capped at 45 seconds.
+
+Other changes in this revision:
+- Replies may use up to 1,024 output tokens (was 320). `truncated: true` marks a reply
+  cut off by that cap.
+- Assistant turns sent back as history may be up to 4,000 characters (user turns stay at
+  1,200). The 16,000-byte request limit is unchanged.
+- The SOLO system prompt now asks for Australian English, phone-friendly Markdown
+  formatting and a single clarifying question when a request is ambiguous. It also
+  includes today's Queensland date.
