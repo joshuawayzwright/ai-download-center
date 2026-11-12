@@ -186,8 +186,8 @@ A finalization failure returns an error even when Gemini answered, because the
 durable usage record could not be confirmed. Its reservation remains consumed.
 Do not interpret a timeout, 502, 503 or 504 as proof that no allowance was used.
 
-The current Android starter still reads the obsolete `answer` response field;
-its integration must use `reply` and customer authentication before release.
+The Android app's switch from the obsolete `answer` field to `reply` is in PR #51.
+App sign-in and reply reporting are described below.
 
 ## Shared implementation plan
 Follow [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31)
@@ -196,3 +196,45 @@ durable request admission, usage accounting, browser/device validation and futur
 permissioned tools must use this shared commercial API.
 
 Commercial SOLO AI is separate from WrightWayz and its community support data.
+
+## Native app sign-in (`/api/solo-auth`, Android)
+
+The app sends `X-Solo-Client: android` and **no** `Origin` or `Cookie` header (otherwise
+400 `invalid_client`). Tokens are returned in the JSON body, never as cookies. Token
+issuance has its own switch, `SOLO_NATIVE_AUTH_ENABLED=true`, on top of
+`SOLO_CUSTOMER_AUTH_ENABLED` and the production release policy. While the switch is off,
+`POST` login/refresh return 503 `native_auth_disabled`. Logout always works, and
+`GET` reports `{"enabled": false}`.
+
+| Request | Body | Success |
+| --- | --- | --- |
+| `GET` (optional `Authorization: Bearer`) | — | `{enabled, authenticated, chatEnabled, user?, usage?}` |
+| `POST` | `{"action":"login","email","password"}` | status fields plus `session: {access_token, refresh_token, expires_in, token_type}` |
+| `POST` | `{"action":"refresh","refresh_token"}` | the same as login |
+| `POST` + `Authorization: Bearer` | `{"action":"logout","refresh_token"?}` | `{enabled, authenticated:false, chatEnabled:false}` |
+
+Login uses the same rate-limited admission, password grant and membership check as the
+website. A session denied by membership is revoked before the response. A browser
+cannot use this mode: the custom header forces a CORS preflight, which the API never
+approves, so a cross-site page can neither send the request nor read tokens. The app
+must keep the refresh token in Android Keystore-backed storage and send
+`Authorization: Bearer <access_token>` to `/api/solo-chat` and `/api/solo-report`.
+
+## Reporting AI replies (`POST /api/solo-report`, web and Android)
+
+Required by Google Play's AI-Generated Content policy. It needs a customer session
+(Bearer token, or same-origin cookie) and follows `SOLO_CUSTOMER_AUTH_ENABLED`.
+
+```json
+{"requestId":"<the chat requestId>","reason":"harmful|hateful|sexual|misleading|other","note":"optional, ≤500 chars","reply":"the reported reply text, ≤4,000 chars"}
+```
+
+- 200 `{"ok":true,"code":"reported"}`, or `already_reported` when the same reply is reported again.
+- 400 invalid report, 401 sign in again, 404 `request_not_found` (only replies this
+  account actually received can be reported), 429 `report_limit` (20 per account per
+  UTC day, with `Retry-After`), 503 disabled or unavailable.
+- Stored in `solo_private.reply_reports` (migration `20261112010000_solo_reply_reports.sql`).
+  Only the reported reply text, reason and note are stored, never the prompt. The
+  runtime can only insert reports; changing review status is an operator action.
+  Retention for reports still needs an owner decision, and the privacy notice must
+  describe it.

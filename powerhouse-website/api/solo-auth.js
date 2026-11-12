@@ -5,6 +5,34 @@ const { customerRelease } = require('../lib/solo-release-policy.cjs');
 const { admitAuthRequest } = require('../lib/solo-auth-admission.cjs');
 const { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, readBody, authConfig, validSession, setSession } = require('../lib/solo-auth-http.cjs');
 
+// Native app clients (SOLO AI for Android) identify themselves with this header and
+// receive tokens in the JSON body instead of cookies. They must not send Origin or
+// Cookie: a browser cannot read a cross-origin JSON response or send this
+// non-simple header without a CORS preflight, which this API never approves.
+const NATIVE_CLIENT = 'android';
+
+function nativeMode(req) {
+  const client = req.headers['x-solo-client'];
+  if (client === undefined) return false;
+  if (client !== NATIVE_CLIENT || req.headers.origin !== undefined || req.headers.cookie !== undefined) {
+    throw fail(400, 'invalid_client', 'Unsupported account client.');
+  }
+  return true;
+}
+
+function nativeRefreshToken(body) {
+  const token = body.refresh_token;
+  if (typeof token !== 'string' || token.length < 11 || token.length > 2048 || /[\s\x00-\x1f\x7f]/.test(token)) {
+    throw fail(401, 'session_expired', 'Please sign in again.');
+  }
+  return token;
+}
+
+function nativeSession(session) {
+  return { access_token: session.access_token, refresh_token: session.refresh_token,
+    expires_in: Math.min(session.expires_in, 3600), token_type: 'bearer' };
+}
+
 function createAuthHandler({ env = process.env, fetcher = (...args) => globalThis.fetch(...args),
   verify = access.verifyCustomer, freshIdentity = access.identityFromSession,
   status = access.customerStatus, admit = admitAuthRequest } = {}) {
@@ -62,8 +90,10 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
       return reply(res, 405, { error: 'Method not allowed.', code: 'method_not_allowed' });
     }
     let action;
+    let native = false;
     try {
-      sameOrigin(req);
+      native = nativeMode(req);
+      if (!native) sameOrigin(req);
       if (req.method === 'GET') {
         const warm = typeof req.url === 'string' && /(?:^|[?&])warm=1(?:&|$)/.test(req.url.split('?', 2)[1] || '');
         if (warm) {
@@ -74,6 +104,8 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
           return reply(res, 200, { enabled: true, warmed: true });
         }
         if (!enabled) return reply(res, 200, disabled);
+        // The app shows sign-in only when native token issuance is switched on.
+        if (native && env.SOLO_NATIVE_AUTH_ENABLED !== 'true') return reply(res, 200, disabled);
         const token = access.parseAccessToken(req);
         // A normal access-cookie expiry must trigger the client's one refresh
         // attempt; a genuinely signed-out visitor needs no upstream request.
@@ -88,6 +120,31 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
       if (!enabled && action !== 'logout') return reply(res, 503,
         { ...disabled, error: 'SOLO accounts are in private testing.', code: 'auth_disabled' });
       if (!['login', 'refresh', 'logout'].includes(action)) throw fail(400, 'invalid_action', 'Unsupported account action.');
+      // Native token issuance has its own switch so web sign-in can open first.
+      // Logout always stays available so a closed gate never traps a session.
+      if (native && action !== 'logout' && env.SOLO_NATIVE_AUTH_ENABLED !== 'true') {
+        return reply(res, 503, { ...disabled, error: 'SOLO app sign-in is not available yet.', code: 'native_auth_disabled' });
+      }
+      if (action === 'logout' && native) {
+        // Revoke the app's session. A stale access token may be replaced once by
+        // the app's refresh token, only to revoke that same server session.
+        const current = access.parseAccessToken(req);
+        const revokeWithRefresh = async () => {
+          const session = await authRequest('token?grant_type=refresh_token', { refresh_token: nativeRefreshToken(body) });
+          if (!validSession(session)) throw fail(503, 'auth_unavailable', 'Account service returned an invalid response.');
+          await revoke(session.access_token);
+        };
+        if (!current) {
+          if (body.refresh_token !== undefined) await revokeWithRefresh();
+        } else {
+          try { await revoke(current.token); }
+          catch (error) {
+            if (error.status !== 401 || body.refresh_token === undefined) throw error;
+            await revokeWithRefresh();
+          }
+        }
+        return reply(res, 200, { enabled, authenticated: false, chatEnabled: false });
+      }
       if (action === 'logout') {
         const current = access.parseAccessToken(req);
         const refresh = readCookie(req, REFRESH_COOKIE);
@@ -118,7 +175,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
         await admit(req, { email: body.email.trim(), action: 'login' }, { env, fetcher });
         session = await authRequest('token?grant_type=password', { email: body.email.trim(), password: body.password });
       } else {
-        const refresh = readCookie(req, REFRESH_COOKIE);
+        const refresh = native ? nativeRefreshToken(body) : readCookie(req, REFRESH_COOKIE);
         if (!refresh) throw fail(401, 'session_expired', 'Please sign in again.');
         session = await authRequest('token?grant_type=refresh_token', { refresh_token: refresh });
       }
@@ -134,20 +191,22 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
         try { await revoke(session.access_token); } catch { /* Gate remains closed. */ }
         throw error;
       }
+      if (native) return reply(res, 200, { ...view, session: nativeSession(session) });
       setSession(res, session);
       return reply(res, 200, view);
     } catch (error) {
       const known = error instanceof access.HttpError;
       const code = known ? error.code : 'auth_unavailable';
       const httpStatus = known ? error.status : 503;
-      if ((action === 'refresh' && httpStatus === 401) || action === 'logout') clearCookies(res);
+      if (!native && ((action === 'refresh' && httpStatus === 401) || action === 'logout')) clearCookies(res);
       if (httpStatus === 429) {
         const delay = known ? Number(error.headers['Retry-After']) : NaN;
         res.setHeader('Retry-After', Number.isInteger(delay) && delay > 0 && delay <= 86400 ? String(delay) : '60');
       }
       return reply(res, httpStatus, { enabled, authenticated: false, chatEnabled: false,
         error: action === 'logout'
-          ? 'Local account cookies were cleared, but server sign-out could not be confirmed.'
+          ? (native ? 'Signed out on this device, but server sign-out could not be confirmed.'
+            : 'Local account cookies were cleared, but server sign-out could not be confirmed.')
           : known ? error.message : 'Account service is temporarily unavailable.', code });
     }
   };
