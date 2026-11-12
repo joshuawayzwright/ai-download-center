@@ -47,6 +47,7 @@ public class AccountUiTest {
   private TinyHttpServer server;
   private ActivityController<MainActivity> controller;
   private final AtomicBoolean signedIn = new AtomicBoolean(false);
+  private final AtomicBoolean accountServiceDown = new AtomicBoolean(false);
 
   @Before public void fakeCrypto() {
     // Android Keystore is not available on the JVM; this reversible stand-in proves
@@ -72,6 +73,9 @@ public class AccountUiTest {
         return new String[] {"200", "application/json", "{\"reply\":\"Plan: three priorities.\",\"usage\":{\"remaining_daily\":19,\"daily_limit\":20}}"};
       }
       if (path.equals("/api/solo-auth")) {
+        if (method.equals("GET") && accountServiceDown.get()) {
+          return new String[] {"503", "application/json", "{\"enabled\":true,\"authenticated\":false,\"chatEnabled\":false,\"error\":\"Account service is temporarily unavailable.\",\"code\":\"auth_unavailable\"}"};
+        }
         if (method.equals("GET")) return new String[] {"200", "application/json", signedIn.get() ? SIGNED_IN : SIGNED_OUT};
         signedIn.set(true);
         return new String[] {"200", "application/json", SESSION};
@@ -193,5 +197,33 @@ public class AccountUiTest {
     a.findViewById(R.id.send).performClick();
     settle();
     assertNull(button(a.findViewById(R.id.messages), "Report"));
+  }
+
+  @Test public void aTemporaryAccountOutageNeverSignsTheUserOut() throws Exception {
+    MainActivity a = launch();
+    a.findViewById(R.id.status_action).performClick();
+    shadowOf(Looper.getMainLooper()).idle();
+    AlertDialog dialog = (AlertDialog) ShadowAlertDialog.getLatestDialog();
+    List<EditText> fields = find(dialog.getWindow().getDecorView(), EditText.class);
+    fields.get(0).setText("pilot@example.test");
+    fields.get(1).setText("correct horse battery");
+    dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+    settle();
+    assertTrue(a.findViewById(R.id.input).isEnabled());
+
+    // The account service has a blip, and the app re-checks (e.g. via New conversation).
+    accountServiceDown.set(true);
+    controller.recreate();
+    settle();
+    MainActivity b = controller.get();
+    assertEquals(b.getString(R.string.status_unverified_title), ((TextView) b.findViewById(R.id.status_title)).getText().toString());
+    String stored = RuntimeEnvironment.getApplication().getSharedPreferences("solo_session", Context.MODE_PRIVATE).getString("refresh", null);
+    assertNotNull("the stored sign-in survives a temporary outage", stored);
+
+    // Service recovers: the user is still signed in.
+    accountServiceDown.set(false);
+    b.findViewById(R.id.status_action).performClick();
+    settle();
+    assertTrue(b.findViewById(R.id.input).isEnabled());
   }
 }

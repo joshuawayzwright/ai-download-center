@@ -115,4 +115,51 @@ public class SoloApiTest {
       assertEquals("SOLO AI chat isn't available on the server yet.", r.error);
     }
   }
+
+  // ---- Streaming ----
+
+  private static String sse(String... events) {
+    StringBuilder b = new StringBuilder();
+    for (String e : events) b.append(e).append("\n\n");
+    return b.toString();
+  }
+
+  private SoloApi.Result stream(String body, StringBuilder deltas) throws Exception {
+    try (TinyHttpServer s = new TinyHttpServer(200, "text/event-stream; charset=utf-8", body)) {
+      SoloApi api = new SoloApi("http://127.0.0.1:" + s.port() + "/api/solo-chat", () -> null, null);
+      Conversation c = new Conversation();
+      c.setStream(true);
+      return api.send(c.prepare("hi", ID), deltas::append);
+    }
+  }
+
+  @Test public void streamDeliversDeltasThenTheFinalReply() throws Exception {
+    StringBuilder deltas = new StringBuilder();
+    SoloApi.Result r = stream(sse(
+        "event: delta\ndata: {\"text\":\"Hello \"}",
+        "event: delta\ndata: {\"text\":\"**world**\"}",
+        "event: done\ndata: {\"reply\":\"Hello **world**\",\"truncated\":true,\"usage\":{\"remaining_daily\":7,\"daily_limit\":20}}"),
+        deltas);
+    assertTrue(r.ok);
+    assertEquals("Hello **world**", r.reply);
+    assertEquals("Hello **world**", deltas.toString());
+    assertTrue(r.truncated);
+    assertEquals(Integer.valueOf(7), r.remainingDaily);
+  }
+
+  @Test public void streamErrorEventIsAFailureKeepingPartialText() throws Exception {
+    SoloApi.Result r = stream(sse("event: delta\ndata: {\"text\":\"Part\"}",
+        "event: error\ndata: {\"error\":\"Gemini request timed out\",\"code\":\"timeout\"}"), new StringBuilder());
+    assertFalse(r.ok);
+    assertEquals("timeout", r.code);
+    assertEquals("Gemini request timed out", r.error);
+    assertEquals("Part", r.partial);
+  }
+
+  @Test public void streamThatEndsWithoutDoneIsNotAReply() throws Exception {
+    SoloApi.Result r = stream(sse("event: delta\ndata: {\"text\":\"Half an ans\"}"), new StringBuilder());
+    assertFalse(r.ok);
+    assertEquals("interrupted", r.code);
+    assertEquals("Half an ans", r.partial);
+  }
 }

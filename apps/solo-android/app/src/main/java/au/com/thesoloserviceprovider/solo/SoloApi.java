@@ -23,6 +23,11 @@ public final class SoloApi {
     String accessToken();
   }
 
+  /** Receives streamed text as it arrives (on the calling worker thread). */
+  public interface DeltaListener {
+    void onDelta(String text);
+  }
+
   /** The outcome of one chat request. */
   public static final class Result {
     public final boolean ok;
@@ -31,22 +36,37 @@ public final class SoloApi {
     public final String error;
     public final String code;
     public final Integer remainingDaily;
+    /** True when the reply hit the server's length cap. */
+    public final boolean truncated;
+    /** For failures after streaming started: the text received before it stopped. */
+    public final String partial;
 
-    private Result(boolean ok, int status, String reply, String error, String code, Integer remainingDaily) {
+    private Result(boolean ok, int status, String reply, String error, String code, Integer remainingDaily,
+        boolean truncated, String partial) {
       this.ok = ok;
       this.status = status;
       this.reply = reply;
       this.error = error;
       this.code = code;
       this.remainingDaily = remainingDaily;
+      this.truncated = truncated;
+      this.partial = partial;
     }
 
     static Result success(int status, String reply, Integer remainingDaily) {
-      return new Result(true, status, reply, null, null, remainingDaily);
+      return success(status, reply, remainingDaily, false);
+    }
+
+    static Result success(int status, String reply, Integer remainingDaily, boolean truncated) {
+      return new Result(true, status, reply, null, null, remainingDaily, truncated, null);
     }
 
     static Result failure(int status, String error, String code) {
-      return new Result(false, status, null, error, code, null);
+      return failure(status, error, code, null);
+    }
+
+    static Result failure(int status, String error, String code, String partial) {
+      return new Result(false, status, null, error, code, null, false, partial);
     }
   }
 
@@ -54,8 +74,12 @@ public final class SoloApi {
   // The server allows the provider 15 s; leave headroom for admission and network.
   static final int READ_TIMEOUT_MS = 30000;
   private static final int MAX_RESPONSE_BYTES = 64 * 1024;
+  private static final int MAX_STREAM_CHARS = 256 * 1024;
 
   private final String endpoint;
+  private final java.util.concurrent.atomic.AtomicReference<HttpURLConnection> active =
+      new java.util.concurrent.atomic.AtomicReference<>();
+  private volatile boolean cancelled;
   private final TokenSource tokens;
   private final String userAgent;
 
@@ -96,11 +120,29 @@ public final class SoloApi {
     }
   }
 
+  /** Stops the request in progress, if any. Safe to call from any thread. */
+  public void cancel() {
+    cancelled = true;
+    HttpURLConnection connection = active.get();
+    if (connection != null) connection.disconnect();
+  }
+
   /** Sends a prepared request. Blocking: call off the main thread. */
   public Result send(Conversation.Request request) {
+    return send(request, null);
+  }
+
+  /**
+   * Sends a prepared request. If the server streams (text/event-stream), each piece of
+   * visible text goes to {@code listener}; only a final {@code done} event is a reply.
+   * Servers that answer with plain JSON are handled exactly as before.
+   */
+  public Result send(Conversation.Request request, DeltaListener listener) {
     HttpURLConnection connection = null;
+    cancelled = false;
     try {
       connection = (HttpURLConnection) new URL(endpoint).openConnection();
+      active.set(connection);
       connection.setRequestMethod("POST");
       connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
       connection.setReadTimeout(READ_TIMEOUT_MS);
@@ -119,17 +161,92 @@ public final class SoloApi {
       try (OutputStream out = connection.getOutputStream()) {
         out.write(payload);
       }
+      if (cancelled) return Result.failure(0, "Stopped.", "cancelled");
       int status = connection.getResponseCode();
+      String type = connection.getContentType();
+      if (status == 200 && type != null && type.toLowerCase(java.util.Locale.ROOT).startsWith("text/event-stream")) {
+        return readStream(connection.getInputStream(), listener);
+      }
       InputStream stream = status >= 400 ? connection.getErrorStream() : connection.getInputStream();
       String text = stream == null ? "" : readLimited(stream);
       String retryAfter = connection.getHeaderField("Retry-After");
       return interpret(status, text, retryAfter);
     } catch (SocketTimeoutException e) {
+      if (cancelled) return Result.failure(0, "Stopped.", "cancelled");
       return Result.failure(0, "SOLO AI took too long to respond. Please try again.", "client_timeout");
     } catch (IOException e) {
+      if (cancelled) return Result.failure(0, "Stopped.", "cancelled");
       return Result.failure(0, "Can't reach SOLO AI. Check your connection and try again.", "network");
     } finally {
+      active.set(null);
       if (connection != null) connection.disconnect();
+    }
+  }
+
+  /** Reads server-sent events: delta {text}, then done {reply, ...} or error {error, code}. */
+  private Result readStream(InputStream raw, DeltaListener listener) throws IOException {
+    StringBuilder partial = new StringBuilder();
+    try (java.io.BufferedReader reader = new java.io.BufferedReader(
+        new java.io.InputStreamReader(raw, StandardCharsets.UTF_8))) {
+      String event = null;
+      StringBuilder data = new StringBuilder();
+      String line;
+      long received = 0;
+      while ((line = reader.readLine()) != null) {
+        received += line.length();
+        if (received > MAX_STREAM_CHARS) {
+          return Result.failure(200, "The reply was too long to display.", "too_long", partial.toString());
+        }
+        if (line.startsWith("event:")) {
+          event = line.substring(6).trim();
+        } else if (line.startsWith("data:")) {
+          data.append(line.substring(5).trim());
+        } else if (line.isEmpty() && event != null) {
+          Result done = handleEvent(event, data.toString(), partial, listener);
+          if (done != null) return done;
+          event = null;
+          data.setLength(0);
+        }
+      }
+      if (event != null) {
+        Result done = handleEvent(event, data.toString(), partial, listener);
+        if (done != null) return done;
+      }
+    } catch (IOException e) {
+      if (cancelled) return Result.failure(0, "Stopped.", "cancelled", partial.toString());
+      return Result.failure(0, "The connection dropped before SOLO finished.", "interrupted", partial.toString());
+    }
+    if (cancelled) return Result.failure(0, "Stopped.", "cancelled", partial.toString());
+    return Result.failure(200, "The reply was interrupted. Please try again.", "interrupted", partial.toString());
+  }
+
+  private static Result handleEvent(String event, String data, StringBuilder partial, DeltaListener listener) {
+    JSONObject json;
+    try {
+      json = new JSONObject(data);
+    } catch (Exception e) {
+      return null; // Ignore malformed or keep-alive events.
+    }
+    switch (event) {
+      case "delta": {
+        String text = json.optString("text", "");
+        if (!text.isEmpty()) {
+          partial.append(text);
+          if (listener != null) listener.onDelta(text);
+        }
+        return null;
+      }
+      case "done": {
+        Result r = interpret(200, data, null);
+        if (!r.ok) return Result.failure(200, r.error, r.code, partial.toString());
+        return Result.success(200, r.reply, r.remainingDaily, json.optBoolean("truncated", false));
+      }
+      case "error": {
+        String error = json.optString("error", "SOLO AI couldn't finish the reply.");
+        return Result.failure(200, error, json.optString("code", "stream_error"), partial.toString());
+      }
+      default:
+        return null;
     }
   }
 
@@ -151,7 +268,7 @@ public final class SoloApi {
       if (usage != null && usage.has("remaining_daily") && !usage.isNull("remaining_daily")) {
         remaining = usage.optInt("remaining_daily");
       }
-      return Result.success(status, reply.trim(), remaining);
+      return Result.success(status, reply.trim(), remaining, json.optBoolean("truncated", false));
     }
     String error = json == null ? null : json.optString("error", null);
     String code = json == null ? null : json.optString("code", null);

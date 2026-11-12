@@ -76,9 +76,25 @@ public class ConversationTest {
 
   @Test public void longRepliesAreCappedSoHistoryRemainsValid() throws Exception {
     Conversation c = new Conversation();
-    c.commit(c.prepare("hi", ID), repeat("a", 1500));
+    c.commit(c.prepare("hi", ID), repeat("a", 5000));
     JSONArray m = messages(c.prepare("more", ID));
-    assertEquals(1200, m.getJSONObject(1).getString("content").length());
+    assertEquals(4000, m.getJSONObject(1).getString("content").length());
+  }
+
+  @Test public void legacyServersGetTheOriginalAssistantLimit() throws Exception {
+    Conversation c = new Conversation();
+    c.commit(c.prepare("hi", ID), repeat("a", 3000));
+    assertTrue(c.useLegacyAssistantLimit());
+    assertEquals(1200, messages(c.prepare("more", ID)).getJSONObject(1).getString("content").length());
+    c.commit(c.prepare("again", ID), repeat("b", 3000));
+    assertEquals(1200, c.history().get(3).content.length());
+  }
+
+  @Test public void streamingFlagIsSentOnlyWhenEnabled() throws Exception {
+    Conversation c = new Conversation();
+    assertTrue(!new JSONObject(c.prepare("hi", ID).body).has("stream"));
+    c.setStream(true);
+    assertTrue(new JSONObject(c.prepare("hi", ID).body).getBoolean("stream"));
   }
 
   @Test public void truncationNeverSplitsSurrogatePairs() {

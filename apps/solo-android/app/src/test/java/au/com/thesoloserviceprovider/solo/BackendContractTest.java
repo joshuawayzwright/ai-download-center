@@ -56,4 +56,21 @@ public class BackendContractTest {
     assertEquals(404, api.probe());
     assertTrue(MainActivity.meansClosed(api.send(new Conversation().prepare("hi", UUID.randomUUID().toString()))));
   }
+
+  @Test public void streamedConversationAgainstRealHandler() throws Exception {
+    String url = System.getProperty("SOLO_BACKEND_STREAM_URL");
+    assumeTrue(url != null);
+    SoloApi api = new SoloApi(url, () -> null, "SOLOAI-Android/test");
+    Conversation c = new Conversation();
+    c.setStream(true);
+    for (int turn = 0; turn < 4; turn++) {
+      StringBuilder deltas = new StringBuilder();
+      Conversation.Request request = c.prepare("Turn " + turn, UUID.randomUUID().toString());
+      SoloApi.Result r = api.send(request, deltas::append);
+      assertTrue("turn " + turn + ": " + r.status + " " + r.error, r.ok);
+      assertEquals(r.reply, deltas.toString().trim());
+      assertTrue(r.reply.contains("**a streamed**"));
+      c.commit(request, r.reply);
+    }
+  }
 }

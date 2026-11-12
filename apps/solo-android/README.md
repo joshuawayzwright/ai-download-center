@@ -10,6 +10,14 @@ depends on the server work in [the Play Console guide](../../docs/SOLO-ANDROID-P
 
 ## What it does
 
+- **Live, streamed replies:** SOLO's answer appears word by word, with a Stop button.
+  It uses `"stream": true` (server side in PR #52) and falls back to plain JSON on servers
+  that don't stream. A stopped reply stays visible, marked "Stopped", but never joins the
+  history.
+- **Formatted answers:** headings, lists, **bold**, *italic*, `code`, code blocks and
+  https links are rendered natively, with no third-party libraries. Copy is under every reply.
+- **Voice input:** the mic button uses the phone's own speech-to-text (Australian English).
+  The app never records audio or asks for the microphone permission.
 - Dark, mobile-first chat in the brand-lock palette, using the approved SOLO AI artwork
   (adaptive, round and Android 13+ themed launcher icons).
 - Follows the API contract: reads `reply`, keeps at most 11 alternating messages,

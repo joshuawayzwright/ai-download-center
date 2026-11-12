@@ -153,4 +153,34 @@ public class MainActivityUiTest {
     assertTrue(text.contains("Remember this"));
     assertTrue(text.contains("Saved reply"));
   }
+
+  @Test public void streamedReplyIsFormattedWithCopyAction() throws Exception {
+    String body = "event: delta\ndata: {\"text\":\"## Your week\\n- **Monday**: plan\"}\n\n"
+        + "event: delta\ndata: {\"text\":\"\\n- Friday: review\"}\n\n"
+        + "event: done\ndata: {\"reply\":\"## Your week\\n- **Monday**: plan\\n- Friday: review\"}\n\n";
+    server = new TinyHttpServer((method, path, b) -> b.equals("{}")
+        ? new String[] {"400", "application/json", "{}"}
+        : new String[] {"200", "text/event-stream", body});
+    MainActivity.endpointOverride = "http://127.0.0.1:" + server.port() + "/api/solo-chat";
+    controller = Robolectric.buildActivity(MainActivity.class).setup();
+    settle();
+    MainActivity a = controller.get();
+    ((EditText) a.findViewById(R.id.input)).setText("Plan my week");
+    shadowOf(Looper.getMainLooper()).idle();
+    a.findViewById(R.id.send).performClick();
+    settle();
+    assertTrue(new org.json.JSONObject(server.lastBody).getBoolean("stream"));
+    String text = allText(a.findViewById(R.id.messages));
+    assertTrue(text, text.contains("Your week"));
+    assertTrue(text.contains("•  Monday: plan"));
+    assertFalse("markdown markers are not shown", text.contains("**"));
+    assertTrue(text.contains("Copy"));
+    screenshot(a, "7-formatted-reply");
+  }
+
+  @Test public void sendButtonBecomesStopWhileReplying() throws Exception {
+    MainActivity a = launch(400, "application/json", "{}");
+    android.widget.ImageButton send = a.findViewById(R.id.send);
+    assertEquals(a.getString(R.string.send), send.getContentDescription());
+  }
 }

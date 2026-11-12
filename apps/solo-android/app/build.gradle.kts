@@ -76,7 +76,7 @@ dependencies {
 // Opt-in contract test against a running SOLO chat handler (see README):
 // SOLO_BACKEND_OPEN_URL / SOLO_BACKEND_CLOSED_URL point at local harness servers.
 tasks.withType<Test>().configureEach {
-    listOf("SOLO_BACKEND_OPEN_URL", "SOLO_BACKEND_CLOSED_URL", "SOLO_BACKEND_ACCOUNT_URL").forEach { name ->
+    listOf("SOLO_BACKEND_OPEN_URL", "SOLO_BACKEND_CLOSED_URL", "SOLO_BACKEND_ACCOUNT_URL", "SOLO_BACKEND_STREAM_URL").forEach { name ->
         System.getenv(name)?.let { systemProperty(name, it) }
     }
 }

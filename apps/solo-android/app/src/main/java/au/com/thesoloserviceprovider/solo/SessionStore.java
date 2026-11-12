@@ -37,6 +37,8 @@ final class SessionStore {
   private final Crypto crypto;
   private volatile String accessToken;
   private volatile long accessExpiresAt;
+  /** Increases on every sign-out, so a refresh that finishes afterwards can't restore the session. */
+  private volatile long epoch;
 
   SessionStore(Context context) {
     prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
@@ -47,6 +49,21 @@ final class SessionStore {
   String accessToken() {
     String token = accessToken;
     return token != null && SystemClock.elapsedRealtime() < accessExpiresAt ? token : null;
+  }
+
+  long epoch() {
+    return epoch;
+  }
+
+  /** Saves a refreshed session only if nobody signed out since {@code expectedEpoch} was read. */
+  synchronized boolean saveIfCurrent(long expectedEpoch, String access, String refresh, int expiresInSeconds, String email) {
+    if (epoch != expectedEpoch) return false;
+    save(access, refresh, expiresInSeconds, email);
+    return true;
+  }
+
+  synchronized void clearIfCurrent(long expectedEpoch) {
+    if (epoch == expectedEpoch) clear();
   }
 
   synchronized void save(String access, String refresh, int expiresInSeconds, String email) {
@@ -73,9 +90,13 @@ final class SessionStore {
     if (sealed == null) return null;
     try {
       return crypto.decrypt(sealed);
-    } catch (Exception e) {
-      // Key invalidated (e.g. lock screen removed): treat as signed out.
+    } catch (android.security.keystore.KeyPermanentlyInvalidatedException
+        | javax.crypto.AEADBadTagException | IllegalArgumentException | StringIndexOutOfBoundsException e) {
+      // The key is gone or the stored value is corrupt: the session can never be read again.
       clear();
+      return null;
+    } catch (Exception e) {
+      // A temporary Keystore failure: keep the session and try again later.
       return null;
     }
   }
@@ -89,6 +110,7 @@ final class SessionStore {
   }
 
   synchronized void clear() {
+    epoch++;
     accessToken = null;
     accessExpiresAt = 0;
     prefs.edit().clear().apply();

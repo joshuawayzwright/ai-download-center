@@ -60,4 +60,14 @@
         <item>Misleading or false</item>
         <item>Something else</item>
     </string-array>
+    <string name="stop">Stop</string>
+    <string name="voice_input">Speak your message</string>
+    <string name="voice_prompt">Ask SOLO AI</string>
+    <string name="copy">Copy</string>
+    <string name="cd_copy_reply">Copy this reply</string>
+    <string name="stopped_label">Stopped</string>
+    <string name="truncated_note">SOLO reached its length limit. Ask it to continue.</string>
+    <string name="status_unverified_title">Can\'t confirm your sign-in</string>
+    <string name="status_unverified_body">SOLO AI couldn\'t check your account just now. You\'re still signed in. Try again in a moment.</string>
+    <string name="session_unconfirmed">Couldn\'t confirm your sign-in. Check your connection and try again.</string>
 </resources>
