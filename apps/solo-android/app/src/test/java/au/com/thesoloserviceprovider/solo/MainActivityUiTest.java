@@ -53,7 +53,7 @@ public class MainActivityUiTest {
     }
   }
 
-  private static void screenshot(MainActivity a, String name) throws Exception {
+  static void screenshot(MainActivity a, String name) throws Exception {
     View root = a.getWindow().getDecorView();
     root.measure(View.MeasureSpec.makeMeasureSpec(1233, View.MeasureSpec.EXACTLY),
         View.MeasureSpec.makeMeasureSpec(2673, View.MeasureSpec.EXACTLY));

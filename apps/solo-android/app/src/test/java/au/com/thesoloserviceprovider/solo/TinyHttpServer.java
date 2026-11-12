@@ -13,19 +13,46 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/** Minimal HTTP/1.1 server for JVM unit tests; one fixed response per request. */
+/** Minimal HTTP/1.1 server for JVM unit tests. */
 final class TinyHttpServer implements AutoCloseable {
+  /** A recorded request. */
+  static final class Seen {
+    final String method;
+    final String path;
+    final Map<String, String> headers;
+    final String body;
+
+    Seen(String method, String path, Map<String, String> headers, String body) {
+      this.method = method;
+      this.path = path;
+      this.headers = headers;
+      this.body = body;
+    }
+  }
+
+  /** Chooses a response: returns {status, contentType, body}. */
+  interface Router {
+    String[] route(String method, String path, String body);
+  }
+
   volatile String lastBody;
   final Map<String, String> lastHeaders = new HashMap<>();
+  final java.util.List<Seen> requests = java.util.Collections.synchronizedList(new java.util.ArrayList<>());
   private final ServerSocket socket;
   private final Thread thread;
+  private final Router router;
 
   TinyHttpServer(int status, String contentType, String responseBody) throws IOException {
+    this((m, p, b) -> new String[] {String.valueOf(status), contentType, responseBody});
+  }
+
+  TinyHttpServer(Router router) throws IOException {
+    this.router = router;
     socket = new ServerSocket(0, 50, InetAddress.getByName("127.0.0.1"));
     thread = new Thread(() -> {
       while (!socket.isClosed()) {
         try (Socket client = socket.accept()) {
-          handle(client, status, contentType, responseBody);
+          handle(client);
         } catch (IOException ignored) {
           // Closed during shutdown.
         }
@@ -37,10 +64,12 @@ final class TinyHttpServer implements AutoCloseable {
 
   int port() { return socket.getLocalPort(); }
 
-  private void handle(Socket client, int status, String type, String body) throws IOException {
+  private void handle(Socket client) throws IOException {
     InputStream in = new BufferedInputStream(client.getInputStream());
     synchronized (lastHeaders) { lastHeaders.clear(); }
     String line = readLine(in); // request line
+    String[] requestLine = line.split(" ");
+    Map<String, String> headers = new HashMap<>();
     int length = 0;
     while (!(line = readLine(in)).isEmpty()) {
       int colon = line.indexOf(':');
@@ -48,6 +77,7 @@ final class TinyHttpServer implements AutoCloseable {
       String name = line.substring(0, colon).trim().toLowerCase(Locale.ROOT);
       String value = line.substring(colon + 1).trim();
       synchronized (lastHeaders) { lastHeaders.put(name, value); }
+      headers.put(name, value);
       if (name.equals("content-length")) length = Integer.parseInt(value);
     }
     byte[] data = new byte[length];
@@ -58,8 +88,11 @@ final class TinyHttpServer implements AutoCloseable {
       read += n;
     }
     lastBody = new String(data, 0, read, StandardCharsets.UTF_8);
-    byte[] out = body.getBytes(StandardCharsets.UTF_8);
-    String head = "HTTP/1.1 " + status + " X\r\nContent-Type: " + type + "\r\nContent-Length: "
+    requests.add(new Seen(requestLine[0], requestLine.length > 1 ? requestLine[1] : "", headers, lastBody));
+    String[] response = router.route(requestLine[0], requestLine.length > 1 ? requestLine[1] : "", lastBody);
+    String type = response[1];
+    byte[] out = response[2].getBytes(StandardCharsets.UTF_8);
+    String head = "HTTP/1.1 " + response[0] + " X\r\nContent-Type: " + type + "\r\nContent-Length: "
         + out.length + "\r\nConnection: close\r\n\r\n";
     OutputStream os = client.getOutputStream();
     os.write(head.getBytes(StandardCharsets.US_ASCII));

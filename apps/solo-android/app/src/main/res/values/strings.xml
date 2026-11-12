@@ -36,4 +36,28 @@
     <string name="cd_user_message">You said: %1$s</string>
     <string name="cd_solo_message">SOLO AI said: %1$s</string>
     <string name="cd_error_message">Not sent. %1$s</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign out</string>
+    <string name="signed_out">Signed out</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in_intro">SOLO AI is in early access for invited accounts. Use the email address you were invited with.</string>
+    <string name="sign_in_missing">Enter your email and password.</string>
+    <string name="status_sign_in_title">Sign in to chat with SOLO AI</string>
+    <string name="status_sign_in_body">SOLO AI is in early access for invited accounts. Nothing is sent until you sign in.</string>
+    <string name="report_reply">Report</string>
+    <string name="cd_report_reply">Report this reply</string>
+    <string name="report_title">Report this reply</string>
+    <string name="report_note_hint">Add details (optional)</string>
+    <string name="report_privacy">The reply text, the reason and your note are sent to The Solo Service Provider for review. Your message to SOLO is not included.</string>
+    <string name="report_send">Send report</string>
+    <string name="report_sent">Thanks. The reply was reported for review.</string>
+    <string name="report_sign_in">Sign in again to send this report.</string>
+    <string-array name="report_reasons">
+        <item>Harmful or dangerous</item>
+        <item>Hateful or harassing</item>
+        <item>Sexual content</item>
+        <item>Misleading or false</item>
+        <item>Something else</item>
+    </string-array>
 </resources>

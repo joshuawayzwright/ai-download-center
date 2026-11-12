@@ -65,9 +65,9 @@ Verified 12 November 2026 (AEST):
   returned **404** on 12 November 2026. The live site is deployed from
   `solo-commerce/public-static-release`, which has no chat API. The app shows an honest
   "not open yet" state until the endpoint is deployed.
-- **Open dependency:** PR #34's `/api/solo-auth` only issues HttpOnly browser cookies, so
-  a native client cannot get a Bearer token yet. A native sign-in path is needed before
-  Android customers can chat.
+- **Sign-in and reporting:** PR #52 (stacked on #34) adds native token sign-in to
+  `/api/solo-auth` (`X-Solo-Client: android`) and `POST /api/solo-report`. The app shows
+  sign-in and Report only when `GET /api/solo-auth` reports `enabled: true`.
 
 ## Shared implementation plan
 Follow [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31)

@@ -24,8 +24,13 @@ depends on the server work in [the Play Console guide](../../docs/SOLO-ANDROID-P
   process death, and copies messages on long-press. Uses TalkBack labels and 48dp targets.
 - Stores nothing on the device. Backup and device transfer are disabled. Has no
   analytics, ads or third-party SDKs, and uses only the `INTERNET` permission.
-- Bearer-token support is built into `SoloApi` but **not exposed**. There is no sign-in
-  screen until the server offers a native sign-in path.
+- **Sign-in, sign-out and reporting replies** (server side in PR #52) appear only when
+  `GET /api/solo-auth` reports `enabled: true` for the app. Until then the app behaves
+  exactly as above. The access token stays in memory. The refresh token is encrypted with
+  a non-exportable Android Keystore AES-GCM key before it is written to private storage,
+  and it is excluded from backup. An expired access token is refreshed once and the
+  message resent. Each signed-in reply has a **Report** button that sends the reason,
+  optional note and reply text to `/api/solo-report` without leaving the app.
 
 ## Build
 
@@ -53,6 +58,8 @@ Signing values come from environment variables or `~/.gradle/gradle.properties`:
 
 `BackendContractTest` runs the app's HTTP client against a running SOLO chat handler.
 It is skipped unless `SOLO_BACKEND_OPEN_URL` and/or `SOLO_BACKEND_CLOSED_URL` are set.
+`AccountBackendContractTest` does the same for sign-in and reporting, using
+`SOLO_BACKEND_ACCOUNT_URL`.
 
 ### Endpoint
 

@@ -47,18 +47,27 @@ public final class MainActivity extends Activity {
   /** Test-only endpoint override; always null in the shipped app. */
   static volatile String endpointOverride;
 
-  private enum Service { CHECKING, READY, CLOSED, OFFLINE }
+  private enum Service { CHECKING, READY, CLOSED, OFFLINE, SIGNED_OUT }
+
+  /** Report reasons accepted by /api/solo-report, in display order. */
+  private static final String[] REPORT_REASONS = {"harmful", "hateful", "sexual", "misleading", "other"};
 
   /** One visible transcript entry. */
   private static final class Entry {
     final String kind; // user | solo | error
     final String text;
     final String draft; // for error entries: the unsent user text
+    final String requestId; // for signed-in solo replies: the reportable request
 
     Entry(String kind, String text, String draft) {
+      this(kind, text, draft, null);
+    }
+
+    Entry(String kind, String text, String draft, String requestId) {
       this.kind = kind;
       this.text = text;
       this.draft = draft;
+      this.requestId = requestId;
     }
   }
 
@@ -67,6 +76,10 @@ public final class MainActivity extends Activity {
   private final Conversation conversation = new Conversation();
   private final List<Entry> transcript = new ArrayList<>();
   private SoloApi api;
+  private AccountApi account;
+  private SessionStore session;
+  /** True only when the server reports that app sign-in is switched on. */
+  private boolean accountsEnabled;
   private Service service = Service.CHECKING;
   private String closedMessage;
   private boolean sending;
@@ -90,8 +103,11 @@ public final class MainActivity extends Activity {
   protected void onCreate(Bundle state) {
     super.onCreate(state);
     setContentView(R.layout.activity_main);
-    api = new SoloApi(endpointOverride != null ? endpointOverride : BuildConfig.SOLO_API_URL, () -> null,
-        "SOLOAI-Android/" + BuildConfig.VERSION_NAME);
+    String endpoint = endpointOverride != null ? endpointOverride : BuildConfig.SOLO_API_URL;
+    String agent = "SOLOAI-Android/" + BuildConfig.VERSION_NAME;
+    session = new SessionStore(this);
+    api = new SoloApi(endpoint, () -> session.accessToken(), agent);
+    account = new AccountApi(endpoint, agent);
 
     scroll = findViewById(R.id.scroll);
     messages = findViewById(R.id.messages);
@@ -127,7 +143,7 @@ public final class MainActivity extends Activity {
       JSONObject json = new JSONObject();
       JSONArray entries = new JSONArray();
       for (Entry e : transcript) {
-        entries.put(new JSONObject().put("k", e.kind).put("t", e.text).put("d", e.draft));
+        entries.put(new JSONObject().put("k", e.kind).put("t", e.text).put("d", e.draft).put("q", e.requestId));
       }
       JSONArray history = new JSONArray();
       for (Conversation.Message m : conversation.history()) {
@@ -153,13 +169,42 @@ public final class MainActivity extends Activity {
     final int gen = generation;
     worker.execute(() -> {
       int status = api.probe();
+      AccountApi.Status accountStatus = null;
+      if (status != 0 && status != 404 && status != 410) {
+        String token = currentAccessToken();
+        accountStatus = account.status(token);
+        if (accountStatus.httpStatus == 401) {
+          session.clear();
+          accountStatus = account.status(null);
+        }
+      }
+      final AccountApi.Status st = accountStatus;
       main.post(() -> {
         if (gen != generation || isFinishing()) return;
+        accountsEnabled = st != null && st.enabled;
+        if (st != null && st.enabled && !st.authenticated && session.hasSession()) session.clear();
         if (status == 0) setService(Service.OFFLINE, null);
         else if (status == 404 || status == 410) setService(Service.CLOSED, null);
+        else if (accountsEnabled && !st.authenticated) setService(Service.SIGNED_OUT, null);
         else setService(Service.READY, null);
       });
     });
+  }
+
+  /** Returns a usable access token, refreshing once if only a refresh token is held. Worker thread only. */
+  private String currentAccessToken() {
+    String token = session.accessToken();
+    if (token != null) return token;
+    String refresh = session.refreshToken();
+    if (refresh == null) return null;
+    AccountApi.SignIn renewed = account.refresh(refresh);
+    if (renewed.ok()) {
+      session.save(renewed.accessToken, renewed.refreshToken, renewed.expiresIn, renewed.status.email);
+      return renewed.accessToken;
+    }
+    // A definite rejection ends the session; a network failure keeps it for later.
+    if (renewed.status.httpStatus == 401 || renewed.status.httpStatus == 403) session.clear();
+    return null;
   }
 
   private void setService(Service next, String message) {
@@ -182,6 +227,14 @@ public final class MainActivity extends Activity {
         statusAction.setOnClickListener(v -> open(INTEREST));
         statusCard.setVisibility(View.VISIBLE);
         break;
+      case SIGNED_OUT:
+        subtitle.setText(R.string.tagline);
+        statusTitle.setText(R.string.status_sign_in_title);
+        statusBody.setText(message != null ? message : getString(R.string.status_sign_in_body));
+        statusAction.setText(R.string.sign_in);
+        statusAction.setOnClickListener(v -> showSignIn());
+        statusCard.setVisibility(View.VISIBLE);
+        break;
       case OFFLINE:
         subtitle.setText(R.string.tagline);
         statusTitle.setText(R.string.status_offline_title);
@@ -199,6 +252,10 @@ public final class MainActivity extends Activity {
     if (r.status == 404 || r.status == 410) return true;
     if (r.status == 503) {
       return r.code == null || "customer_disabled".equals(r.code) || "private_testing_disabled".equals(r.code);
+    }
+    // A signed-in account without (or no longer with) SOLO access.
+    if (r.status == 403) {
+      return "access_denied".equals(r.code) || "member_expired".equals(r.code) || "member_blocked".equals(r.code);
     }
     // 401 without a code is the owner-only private test gate.
     return r.status == 401 && r.code == null;
@@ -222,14 +279,33 @@ public final class MainActivity extends Activity {
     sending = true;
     render();
     final int gen = generation;
+    final boolean signedIn = session.hasSession();
     worker.execute(() -> {
-      SoloApi.Result result = api.send(request);
+      Conversation.Request attempt = request;
+      if (signedIn) currentAccessToken();
+      SoloApi.Result first = api.send(attempt);
+      SoloApi.Result outcome = first;
+      // An expired access token is rejected before any quota is used, so one
+      // refresh and resend (with a fresh request ID) is safe.
+      if (signedIn && first.status == 401 && session.refreshToken() != null) {
+        session.invalidateAccess();
+        if (currentAccessToken() != null) {
+          try {
+            attempt = conversation.prepare(text, UUID.randomUUID().toString());
+            outcome = api.send(attempt);
+          } catch (Exception ignored) {
+            // Keep the first result.
+          }
+        }
+      }
+      final SoloApi.Result result = outcome;
+      final Conversation.Request sent = attempt;
       main.post(() -> {
         if (gen != generation || isFinishing()) return;
         sending = false;
         if (result.ok) {
-          conversation.commit(request, result.reply);
-          transcript.add(new Entry("solo", result.reply, null));
+          conversation.commit(sent, result.reply);
+          transcript.add(new Entry("solo", result.reply, null, signedIn ? sent.requestId : null));
           if (result.remainingDaily != null) remainingDaily = result.remainingDaily;
           updateSubtitle();
           render();
@@ -237,6 +313,12 @@ public final class MainActivity extends Activity {
         }
         // Failed turns never join the history. Keep the text for retry.
         transcript.remove(transcript.size() - 1);
+        if (signedIn && result.status == 401) {
+          session.clear();
+          if (input.getText().length() == 0) input.setText(text);
+          setService(accountsEnabled ? Service.SIGNED_OUT : Service.CLOSED, result.error);
+          return;
+        }
         if (meansClosed(result)) {
           if (input.getText().length() == 0) input.setText(text);
           setService(Service.CLOSED, result.error);
@@ -274,7 +356,7 @@ public final class MainActivity extends Activity {
     while (messages.getChildCount() > 1) messages.removeViewAt(1);
     boolean empty = transcript.isEmpty() && !sending;
     welcome.setVisibility(empty || service == Service.CLOSED || service == Service.OFFLINE
-        ? View.VISIBLE : View.GONE);
+        || service == Service.SIGNED_OUT ? View.VISIBLE : View.GONE);
     findViewById(R.id.suggestions).setVisibility(empty && service == Service.READY ? View.VISIBLE : View.GONE);
     for (Entry e : transcript) messages.addView(bubble(e));
     if (sending) {
@@ -337,6 +419,21 @@ public final class MainActivity extends Activity {
       }
     }
     row.addView(body, wrap());
+
+    if ("solo".equals(e.kind) && e.requestId != null && session.hasSession()) {
+      Button report = new Button(this, null, android.R.attr.borderlessButtonStyle);
+      report.setText(R.string.report_reply);
+      report.setAllCaps(false);
+      report.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+      report.setMinWidth(0);
+      report.setMinHeight(dp(40));
+      report.setMinimumHeight(dp(40));
+      report.setPadding(dp(4), 0, dp(4), 0);
+      report.setTextColor(getColor(R.color.solo_steel));
+      report.setContentDescription(getString(R.string.cd_report_reply));
+      report.setOnClickListener(v -> showReport(e));
+      row.addView(report, wrap());
+    }
 
     if (error) {
       TextView message = new TextView(this);
@@ -426,6 +523,10 @@ public final class MainActivity extends Activity {
     menu.getMenu().add(0, 3, 2, R.string.menu_privacy);
     menu.getMenu().add(0, 4, 3, R.string.menu_terms);
     menu.getMenu().add(0, 5, 4, R.string.menu_contact);
+    if (accountsEnabled) {
+      if (session.hasSession()) menu.getMenu().add(0, 7, 5, R.string.sign_out);
+      else menu.getMenu().add(0, 6, 5, R.string.sign_in);
+    }
     menu.setOnMenuItemClickListener(item -> {
       switch (item.getItemId()) {
         case 1: newConversation(); return true;
@@ -433,10 +534,147 @@ public final class MainActivity extends Activity {
         case 3: open(SITE + "/privacy.html"); return true;
         case 4: open(SITE + "/terms.html"); return true;
         case 5: open(SITE + "/contact.html"); return true;
+        case 6: showSignIn(); return true;
+        case 7: signOut(); return true;
         default: return false;
       }
     });
     menu.show();
+  }
+
+  // ---- Accounts and reporting ------------------------------------------------
+
+  private void showSignIn() {
+    LinearLayout form = new LinearLayout(this);
+    form.setOrientation(LinearLayout.VERTICAL);
+    form.setPadding(dp(24), dp(8), dp(24), 0);
+    TextView intro = new TextView(this);
+    intro.setText(R.string.sign_in_intro);
+    intro.setTextColor(getColor(R.color.solo_text_muted));
+    intro.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+    form.addView(intro);
+    EditText email = new EditText(this);
+    email.setHint(R.string.email);
+    email.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+    email.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS);
+    email.setTextColor(getColor(R.color.solo_text));
+    email.setHintTextColor(getColor(R.color.solo_steel));
+    if (session.email() != null) email.setText(session.email());
+    form.addView(email);
+    EditText password = new EditText(this);
+    password.setHint(R.string.password);
+    password.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    password.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
+    password.setTextColor(getColor(R.color.solo_text));
+    password.setHintTextColor(getColor(R.color.solo_steel));
+    form.addView(password);
+    TextView error = new TextView(this);
+    error.setTextColor(getColor(R.color.solo_error));
+    error.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+    error.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+    error.setVisibility(View.GONE);
+    form.addView(error);
+
+    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+        .setTitle(R.string.sign_in)
+        .setView(form)
+        .setPositiveButton(R.string.sign_in, null)
+        .setNegativeButton(android.R.string.cancel, null)
+        .create();
+    dialog.setOnShowListener(d -> {
+      Button positive = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+      positive.setOnClickListener(v -> {
+        String address = email.getText().toString().trim();
+        String secret = password.getText().toString();
+        if (address.isEmpty() || secret.isEmpty()) {
+          error.setText(R.string.sign_in_missing);
+          error.setVisibility(View.VISIBLE);
+          return;
+        }
+        positive.setEnabled(false);
+        error.setVisibility(View.GONE);
+        worker.execute(() -> {
+          AccountApi.SignIn result = account.login(address, secret);
+          if (result.ok()) {
+            session.save(result.accessToken, result.refreshToken, result.expiresIn,
+                result.status.email != null ? result.status.email : address);
+          }
+          main.post(() -> {
+            if (isFinishing()) return;
+            positive.setEnabled(true);
+            if (!result.ok()) {
+              error.setText(result.status.error);
+              error.setVisibility(View.VISIBLE);
+              return;
+            }
+            dialog.dismiss();
+            remainingDaily = null;
+            setService(Service.READY, null);
+            checkService();
+          });
+        });
+      });
+    });
+    dialog.show();
+  }
+
+  private void signOut() {
+    final String access = session.accessToken();
+    final String refresh = session.refreshToken();
+    session.clear();
+    generation++;
+    sending = false;
+    conversation.clear();
+    transcript.clear();
+    remainingDaily = null;
+    worker.execute(() -> account.logout(access, refresh));
+    Toast.makeText(this, R.string.signed_out, Toast.LENGTH_SHORT).show();
+    checkService();
+  }
+
+  private void showReport(Entry entry) {
+    final int[] choice = {0};
+    String[] labels = getResources().getStringArray(R.array.report_reasons);
+    LinearLayout box = new LinearLayout(this);
+    box.setOrientation(LinearLayout.VERTICAL);
+    box.setPadding(dp(24), 0, dp(24), 0);
+    EditText note = new EditText(this);
+    note.setHint(R.string.report_note_hint);
+    note.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE
+        | android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+    note.setFilters(new android.text.InputFilter[] {new android.text.InputFilter.LengthFilter(500)});
+    note.setTextColor(getColor(R.color.solo_text));
+    note.setHintTextColor(getColor(R.color.solo_steel));
+    box.addView(note);
+    TextView privacy = new TextView(this);
+    privacy.setText(R.string.report_privacy);
+    privacy.setTextColor(getColor(R.color.solo_text_muted));
+    privacy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+    box.addView(privacy);
+    new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+        .setTitle(R.string.report_title)
+        .setSingleChoiceItems(labels, 0, (d, which) -> choice[0] = which)
+        .setView(box)
+        .setPositiveButton(R.string.report_send, (d, w) -> {
+          String reason = REPORT_REASONS[choice[0]];
+          String noteText = note.getText().toString();
+          worker.execute(() -> {
+            String token = currentAccessToken();
+            AccountApi.Report result = token == null
+                ? null : account.report(token, entry.requestId, reason, noteText, entry.text);
+            main.post(() -> {
+              if (isFinishing()) return;
+              if (result == null) {
+                Toast.makeText(this, R.string.report_sign_in, Toast.LENGTH_LONG).show();
+              } else {
+                Toast.makeText(this, result.ok ? getString(R.string.report_sent) : result.message,
+                    Toast.LENGTH_LONG).show();
+              }
+            });
+          });
+        })
+        .setNegativeButton(android.R.string.cancel, null)
+        .show();
   }
 
   private void open(String url) {
@@ -478,7 +716,7 @@ public final class MainActivity extends Activity {
       JSONArray entries = json.getJSONArray("entries");
       for (int i = 0; i < entries.length(); i++) {
         JSONObject e = entries.getJSONObject(i);
-        transcript.add(new Entry(e.getString("k"), e.getString("t"), e.optString("d", null)));
+        transcript.add(new Entry(e.getString("k"), e.getString("t"), e.optString("d", null), e.optString("q", null)));
       }
       JSONArray history = json.getJSONArray("history");
       List<Conversation.Message> restored = new ArrayList<>();
