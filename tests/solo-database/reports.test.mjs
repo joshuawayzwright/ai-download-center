@@ -114,3 +114,22 @@ test('report submission takes a per-customer advisory lock before counting', asy
   const lock = source.indexOf('pg_advisory_xact_lock');
   assert.ok(lock > 0 && lock < source.indexOf('SELECT count(*) INTO v_count'));
 });
+
+test('reports older than 12 months are purged; newer reports and direct deletes are untouched', async () => {
+  const oldRequest = await ledger(user), newRequest = await ledger(user);
+  await submit({request: oldRequest});
+  await submit({request: newRequest});
+  await db.query("UPDATE solo_private.reply_reports SET created_at = now() - interval '13 months' WHERE request_id = $1", [oldRequest]);
+  await db.exec('SET ROLE service_role');
+  const {rows} = await db.query('SELECT public.solo_purge_reply_reports() AS n');
+  await assert.rejects(db.query('DELETE FROM solo_private.reply_reports'));
+  await db.exec('RESET ROLE');
+  assert.equal(rows[0].n, 1);
+  const left = await db.query('SELECT request_id FROM solo_private.reply_reports');
+  assert.deepEqual(left.rows.map(r => r.request_id), [newRequest]);
+  for (const role of ['anon', 'authenticated']) {
+    await db.exec(`SET ROLE ${role}`);
+    await assert.rejects(db.query('SELECT public.solo_purge_reply_reports()'));
+    await db.exec('RESET ROLE');
+  }
+});

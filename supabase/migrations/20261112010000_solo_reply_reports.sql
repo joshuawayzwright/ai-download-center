@@ -2,7 +2,7 @@
 -- Apply only to the dedicated commercial Supabase project, after
 -- 20261027071534_solo_customer_admission.sql. Creates no members and enables nothing.
 -- Prompts are never stored. A report stores only the reply text the customer chose to
--- report, so the reply can be reviewed.
+-- report, so the reply can be reviewed. Reports are deleted after 12 months.
 BEGIN;
 
 CREATE TABLE solo_private.reply_reports (
@@ -91,6 +91,25 @@ BEGIN
   RETURN jsonb_build_object('ok', true, 'code', 'reported', 'retry_after_seconds', 0);
 END;
 $$;
+
+-- Retention: reports are kept for 12 months, then deleted. The runtime role still cannot
+-- delete reports directly. This owner-defined function deletes only expired rows. Run it
+-- daily (see docs/SOLO-SHARED-API-CONTRACT.md for the scheduling command).
+CREATE FUNCTION public.solo_purge_reply_reports()
+RETURNS integer
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
+DECLARE
+  v_deleted integer;
+BEGIN
+  DELETE FROM solo_private.reply_reports
+    WHERE created_at < clock_timestamp() - interval '12 months';
+  GET DIAGNOSTICS v_deleted = ROW_COUNT;
+  RETURN v_deleted;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.solo_purge_reply_reports() FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.solo_purge_reply_reports() TO service_role;
 
 REVOKE ALL ON FUNCTION public.solo_submit_report(uuid, uuid, uuid, text, text, text)
   FROM PUBLIC, anon, authenticated;

@@ -236,8 +236,15 @@ Required by Google Play's AI-Generated Content policy. It needs a customer sessi
 - Stored in `solo_private.reply_reports` (migration `20261112010000_solo_reply_reports.sql`).
   Only the reported reply text, reason and note are stored, never the prompt. The
   runtime can only insert reports; changing review status is an operator action.
-  Retention for reports still needs an owner decision, and the privacy notice must
-  describe it.
+  **Retention: 12 months.** `public.solo_purge_reply_reports()` (callable only by
+  `service_role`) deletes expired reports and returns the count. After applying the
+  migration, schedule it daily, for example with Supabase Cron:
+  `select cron.schedule('solo-purge-reply-reports', '17 3 * * *', 'select public.solo_purge_reply_reports()');`
+  The privacy notice must state this retention period.
+
+**Reply length decision (owner-delegated, 13 November 2026):** keep
+`maxOutputTokens: 1024`. Per-user daily and global caps on the number of requests still
+bound total provider spend.
 
 ## Streaming replies (`"stream": true`, optional)
 
