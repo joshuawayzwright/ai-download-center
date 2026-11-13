@@ -7,7 +7,7 @@
   trigger.setAttribute('aria-label', 'Open SOLO site guide');
 
   const mark = document.createElement('img');
-  mark.src = '/assets/approved-stage/solo-ai-mark-v4.svg';
+  mark.src = '/assets/approved-stage/solo-ai-app-icon-512.png';
   mark.alt = '';
   mark.setAttribute('aria-hidden', 'true');
   const label = document.createElement('span');

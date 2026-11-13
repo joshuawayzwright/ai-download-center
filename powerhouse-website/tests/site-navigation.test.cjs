@@ -41,7 +41,9 @@ test('link selection, outside click, focus leaving, history and resize close men
 test('public pages share navigation and business email; launch restrictions remain', () => {
   for (const file of ['index.html', 'digital-products.html', 'contact.html', 'solo-ai.html', 'terms.html', 'privacy.html', 'refunds.html']) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
-    assert.ok(html.includes('<link rel="icon" type="image/svg+xml" href="/assets/approved-stage/business-mark-v4.svg">'), file + ' must use approved SVG business favicon');
+    assert.ok(html.includes('<link rel="icon" type="image/png" sizes="32x32" href="/assets/approved-stage/favicon-32.png">'), file + ' must use the approved favicon');
+    // Brand lock: the v4 vector redraws were never approved and must not return.
+    assert.doesNotMatch(html, /-v4\.svg/, file + ' must not use unapproved v4 vector marks');
     assert.ok(html.includes('<meta name="theme-color" content="#050607">'), file + ' must have matching Android browser theme');
     assert.match(html, /aria-label="Primary navigation"/);
     assert.match(html, /aria-controls="primary-links" hidden/);
@@ -58,9 +60,14 @@ test('public pages share navigation and business email; launch restrictions rema
 });
 
 
-test('floating SOLO guide uses the canonical crisp SOLO AI vector mark, not the business app icon', () => {
+test('floating SOLO guide uses the approved SOLO AI emblem, not the business app icon or a redraw', () => {
   const source = fs.readFileSync(path.join(root, 'solo-chat.js'), 'utf8');
-  assert.match(source, /\/assets\/approved-stage\/solo-ai-mark-v4\.svg/);
+  assert.match(source, /\/assets\/approved-stage\/solo-ai-app-icon-512\.png/);
+  assert.doesNotMatch(source, /-v4\.svg/);
+  for (const redraw of ['solo-ai-mark-v4.svg', 'solo-ai-hero-v4.svg', 'business-mark-v4.svg', 'solo-ai-bg-v4.svg']) {
+    assert.ok(!fs.existsSync(path.join(root, 'assets/approved-stage', redraw)), redraw + ' is not approved artwork');
+  }
+  assert.doesNotMatch(fs.readFileSync(path.join(root, 'styles.css'), 'utf8'), /-v4\.svg/);
   assert.doesNotMatch(source, /\/assets\/approved-stage\/business-app-icon-512\.png/);
 });
 
