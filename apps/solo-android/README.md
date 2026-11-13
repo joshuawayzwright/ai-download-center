@@ -1,59 +1,62 @@
 # SOLO AI for Android
 
-Native Android client for SOLO AI by The Solo Service Provider. It uses the shared
-`/api/solo-chat` service ([contract](../../docs/SOLO-SHARED-API-CONTRACT.md)) and
-holds no provider keys or secrets. This is separate from `android-app/`, which is
-the WrightWayz catalogue app.
+The SOLO AI app from The Solo Service Provider: a Kotlin and Jetpack Compose (Material 3)
+client for the shared SOLO API ([contract](../../docs/SOLO-SHARED-API-CONTRACT.md)). It holds
+no provider keys. This is separate from `android-app/`, which is the WrightWayz catalogue app.
 
-**Status:** release-ready client build. It is **not published**, and live chat
-depends on the server work in [the Play Console guide](../../docs/SOLO-ANDROID-PLAY-CONSOLE.md).
+## Features
 
-## What it does
+- **Streaming conversation:** replies appear as SOLO writes them, with an animated gold and
+  blue "aura" while it thinks. **Stop** halts a reply; a stopped reply is shown, marked
+  "Stopped", and never joins the history.
+- **Formatted answers:** headings, lists, quotes, bold and italic text, inline code, code
+  blocks with **Copy code**, and https-only links, rendered natively. The parser is safe on
+  partial streamed text.
+- **Reply actions:** copy, **read aloud** (the phone's own text-to-speech, en-AU), share,
+  **regenerate** the latest answer, and **report** (Google Play AI-content policy).
+- **Saved conversations:** a history drawer with new, open and delete. Conversations are kept
+  in the app's private storage (`conversations.json`, newest 50), excluded from backup and
+  device transfer, and removed on uninstall. Settings can delete them all.
+- **Voice input:** the system speech-to-text intent. The app never records audio and has
+  no microphone permission.
+- **Accounts:** an invite-only sign-in sheet that appears only when the server enables app
+  sign-in. The access token is kept in memory. The refresh token is encrypted with a
+  non-exportable Android Keystore AES-GCM key. A temporary error never signs the user out,
+  and a refresh can't undo a sign-out.
+- **Settings:** account details and messages left today, sign out, delete conversations,
+  request account deletion, privacy, terms, contact, open-source licences and version.
+- **Design:** branded splash screen, the approved SOLO AI icon (adaptive, round and
+  themed), the bundled Inter typeface (SIL OFL; licence in `res/raw`), edge-to-edge
+  layout, TalkBack labels and 48dp targets.
+- **Honest states:** "isn't open yet", "sign in", "offline" and "can't confirm your sign-in"
+  cards. The app never fakes a reply.
 
-- **Live, streamed replies:** SOLO's answer appears word by word, with a Stop button.
-  It uses `"stream": true` (server side in PR #52) and falls back to plain JSON on servers
-  that don't stream. A stopped reply stays visible, marked "Stopped", but never joins the
-  history.
-- **Formatted answers:** headings, lists, **bold**, *italic*, `code`, code blocks and
-  https links are rendered natively, with no third-party libraries. Copy is under every reply.
-- **Voice input:** the mic button uses the phone's own speech-to-text (Australian English).
-  The app never records audio or asks for the microphone permission.
-- Dark, mobile-first chat in the brand-lock palette, using the approved SOLO AI artwork
-  (adaptive, round and Android 13+ themed launcher icons).
-- Follows the API contract: reads `reply`, keeps at most 11 alternating messages,
-  1,200 characters per message and 16,000 UTF-8 bytes per request, trims the oldest
-  complete pairs first, and sends a fresh `requestId` with every attempt.
-- Shows the server's actual error text. Failed messages stay visible with **Retry** and
-  never enter the history. Quota waits use `Retry-After`.
-- Checks the service at launch without sending any conversation text. If the endpoint
-  is missing (404) or switched off (503 or the private-test gate), the composer is locked
-  and an honest "isn't open yet" card appears, with no fake replies.
-- Handles edge-to-edge and the keyboard on Android 15/16, keeps state across rotation and
-  process death, and copies messages on long-press. Uses TalkBack labels and 48dp targets.
-- Stores nothing on the device. Backup and device transfer are disabled. Has no
-  analytics, ads or third-party SDKs, and uses only the `INTERNET` permission.
-- **Sign-in, sign-out and reporting replies** (server side in PR #52) appear only when
-  `GET /api/solo-auth` reports `enabled: true` for the app. Until then the app behaves
-  exactly as above. The access token stays in memory. The refresh token is encrypted with
-  a non-exportable Android Keystore AES-GCM key before it is written to private storage,
-  and it is excluded from backup. An expired access token is refreshed once and the
-  message resent. Each signed-in reply has a **Report** button that sends the reason,
-  optional note and reply text to `/api/solo-report` without leaving the app.
+## Structure
 
-## Build
+| File | Role |
+| --- | --- |
+| `MainActivity.kt` | Splash, edge-to-edge, hosts the Compose UI |
+| `ChatViewModel.kt` | All app logic: service checks, accounts, streaming, history, reporting, read aloud |
+| `ui/` | Compose screens: `ChatScreen`, `Components`, `Sheets` (sign-in, report), `SettingsScreen`, `Theme` |
+| `MarkdownText.kt`, `HistoryStore.kt`, `ChatModels.kt` | Pure Kotlin parser, storage and models |
+| `SoloApi.java`, `AccountApi.java`, `Conversation.java`, `SessionStore.java` | Tested protocol core: chat with SSE streaming, native sign-in and reporting, contract limits, encrypted session |
 
-Requires JDK 21 (the Robolectric UI tests for API 36 need it; app bytecode targets Java 17)
-and the Android SDK (platform 36). The Gradle wrapper is included.
+## Build and test
+
+Requires JDK 21 and the Android SDK (platform 36). The Gradle wrapper is included.
 
 ```bash
 cd apps/solo-android
-./gradlew :app:testDebugUnitTest   # unit, HTTP and Robolectric UI tests (+ screenshots)
+./gradlew :app:testDebugUnitTest   # protocol, parser, storage and Compose UI tests (+ Play screenshots)
 ./gradlew :app:lintRelease
-./gradlew :app:assembleDebug       # installable test APK (package suffix .debug)
+./gradlew :app:assembleDebug       # test APK (package suffix .debug)
 ./gradlew :app:bundleRelease       # release .aab (unsigned unless signing is configured)
 ```
 
-UI test screenshots are written to `app/build/screenshots/`.
+`SoloAppUiTest` drives the real Compose app against a scripted local server and writes the
+1080×2160 Play screenshots to `app/build/play-screenshots/`. The opt-in contract tests
+(`BackendContractTest`, `AccountBackendContractTest`) run the HTTP clients against real
+SOLO handlers when `SOLO_BACKEND_*_URL` is set.
 
 ### Release signing (never commit keys)
 
@@ -61,13 +64,6 @@ Signing values come from environment variables or `~/.gradle/gradle.properties`:
 `SOLO_UPLOAD_STORE_FILE`, `SOLO_UPLOAD_STORE_PASSWORD`, `SOLO_UPLOAD_KEY_ALIAS`,
 `SOLO_UPLOAD_KEY_PASSWORD`, plus `SOLO_VERSION_CODE` (increase it on every upload).
 `*.jks`, `*.keystore` and `keystore.properties` are git-ignored.
-
-### Testing against a real handler
-
-`BackendContractTest` runs the app's HTTP client against a running SOLO chat handler.
-It is skipped unless `SOLO_BACKEND_OPEN_URL` and/or `SOLO_BACKEND_CLOSED_URL` are set.
-`AccountBackendContractTest` does the same for sign-in and reporting, using
-`SOLO_BACKEND_ACCOUNT_URL`.
 
 ### Endpoint
 

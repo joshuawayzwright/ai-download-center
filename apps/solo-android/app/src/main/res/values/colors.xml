@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- SOLO brand lock palette: charcoal #0A0A0A, steel #8A8F98, gold #D4AF37, electric blue #0087FF. -->
+<!-- SOLO brand lock palette. In-app colours live in ui/Theme.kt. -->
 <resources>
-    <color name="solo_bg">#0A0A0A</color>
-    <color name="solo_surface">#12161B</color>
-    <color name="solo_surface_high">#1A2027</color>
-    <color name="solo_outline">#262D35</color>
-    <color name="solo_gold">#D4AF37</color>
-    <color name="solo_gold_dim">#3A3016</color>
-    <color name="solo_steel">#8A8F98</color>
-    <color name="solo_text">#F2F3F5</color>
-    <color name="solo_text_muted">#A9AEB6</color>
-    <color name="solo_on_gold">#141004</color>
-    <color name="solo_error">#FF8A80</color>
+    <color name="solo_bg">#05080C</color>
     <color name="ic_launcher_background">#00070D</color>
-    <color name="solo_code_bg">#0E1318</color>
-    <color name="solo_code_text">#E8C766</color>
 </resources>

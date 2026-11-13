@@ -46,7 +46,7 @@ public class BackendContractTest {
     assertFalse(r.ok);
     assertEquals(503, r.status);
     assertEquals("SOLO chat is in private testing. Public AI conversations are not enabled.", r.error);
-    assertTrue(MainActivity.meansClosed(r));
+    assertTrue(ServicePolicy.meansClosed(r));
   }
 
   @Test public void missingEndpointIsReportedAsClosed() throws Exception {
@@ -54,7 +54,7 @@ public class BackendContractTest {
     assumeTrue(url != null);
     SoloApi api = new SoloApi(url.replace("/api/solo-chat", "/api/missing"), () -> null, null);
     assertEquals(404, api.probe());
-    assertTrue(MainActivity.meansClosed(api.send(new Conversation().prepare("hi", UUID.randomUUID().toString()))));
+    assertTrue(ServicePolicy.meansClosed(api.send(new Conversation().prepare("hi", UUID.randomUUID().toString()))));
   }
 
   @Test public void streamedConversationAgainstRealHandler() throws Exception {

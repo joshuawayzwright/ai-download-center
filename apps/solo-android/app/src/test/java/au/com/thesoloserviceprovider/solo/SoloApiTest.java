@@ -32,25 +32,25 @@ public class SoloApiTest {
     assertFalse(r.ok);
     assertEquals("Customer conversations are not enabled yet.", r.error);
     assertEquals("customer_disabled", r.code);
-    assertTrue(MainActivity.meansClosed(r));
+    assertTrue(ServicePolicy.meansClosed(r));
   }
 
   @Test public void hostingNotFoundPageMeansNotDeployed() {
     SoloApi.Result r = SoloApi.interpret(404, "The page could not be found\n\nNOT_FOUND", null);
     assertFalse(r.ok);
-    assertTrue(MainActivity.meansClosed(r));
+    assertTrue(ServicePolicy.meansClosed(r));
   }
 
   @Test public void quotaErrorsIncludeRetryAfterAndStayRetryable() {
     SoloApi.Result r = SoloApi.interpret(429,
         "{\"error\":\"Your SOLO usage limit has been reached.\",\"code\":\"daily_limit\"}", "3600");
     assertEquals("Your SOLO usage limit has been reached. Try again in 1 hour.", r.error);
-    assertFalse(MainActivity.meansClosed(r));
+    assertFalse(ServicePolicy.meansClosed(r));
   }
 
   @Test public void providerFailuresAreRetryableNotClosed() {
     SoloApi.Result r = SoloApi.interpret(502, "{\"error\":\"Gemini provider unavailable\",\"upstreamStatus\":500}", null);
-    assertFalse(MainActivity.meansClosed(r));
+    assertFalse(ServicePolicy.meansClosed(r));
     assertEquals("Gemini provider unavailable", r.error);
   }
 

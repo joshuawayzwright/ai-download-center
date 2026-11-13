@@ -28,6 +28,8 @@ final class SessionStore {
   }
 
   private static final String PREFS = "solo_session";
+  /** Test-only override of the storage name, so each test starts signed out; null in the app. */
+  static volatile String prefsNameOverride;
   private static final String KEY_REFRESH = "refresh";
   private static final String KEY_EMAIL = "email";
   /** Test-only override; always null in the shipped app. */
@@ -41,7 +43,7 @@ final class SessionStore {
   private volatile long epoch;
 
   SessionStore(Context context) {
-    prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+    prefs = context.getSharedPreferences(prefsNameOverride != null ? prefsNameOverride : PREFS, Context.MODE_PRIVATE);
     crypto = cryptoOverride != null ? cryptoOverride : new KeystoreCrypto();
   }
 
@@ -72,10 +74,10 @@ final class SessionStore {
     try {
       SharedPreferences.Editor editor = prefs.edit().putString(KEY_REFRESH, crypto.encrypt(refresh));
       if (email != null) editor.putString(KEY_EMAIL, email);
-      editor.apply();
+      editor.commit();
     } catch (Exception e) {
       // If the token can't be stored securely, keep the session in memory only.
-      prefs.edit().remove(KEY_REFRESH).apply();
+      prefs.edit().remove(KEY_REFRESH).commit();
     }
   }
 
@@ -113,7 +115,7 @@ final class SessionStore {
     epoch++;
     accessToken = null;
     accessExpiresAt = 0;
-    prefs.edit().clear().apply();
+    prefs.edit().clear().commit();
   }
 
   /** AES-256-GCM with a non-exportable key held by Android Keystore. */

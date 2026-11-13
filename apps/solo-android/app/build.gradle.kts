@@ -1,4 +1,8 @@
-plugins { id("com.android.application") }
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
+}
 
 // Release signing is read from environment variables or ~/.gradle/gradle.properties.
 // Never commit a keystore or its passwords. With no keystore configured,
@@ -17,7 +21,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = (signingValue("SOLO_VERSION_CODE") ?: "1").toInt()
-        versionName = "0.1.0"
+        versionName = "1.0.0"
         // Shared SOLO API (docs/SOLO-SHARED-API-CONTRACT.md). Override with
         // -PSOLO_API_URL=https://... for testing; it must be HTTPS.
         val apiUrl = signingValue("SOLO_API_URL") ?: "https://thesoloserviceprovider.com.au/api/solo-chat"
@@ -49,7 +53,10 @@ android {
         }
     }
 
-    buildFeatures { buildConfig = true }
+    buildFeatures {
+        buildConfig = true
+        compose = true
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -65,7 +72,26 @@ android {
     testOptions { unitTests.isIncludeAndroidResources = true }
 }
 
+kotlin { compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) } }
+
 dependencies {
+    val composeBom = platform("androidx.compose:compose-bom:2026.06.01")
+    implementation(composeBom)
+    implementation("androidx.core:core-ktx:1.17.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.activity:activity-compose:1.12.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
+    testImplementation(composeBom)
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
     // The Android framework's org.json is a stub in local JVM unit tests.
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.json:json:20260814")

@@ -157,7 +157,7 @@ public final class Conversation {
   }
 
   /** Truncates to {@code max} UTF-16 units without splitting a surrogate pair. */
-  static String truncate(String value, int max) {
+  public static String truncate(String value, int max) {
     if (value.length() <= max) return value;
     int end = max;
     if (Character.isHighSurrogate(value.charAt(end - 1))) end--;
