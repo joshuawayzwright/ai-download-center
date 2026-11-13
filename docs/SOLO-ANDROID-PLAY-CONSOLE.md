@@ -12,7 +12,8 @@ that day. Re-check anything marked *confirm in Console*, because Google changes 
 | Live chat on production | **Not available.** `thesoloserviceprovider.com.au/api/solo-chat` returns 404. The app shows "isn't open yet". |
 | Native sign-in | **Built, not deployed.** The server side is PR #52 (stacked on #34) and the app side is in this PR. It is off until `SOLO_NATIVE_AUTH_ENABLED=true`. |
 | In-app reporting of AI replies | **Built, not deployed.** It is a Report button on each signed-in reply, backed by `/api/solo-report` and a new migration (PR #52). |
-| Privacy notice | **Does not cover SOLO AI or the app yet.** Play requires a policy that covers the app's data. |
+| Privacy notice | **Drafted, not deployed.** solo-commerce PR #39 adds a `#solo-ai` section covering chat, accounts, reports (kept 12 months), the app and deletion. |
+| Store listing | **Ready.** Listing text, the 512 px icon, the 1024×500 feature graphic and 1080×2160 screenshots are in `apps/solo-android/play-store/`. See `LISTING.md`. |
 | Published to Play | No. |
 
 **Internal testing can start now.** Production release is blocked until live chat,
@@ -71,10 +72,9 @@ export SOLO_VERSION_CODE=1            # increase by 1 for every upload
    - **Data safety:** see the draft below.
    - **AI-generated content:** declare that the app generates AI content. Reporting is the
      **Report** button under each reply.
-5. **Store listing:** the 512×512 icon is `powerhouse-website/assets/approved-stage/solo-ai-app-icon-512.png`.
-   You also need a 1024×500 feature graphic and at least 2 phone screenshots. CI produces
-   reference screenshots, but use real-device captures. Add short and full descriptions
-   that make no claims about unreleased features.
+5. **Store listing:** use `apps/solo-android/play-store/LISTING.md`. It contains the short
+   and full description, icon, feature graphic and screenshots. Replace the screenshots
+   with real-phone captures once chat is live.
 6. **Closed test** (personal accounts): 12+ testers for 14 consecutive days, then
    **Apply for production**. Review takes about 7 days or more.
 
@@ -89,9 +89,9 @@ export SOLO_VERSION_CODE=1            # increase by 1 for every upload
 - **Stored on device:** no. Backup is disabled.
 - **Personal info → Email address** (once sign-in is on): used for account management,
   not shared.
-- **Deletion:** accounts are invite-only and are not created in the app. *Confirm in
-  Console* whether Play still requires a deletion link. If so, publish a web page that
-  explains how to request deletion (e.g. by emailing hello@).
+- **Deletion:** accounts are invite-only and are not created in the app. If Play asks for
+  a deletion URL, use `https://thesoloserviceprovider.com.au/privacy.html#solo-ai-deletion`
+  (from solo-commerce PR #39). It explains how to request deletion by email.
 - **Not collected:** location, contacts, analytics, device identifiers and crash reporting.
   The app has no SDKs.
 
@@ -110,5 +110,6 @@ production it also needs to cover:
 1. Deploy `/api/solo-chat` on the production domain (today it returns 404).
 2. Merge #34 and #52, apply `20261112010000_solo_reply_reports.sql`, then set
    `SOLO_NATIVE_AUTH_ENABLED=true` (on a preview first).
-3. Decide how long reports are kept.
+3. Schedule the daily report purge (`public.solo_purge_reply_reports()`, 12-month
+   retention; the command is in the API contract) and deploy solo-commerce PR #39.
 4. Confirm spending caps and abuse controls on the production project.
