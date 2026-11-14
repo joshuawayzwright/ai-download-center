@@ -325,6 +325,28 @@ class SoloAppUiTest {
     shot("3-follow-up")
   }
 
+  @Test fun storeScreenshotPlanMyWeek() {
+    chatResponse = json(200, JSONObject().put("reply",
+      "## Your week at a glance\n\n" +
+        "**Monday:** quotes and admin\n" +
+        "- Send the two outstanding quotes\n" +
+        "- Chase last week's unpaid invoice\n\n" +
+        "**Tuesday to Thursday:** client work\n" +
+        "- Block 8 am to 12 pm for jobs\n" +
+        "- Keep afternoons for travel and calls\n\n" +
+        "**Friday:** review and plan\n" +
+        "1. Check what got done\n" +
+        "2. Book next week's jobs\n" +
+        "3. Post one update on social media\n\n" +
+        "Want me to turn this into a checklist?").toString())
+    start()
+    waitForText("Plan my week")
+    compose.onNodeWithText("Plan my week").performClick()
+    waitForText("Your week at a glance")
+    waitForText("turn this into a checklist")
+    shot("4-plan-my-week")
+  }
+
   @Test fun aReplyShowsItsSourcesAsLinks() {
     chatResponse = arrayOf("200", "text/event-stream",
       "event: delta\ndata: {\"text\":\"You must register for GST\"}\n\n" +

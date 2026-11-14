@@ -57,7 +57,7 @@ The Solo Service Provider · Gold Coast, Queensland
 | --- | --- | --- |
 | App icon | `icon-512.png` (the approved SOLO AI master, unchanged) | 512 × 512 PNG |
 | Feature graphic | `feature-graphic-1024x500.png` | 1024 × 500 PNG/JPEG |
-| Phone screenshots | `screenshots/1-welcome.png`, `2-conversation.png`, `3-follow-up.png` | 2–8 images, 1080 × 2160 (2:1) |
+| Phone screenshots | `screenshots/1-welcome.png`, `2-conversation.png`, `3-follow-up.png`, `4-plan-my-week.png` | 2–8 images, 1080 × 2160 (2:1) |
 
 The screenshots are rendered from the real app UI by `SoloAppUiTest`, using a scripted
 sample conversation. Regenerate them with
