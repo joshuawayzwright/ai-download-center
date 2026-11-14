@@ -144,7 +144,7 @@ test('signed-out status is local; expired access cookie signals one refresh', as
   const api = setup({ verify: async () => assert.fail('No access token'), status: async () => assert.fail('No identity') });
   const state = await api.request({ method: 'GET', headers: { origin: undefined } });
   assert.equal(state.status, 200);
-  assert.deepEqual(state.body, { enabled: true, authenticated: false, chatEnabled: false, signupEnabled: false });
+  assert.deepEqual(state.body, { enabled: true, authenticated: false, chatEnabled: false, signupEnabled: false, recoveryEnabled: false });
   const expired = await api.request({ method: 'GET', headers: { cookie: '__Host-solo-refresh=' + REFRESH } });
   assert.equal(expired.status, 401);
   assert.equal(expired.body.code, 'session_expired');

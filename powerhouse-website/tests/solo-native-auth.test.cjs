@@ -152,5 +152,5 @@ test('native status reports disabled until native sign-in is switched on', async
   const closed = await off.request({ method: 'GET' });
   assert.deepEqual(closed.body, { enabled: false, authenticated: false, chatEnabled: false });
   const on = await setup().request({ method: 'GET' });
-  assert.deepEqual(on.body, { enabled: true, authenticated: false, chatEnabled: false, signupEnabled: false });
+  assert.deepEqual(on.body, { enabled: true, authenticated: false, chatEnabled: false, signupEnabled: false, recoveryEnabled: false });
 });

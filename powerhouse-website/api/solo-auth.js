@@ -1,25 +1,10 @@
-// Account sessions for the SOLO API: sign-in, optional public sign-up (its own
-// switch), password reset and account deletion.
+// Account sessions for the SOLO API: sign-in, sign-out and account deletion.
+// Sign-up and password reset live in solo-onboarding.js (emailed one-time codes).
 // Provider and Supabase privileged credentials are never sent to the browser.
 const access = require('../lib/solo-customer-access.cjs');
 const { customerRelease } = require('../lib/solo-release-policy.cjs');
 const { admitAuthRequest } = require('../lib/solo-auth-admission.cjs');
-const { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, readBody, authConfig, validSession, setSession } = require('../lib/solo-auth-http.cjs');
-
-// Native app clients (SOLO AI for Android) identify themselves with this header and
-// receive tokens in the JSON body instead of cookies. They must not send Origin or
-// Cookie: a browser cannot read a cross-origin JSON response or send this
-// non-simple header without a CORS preflight, which this API never approves.
-const NATIVE_CLIENT = 'android';
-
-function nativeMode(req) {
-  const client = req.headers['x-solo-client'];
-  if (client === undefined) return false;
-  if (client !== NATIVE_CLIENT || req.headers.origin !== undefined || req.headers.cookie !== undefined) {
-    throw fail(400, 'invalid_client', 'Unsupported account client.');
-  }
-  return true;
-}
+const { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, nativeClient, readBody, authConfig, validSession, setSession } = require('../lib/solo-auth-http.cjs');
 
 function nativeRefreshToken(body) {
   const token = body.refresh_token;
@@ -27,23 +12,6 @@ function nativeRefreshToken(body) {
     throw fail(401, 'session_expired', 'Please sign in again.');
   }
   return token;
-}
-
-// Where Supabase sends people after they confirm an email or ask for a reset.
-const ACCOUNT_PAGE = 'https://thesoloserviceprovider.com.au/solo-ai-account.html';
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function validEmail(value) {
-  return typeof value === 'string' && value.trim().length <= 254 && EMAIL.test(value.trim()) &&
-    !/[\x00-\x1f\x7f]/.test(value);
-}
-
-// Supabase limits bcrypt input to 72 bytes; count bytes, not characters.
-function passwordProblem(password) {
-  if (typeof password !== 'string' || password.length < 8) return 'Use at least 8 characters for your password.';
-  if (Buffer.byteLength(password, 'utf8') > 72) return 'Use a password of 72 characters or fewer.';
-  if (/[\x00-\x1f\x7f]/.test(password)) return 'Your password contains characters that cannot be used.';
-  return null;
 }
 
 function nativeSession(session) {
@@ -105,40 +73,12 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
         ...(['member', 'free'].includes(usage.tier) ? { tier: usage.tier } : {}) },
       chatEnabled };
   }
-  const signupEnabled = (release, native) => release.authEnabled && env.SOLO_PUBLIC_SIGNUP_ENABLED === 'true' &&
-    (!native || env.SOLO_NATIVE_AUTH_ENABLED === 'true');
-  // Supabase Auth calls whose errors must not read as "unable to sign in".
-  async function accountEmailRequest(path, body) {
-    const config = authConfig(env);
-    let response, data = null;
-    try {
-      response = await fetcher(config.origin + '/auth/v1/' + path + '?redirect_to=' + encodeURIComponent(ACCOUNT_PAGE), {
-        method: 'POST', redirect: 'error', signal: AbortSignal.timeout(8000),
-        headers: { apikey: config.key, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-      });
-    } catch { throw fail(503, 'auth_unavailable', 'Account service is temporarily unavailable.'); }
-    try { data = await response.json(); } catch { /* Some successes have no body. */ }
-    if (response.ok) return;
-    const code = typeof data?.error_code === 'string' ? data.error_code : typeof data?.code === 'string' ? data.code : '';
-    if (response.status === 429 || code.startsWith('over_')) {
-      throw fail(429, 'auth_rate_limited', 'Too many account requests. Please wait before trying again.');
-    }
-    if (code === 'weak_password') throw fail(400, 'weak_password',
-      'Choose a stronger password: at least 8 characters, not a common password.');
-    if (code === 'email_address_invalid' || code === 'validation_failed') {
-      throw fail(400, 'invalid_email', 'Enter a valid email address.');
-    }
-    if (code === 'signup_disabled' || code === 'email_provider_disabled') {
-      throw fail(503, 'signup_disabled', 'New SOLO AI accounts are not open right now.');
-    }
-    // An existing address gets the same answer as a new one, so nobody can use
-    // sign-up to find out who has an account.
-    if (code === 'user_already_exists' || code === 'email_exists') return;
-    if (code === 'email_address_not_authorized' || response.status >= 500) {
-      throw fail(503, 'email_unavailable', 'We could not send the email right now. Please try again later.');
-    }
-    throw fail(503, 'auth_unavailable', 'Account service is temporarily unavailable.');
-  }
+  // The app shows sign-up and reset only when solo-onboarding would accept them.
+  const onboarding = (release, native) => {
+    const allowed = release.authEnabled && (!native || env.SOLO_NATIVE_AUTH_ENABLED === 'true');
+    return { signupEnabled: allowed && env.SOLO_CUSTOMER_SIGNUP_ENABLED === 'true',
+      recoveryEnabled: allowed && env.SOLO_CUSTOMER_RECOVERY_ENABLED === 'true' };
+  };
   async function deleteUser(userId) {
     const config = authConfig(env);
     const secret = env.SOLO_SUPABASE_SECRET_KEY;
@@ -170,7 +110,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
     let action;
     let native = false;
     try {
-      native = nativeMode(req);
+      native = nativeClient(req);
       if (!native) sameOrigin(req);
       if (req.method === 'GET') {
         const warm = typeof req.url === 'string' && /(?:^|[?&])warm=1(?:&|$)/.test(req.url.split('?', 2)[1] || '');
@@ -184,7 +124,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
         if (!enabled) return reply(res, 200, disabled);
         // The app shows sign-in only when native token issuance is switched on.
         if (native && env.SOLO_NATIVE_AUTH_ENABLED !== 'true') return reply(res, 200, disabled);
-        const signup = { signupEnabled: signupEnabled(release, native) };
+        const signup = onboarding(release, native);
         const token = access.parseAccessToken(req);
         // A normal access-cookie expiry must trigger the client's one refresh
         // attempt; a genuinely signed-out visitor needs no upstream request.
@@ -198,7 +138,7 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
       // can only revoke/clear credentials; it never grants membership or chat.
       if (!enabled && action !== 'logout') return reply(res, 503,
         { ...disabled, error: 'SOLO accounts are in private testing.', code: 'auth_disabled' });
-      if (!['login', 'refresh', 'logout', 'signup', 'request_reset', 'reset_password', 'delete_account'].includes(action)) {
+      if (!['login', 'refresh', 'logout', 'delete_account'].includes(action)) {
         throw fail(400, 'invalid_action', 'Unsupported account action.');
       }
       // Native token issuance has its own switch so web sign-in can open first.
@@ -207,55 +147,6 @@ function createAuthHandler({ env = process.env, fetcher = (...args) => globalThi
         return reply(res, 503, { ...disabled, error: 'SOLO app sign-in is not available yet.', code: 'native_auth_disabled' });
       }
       const signedOut = { enabled: true, authenticated: false, chatEnabled: false };
-      if (action === 'signup') {
-        if (!signupEnabled(release, native)) {
-          return reply(res, 503, { ...signedOut, error: 'New SOLO AI accounts are not open right now.', code: 'signup_disabled' });
-        }
-        if (!validEmail(body.email)) throw fail(400, 'invalid_email', 'Enter a valid email address.');
-        const problem = passwordProblem(body.password);
-        if (problem) throw fail(400, 'weak_password', problem);
-        await admit(req, { email: body.email.trim(), action: 'signup' }, { env, fetcher });
-        await accountEmailRequest('signup', { email: body.email.trim(), password: body.password });
-        return reply(res, 200, { ...signedOut, signupEnabled: true, signup: 'check_email' });
-      }
-      if (action === 'request_reset') {
-        if (!validEmail(body.email)) throw fail(400, 'invalid_email', 'Enter a valid email address.');
-        await admit(req, { email: body.email.trim(), action: 'request_reset' }, { env, fetcher });
-        try { await accountEmailRequest('recover', { email: body.email.trim() }); }
-        catch (error) { if (error.status === 429 || error.code === 'email_unavailable') throw error; }
-        return reply(res, 200, { ...signedOut, reset: 'check_email' });
-      }
-      if (action === 'reset_password') {
-        // From the reset page: the one-time session in the emailed link sets a new password.
-        // That session is only used here; the person then signs in normally.
-        if (native) throw fail(400, 'invalid_action', 'Unsupported account action.');
-        const token = typeof body.access_token === 'string' ? body.access_token : '';
-        const problem = passwordProblem(body.password);
-        if (problem) throw fail(400, 'weak_password', problem);
-        let identity;
-        try { identity = await verify(token, { env, fetcher }); }
-        catch { throw fail(401, 'reset_link_expired', 'This reset link has expired. Ask for a new one from the app.'); }
-        await admit(req, { email: identity.user.email, action: 'reset_password' }, { env, fetcher });
-        const config = authConfig(env);
-        let response, data = null;
-        try {
-          response = await fetcher(config.origin + '/auth/v1/user', {
-            method: 'PUT', redirect: 'error', signal: AbortSignal.timeout(8000),
-            headers: { apikey: config.key, Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: body.password })
-          });
-          try { data = await response.json(); } catch { /* ignore */ }
-        } catch { throw fail(503, 'auth_unavailable', 'Account service is temporarily unavailable.'); }
-        if (!response.ok) {
-          const code = data?.error_code || data?.code;
-          if (code === 'weak_password') throw fail(400, 'weak_password', 'Choose a stronger password: at least 8 characters, not a common password.');
-          if (code === 'same_password') throw fail(400, 'same_password', 'Choose a password you have not used for this account.');
-          if (response.status === 401 || response.status === 403) throw fail(401, 'reset_link_expired', 'This reset link has expired. Ask for a new one from the app.');
-          throw fail(503, 'auth_unavailable', 'Account service is temporarily unavailable.');
-        }
-        try { await revoke(token); } catch { /* The one-time session expires on its own. */ }
-        return reply(res, 200, { ...signedOut, reset: 'done' });
-      }
       if (action === 'delete_account') {
         if (body.confirm !== 'DELETE') throw fail(400, 'confirmation_required', 'Confirm that you want to delete your account.');
         const current = access.parseAccessToken(req);

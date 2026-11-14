@@ -32,6 +32,18 @@ function readCookie(req, name) {
   }
   return value;
 }
+// Native app clients (SOLO AI for Android) identify themselves with this header and
+// receive results in the JSON body instead of cookies. They must not send Origin or
+// Cookie: a browser cannot send this non-simple header cross-origin without a CORS
+// preflight, which this API never approves. Returns true for the app, false for a browser.
+function nativeClient(req) {
+  const client = req.headers['x-solo-client'];
+  if (client === undefined) return false;
+  if (client !== 'android' || req.headers.origin !== undefined || req.headers.cookie !== undefined) {
+    throw fail(400, 'invalid_client', 'Unsupported account client.');
+  }
+  return true;
+}
 function sameOrigin(req) {
   const origin = req.headers.origin;
   if (!origin && req.method === 'GET') return;
@@ -102,4 +114,4 @@ function setSession(res, session) {
   ]);
 }
 
-module.exports = { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, readBody, authConfig, validSession, setSession };
+module.exports = { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, nativeClient, readBody, authConfig, validSession, setSession };
