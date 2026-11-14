@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SOLO brand lock palette. In-app colours live in ui/Theme.kt. -->
+<resources>
+    <color name="solo_bg">#05080C</color>
+    <color name="ic_launcher_background">#00070D</color>
+</resources>
