@@ -22,9 +22,12 @@ no provider keys. This is separate from `android-app/`, which is the WrightWayz 
   device transfer, and removed on uninstall. Settings can delete them all.
 - **Voice input:** the system speech-to-text intent. The app never records audio and has
   no microphone permission.
-- **Accounts:** sign in, **create a free account** (email confirmation) and **reset a
-  password**, all in one sheet that appears only when the server enables app sign-in.
-  Create account appears only when the server reports `signupEnabled`. The access token is kept in memory. The refresh token is encrypted with a
+- **Accounts:** sign in, **create a free account** and **reset a password**, all in one
+  sheet that appears only when the server enables app sign-in. Both use an 8-digit code
+  emailed by `/api/solo-onboarding` and typed into the app (no links or landing pages); after
+  a correct code the app signs straight in. The password from the form stays in memory only
+  for that step. Create account appears only when the server reports `signupEnabled`, and
+  "Forgot password?" only with `recoveryEnabled`. The access token is kept in memory. The refresh token is encrypted with a
   non-exportable Android Keystore AES-GCM key. A temporary error never signs the user out,
   and a refresh can't undo a sign-out.
 - **Settings:** account details, plan and messages left today, sign out, delete

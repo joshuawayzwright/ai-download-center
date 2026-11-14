@@ -13,7 +13,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Native client for {@code /api/solo-auth} (app sign-in) and {@code /api/solo-report}.
+ * Native client for {@code /api/solo-auth} (app sign-in), {@code /api/solo-onboarding}
+ * (create account, verify email, reset password: each by an emailed one-time code) and
+ * {@code /api/solo-report}.
  * Sends {@code X-Solo-Client: android} and never an Origin or Cookie header, as the
  * shared contract requires. Tokens come back in the JSON body.
  */
@@ -32,6 +34,8 @@ public final class AccountApi {
     public final String code;
     /** True when the server accepts new accounts from the app. */
     public final boolean signupEnabled;
+    /** True when "forgot password" (reset by emailed code) is available. */
+    public final boolean recoveryEnabled;
     /** "member" or "free" for a signed-in account; null when unknown. */
     public final String tier;
     /** Messages left today and the daily allowance, when the server reports them. */
@@ -40,12 +44,12 @@ public final class AccountApi {
 
     Status(boolean reachable, boolean enabled, boolean authenticated, boolean chatEnabled,
         String email, int httpStatus, String error, String code) {
-      this(reachable, enabled, authenticated, chatEnabled, email, httpStatus, error, code, false, null, null, null);
+      this(reachable, enabled, authenticated, chatEnabled, email, httpStatus, error, code, false, false, null, null, null);
     }
 
     Status(boolean reachable, boolean enabled, boolean authenticated, boolean chatEnabled,
-        String email, int httpStatus, String error, String code, boolean signupEnabled, String tier,
-        Integer remainingDaily, Integer dailyLimit) {
+        String email, int httpStatus, String error, String code, boolean signupEnabled, boolean recoveryEnabled,
+        String tier, Integer remainingDaily, Integer dailyLimit) {
       this.reachable = reachable;
       this.enabled = enabled;
       this.authenticated = authenticated;
@@ -55,13 +59,14 @@ public final class AccountApi {
       this.error = error;
       this.code = code;
       this.signupEnabled = signupEnabled;
+      this.recoveryEnabled = recoveryEnabled;
       this.tier = tier;
       this.remainingDaily = remainingDaily;
       this.dailyLimit = dailyLimit;
     }
   }
 
-  /** Result of create account, password reset or account deletion. */
+  /** Result of an account action: create, verify, reset or delete. */
   public static final class Outcome {
     public final boolean ok;
     /** User-facing error text when {@code ok} is false. */
@@ -111,11 +116,13 @@ public final class AccountApi {
 
   private static final int MAX_RESPONSE_BYTES = 64 * 1024;
   private final String authUrl;
+  private final String onboardingUrl;
   private final String reportUrl;
   private final String userAgent;
 
   public AccountApi(String chatEndpoint, String userAgent) {
     this.authUrl = sibling(chatEndpoint, "solo-auth");
+    this.onboardingUrl = sibling(chatEndpoint, "solo-onboarding");
     this.reportUrl = sibling(chatEndpoint, "solo-report");
     this.userAgent = userAgent;
   }
@@ -149,25 +156,67 @@ public final class AccountApi {
     }
   }
 
-  /** Creates an account. On success the server emails a confirmation link; nobody is signed in yet. */
+  /**
+   * Creates an account. On success the server emails an 8-digit code; nobody is signed in until
+   * the code is verified. Calling it again for the same address sends a new code.
+   */
   public Outcome signup(String email, String password) {
     try {
-      Response r = call("POST", authUrl,
-          new JSONObject().put("action", "signup").put("email", email.trim()).put("password", password), null);
-      return toOutcome(r, "signup", "check_email", "Couldn't create the account");
+      Response r = call("POST", onboardingUrl, new JSONObject().put("action", "signup").put("email", email.trim())
+          .put("password", password).put("acceptedTerms", true), null);
+      return onboardingOutcome(r, 202, "check_email", "Couldn't create the account");
     } catch (JSONException e) {
       return new Outcome(false, "Couldn't prepare the request.", 0, "client_error");
     }
   }
 
-  /** Asks for a password reset email. The server's answer is the same whether or not the account exists. */
-  public Outcome requestReset(String email) {
+  /** Confirms an email address with the emailed code. The server returns no session: sign in next. */
+  public Outcome verifyEmail(String email, String code) {
     try {
-      Response r = call("POST", authUrl, new JSONObject().put("action", "request_reset").put("email", email.trim()), null);
-      return toOutcome(r, "reset", "check_email", "Couldn't send the reset email");
+      Response r = call("POST", onboardingUrl, new JSONObject().put("action", "verify_email").put("email", email.trim())
+          .put("code", code.trim()), null);
+      return onboardingOutcome(r, 200, "email_verified", "Couldn't check the code");
     } catch (JSONException e) {
       return new Outcome(false, "Couldn't prepare the request.", 0, "client_error");
     }
+  }
+
+  /** Asks for a reset code. The server's answer is the same whether or not the account exists. */
+  public Outcome requestReset(String email) {
+    try {
+      Response r = call("POST", onboardingUrl, new JSONObject().put("action", "request_reset").put("email", email.trim()), null);
+      return onboardingOutcome(r, 202, "check_email", "Couldn't send the reset code");
+    } catch (JSONException e) {
+      return new Outcome(false, "Couldn't prepare the request.", 0, "client_error");
+    }
+  }
+
+  /** Sets a new password with the emailed reset code. Every existing session is signed out. */
+  public Outcome resetPassword(String email, String code, String password) {
+    try {
+      Response r = call("POST", onboardingUrl, new JSONObject().put("action", "reset_password").put("email", email.trim())
+          .put("code", code.trim()).put("password", password), null);
+      return onboardingOutcome(r, 200, "password_reset", "Couldn't reset the password");
+    } catch (JSONException e) {
+      return new Outcome(false, "Couldn't prepare the request.", 0, "client_error");
+    }
+  }
+
+  /** Onboarding answers are {@code {ok, code}}; success needs the exact status and code. */
+  static Outcome onboardingOutcome(Response r, int okStatus, String expected, String fallback) {
+    if (r.status == okStatus && r.json != null && r.json.optBoolean("ok", false) && expected.equals(r.json.optString("code", null))) {
+      return new Outcome(true, null, r.status, expected);
+    }
+    if (r.status >= 200 && r.status < 300) return new Outcome(false, "SOLO AI returned an unexpected response.", r.status, "invalid_response");
+    if (r.status == 404 && r.json == null) {
+      return new Outcome(false, "Creating accounts isn't available yet.", 404, "onboarding_disabled");
+    }
+    // A 401 here always means a wrong or expired code. Some HttpURLConnection versions drop a
+    // 401 body on streamed POSTs, so fall back to the server's own wording.
+    if (r.status == 401 && r.json == null) {
+      return new Outcome(false, "That code is invalid or expired. Request a new code and try again.", 401, "invalid_code");
+    }
+    return toOutcome(r, "code", null, fallback);
   }
 
   /** Permanently deletes the signed-in account on the server. */
@@ -246,7 +295,7 @@ public final class AccountApi {
     return new Status(true, r.json.optBoolean("enabled", false), r.json.optBoolean("authenticated", false),
         r.json.optBoolean("chatEnabled", false), user == null ? null : user.optString("email", null),
         r.status, r.status == 200 ? null : r.json.optString("error", null), r.json.optString("code", null),
-        r.json.optBoolean("signupEnabled", false), tier, remaining, limit);
+        r.json.optBoolean("signupEnabled", false), r.json.optBoolean("recoveryEnabled", false), tier, remaining, limit);
   }
 
   static SignIn toSignIn(Response r) {

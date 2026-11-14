@@ -79,11 +79,20 @@ public sign-up and Google Search grounding; until that is deployed the app falls
 
 | Request | Success | Errors |
 | --- | --- | --- |
-| `GET` | adds `signupEnabled: boolean`; when signed in, `usage.tier` is `"member"` or `"free"` | as before |
-| `POST {action:"signup", email, password}` | 200 `{enabled:true, authenticated:false, chatEnabled:false, signup:"check_email"}`; nobody is signed in until the emailed link is opened | 400 `invalid_email`, 400 `weak_password` (8–72 characters), 429 `auth_rate_limited` with `Retry-After`, 503 `signup_disabled` |
-| `POST {action:"request_reset", email}` | 200 `{..., reset:"check_email"}`, the same whether or not the account exists | 429, 503 |
-| `POST {action:"login", ...}` for an unconfirmed address | | 403 `email_not_confirmed`: "Confirm your email first. Open the link we sent you, then sign in." |
+| `GET` | adds `signupEnabled` and `recoveryEnabled` booleans; when signed in, `usage.tier` is `"member"` or `"free"` | as before |
+| `POST {action:"login", ...}` for an unverified address | | 403 `email_not_confirmed`; the app opens the code step for that address |
 | `POST {action:"delete_account", confirm:"DELETE"}` with `Authorization: Bearer <access>` | 200 `{deleted:true, enabled:true, authenticated:false, chatEnabled:false}` | 401 (the app refreshes once and retries) |
+
+`/api/solo-onboarding` (the existing reviewed service), with the same native headers. Supabase
+emails an 8-digit code; there are no links. Each action sends only the listed keys, and every
+response has `ok` and `code`, plus a user-facing `error` on failure.
+
+| Request | Success | Errors |
+| --- | --- | --- |
+| `POST {action:"signup", email, password, acceptedTerms:true}` | 202 `{ok:true, code:"check_email"}`. Calling it again for the same address sends a new code | 400 `weak_password` (12–128 characters, not blank, no control characters), `terms_required`, `invalid_request`; 429 `auth_rate_limited` with `Retry-After`; 503 `onboarding_disabled`, `onboarding_unavailable` |
+| `POST {action:"verify_email", email, code}` (6–10 digits) | 200 `{ok:true, code:"email_verified"}`. No session: the app then signs in with `/api/solo-auth` using the password still held in memory | 401 `invalid_code` |
+| `POST {action:"request_reset", email}` | 202 `{ok:true, code:"check_email"}`, the same whether or not the account exists | 429, 503 |
+| `POST {action:"reset_password", email, code, password}` | 200 `{ok:true, code:"password_reset", sessionInvalidated:true}`; the app then signs in with the new password | 401 `invalid_code`; 503 `reset_incomplete`, `reset_signout_unconfirmed` |
 
 The `error` text is shown to the user as sent.
 

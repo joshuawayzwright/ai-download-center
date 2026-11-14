@@ -72,8 +72,8 @@ available. Replace it if you have a licensed copy.
 
 This text describes version 1.1.0. Use it only once these are live on production:
 
-- **Free sign-up.** Creating an account, the confirmation email and password reset all work
-  for a new address. That needs custom SMTP on the commercial Supabase project; Supabase's
+- **Free sign-up.** Creating an account, the 8-digit verification code and the password
+  reset code all work for a new address, through `/api/solo-onboarding`. That needs custom SMTP on the commercial Supabase project; Supabase's
   built-in email only reaches project team members.
 - **Answers with sources.** Google Search grounding is switched on in `/api/solo-chat`.
 - **Account deletion.** `delete_account` is deployed.

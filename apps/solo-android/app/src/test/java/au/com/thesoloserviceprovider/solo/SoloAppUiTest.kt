@@ -13,6 +13,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextClearance
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.test.core.app.ActivityScenario
 import org.json.JSONObject
 import org.junit.After
@@ -43,6 +46,8 @@ import java.util.concurrent.atomic.AtomicInteger
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [36], qualifiers = "w360dp-h720dp-xxhdpi")
 class SoloAppUiTest {
+  private companion object { const val GOOD_CODE = "41950368" }
+
   @get:Rule val compose = createEmptyComposeRule()
 
   private var server: TinyHttpServer? = null
@@ -51,6 +56,8 @@ class SoloAppUiTest {
   private val signedIn = AtomicBoolean(false)
   private val accountDown = AtomicBoolean(false)
   private val signupOn = AtomicBoolean(false)
+  /** False after a scripted sign-up until the right code is entered. */
+  private val emailVerified = AtomicBoolean(true)
   @Volatile private var chatResponse: Array<String> = json(200, """{"reply":"Hello from SOLO."}""")
   private val chatCalls = AtomicInteger()
 
@@ -101,17 +108,35 @@ class SoloAppUiTest {
         path == "/api/solo-auth" && method == "GET" && accountDown.get() ->
           json(503, """{"enabled":true,"authenticated":false,"chatEnabled":false,"error":"Account service is temporarily unavailable.","code":"auth_unavailable"}""")
         path == "/api/solo-auth" && method == "GET" -> json(200,
-          if (signedIn.get()) """{"enabled":true,"authenticated":true,"chatEnabled":true,"signupEnabled":${signupOn.get()},"user":{"id":"u","email":"pilot@example.test"},"usage":{"remaining_daily":10,"daily_limit":10,"tier":"free"}}"""
-          else """{"enabled":true,"authenticated":false,"chatEnabled":false,"signupEnabled":${signupOn.get()}}""")
+          if (signedIn.get()) """{"enabled":true,"authenticated":true,"chatEnabled":true,"signupEnabled":${signupOn.get()},"recoveryEnabled":${signupOn.get()},"user":{"id":"u","email":"pilot@example.test"},"usage":{"remaining_daily":10,"daily_limit":10,"tier":"free"}}"""
+          else """{"enabled":true,"authenticated":false,"chatEnabled":false,"signupEnabled":${signupOn.get()},"recoveryEnabled":${signupOn.get()}}""")
+        path == "/api/solo-onboarding" -> {
+          val request = JSONObject(body)
+          when (request.optString("action")) {
+            "signup" -> { emailVerified.set(false); json(202, """{"ok":true,"code":"check_email"}""") }
+            "request_reset" -> json(202, """{"ok":true,"code":"check_email"}""")
+            "verify_email", "reset_password" ->
+              if (request.optString("code") == GOOD_CODE) {
+                emailVerified.set(true)
+                if (request.optString("action") == "verify_email") json(200, """{"ok":true,"code":"email_verified"}""")
+                else json(200, """{"ok":true,"code":"password_reset","sessionInvalidated":true}""")
+              } else json(401, """{"ok":false,"code":"invalid_code","error":"That code is invalid or expired. Request a new code and try again."}""")
+            else -> json(400, """{"ok":false,"code":"invalid_action","error":"Unsupported account action."}""")
+          }
+        }
         path == "/api/solo-auth" -> when (JSONObject(body).optString("action")) {
-          "signup" -> json(200, """{"enabled":true,"authenticated":false,"chatEnabled":false,"signup":"check_email"}""")
-          "request_reset" -> json(200, """{"enabled":true,"authenticated":false,"chatEnabled":false,"reset":"check_email"}""")
           "delete_account" -> {
             signedIn.set(false)
             json(200, """{"deleted":true,"enabled":true,"authenticated":false,"chatEnabled":false}""")
           }
           "logout" -> { signedIn.set(false); json(200, """{"enabled":true,"authenticated":false,"chatEnabled":false}""") }
-          else -> {
+          "login" -> if (!emailVerified.get())
+            json(403, """{"enabled":true,"authenticated":false,"chatEnabled":false,"error":"Confirm your email first.","code":"email_not_confirmed"}""")
+          else {
+            signedIn.set(true)
+            json(200, """{"enabled":true,"authenticated":true,"chatEnabled":true,"user":{"id":"u","email":"pilot@example.test"},"session":{"access_token":"access-1","refresh_token":"refresh-1","expires_in":3600,"token_type":"bearer"}}""")
+          }
+          else -> { // refresh
             signedIn.set(true)
             json(200, """{"enabled":true,"authenticated":true,"chatEnabled":true,"user":{"id":"u","email":"pilot@example.test"},"session":{"access_token":"access-1","refresh_token":"refresh-1","expires_in":3600,"token_type":"bearer"}}""")
           }
@@ -152,9 +177,11 @@ class SoloAppUiTest {
     server!!.requests.lastOrNull { it.path == path && it.body.isNotEmpty() && it.body != "{}" }
   }
 
-  private fun lastAction(action: String): TinyHttpServer.Seen? = synchronized(server!!.requests) {
-    server!!.requests.lastOrNull { it.path == "/api/solo-auth" && it.body.contains("\"action\":\"$action\"") }
+  private fun lastAction(action: String, path: String = "/api/solo-auth"): TinyHttpServer.Seen? = synchronized(server!!.requests) {
+    server!!.requests.lastOrNull { it.path == path && it.body.contains("\"action\":\"$action\"") }
   }
+
+  private fun lastOnboarding(action: String) = lastAction(action, "/api/solo-onboarding")
 
   private fun signIn() {
     compose.onNodeWithTag("email").performTextInput("pilot@example.test")
@@ -324,29 +351,71 @@ class SoloAppUiTest {
     compose.waitUntil(20000) { historyText()?.contains("register-for-goods-and-services-tax-gst") == true }
   }
 
-  @Test fun createAnAccountThenCheckEmail() {
+  @Test fun createAnAccountVerifyTheCodeAndChat() {
     accountsOn.set(true)
     signupOn.set(true)
     start()
     waitForText("Create a free account to start")
     compose.onNodeWithTag("status-action").performClick()
     waitForText("Create your free account")
+    compose.onNodeWithTag("create-account").assertIsNotEnabled()
     compose.onNodeWithTag("email").performTextInput("new@example.test")
-    compose.onNodeWithTag("password").performTextInput("short")
+    compose.onNodeWithTag("password").performTextInput("too short")
+    compose.onNodeWithTag("agree-terms").performClick()
+    compose.onNodeWithTag("create-account").assertIsEnabled()
     compose.onNodeWithTag("create-account").performClick()
-    waitForText("Use at least 8 characters")
-    assertEquals("a short password never reaches the server", null, lastAction("signup"))
+    waitForText("Use at least 12 characters")
+    assertEquals("a short password never reaches the server", null, lastOnboarding("signup"))
     compose.onNodeWithTag("password").performTextInput(" but now long enough")
     compose.onNodeWithTag("create-account").performClick()
-    waitForText("Check your email")
-    waitForText("new@example.test")
-    val body = JSONObject(lastAction("signup")!!.body)
+    waitForText("We emailed an 8-digit code to new@example.test")
+    val signup = lastOnboarding("signup")!!
+    val body = JSONObject(signup.body)
     assertEquals("new@example.test", body.getString("email"))
-    assertEquals("android", lastAction("signup")!!.headers["x-solo-client"])
-    assertEquals("nobody is signed in until the email is confirmed", null, storedRefresh())
+    assertTrue(body.getBoolean("acceptedTerms"))
+    assertEquals("android", signup.headers["x-solo-client"])
+    assertEquals("nobody is signed in until the code is verified", null, storedRefresh())
+
+    compose.onNodeWithTag("code").performTextInput("00000000")
+    compose.onNodeWithTag("verify-code").performClick()
+    waitForText("That code is invalid or expired")
+    assertEquals(null, lastAction("login"))
+
+    compose.onNodeWithTag("resend-code").performClick()
+    waitForText("We sent a new code to new@example.test")
+    compose.waitUntil(20000) { synchronized(server!!.requests) { server!!.requests.count { it.body.contains("\"action\":\"signup\"") } } == 2 }
+
+    compose.onNodeWithTag("code").performTextClearance()
+    compose.onNodeWithTag("code").performTextInput(GOOD_CODE)
+    compose.onNodeWithTag("verify-code").performClick()
+    waitForText("Plan my week")
+    assertEquals(GOOD_CODE, JSONObject(lastOnboarding("verify_email")!!.body).getString("code"))
+    val login = JSONObject(lastAction("login")!!.body)
+    assertEquals("the app signs in with the password from the form", "too short but now long enough", login.getString("password"))
+    compose.waitUntil(20000) { storedRefresh() != null }
+
+    chatResponse = json(200, """{"reply":"Welcome aboard.","requestId":"x"}""")
+    send("Hello")
+    waitForText("Welcome aboard.")
+    assertEquals("Bearer access-1", lastRequest("/api/solo-chat")!!.headers["authorization"])
   }
 
-  @Test fun forgotPasswordSendsAResetEmail() {
+  @Test fun anUnverifiedSignInOffersTheCodeStep() {
+    accountsOn.set(true)
+    signupOn.set(true)
+    emailVerified.set(false)
+    start()
+    waitForText("Create a free account to start")
+    compose.onNodeWithTag("status-sign-in").performClick()
+    signIn()
+    waitForText("We emailed an 8-digit code to pilot@example.test")
+    compose.onNodeWithTag("code").performTextInput(GOOD_CODE)
+    compose.onNodeWithTag("verify-code").performClick()
+    waitForText("Plan my week")
+    compose.waitUntil(20000) { storedRefresh() != null }
+  }
+
+  @Test fun forgotPasswordResetsByCodeAndSignsIn() {
     accountsOn.set(true)
     signupOn.set(true)
     start()
@@ -356,8 +425,27 @@ class SoloAppUiTest {
     waitForText("Reset your password")
     compose.onNodeWithTag("email").performTextInput("pilot@example.test")
     compose.onNodeWithTag("send-reset").performClick()
-    waitForText("Check your email")
-    assertFalse(JSONObject(lastAction("request_reset")!!.body).has("password"))
+    waitForText("Choose a new password")
+    val request = JSONObject(lastOnboarding("request_reset")!!.body)
+    assertEquals(2, request.length())
+    compose.onNodeWithTag("code").performTextInput(GOOD_CODE)
+    compose.onNodeWithTag("new-password").performTextInput("a brand new password")
+    compose.onNodeWithTag("save-password").performClick()
+    waitForText("Plan my week")
+    val reset = JSONObject(lastOnboarding("reset_password")!!.body)
+    assertEquals(GOOD_CODE, reset.getString("code"))
+    assertEquals("a brand new password", reset.getString("password"))
+    assertEquals("a brand new password", JSONObject(lastAction("login")!!.body).getString("password"))
+    compose.waitUntil(20000) { storedRefresh() != null }
+  }
+
+  @Test fun forgotPasswordIsHiddenWhenRecoveryIsOff() {
+    accountsOn.set(true)
+    start()
+    waitForText("Sign in to chat with SOLO AI")
+    compose.onNodeWithText("Sign in").performClick()
+    waitForText("Sign in to SOLO AI")
+    compose.onNodeWithTag("forgot-password").assertDoesNotExist()
   }
 
   @Test fun deleteAccountSignsOutAndClearsThisPhone() {

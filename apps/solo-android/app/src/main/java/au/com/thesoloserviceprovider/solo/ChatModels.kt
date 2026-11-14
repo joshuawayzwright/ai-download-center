@@ -59,6 +59,8 @@ data class UiState(
   val accountsEnabled: Boolean = false,
   /** True when the server accepts new accounts from the app. */
   val signupEnabled: Boolean = false,
+  /** True when "forgot password" (reset by emailed code) is available. */
+  val recoveryEnabled: Boolean = false,
   /** "member" (early access) or "free"; null when unknown. */
   val tier: String? = null,
   val signedIn: Boolean = false,
@@ -94,4 +96,15 @@ object ServicePolicy {
 /** Test hooks; always null in the shipped app. */
 object SoloConfig {
   @JvmStatic @Volatile var endpointOverride: String? = null
+}
+
+/**
+ * Outcome of an account step in the sign-in sheet. [error] is null on success.
+ * [needsCode] means the address isn't verified yet: show the code step.
+ */
+data class AccountResult(val error: String? = null, val needsCode: Boolean = false) {
+  companion object {
+    val OK = AccountResult()
+    fun fail(message: String?) = AccountResult(message ?: "Something went wrong. Please try again.")
+  }
 }

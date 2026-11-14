@@ -169,11 +169,15 @@ fun SoloApp(vm: ChatViewModel) {
 
   if (showSignIn) SignInSheet(
     signupEnabled = state.signupEnabled,
+    recoveryEnabled = state.recoveryEnabled,
     startMode = accountMode,
-    onDismiss = { showSignIn = false },
+    onDismiss = { showSignIn = false; vm.clearPendingCredentials() },
     onSignIn = vm::signIn,
     onSignUp = vm::signUp,
-    onReset = vm::requestReset,
+    onVerify = vm::verifyEmail,
+    onResendCode = vm::resendCode,
+    onRequestReset = vm::requestReset,
+    onResetPassword = vm::resetPassword,
   )
   reportTarget?.let { target ->
     ReportSheet(onDismiss = { reportTarget = null }, onSend = { reason, note -> vm.report(target, reason, note); reportTarget = null })

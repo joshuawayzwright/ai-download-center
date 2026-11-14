@@ -103,6 +103,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
           service = service,
           accountsEnabled = st?.enabled == true,
           signupEnabled = st?.enabled == true && st.signupEnabled,
+          recoveryEnabled = st?.enabled == true && st.recoveryEnabled,
           signedIn = session.hasSession(),
           email = st?.email ?: session.email(),
           tier = if (st?.authenticated == true) st.tier else it.tier.takeIf { session.hasSession() },
@@ -127,25 +128,78 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     return null
   }
 
-  /** Signs in. Returns null on success, or the error to show. */
-  suspend fun signIn(email: String, password: String): String? = withContext(Dispatchers.IO) {
+  /**
+   * The email and password from the current create-account or sign-in attempt, kept only in
+   * memory so the app can sign in straight after the code is verified (the server returns no
+   * session) or send a new code. Never persisted; cleared after sign-in or when the sheet closes.
+   */
+  private var pendingEmail: String? = null
+  private var pendingPassword: String? = null
+
+  private fun rememberCredentials(email: String, password: String) {
+    pendingEmail = email.trim(); pendingPassword = password
+  }
+
+  fun clearPendingCredentials() {
+    pendingEmail = null; pendingPassword = null
+  }
+
+  /** Signs in. An unverified address returns [AccountResult.needsCode]. */
+  suspend fun signIn(email: String, password: String): AccountResult = withContext(Dispatchers.IO) {
     val result = account.login(email, password)
-    if (!result.ok()) return@withContext result.status.error ?: "Sign-in failed."
+    if (!result.ok()) {
+      if (result.status.code == "email_not_confirmed") {
+        rememberCredentials(email, password)
+        return@withContext AccountResult(result.status.error, needsCode = true)
+      }
+      return@withContext AccountResult.fail(result.status.error ?: "Sign-in failed.")
+    }
+    clearPendingCredentials()
     session.save(result.accessToken, result.refreshToken, result.expiresIn, result.status.email ?: email.trim())
     withContext(Dispatchers.Main) { checkService() }
-    null
+    AccountResult.OK
   }
 
-  /** Creates an account. Returns null when the confirmation email is on its way, or the error to show. */
-  suspend fun signUp(email: String, password: String): String? = withContext(Dispatchers.IO) {
+  /** Creates an account; on success an 8-digit code is on its way to [email]. */
+  suspend fun signUp(email: String, password: String): AccountResult = withContext(Dispatchers.IO) {
     val result = account.signup(email, password)
-    if (result.ok) null else result.message
+    if (!result.ok) return@withContext AccountResult.fail(result.message)
+    rememberCredentials(email, password)
+    AccountResult.OK
   }
 
-  /** Requests a password reset email. Returns null on success, or the error to show. */
-  suspend fun requestReset(email: String): String? = withContext(Dispatchers.IO) {
+  /** Sends a new code for an unverified address (sign-up again, which the server answers neutrally). */
+  suspend fun resendCode(email: String): AccountResult = withContext(Dispatchers.IO) {
+    val password = pendingPassword
+    if (password == null || pendingEmail != email.trim()) {
+      return@withContext AccountResult.fail("Go back and enter your email and password again to get a new code.")
+    }
+    val result = account.signup(email, password)
+    if (result.ok) AccountResult.OK else AccountResult.fail(result.message)
+  }
+
+  /** Verifies the address with the emailed code, then signs in with the remembered password. */
+  suspend fun verifyEmail(email: String, code: String): AccountResult = withContext(Dispatchers.IO) {
+    val result = account.verifyEmail(email, code)
+    if (!result.ok) return@withContext AccountResult.fail(result.message)
+    val password = pendingPassword
+    if (password == null || pendingEmail != email.trim()) {
+      return@withContext AccountResult.fail("Your email is confirmed. Sign in with your password to continue.")
+    }
+    signIn(email, password)
+  }
+
+  /** Asks for a password reset code. */
+  suspend fun requestReset(email: String): AccountResult = withContext(Dispatchers.IO) {
     val result = account.requestReset(email)
-    if (result.ok) null else result.message
+    if (result.ok) AccountResult.OK else AccountResult.fail(result.message)
+  }
+
+  /** Sets a new password with the emailed code, then signs in with it. */
+  suspend fun resetPassword(email: String, code: String, password: String): AccountResult = withContext(Dispatchers.IO) {
+    val result = account.resetPassword(email, code, password)
+    if (!result.ok) return@withContext AccountResult.fail(result.message)
+    signIn(email, password)
   }
 
   /**
