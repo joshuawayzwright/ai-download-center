@@ -20,8 +20,8 @@ android {
         applicationId = "au.com.thesoloserviceprovider.solo"
         minSdk = 26
         targetSdk = 36
-        versionCode = (signingValue("SOLO_VERSION_CODE") ?: "1").toInt()
-        versionName = "1.0.0"
+        versionCode = (signingValue("SOLO_VERSION_CODE") ?: "2").toInt()
+        versionName = "1.1.0"
         // Shared SOLO API (docs/SOLO-SHARED-API-CONTRACT.md). Override with
         // -PSOLO_API_URL=https://... for testing; it must be HTTPS.
         val apiUrl = signingValue("SOLO_API_URL") ?: "https://thesoloserviceprovider.com.au/api/solo-chat"

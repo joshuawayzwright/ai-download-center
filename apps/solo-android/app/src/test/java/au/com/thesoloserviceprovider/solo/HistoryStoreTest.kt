@@ -43,4 +43,25 @@ class HistoryStoreTest {
     file.writeText("{not json")
     assertEquals(emptyList<ChatThread>(), HistoryStore(file).load())
   }
+
+  @Test fun roundTripsSourcesAndReadsOlderFilesWithoutThem() {
+    val file = File(Files.createTempDirectory("solo").toFile(), "c.json")
+    val store = HistoryStore(file)
+    val withSources = ChatThread("s", "Rates", 5,
+      listOf(ChatMessage("m", Role.SOLO, "The cash rate is…", sources = listOf(
+        Source("RBA: Cash rate", "https://www.rba.gov.au/statistics/cash-rate/")))),
+      emptyList())
+    store.save(listOf(withSources))
+    val loaded = store.load()[0].messages[0]
+    assertEquals(1, loaded.sources.size)
+    assertEquals("rba.gov.au", loaded.sources[0].site)
+
+    // A 1.0 file has no "sources" key; a tampered file may hold unsafe links.
+    file.writeText("""{"version":1,"threads":[{"id":"o","title":"Old","updatedAt":1,"history":[],
+      "messages":[{"id":"a","role":"SOLO","text":"Hi","status":"DONE"},
+                  {"id":"b","role":"SOLO","text":"Bad","status":"DONE","sources":[{"title":"x","url":"javascript:alert(1)"}]}]}]}""")
+    val old = HistoryStore(file).load()[0].messages
+    assertTrue(old[0].sources.isEmpty())
+    assertTrue(old[1].sources.isEmpty())
+  }
 }

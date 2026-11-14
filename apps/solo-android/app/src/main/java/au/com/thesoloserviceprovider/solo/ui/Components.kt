@@ -13,6 +13,9 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.platform.testTag
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
@@ -77,6 +80,7 @@ import au.com.thesoloserviceprovider.solo.MarkdownText
 import au.com.thesoloserviceprovider.solo.MessageStatus
 import au.com.thesoloserviceprovider.solo.R
 import au.com.thesoloserviceprovider.solo.Role
+import au.com.thesoloserviceprovider.solo.Source
 
 /** The approved SOLO AI icon. While SOLO is thinking, an animated gold-and-blue aura turns around it. */
 @Composable
@@ -236,6 +240,7 @@ fun SoloMessage(
   onShare: () -> Unit,
   onRegenerate: () -> Unit,
   onReport: () -> Unit,
+  onOpenSource: (String) -> Unit = {},
 ) {
   Row(Modifier.fillMaxWidth()) {
     SoloAvatar(30.dp)
@@ -252,6 +257,7 @@ fun SoloMessage(
         Text("SOLO reached its length limit. Ask it to continue.", style = MaterialTheme.typography.bodySmall,
           color = Solo.Steel, modifier = Modifier.padding(top = 8.dp))
       }
+      if (message.sources.isNotEmpty()) SourcesRow(message.sources, onOpenSource)
       Row(Modifier.padding(top = 2.dp), verticalAlignment = Alignment.CenterVertically) {
         ActionIcon(Icons.Outlined.ContentCopy, "Copy reply", onCopy)
         ActionIcon(if (speaking) Icons.Outlined.StopCircle else Icons.AutoMirrored.Outlined.VolumeUp,
@@ -259,6 +265,34 @@ fun SoloMessage(
         ActionIcon(Icons.Outlined.Share, "Share reply", onShare)
         if (isLast && message.status == MessageStatus.DONE) ActionIcon(Icons.Outlined.Refresh, "Regenerate reply", onRegenerate)
         if (canReport) ActionIcon(Icons.Outlined.Flag, "Report this reply", onReport)
+      }
+    }
+  }
+}
+
+/** The web pages a reply drew on, as compact chips that open in the browser. */
+@Composable
+private fun SourcesRow(sources: List<Source>, onOpen: (String) -> Unit) {
+  Column(Modifier.padding(top = 12.dp).testTag("sources")) {
+    Text("Sources", style = MaterialTheme.typography.labelMedium, color = Solo.TextMuted,
+      modifier = Modifier.padding(bottom = 6.dp).semantics { heading() })
+    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+      sources.forEachIndexed { i, src ->
+        Row(
+          Modifier.widthIn(max = 240.dp).heightIn(min = 48.dp).clip(RoundedCornerShape(14.dp))
+            .background(Solo.Surface).border(1.dp, Solo.Outline, RoundedCornerShape(14.dp))
+            .clickable(onClickLabel = "Open in browser") { onOpen(src.url) }
+            .semantics(mergeDescendants = true) { contentDescription = "Source ${i + 1}: ${src.title}, from ${src.site}" }
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+          verticalAlignment = Alignment.CenterVertically,
+        ) {
+          Text("${i + 1}", style = MaterialTheme.typography.labelMedium, color = Solo.Gold)
+          Spacer(Modifier.width(8.dp))
+          Column {
+            Text(src.site, style = MaterialTheme.typography.labelSmall, color = Solo.TextMuted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(src.title, style = MaterialTheme.typography.bodySmall, color = Solo.Text, maxLines = 1, overflow = TextOverflow.Ellipsis)
+          }
+        }
       }
     }
   }

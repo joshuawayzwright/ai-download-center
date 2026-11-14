@@ -71,6 +71,91 @@ public class AccountApiTest {
     }
   }
 
+  private static AccountApi api(TinyHttpServer server) {
+    return new AccountApi("http://127.0.0.1:" + server.port() + "/api/solo-chat", "test");
+  }
+
+  @Test public void statusReadsSignupTierAndUsage() {
+    AccountApi.Status open = AccountApi.toStatus(new AccountApi.Response(200,
+        json("{\"enabled\":true,\"authenticated\":false,\"chatEnabled\":false,\"signupEnabled\":true}"), null));
+    assertTrue(open.signupEnabled);
+    assertNull(open.tier);
+    AccountApi.Status free = AccountApi.toStatus(new AccountApi.Response(200,
+        json("{\"enabled\":true,\"authenticated\":true,\"chatEnabled\":true,\"user\":{\"email\":\"a@b.co\"},"
+            + "\"usage\":{\"remaining_daily\":9,\"daily_limit\":10,\"tier\":\"free\"}}"), null));
+    assertEquals("free", free.tier);
+    assertEquals(Integer.valueOf(9), free.remainingDaily);
+    assertEquals(Integer.valueOf(10), free.dailyLimit);
+    AccountApi.Status odd = AccountApi.toStatus(new AccountApi.Response(200,
+        json("{\"enabled\":true,\"authenticated\":true,\"usage\":{\"tier\":\"admin\"}}"), null));
+    assertNull("unknown tiers are ignored", odd.tier);
+    assertFalse(AccountApi.toStatus(new AccountApi.Response(200, json("{\"enabled\":true}"), null)).signupEnabled);
+  }
+
+  @Test public void signupPostsCredentialsAndExpectsCheckEmail() throws Exception {
+    try (TinyHttpServer server = new TinyHttpServer(200, "application/json",
+        "{\"enabled\":true,\"authenticated\":false,\"chatEnabled\":false,\"signup\":\"check_email\"}")) {
+      AccountApi.Outcome r = api(server).signup(" new@example.test ", "long enough pw");
+      assertTrue(r.ok);
+      TinyHttpServer.Seen seen = server.requests.get(0);
+      assertEquals("android", seen.headers.get("x-solo-client"));
+      assertNull(seen.headers.get("authorization"));
+      JSONObject body = new JSONObject(seen.body);
+      assertEquals("signup", body.getString("action"));
+      assertEquals("new@example.test", body.getString("email"));
+      assertEquals("long enough pw", body.getString("password"));
+    }
+  }
+
+  @Test public void signupErrorsShowServerText() {
+    AccountApi.Outcome weak = AccountApi.toOutcome(new AccountApi.Response(400,
+        json("{\"error\":\"Use at least 8 characters.\",\"code\":\"weak_password\"}"), null), "signup", "check_email", "x");
+    assertFalse(weak.ok);
+    assertEquals("weak_password", weak.code);
+    assertEquals("Use at least 8 characters.", weak.message);
+    AccountApi.Outcome limited = AccountApi.toOutcome(new AccountApi.Response(429,
+        json("{\"error\":\"Too many account requests.\",\"code\":\"auth_rate_limited\"}"), "60"), "signup", "check_email", "x");
+    assertEquals("Too many account requests. Try again in 1 minute.", limited.message);
+    AccountApi.Outcome odd = AccountApi.toOutcome(new AccountApi.Response(200, json("{\"enabled\":true}"), null),
+        "signup", "check_email", "x");
+    assertFalse("a 200 without signup:check_email is not a success", odd.ok);
+  }
+
+  @Test public void loginWithUnconfirmedEmailExplainsWhy() {
+    AccountApi.SignIn r = AccountApi.toSignIn(new AccountApi.Response(403, json("{\"error\":\"Confirm your email first. "
+        + "Open the link we sent you, then sign in.\",\"code\":\"email_not_confirmed\"}"), null));
+    assertFalse(r.ok());
+    assertEquals("email_not_confirmed", r.status.code);
+    assertTrue(r.status.error.startsWith("Confirm your email first."));
+  }
+
+  @Test public void requestResetSendsOnlyTheEmail() throws Exception {
+    try (TinyHttpServer server = new TinyHttpServer(200, "application/json", "{\"enabled\":true,\"reset\":\"check_email\"}")) {
+      assertTrue(api(server).requestReset("a@b.co").ok);
+      JSONObject body = new JSONObject(server.requests.get(0).body);
+      assertEquals("request_reset", body.getString("action"));
+      assertFalse(body.has("password"));
+    }
+  }
+
+  @Test public void deleteAccountNeedsBearerAndConfirmation() throws Exception {
+    try (TinyHttpServer server = new TinyHttpServer(200, "application/json",
+        "{\"deleted\":true,\"enabled\":true,\"authenticated\":false,\"chatEnabled\":false}")) {
+      assertTrue(api(server).deleteAccount("acc-token-123").ok);
+      TinyHttpServer.Seen seen = server.requests.get(0);
+      assertEquals("Bearer acc-token-123", seen.headers.get("authorization"));
+      JSONObject body = new JSONObject(seen.body);
+      assertEquals("delete_account", body.getString("action"));
+      assertEquals("DELETE", body.getString("confirm"));
+    }
+    try (TinyHttpServer server = new TinyHttpServer(401, "application/json",
+        "{\"error\":\"Please sign in again.\",\"code\":\"invalid_session\"}")) {
+      AccountApi.Outcome r = api(server).deleteAccount("stale");
+      assertFalse(r.ok);
+      assertEquals(401, r.httpStatus);
+    }
+  }
+
   private static JSONObject json(String s) {
     try { return new JSONObject(s); } catch (Exception e) { throw new AssertionError(e); }
   }

@@ -48,6 +48,11 @@ class HistoryStore(private val file: File) {
           m.requestId?.let { put("requestId", it) }
           if (m.truncated) put("truncated", true)
           m.error?.let { put("error", it) }
+          if (m.sources.isNotEmpty()) {
+            val sources = JSONArray()
+            for (src in m.sources) sources.put(JSONObject().put("title", src.title).put("url", src.url))
+            put("sources", sources)
+          }
         })
       }
       val history = JSONArray()
@@ -57,6 +62,10 @@ class HistoryStore(private val file: File) {
     }
     return JSONObject().put("version", 1).put("threads", array).toString()
   }
+
+  /** Saved sources are re-checked on load; anything not a well-formed https link is dropped. */
+  private fun parseSources(m: JSONObject): List<Source> =
+    SoloApi.parseSources(m).map { Source(it.title, it.url) }
 
   internal fun parse(text: String): List<ChatThread> {
     val root = JSONObject(text)
@@ -75,6 +84,7 @@ class HistoryStore(private val file: File) {
           requestId = m.optString("requestId").ifEmpty { null },
           truncated = m.optBoolean("truncated", false),
           error = m.optString("error").ifEmpty { null },
+          sources = parseSources(m),
         )
       }
       val h = t.getJSONArray("history")

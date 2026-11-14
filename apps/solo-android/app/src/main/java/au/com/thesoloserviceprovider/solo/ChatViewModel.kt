@@ -102,8 +102,12 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
         it.copy(
           service = service,
           accountsEnabled = st?.enabled == true,
+          signupEnabled = st?.enabled == true && st.signupEnabled,
           signedIn = session.hasSession(),
           email = st?.email ?: session.email(),
+          tier = if (st?.authenticated == true) st.tier else it.tier.takeIf { session.hasSession() },
+          remainingDaily = (if (st?.authenticated == true) st.remainingDaily else null) ?: it.remainingDaily.takeIf { session.hasSession() },
+          dailyLimit = (if (st?.authenticated == true) st.dailyLimit else null) ?: it.dailyLimit.takeIf { session.hasSession() },
         )
       }
     }
@@ -132,12 +136,54 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     null
   }
 
+  /** Creates an account. Returns null when the confirmation email is on its way, or the error to show. */
+  suspend fun signUp(email: String, password: String): String? = withContext(Dispatchers.IO) {
+    val result = account.signup(email, password)
+    if (result.ok) null else result.message
+  }
+
+  /** Requests a password reset email. Returns null on success, or the error to show. */
+  suspend fun requestReset(email: String): String? = withContext(Dispatchers.IO) {
+    val result = account.requestReset(email)
+    if (result.ok) null else result.message
+  }
+
+  /**
+   * Permanently deletes the signed-in account on the server, then signs out and clears the
+   * conversations saved on this phone. Returns null on success, or the error to show.
+   */
+  suspend fun deleteAccount(): String? = withContext(Dispatchers.IO) {
+    var token = currentAccessToken()
+      ?: return@withContext if (session.hasSession()) "Couldn't confirm your sign-in. Check your connection and try again."
+      else "Sign in again to delete your account."
+    var result = account.deleteAccount(token)
+    if (result.httpStatus == 401 && session.refreshToken() != null) {
+      // An expired access token: refresh once and try again.
+      session.invalidateAccess()
+      token = currentAccessToken() ?: return@withContext "Sign in again to delete your account."
+      result = account.deleteAccount(token)
+    }
+    if (!result.ok) return@withContext result.message
+    session.clear()
+    withContext(Dispatchers.Main) {
+      stopGenerating()
+      threads.clear()
+      newChat()
+      _state.update { it.copy(threads = emptyList(), signedIn = false, email = null, tier = null,
+        remainingDaily = null, dailyLimit = null) }
+      notify("Your SOLO AI account was deleted")
+      checkService()
+    }
+    store.clear()
+    null
+  }
+
   fun signOut() {
     val access = session.accessToken()
     val refresh = session.refreshToken()
     session.clear()
     stopGenerating()
-    _state.update { it.copy(signedIn = false, email = null, remainingDaily = null, dailyLimit = null) }
+    _state.update { it.copy(signedIn = false, email = null, tier = null, remainingDaily = null, dailyLimit = null) }
     viewModelScope.launch(Dispatchers.IO) { account.logout(access, refresh) }
     notify("Signed out")
     checkService()
@@ -256,7 +302,8 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     if (r.ok) {
       conversation.commit(sent, r.reply)
       val reply = ChatMessage(UUID.randomUUID().toString(), Role.SOLO, r.reply,
-        requestId = if (signedIn) sent.requestId else null, truncated = r.truncated)
+        requestId = if (signedIn) sent.requestId else null, truncated = r.truncated,
+        sources = r.sources.map { Source(it.title, it.url) })
       val messages = current + reply
       _state.update {
         it.copy(messages = messages, sending = false, streamingText = "",

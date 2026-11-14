@@ -28,6 +28,63 @@ public final class SoloApi {
     void onDelta(String text);
   }
 
+  /** A web page the reply drew on (Google Search grounding). HTTPS only. */
+  public static final class Source {
+    public final String title;
+    public final String url;
+
+    public Source(String title, String url) {
+      this.title = title;
+      this.url = url;
+    }
+  }
+
+  static final int MAX_SOURCES = 8;
+  static final int MAX_SOURCE_TITLE = 200;
+  static final int MAX_SOURCE_URL = 2048;
+
+  /** Reads {@code sources: [{title, url}]}, keeping only well-formed https links (max 8). */
+  static java.util.List<Source> parseSources(JSONObject json) {
+    java.util.List<Source> out = new java.util.ArrayList<>();
+    org.json.JSONArray array = json == null ? null : json.optJSONArray("sources");
+    if (array == null) return out;
+    for (int i = 0; i < array.length() && out.size() < MAX_SOURCES; i++) {
+      JSONObject item = array.optJSONObject(i);
+      if (item == null) continue;
+      String url = item.optString("url", "").trim();
+      if (!isSafeSourceUrl(url)) continue;
+      String title = item.optString("title", "").replaceAll("[\\x00-\\x1f\\x7f]", " ").trim();
+      if (title.isEmpty()) title = host(url);
+      if (title.length() > MAX_SOURCE_TITLE) title = title.substring(0, MAX_SOURCE_TITLE);
+      boolean duplicate = false;
+      for (Source s : out) if (s.url.equals(url)) { duplicate = true; break; }
+      if (!duplicate) out.add(new Source(title, url));
+    }
+    return out;
+  }
+
+  static boolean isSafeSourceUrl(String url) {
+    if (url == null || url.length() > MAX_SOURCE_URL || url.matches(".*[\\s\\x00-\\x1f\\x7f].*")) return false;
+    try {
+      java.net.URI uri = new java.net.URI(url);
+      return "https".equalsIgnoreCase(uri.getScheme()) && uri.getHost() != null && !uri.getHost().isEmpty()
+          && uri.getUserInfo() == null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /** The site name shown on a source chip, e.g. {@code abc.net.au}. */
+  public static String host(String url) {
+    try {
+      String host = new java.net.URI(url).getHost();
+      if (host == null) return url;
+      return host.startsWith("www.") ? host.substring(4) : host;
+    } catch (Exception e) {
+      return url;
+    }
+  }
+
   /** The outcome of one chat request. */
   public static final class Result {
     public final boolean ok;
@@ -40,9 +97,11 @@ public final class SoloApi {
     public final boolean truncated;
     /** For failures after streaming started: the text received before it stopped. */
     public final String partial;
+    /** Web pages the reply drew on; empty when none. Never null. */
+    public final java.util.List<Source> sources;
 
     private Result(boolean ok, int status, String reply, String error, String code, Integer remainingDaily,
-        boolean truncated, String partial) {
+        boolean truncated, String partial, java.util.List<Source> sources) {
       this.ok = ok;
       this.status = status;
       this.reply = reply;
@@ -51,6 +110,8 @@ public final class SoloApi {
       this.remainingDaily = remainingDaily;
       this.truncated = truncated;
       this.partial = partial;
+      this.sources = sources == null ? java.util.Collections.<Source>emptyList()
+          : java.util.Collections.unmodifiableList(sources);
     }
 
     static Result success(int status, String reply, Integer remainingDaily) {
@@ -58,7 +119,12 @@ public final class SoloApi {
     }
 
     static Result success(int status, String reply, Integer remainingDaily, boolean truncated) {
-      return new Result(true, status, reply, null, null, remainingDaily, truncated, null);
+      return success(status, reply, remainingDaily, truncated, null);
+    }
+
+    static Result success(int status, String reply, Integer remainingDaily, boolean truncated,
+        java.util.List<Source> sources) {
+      return new Result(true, status, reply, null, null, remainingDaily, truncated, null, sources);
     }
 
     static Result failure(int status, String error, String code) {
@@ -66,7 +132,7 @@ public final class SoloApi {
     }
 
     static Result failure(int status, String error, String code, String partial) {
-      return new Result(false, status, null, error, code, null, false, partial);
+      return new Result(false, status, null, error, code, null, false, partial, null);
     }
   }
 
@@ -239,7 +305,7 @@ public final class SoloApi {
       case "done": {
         Result r = interpret(200, data, null);
         if (!r.ok) return Result.failure(200, r.error, r.code, partial.toString());
-        return Result.success(200, r.reply, r.remainingDaily, json.optBoolean("truncated", false));
+        return Result.success(200, r.reply, r.remainingDaily, json.optBoolean("truncated", false), r.sources);
       }
       case "error": {
         String error = json.optString("error", "SOLO AI couldn't finish the reply.");
@@ -268,7 +334,7 @@ public final class SoloApi {
       if (usage != null && usage.has("remaining_daily") && !usage.isNull("remaining_daily")) {
         remaining = usage.optInt("remaining_daily");
       }
-      return Result.success(status, reply.trim(), remaining, json.optBoolean("truncated", false));
+      return Result.success(status, reply.trim(), remaining, json.optBoolean("truncated", false), parseSources(json));
     }
     String error = json == null ? null : json.optString("error", null);
     String code = json == null ? null : json.optString("code", null);

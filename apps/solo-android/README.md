@@ -9,6 +9,9 @@ no provider keys. This is separate from `android-app/`, which is the WrightWayz 
 - **Streaming conversation:** replies appear as SOLO writes them, with an animated gold and
   blue "aura" while it thinks. **Stop** halts a reply; a stopped reply is shown, marked
   "Stopped", and never joins the history.
+- **Answers with sources:** when the server grounds a reply in Google Search, its web
+  pages appear as tappable chips under the reply (https only, at most 8) and are saved
+  with the conversation.
 - **Formatted answers:** headings, lists, quotes, bold and italic text, inline code, code
   blocks with **Copy code**, and https-only links, rendered natively. The parser is safe on
   partial streamed text.
@@ -19,12 +22,14 @@ no provider keys. This is separate from `android-app/`, which is the WrightWayz 
   device transfer, and removed on uninstall. Settings can delete them all.
 - **Voice input:** the system speech-to-text intent. The app never records audio and has
   no microphone permission.
-- **Accounts:** an invite-only sign-in sheet that appears only when the server enables app
-  sign-in. The access token is kept in memory. The refresh token is encrypted with a
+- **Accounts:** sign in, **create a free account** (email confirmation) and **reset a
+  password**, all in one sheet that appears only when the server enables app sign-in.
+  Create account appears only when the server reports `signupEnabled`. The access token is kept in memory. The refresh token is encrypted with a
   non-exportable Android Keystore AES-GCM key. A temporary error never signs the user out,
   and a refresh can't undo a sign-out.
-- **Settings:** account details and messages left today, sign out, delete conversations,
-  request account deletion, privacy, terms, contact, open-source licences and version.
+- **Settings:** account details, plan and messages left today, sign out, delete
+  conversations, **delete account** (in the app, with confirmation; also clears this
+  phone's conversations), request deletion by email, privacy, terms, contact, open-source licences and version.
 - **Design:** branded splash screen, the approved SOLO AI icon (adaptive, round and
   themed), the bundled Inter typeface (SIL OFL; licence in `res/raw`), edge-to-edge
   layout, TalkBack labels and 48dp targets.

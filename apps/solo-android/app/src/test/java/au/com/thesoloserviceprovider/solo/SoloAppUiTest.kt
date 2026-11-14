@@ -50,6 +50,7 @@ class SoloAppUiTest {
   private val accountsOn = AtomicBoolean(false)
   private val signedIn = AtomicBoolean(false)
   private val accountDown = AtomicBoolean(false)
+  private val signupOn = AtomicBoolean(false)
   @Volatile private var chatResponse: Array<String> = json(200, """{"reply":"Hello from SOLO."}""")
   private val chatCalls = AtomicInteger()
 
@@ -100,11 +101,20 @@ class SoloAppUiTest {
         path == "/api/solo-auth" && method == "GET" && accountDown.get() ->
           json(503, """{"enabled":true,"authenticated":false,"chatEnabled":false,"error":"Account service is temporarily unavailable.","code":"auth_unavailable"}""")
         path == "/api/solo-auth" && method == "GET" -> json(200,
-          if (signedIn.get()) """{"enabled":true,"authenticated":true,"chatEnabled":true,"user":{"id":"u","email":"pilot@example.test"},"usage":{"remaining_daily":20,"daily_limit":20}}"""
-          else """{"enabled":true,"authenticated":false,"chatEnabled":false}""")
-        path == "/api/solo-auth" -> {
-          signedIn.set(true)
-          json(200, """{"enabled":true,"authenticated":true,"chatEnabled":true,"user":{"id":"u","email":"pilot@example.test"},"session":{"access_token":"access-1","refresh_token":"refresh-1","expires_in":3600,"token_type":"bearer"}}""")
+          if (signedIn.get()) """{"enabled":true,"authenticated":true,"chatEnabled":true,"signupEnabled":${signupOn.get()},"user":{"id":"u","email":"pilot@example.test"},"usage":{"remaining_daily":10,"daily_limit":10,"tier":"free"}}"""
+          else """{"enabled":true,"authenticated":false,"chatEnabled":false,"signupEnabled":${signupOn.get()}}""")
+        path == "/api/solo-auth" -> when (JSONObject(body).optString("action")) {
+          "signup" -> json(200, """{"enabled":true,"authenticated":false,"chatEnabled":false,"signup":"check_email"}""")
+          "request_reset" -> json(200, """{"enabled":true,"authenticated":false,"chatEnabled":false,"reset":"check_email"}""")
+          "delete_account" -> {
+            signedIn.set(false)
+            json(200, """{"deleted":true,"enabled":true,"authenticated":false,"chatEnabled":false}""")
+          }
+          "logout" -> { signedIn.set(false); json(200, """{"enabled":true,"authenticated":false,"chatEnabled":false}""") }
+          else -> {
+            signedIn.set(true)
+            json(200, """{"enabled":true,"authenticated":true,"chatEnabled":true,"user":{"id":"u","email":"pilot@example.test"},"session":{"access_token":"access-1","refresh_token":"refresh-1","expires_in":3600,"token_type":"bearer"}}""")
+          }
         }
         path == "/api/solo-report" -> json(200, """{"ok":true,"code":"reported"}""")
         else -> arrayOf("404", "text/plain", "not found")
@@ -140,6 +150,16 @@ class SoloAppUiTest {
 
   private fun lastRequest(path: String): TinyHttpServer.Seen? = synchronized(server!!.requests) {
     server!!.requests.lastOrNull { it.path == path && it.body.isNotEmpty() && it.body != "{}" }
+  }
+
+  private fun lastAction(action: String): TinyHttpServer.Seen? = synchronized(server!!.requests) {
+    server!!.requests.lastOrNull { it.path == "/api/solo-auth" && it.body.contains("\"action\":\"$action\"") }
+  }
+
+  private fun signIn() {
+    compose.onNodeWithTag("email").performTextInput("pilot@example.test")
+    compose.onNodeWithTag("password").performTextInput("correct horse battery")
+    compose.onNodeWithTag("sign-in").performClick()
   }
 
   private fun send(text: String) {
@@ -193,7 +213,6 @@ class SoloAppUiTest {
     waitForText("Plan my week")
     send("Plan my week for a cleaning business")
     waitForText("Here is a plan.")
-    shot("2-conversation")
     assertEquals(1, chatCalls.get())
     compose.onNodeWithContentDescription("Regenerate reply").performClick()
     compose.waitUntil(20000) { chatCalls.get() == 2 }
@@ -277,5 +296,95 @@ class SoloAppUiTest {
     compose.onNodeWithText("Write a follow-up").performClick()
     waitForText("garden refresh")
     shot("3-follow-up")
+  }
+
+  @Test fun aReplyShowsItsSourcesAsLinks() {
+    chatResponse = arrayOf("200", "text/event-stream",
+      "event: delta\ndata: {\"text\":\"You must register for GST\"}\n\n" +
+        "event: done\ndata: " + JSONObject().put("reply",
+          "You must register for **GST** once your GST turnover reaches **\$75,000** a year.\n\n" +
+            "1. Check your turnover for the past 12 months\n" +
+            "2. Register through Online services for business\n" +
+            "3. Add GST to your prices and issue tax invoices")
+          .put("sources", org.json.JSONArray()
+            .put(JSONObject().put("title", "Registering for GST").put("url", "https://www.ato.gov.au/businesses-and-organisations/gst-excise-and-indirect-taxes/gst/registering-for-gst"))
+            .put(JSONObject().put("title", "Register for GST").put("url", "https://business.gov.au/registrations/register-for-taxes/register-for-goods-and-services-tax-gst"))
+            .put(JSONObject().put("title", "Not https").put("url", "http://example.test/")))
+          .toString() + "\n\n")
+    start()
+    waitForText("Plan my week")
+    send("Do I need to register for GST?")
+    waitForText("75,000")
+    waitForText("Sources")
+    compose.onNodeWithText("ato.gov.au", useUnmergedTree = true).assertExists()
+    compose.onNodeWithText("business.gov.au", useUnmergedTree = true).assertExists()
+    compose.onNodeWithText("Not https", useUnmergedTree = true).assertDoesNotExist()
+    waitForDescription("Source 1: Registering for GST, from ato.gov.au")
+    shot("2-conversation")
+    compose.waitUntil(20000) { historyText()?.contains("register-for-goods-and-services-tax-gst") == true }
+  }
+
+  @Test fun createAnAccountThenCheckEmail() {
+    accountsOn.set(true)
+    signupOn.set(true)
+    start()
+    waitForText("Create a free account to start")
+    compose.onNodeWithTag("status-action").performClick()
+    waitForText("Create your free account")
+    compose.onNodeWithTag("email").performTextInput("new@example.test")
+    compose.onNodeWithTag("password").performTextInput("short")
+    compose.onNodeWithTag("create-account").performClick()
+    waitForText("Use at least 8 characters")
+    assertEquals("a short password never reaches the server", null, lastAction("signup"))
+    compose.onNodeWithTag("password").performTextInput(" but now long enough")
+    compose.onNodeWithTag("create-account").performClick()
+    waitForText("Check your email")
+    waitForText("new@example.test")
+    val body = JSONObject(lastAction("signup")!!.body)
+    assertEquals("new@example.test", body.getString("email"))
+    assertEquals("android", lastAction("signup")!!.headers["x-solo-client"])
+    assertEquals("nobody is signed in until the email is confirmed", null, storedRefresh())
+  }
+
+  @Test fun forgotPasswordSendsAResetEmail() {
+    accountsOn.set(true)
+    signupOn.set(true)
+    start()
+    waitForText("Create a free account to start")
+    compose.onNodeWithTag("status-sign-in").performClick()
+    compose.onNodeWithTag("forgot-password").performClick()
+    waitForText("Reset your password")
+    compose.onNodeWithTag("email").performTextInput("pilot@example.test")
+    compose.onNodeWithTag("send-reset").performClick()
+    waitForText("Check your email")
+    assertFalse(JSONObject(lastAction("request_reset")!!.body).has("password"))
+  }
+
+  @Test fun deleteAccountSignsOutAndClearsThisPhone() {
+    accountsOn.set(true)
+    signupOn.set(true)
+    start()
+    waitForText("Create a free account to start")
+    compose.onNodeWithTag("status-sign-in").performClick()
+    signIn()
+    waitForText("Plan my week")
+    chatResponse = json(200, """{"reply":"Saved reply.","requestId":"x"}""")
+    send("Remember this")
+    waitForText("Saved reply.")
+    compose.waitUntil(20000) { historyText()?.contains("Remember this") == true }
+
+    compose.onNodeWithContentDescription("Conversations and settings").performClick()
+    waitForText("Settings and account")
+    compose.onNodeWithText("Settings and account").performClick()
+    waitForText("Free account")
+    compose.onNodeWithTag("delete-account").performClick()
+    waitForText("Delete your SOLO AI account?")
+    compose.onNodeWithTag("confirm-delete-account").performClick()
+    waitForText("Create a free account to start")
+    val delete = lastAction("delete_account")!!
+    assertEquals("Bearer access-1", delete.headers["authorization"])
+    assertEquals("DELETE", JSONObject(delete.body).getString("confirm"))
+    compose.waitUntil(20000) { storedRefresh() == null && historyText() == null }
+    compose.onNodeWithText("Saved reply.").assertDoesNotExist()
   }
 }

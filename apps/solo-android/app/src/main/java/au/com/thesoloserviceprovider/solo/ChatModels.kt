@@ -23,7 +23,14 @@ data class ChatMessage(
   val truncated: Boolean = false,
   /** For FAILED user messages: the server's error text. */
   val error: String? = null,
+  /** Web pages a reply drew on (Google Search). HTTPS only. */
+  val sources: List<Source> = emptyList(),
 )
+
+/** A web page a reply drew on. */
+data class Source(val title: String, val url: String) {
+  val site: String get() = SoloApi.host(url)
+}
 
 /** One saved conversation. [history] is exactly what the API contract allows to be resent. */
 data class ChatThread(
@@ -41,6 +48,10 @@ data class UiState(
   val statusMessage: String? = null,
   /** True only when the server reports that app sign-in is switched on. */
   val accountsEnabled: Boolean = false,
+  /** True when the server accepts new accounts from the app. */
+  val signupEnabled: Boolean = false,
+  /** "member" (early access) or "free"; null when unknown. */
+  val tier: String? = null,
   val signedIn: Boolean = false,
   val email: String? = null,
   val remainingDaily: Int? = null,

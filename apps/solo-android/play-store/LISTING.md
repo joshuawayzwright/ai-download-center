@@ -12,7 +12,7 @@ listing**). Use these only once the conditions in "Before you upload" are met.
 | Website | https://thesoloserviceprovider.com.au/solo-ai.html | |
 | Privacy policy | https://thesoloserviceprovider.com.au/privacy.html | |
 
-## Full description (1,646 / 4,000 characters)
+## Full description (1,718 / 4,000 characters)
 
 ```
 SOLO AI is the AI assistant from The Solo Service Provider, built for solo operators, freelancers and small teams who want clear answers and practical help without the noise.
@@ -24,6 +24,10 @@ WHAT SOLO AI HELPS WITH
 • Explain unfamiliar topics in plain English
 • Suggest AI tools that suit the way you work
 
+UP-TO-DATE ANSWERS WITH SOURCES
+• When a question needs current information, SOLO searches Google and shows the web pages it used
+• Tap a source to check it for yourself
+
 DESIGNED FOR YOUR PHONE
 • Replies stream in as SOLO writes them, and you can stop at any time
 • Clean formatting: headings, lists, bold text and code blocks with one-tap copy
@@ -32,14 +36,14 @@ DESIGNED FOR YOUR PHONE
 • Your conversations are saved on your phone so you can pick up where you left off
 
 HONEST AND IN YOUR CONTROL
-• SOLO says when it isn't sure and never claims to have browsed the web or taken actions for you
+• SOLO says when it isn't sure and never claims to have taken actions for you
 • Report any reply that's harmful or wrong, right inside the app
-• Delete one conversation or all of them at any time
+• Delete one conversation or all of them at any time, and delete your account from Settings
 • No ads and no analytics in the app
 • Your sign-in is encrypted on your device and excluded from backups
 
-EARLY ACCESS
-SOLO AI is in early access for invited accounts, with a daily message allowance. Sign in with the email address you were invited with. Ask about early access at hello@thesoloserviceprovider.com.au.
+FREE TO START
+Create a free account with your email address to get free messages every day.
 
 AI replies can be wrong, so check anything important. Don't share passwords, payment details or other sensitive information.
 
@@ -66,8 +70,20 @@ available. Replace it if you have a licensed copy.
 
 ## Before you upload
 
-- SOLO AI chat must work for testers: the production endpoint is deployed, and #34 and #52
-  are merged and enabled. Otherwise this listing would describe features that aren't
-  available, which breaks Play's policies and the brand rule against presenting unfinished
-  features as live.
-- The privacy notice section (solo-commerce PR #39) must be deployed.
+This text describes version 1.1.0. Use it only once these are live on production:
+
+- **Free sign-up.** Creating an account, the confirmation email and password reset all work
+  for a new address. That needs custom SMTP on the commercial Supabase project; Supabase's
+  built-in email only reaches project team members.
+- **Answers with sources.** Google Search grounding is switched on in `/api/solo-chat`.
+- **Account deletion.** `delete_account` is deployed.
+- **Privacy notice.** It covers public accounts, Google Search grounding and in-app account
+  deletion.
+
+Until then, keep using the 1.0.0 text (invite-only early access, no sources). Listing
+features that don't work yet breaks Play's policies and the brand rule against presenting
+unfinished features as live.
+
+**Play Console data safety and account deletion.** The app creates accounts, so Play needs
+an account deletion URL as well as the in-app option, for example
+https://thesoloserviceprovider.com.au/privacy.html#solo-ai with the deletion steps.

@@ -69,6 +69,29 @@ Verified 12 November 2026 (AEST):
   `/api/solo-auth` (`X-Solo-Client: android`) and `POST /api/solo-report`. The app shows
   sign-in and Report only when `GET /api/solo-auth` reports `enabled: true`.
 
+### Public accounts, sources and account deletion (app 1.1.0)
+
+App 1.1.0 codes against these additions. They are served by the server change that adds
+public sign-up and Google Search grounding; until that is deployed the app falls back to
+1.0 behaviour (no Create account button, no sources).
+
+`/api/solo-auth`, native mode only (`X-Solo-Client: android`, no `Origin` or `Cookie`):
+
+| Request | Success | Errors |
+| --- | --- | --- |
+| `GET` | adds `signupEnabled: boolean`; when signed in, `usage.tier` is `"member"` or `"free"` | as before |
+| `POST {action:"signup", email, password}` | 200 `{enabled:true, authenticated:false, chatEnabled:false, signup:"check_email"}`; nobody is signed in until the emailed link is opened | 400 `invalid_email`, 400 `weak_password` (8–72 characters), 429 `auth_rate_limited` with `Retry-After`, 503 `signup_disabled` |
+| `POST {action:"request_reset", email}` | 200 `{..., reset:"check_email"}`, the same whether or not the account exists | 429, 503 |
+| `POST {action:"login", ...}` for an unconfirmed address | | 403 `email_not_confirmed`: "Confirm your email first. Open the link we sent you, then sign in." |
+| `POST {action:"delete_account", confirm:"DELETE"}` with `Authorization: Bearer <access>` | 200 `{deleted:true, enabled:true, authenticated:false, chatEnabled:false}` | 401 (the app refreshes once and retries) |
+
+The `error` text is shown to the user as sent.
+
+`/api/solo-chat`: the `done` SSE event and the non-stream JSON reply may include
+`sources: [{title, url}]` (0–8 items). The app keeps only `https` URLs without user info,
+trims titles to 200 characters, drops duplicates, shows them as chips under the reply,
+saves them with the conversation and re-checks them when history is loaded.
+
 ## Shared implementation plan
 Follow [issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31)
 for verified progress and the single current release checklist. Customer sessions,

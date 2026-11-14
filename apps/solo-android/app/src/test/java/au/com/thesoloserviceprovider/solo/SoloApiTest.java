@@ -162,4 +162,42 @@ public class SoloApiTest {
     assertEquals("interrupted", r.code);
     assertEquals("Half an ans", r.partial);
   }
+
+  @Test public void readsSourcesFromAJsonReply() {
+    SoloApi.Result r = SoloApi.interpret(200, "{\"reply\":\"ok\",\"sources\":["
+        + "{\"title\":\"ATO: Small business\",\"url\":\"https://www.ato.gov.au/businesses\"},"
+        + "{\"title\":\"Plain http\",\"url\":\"http://example.test/a\"},"
+        + "{\"title\":\"Script\",\"url\":\"javascript:alert(1)\"},"
+        + "{\"title\":\"\",\"url\":\"https://business.gov.au/grants\"},"
+        + "{\"title\":\"Duplicate\",\"url\":\"https://www.ato.gov.au/businesses\"}]}", null);
+    assertTrue(r.ok);
+    assertEquals(2, r.sources.size());
+    assertEquals("ATO: Small business", r.sources.get(0).title);
+    assertEquals("https://www.ato.gov.au/businesses", r.sources.get(0).url);
+    assertEquals("business.gov.au", r.sources.get(1).title);
+    assertEquals("ato.gov.au", SoloApi.host("https://www.ato.gov.au/x"));
+  }
+
+  @Test public void sourcesAreCappedAndTitlesTrimmed() {
+    StringBuilder items = new StringBuilder();
+    String longTitle = new String(new char[300]).replace('\0', 'a');
+    for (int i = 0; i < 12; i++) {
+      if (i > 0) items.append(',');
+      items.append("{\"title\":\"").append(longTitle).append("\",\"url\":\"https://s").append(i).append(".example.test/\"}");
+    }
+    SoloApi.Result r = SoloApi.interpret(200, "{\"reply\":\"ok\",\"sources\":[" + items + "]}", null);
+    assertEquals(SoloApi.MAX_SOURCES, r.sources.size());
+    assertEquals(SoloApi.MAX_SOURCE_TITLE, r.sources.get(0).title.length());
+    assertTrue(SoloApi.interpret(200, "{\"reply\":\"ok\"}", null).sources.isEmpty());
+    assertFalse(SoloApi.isSafeSourceUrl("https://user:pw@example.test/"));
+  }
+
+  @Test public void streamDoneCarriesSources() throws Exception {
+    SoloApi.Result r = stream(sse("event: delta\ndata: {\"text\":\"Rates\"}",
+        "event: done\ndata: {\"reply\":\"Rates\",\"sources\":[{\"title\":\"RBA\",\"url\":\"https://www.rba.gov.au/\"}]}"),
+        new StringBuilder());
+    assertTrue(r.ok);
+    assertEquals(1, r.sources.size());
+    assertEquals("RBA", r.sources.get(0).title);
+  }
 }

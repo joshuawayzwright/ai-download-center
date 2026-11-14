@@ -65,6 +65,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
@@ -117,6 +118,8 @@ fun SoloApp(vm: ChatViewModel) {
   val snackbar = remember { SnackbarHostState() }
   var showSettings by rememberSaveable { mutableStateOf(false) }
   var showSignIn by rememberSaveable { mutableStateOf(false) }
+  var accountMode by rememberSaveable { mutableStateOf(AccountMode.SIGN_IN) }
+  fun openAccount(mode: AccountMode) { accountMode = mode; showSignIn = true }
   var reportTarget by remember { mutableStateOf<ChatMessage?>(null) }
 
   LaunchedEffect(Unit) { vm.notices.collect { snackbar.showSnackbar(it) } }
@@ -126,9 +129,11 @@ fun SoloApp(vm: ChatViewModel) {
     SettingsScreen(
       state = state,
       onBack = { showSettings = false },
-      onSignIn = { showSettings = false; showSignIn = true },
+      onSignIn = { showSettings = false; openAccount(AccountMode.SIGN_IN) },
+      onCreateAccount = { showSettings = false; openAccount(AccountMode.CREATE) },
       onSignOut = vm::signOut,
       onClearHistory = vm::clearAllHistory,
+      onDeleteAccount = vm::deleteAccount,
     )
   } else {
     ModalNavigationDrawer(
@@ -154,14 +159,22 @@ fun SoloApp(vm: ChatViewModel) {
         onRegenerate = vm::regenerate,
         onSpeak = vm::toggleSpeak,
         onReport = { reportTarget = it },
-        onSignIn = { showSignIn = true },
+        onSignIn = { openAccount(AccountMode.SIGN_IN) },
+        onCreateAccount = { openAccount(AccountMode.CREATE) },
         onRecheck = vm::checkService,
         onCopied = { copy(context, it); if (Build.VERSION.SDK_INT < 33) scope.launch { snackbar.showSnackbar("Copied") } },
       )
     }
   }
 
-  if (showSignIn) SignInSheet(onDismiss = { showSignIn = false }, onSignIn = vm::signIn)
+  if (showSignIn) SignInSheet(
+    signupEnabled = state.signupEnabled,
+    startMode = accountMode,
+    onDismiss = { showSignIn = false },
+    onSignIn = vm::signIn,
+    onSignUp = vm::signUp,
+    onReset = vm::requestReset,
+  )
   reportTarget?.let { target ->
     ReportSheet(onDismiss = { reportTarget = null }, onSend = { reason, note -> vm.report(target, reason, note); reportTarget = null })
   }
@@ -181,6 +194,7 @@ private fun ChatScaffold(
   onSpeak: (ChatMessage) -> Unit,
   onReport: (ChatMessage) -> Unit,
   onSignIn: () -> Unit,
+  onCreateAccount: () -> Unit,
   onRecheck: () -> Unit,
   onCopied: (String) -> Unit,
 ) {
@@ -244,7 +258,7 @@ private fun ChatScaffold(
   ) { padding ->
     Box(Modifier.fillMaxSize().padding(padding)) {
       if (state.messages.isEmpty() && !state.sending) {
-        Welcome(state, onSuggestion = { onSend(it) }, onSignIn = onSignIn, onRecheck = onRecheck)
+        Welcome(state, onSuggestion = { onSend(it) }, onSignIn = onSignIn, onCreateAccount = onCreateAccount, onRecheck = onRecheck)
       } else {
         LazyColumn(
           state = listState,
@@ -264,7 +278,8 @@ private fun ChatScaffold(
                 onCopy = { onCopied(MarkdownText.plain(m.text)) },
                 onCopyCode = onCopied,
                 onSpeak = { onSpeak(m) },
-                onShare = { share(context, MarkdownText.plain(m.text)) },
+                onShare = { share(context, shareText(m)) },
+                onOpenSource = { url -> openLink(context, url) },
                 onRegenerate = onRegenerate,
                 onReport = { onReport(m) },
               )
@@ -272,7 +287,7 @@ private fun ChatScaffold(
           }
           if (state.sending) item(key = "streaming") { StreamingMessage(state.streamingText, onCopied) }
           if (!state.canChat && state.service != ServiceState.CHECKING) {
-            item(key = "status") { StatusCard(state, onSignIn, onRecheck) }
+            item(key = "status") { StatusCard(state, onSignIn, onCreateAccount, onRecheck) }
           }
         }
       }
@@ -284,7 +299,7 @@ private fun subtitle(state: UiState): String = when (state.service) {
   ServiceState.CHECKING -> "Connecting…"
   ServiceState.READY -> state.remainingDaily?.let { if (it == 1) "1 message left today" else "$it messages left today" }
     ?: "Your AI guide. Always on."
-  ServiceState.SIGNED_OUT -> "Sign in to start"
+  ServiceState.SIGNED_OUT -> if (state.signupEnabled) "Create a free account to start" else "Sign in to start"
   ServiceState.OFFLINE -> "Offline"
   ServiceState.UNVERIFIED -> "Reconnecting…"
   ServiceState.CLOSED -> "Early access"
@@ -306,7 +321,7 @@ private val SUGGESTIONS = listOf(
 )
 
 @Composable
-private fun Welcome(state: UiState, onSuggestion: (String) -> Unit, onSignIn: () -> Unit, onRecheck: () -> Unit) {
+private fun Welcome(state: UiState, onSuggestion: (String) -> Unit, onSignIn: () -> Unit, onCreateAccount: () -> Unit, onRecheck: () -> Unit) {
   LazyColumn(
     Modifier.fillMaxSize(),
     contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
@@ -337,7 +352,7 @@ private fun Welcome(state: UiState, onSuggestion: (String) -> Unit, onSignIn: ()
         }
       }
     } else if (state.service != ServiceState.CHECKING) {
-      item { StatusCard(state, onSignIn, onRecheck) }
+      item { StatusCard(state, onSignIn, onCreateAccount, onRecheck) }
     } else {
       item { CircularProgressIndicator(color = Solo.Gold, strokeWidth = 2.dp, modifier = Modifier.padding(24.dp).size(28.dp)) }
     }
@@ -358,9 +373,13 @@ private fun SuggestionCard(s: Suggestion, modifier: Modifier, onClick: () -> Uni
 }
 
 @Composable
-fun StatusCard(state: UiState, onSignIn: () -> Unit, onRecheck: () -> Unit) {
+fun StatusCard(state: UiState, onSignIn: () -> Unit, onCreateAccount: () -> Unit, onRecheck: () -> Unit) {
   val context = LocalContext.current
-  val (title, body, action) = when (state.service) {
+  val freeSignup = state.service == ServiceState.SIGNED_OUT && state.signupEnabled
+  val (title, body, action) = when {
+    freeSignup -> Triple("Create a free account to start",
+      state.statusMessage ?: "Get free messages with SOLO AI every day. Nothing is sent until you sign in.", "Create account")
+    else -> when (state.service) {
     ServiceState.SIGNED_OUT -> Triple("Sign in to chat with SOLO AI",
       state.statusMessage ?: "SOLO AI is in early access for invited accounts. Nothing is sent until you sign in.", "Sign in")
     ServiceState.OFFLINE -> Triple("Can't reach SOLO AI", "Check your connection, then try again.", "Try again")
@@ -368,6 +387,7 @@ fun StatusCard(state: UiState, onSignIn: () -> Unit, onRecheck: () -> Unit) {
       "SOLO AI couldn't check your account just now. You're still signed in.", "Try again")
     else -> Triple("SOLO AI chat isn't open yet",
       state.statusMessage ?: "Conversations open when early access reaches your account.", "Express interest")
+    }
   }
   Column(
     Modifier.fillMaxWidth().clip(RoundedCornerShape(22.dp)).background(Solo.Surface)
@@ -379,15 +399,24 @@ fun StatusCard(state: UiState, onSignIn: () -> Unit, onRecheck: () -> Unit) {
     Text(body, style = MaterialTheme.typography.bodyMedium, color = Solo.TextMuted)
     Button(
       onClick = {
-        when (state.service) {
+        when {
+          freeSignup -> onCreateAccount()
+          else -> when (state.service) {
           ServiceState.SIGNED_OUT -> onSignIn()
           ServiceState.OFFLINE, ServiceState.UNVERIFIED -> onRecheck()
           else -> context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(INTEREST)))
+          }
         }
       },
       colors = ButtonDefaults.buttonColors(containerColor = Solo.Gold, contentColor = Solo.OnGold),
       shape = RoundedCornerShape(14.dp),
+      modifier = Modifier.testTag("status-action"),
     ) { Text(action, style = MaterialTheme.typography.labelLarge) }
+    if (freeSignup) {
+      TextButton(onClick = onSignIn, modifier = Modifier.testTag("status-sign-in")) {
+        Text("I already have an account. Sign in", color = Solo.Gold)
+      }
+    }
   }
 }
 
@@ -499,6 +528,21 @@ private fun ConversationDrawer(state: UiState, onNew: () -> Unit, onOpen: (Strin
 fun copy(context: Context, text: String) {
   val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return
   clipboard.setPrimaryClip(ClipData.newPlainText("SOLO AI", text))
+}
+
+/** The reply as plain text, followed by its source links. */
+fun shareText(m: ChatMessage): String {
+  val body = MarkdownText.plain(m.text)
+  if (m.sources.isEmpty()) return body
+  return body + "\n\nSources:\n" + m.sources.joinToString("\n") { it.url }
+}
+
+/** Opens an https link in the browser. Anything else is ignored. */
+fun openLink(context: Context, url: String) {
+  if (!url.startsWith("https://")) return
+  try {
+    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+  } catch (e: android.content.ActivityNotFoundException) { /* no browser installed */ }
 }
 
 fun share(context: Context, text: String) {
