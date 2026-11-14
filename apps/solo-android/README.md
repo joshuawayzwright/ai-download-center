@@ -22,3 +22,7 @@ Open `apps/solo-android` in Android Studio with JDK 17, let Gradle sync, then bu
 6. Test on Samsung S26 Ultra and additional Android devices.
 
 **Do not publish this starter as a finished AI app.**
+
+## SOLO commercial suite preview (25 October 2026)
+
+The native starter on branch `feature/solo-commercial-suite` includes an **Open SOLO Business Tools (preview)** button that opens https://solo-ai-business-command.vercel.app/ in the device browser. This is a navigation link only: the ten web modules are not yet native screens, no mobile purchases are connected and no Android build/AAB has been generated or device-tested for this change. The existing AI Download Centre button and chat API behaviour remain unchanged.
