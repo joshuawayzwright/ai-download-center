@@ -29,7 +29,16 @@ data class ChatMessage(
 
 /** A web page a reply drew on. */
 data class Source(val title: String, val url: String) {
-  val site: String get() = SoloApi.host(url)
+  /**
+   * The website to show. Google Search answers link through a Google redirect host, and their
+   * title is then the real site (for example "rba.gov.au"), so the title is shown instead.
+   */
+  val site: String get() {
+    val host = SoloApi.host(url)
+    return if (host == REDIRECT_HOST || host.endsWith(".$REDIRECT_HOST")) title else host
+  }
+
+  private companion object { const val REDIRECT_HOST = "vertexaisearch.cloud.google.com" }
 }
 
 /** One saved conversation. [history] is exactly what the API contract allows to be resent. */

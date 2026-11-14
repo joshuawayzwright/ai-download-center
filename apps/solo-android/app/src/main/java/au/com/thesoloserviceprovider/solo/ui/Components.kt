@@ -282,14 +282,18 @@ private fun SourcesRow(sources: List<Source>, onOpen: (String) -> Unit) {
           Modifier.widthIn(max = 240.dp).heightIn(min = 48.dp).clip(RoundedCornerShape(14.dp))
             .background(Solo.Surface).border(1.dp, Solo.Outline, RoundedCornerShape(14.dp))
             .clickable(onClickLabel = "Open in browser") { onOpen(src.url) }
-            .semantics(mergeDescendants = true) { contentDescription = "Source ${i + 1}: ${src.title}, from ${src.site}" }
+            .semantics(mergeDescendants = true) {
+              contentDescription = if (src.site == src.title) "Source ${i + 1}: ${src.site}" else "Source ${i + 1}: ${src.title}, from ${src.site}"
+            }
             .padding(horizontal = 12.dp, vertical = 8.dp),
           verticalAlignment = Alignment.CenterVertically,
         ) {
           Text("${i + 1}", style = MaterialTheme.typography.labelMedium, color = Solo.Gold)
           Spacer(Modifier.width(8.dp))
           Column {
-            Text(src.site, style = MaterialTheme.typography.labelSmall, color = Solo.TextMuted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            if (src.site != src.title) {
+              Text(src.site, style = MaterialTheme.typography.labelSmall, color = Solo.TextMuted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
             Text(src.title, style = MaterialTheme.typography.bodySmall, color = Solo.Text, maxLines = 1, overflow = TextOverflow.Ellipsis)
           }
         }

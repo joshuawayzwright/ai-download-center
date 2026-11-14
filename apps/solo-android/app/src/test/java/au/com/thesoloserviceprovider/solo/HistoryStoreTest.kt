@@ -64,4 +64,11 @@ class HistoryStoreTest {
     assertTrue(old[0].sources.isEmpty())
     assertTrue(old[1].sources.isEmpty())
   }
+
+  @Test fun sourceShowsTheRealSiteForGoogleSearchRedirects() {
+    val redirected = Source("rba.gov.au", "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQ")
+    assertEquals("rba.gov.au", redirected.site)
+    val direct = Source("Cash rate", "https://www.rba.gov.au/statistics/cash-rate/")
+    assertEquals("rba.gov.au", direct.site)
+  }
 }
