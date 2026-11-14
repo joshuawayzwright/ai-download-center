@@ -144,7 +144,7 @@ test('signed-out status is local; expired access cookie signals one refresh', as
   const api = setup({ verify: async () => assert.fail('No access token'), status: async () => assert.fail('No identity') });
   const state = await api.request({ method: 'GET', headers: { origin: undefined } });
   assert.equal(state.status, 200);
-  assert.deepEqual(state.body, { enabled: true, authenticated: false, chatEnabled: false });
+  assert.deepEqual(state.body, { enabled: true, authenticated: false, chatEnabled: false, signupEnabled: false });
   const expired = await api.request({ method: 'GET', headers: { cookie: '__Host-solo-refresh=' + REFRESH } });
   assert.equal(expired.status, 401);
   assert.equal(expired.body.code, 'session_expired');
@@ -426,7 +426,7 @@ test('JSON shape, MIME and actual UTF-8 body limits apply before any Auth reques
   const api = setup();
   assert.equal((await api.request({ headers: { 'content-type': 'text/plain' } })).status, 415);
   assert.equal((await api.request({ headers: { 'content-type': 'application/json-extra' } })).status, 415);
-  for (const body of [null, [], 'false', '{', { action: 'signup' }, { action: 'login', email: 'bad', password: 'test' }]) {
+  for (const body of [null, [], 'false', '{', { action: 'unknown' }, { action: 'login', email: 'bad', password: 'test' }]) {
     assert.equal((await api.request({ body })).status, 400);
   }
   const oversized = JSON.stringify({ ...login, extra: '界'.repeat(3000) });
