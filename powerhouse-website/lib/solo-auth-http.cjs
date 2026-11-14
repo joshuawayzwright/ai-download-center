@@ -32,6 +32,18 @@ function readCookie(req, name) {
   }
   return value;
 }
+// Native app clients (SOLO AI for Android) identify themselves with this header and
+// receive results in the JSON body instead of cookies. They must not send Origin or
+// Cookie: a browser cannot send this non-simple header cross-origin without a CORS
+// preflight, which this API never approves. Returns true for the app, false for a browser.
+function nativeClient(req) {
+  const client = req.headers['x-solo-client'];
+  if (client === undefined) return false;
+  if (client !== 'android' || req.headers.origin !== undefined || req.headers.cookie !== undefined) {
+    throw fail(400, 'invalid_client', 'Unsupported account client.');
+  }
+  return true;
+}
 function sameOrigin(req) {
   const origin = req.headers.origin;
   if (!origin && req.method === 'GET') return;
@@ -42,12 +54,12 @@ function sameOrigin(req) {
     throw fail(403, 'invalid_origin', 'Same-origin account access required.');
   }
 }
-async function readBody(req) {
+async function readBody(req, maxBytes = MAX_BODY_BYTES) {
   if (String(req.headers['content-type'] || '').split(';', 1)[0].trim().toLowerCase() !== 'application/json') {
     throw fail(415, 'json_required', 'JSON required.');
   }
   const length = Number(req.headers['content-length'] || 0);
-  if (!Number.isFinite(length) || length < 0 || length > MAX_BODY_BYTES) {
+  if (!Number.isFinite(length) || length < 0 || length > maxBytes) {
     throw fail(413, 'request_too_large', 'Account request is too large.');
   }
   let body = req.body;
@@ -58,15 +70,15 @@ async function readBody(req) {
       for await (const chunk of req) {
         const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
         bytes += buffer.length;
-        if (bytes > MAX_BODY_BYTES) throw fail(413, 'request_too_large', 'Account request is too large.');
+        if (bytes > maxBytes) throw fail(413, 'request_too_large', 'Account request is too large.');
         chunks.push(buffer);
       }
       body = Buffer.concat(chunks, bytes);
     }
     if (typeof body === 'string' || Buffer.isBuffer(body)) {
-      if (Buffer.byteLength(body) > MAX_BODY_BYTES) throw fail(413, 'request_too_large', 'Account request is too large.');
+      if (Buffer.byteLength(body) > maxBytes) throw fail(413, 'request_too_large', 'Account request is too large.');
       body = JSON.parse(body.toString());
-    } else if (Buffer.byteLength(JSON.stringify(body)) > MAX_BODY_BYTES) {
+    } else if (Buffer.byteLength(JSON.stringify(body)) > maxBytes) {
       throw fail(413, 'request_too_large', 'Account request is too large.');
     }
   } catch (error) {
@@ -102,4 +114,4 @@ function setSession(res, session) {
   ]);
 }
 
-module.exports = { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, readBody, authConfig, validSession, setSession };
+module.exports = { REFRESH_COOKIE, reply, fail, clearCookies, readCookie, sameOrigin, nativeClient, readBody, authConfig, validSession, setSession };

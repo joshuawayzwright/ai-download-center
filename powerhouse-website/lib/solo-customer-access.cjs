@@ -234,4 +234,30 @@ async function finalize(identity, { requestId, status, provider, model, inputTok
   return result;
 }
 
-module.exports = { HttpError, parseAccessToken, identityFromSession, verifyCustomer, customerStatus, reserve, finalize };
+const REPORT_REASONS = ['harmful', 'hateful', 'sexual', 'misleading', 'other'];
+
+// Records a customer's report of an AI reply they received. Identity comes from a
+// verified session, never from the request body.
+async function submitReport(identity, { requestId, reason, note, replyText }, options = {}) {
+  const ids = identityParams(identity);
+  const result = await rpc('solo_submit_report', { ...ids,
+    p_request_id: requestId.toLowerCase(), p_reason: reason,
+    p_note: note === undefined ? null : note, p_reply_text: replyText
+  }, options);
+  if (result.ok === true && ['reported', 'already_reported'].includes(result.code)) return result;
+  if (result.code === 'invalid_session') throw sessionError();
+  if (result.code === 'request_not_found') {
+    throw new HttpError(404, 'request_not_found', 'That reply could not be found for this account.');
+  }
+  if (result.code === 'report_limit') {
+    const delay = Number.isInteger(result.retry_after_seconds) && result.retry_after_seconds > 0
+      ? Math.min(result.retry_after_seconds, 86400) : 3600;
+    throw new HttpError(429, 'report_limit', 'You have reached today\'s report limit. Please try again later.',
+      { 'Retry-After': String(delay) });
+  }
+  if (result.code === 'invalid_request') throw new HttpError(400, 'invalid_request', 'Invalid report.');
+  throw usageUnavailable();
+}
+
+module.exports = { HttpError, parseAccessToken, identityFromSession, verifyCustomer, customerStatus, reserve, finalize,
+  submitReport, REPORT_REASONS, UUID };

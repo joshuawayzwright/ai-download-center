@@ -3,7 +3,7 @@
 const access = require('../lib/solo-customer-access.cjs');
 const { customerRelease } = require('../lib/solo-release-policy.cjs');
 const { admitAuthRequest } = require('../lib/solo-auth-admission.cjs');
-const { reply, fail, clearCookies, sameOrigin, readBody, authConfig, validSession } = require('../lib/solo-auth-http.cjs');
+const { reply, fail, clearCookies, sameOrigin, nativeClient, readBody, authConfig, validSession } = require('../lib/solo-auth-http.cjs');
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const FIELDS = {
@@ -15,8 +15,10 @@ const FIELDS = {
 const unavailable = () => fail(503, 'onboarding_unavailable', 'Account setup is temporarily unavailable. Please try again later.');
 const checkEmail = { ok: true, code: 'check_email' };
 
-function capabilities(req, env) {
-  const auth = customerRelease(req, env).authEnabled;
+// The Android app uses the same flows (its own switch, SOLO_NATIVE_AUTH_ENABLED).
+// It keeps no cookies, so nothing here differs for it except the client check.
+function capabilities(req, env, native = false) {
+  const auth = customerRelease(req, env).authEnabled && (!native || env.SOLO_NATIVE_AUTH_ENABLED === 'true');
   const signupEnabled = auth && env.SOLO_CUSTOMER_SIGNUP_ENABLED === 'true';
   const recoveryEnabled = auth && env.SOLO_CUSTOMER_RECOVERY_ENABLED === 'true';
   return { enabled: signupEnabled || recoveryEnabled, signupEnabled, recoveryEnabled };
@@ -117,14 +119,16 @@ function createOnboardingHandler({ env = process.env, fetcher = (...args) => glo
   }
 
   return async (req, res) => {
-    const flags = capabilities(req, env);
+    let flags = capabilities(req, env);
     if (!['GET', 'POST'].includes(req.method)) {
       res.setHeader('Allow', 'GET, POST');
       return reply(res, 405, { ok: false, error: 'Method not allowed.', code: 'method_not_allowed' });
     }
-    let action, session, codeConsumed = false, passwordChanged = false;
+    let action, session, codeConsumed = false, passwordChanged = false, native = false;
     try {
-      sameOrigin(req);
+      native = nativeClient(req);
+      if (!native) sameOrigin(req);
+      flags = capabilities(req, env, native);
       if (req.method === 'GET') return reply(res, 200, flags);
       const raw = await readBody(req);
       action = raw.action;
@@ -168,7 +172,7 @@ function createOnboardingHandler({ env = process.env, fetcher = (...args) => glo
 
       // Recovery credentials exist only for this request; they never become a
       // normal SOLO session. A password change cannot authorize AI membership.
-      clearCookies(res);
+      if (!native) clearCookies(res);
       const updated = await provider('user', { method: 'PUT', token: session.access_token,
         body: { password: body.password } });
       const user = updated.user || updated;
@@ -183,7 +187,7 @@ function createOnboardingHandler({ env = process.env, fetcher = (...args) => glo
     } catch (error) {
       await cleanup(session);
       if (action === 'reset_password' && codeConsumed) {
-        clearCookies(res);
+        if (!native) clearCookies(res);
         return reply(res, 503, { ok: false, sessionInvalidated: true,
           ...(passwordChanged ? { passwordChanged: true } : {}),
           code: passwordChanged ? 'reset_signout_unconfirmed' : 'reset_incomplete',
