@@ -34,7 +34,7 @@ jobs:
         run: ./gradlew :app:lintRelease
       # Unsigned outputs only. The upload key is never stored in this repository.
       - name: Build debug APK and unsigned release bundle
-        run: ./gradlew :app:assembleDebug :app:bundleRelease
+        run: ./gradlew :app:assembleDebug :app:bundleRelease --stacktrace
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -42,6 +42,7 @@ jobs:
           path: |
             apps/solo-android/app/build/reports/
             apps/solo-android/app/build/screenshots/
+            apps/solo-android/build/reports/problems/
           if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:
