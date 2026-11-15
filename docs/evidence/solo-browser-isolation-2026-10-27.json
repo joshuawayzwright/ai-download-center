@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "codeCommit": "057ed6114206fa0b0ab2c2ed094596410f2bdb76",
+  "pullRequest": 34,
+  "checklistIssue": 31,
+  "deployment": {
+    "id": "dpl_CrptDDmWkonFKZ27xibWehkdHqJo",
+    "state": "READY",
+    "environment": "preview",
+    "url": "https://solo-provider-industrial-3j5n9hezq-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "sourceVerified": true,
+    "diagnosticBuildOverride": false,
+    "customerAccessOpen": false
+  },
+  "ci": {
+    "runId": 40497102111,
+    "applicationTests": 158,
+    "databaseTests": 21,
+    "totalTests": 179,
+    "failures": 0,
+    "skipped": 0,
+    "qualityRunId": 40497102226,
+    "qualityResult": "success",
+    "mockedCrossTabTransport": true,
+    "liveSignedInBrowserVerified": false
+  },
+  "httpChecks": [
+    {
+      "method": "GET",
+      "path": "/api/solo-auth",
+      "status": 200,
+      "response": {
+        "enabled": false,
+        "authenticated": false,
+        "chatEnabled": false
+      },
+      "cacheControl": "no-store, private",
+      "pass": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/solo-auth",
+      "case": "refresh",
+      "status": 503,
+      "code": "auth_disabled",
+      "pass": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/solo-chat",
+      "case": "invalid Bearer",
+      "status": 503,
+      "code": "customer_disabled",
+      "pass": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/solo-chat",
+      "case": "expectedUserId without cookie",
+      "status": 503,
+      "code": "customer_disabled",
+      "pass": true
+    }
+  ],
+  "httpMarker": "SOLO_CUSTOMER_CONFIG_DISABLED_PASS",
+  "desktopBrowser": {
+    "browser": "Chrome",
+    "viewport": {
+      "width": 1363,
+      "height": 936
+    },
+    "heroButtonFragment": "conversation",
+    "conversationTopPixels": 100.0625,
+    "headerBottomPixels": 77,
+    "skipLinkFirstTab": true,
+    "skipLinkTopPixels": 8,
+    "skipLinkEnterFocus": "solo-main",
+    "focusAfterCheckAccessAndTab": "solo-chat-transcript",
+    "transcriptRole": "log",
+    "transcriptFocusOutline": "solid",
+    "nextTabFocus": "solo-chat-input",
+    "loginFormHidden": true,
+    "horizontalOverflow": false,
+    "consoleSample": "Only browser-extension errors in the inspected sample; not exhaustive monitoring",
+    "screenshot": "solo-browser-preview-2026-10-27.jpg"
+  },
+  "commercialDatabase": {
+    "projectId": "tymayhazawkofmiypeqt",
+    "checkedAt": "2026-10-27T11:36:42.6792Z",
+    "operation": "read only",
+    "enabled": false,
+    "userMinuteLimit": 3,
+    "userDayLimit": 20,
+    "globalMinuteLimit": 20,
+    "globalDayLimit": 200,
+    "eligibleMembers": 0,
+    "fixtureSessions": 0,
+    "ledgerRows": 15,
+    "priorGeminiSuccesses": 4
+  },
+  "production": {
+    "deploymentId": "dpl_9KijhLqwcEABqisC59RiLYJgyeV8",
+    "changed": false,
+    "mainCommit": "6865ddeac8ab0a925223dd24c41b90618fd6facf"
+  },
+  "newProviderCalls": 0,
+  "hostedDatabaseWrites": 0,
+  "environmentChanges": 0,
+  "credentialChanges": 0,
+  "remaining": [
+    "Live signed-in website conversation on new binding code",
+    "Real two-tab account switch and expiry",
+    "Samsung device and complete desktop accessibility acceptance",
+    "Hosted provider-error/timeout/finalization-failure accounting",
+    "Monetary ceilings, monitoring, abuse controls, privacy/retention and release approval"
+  ]
+}

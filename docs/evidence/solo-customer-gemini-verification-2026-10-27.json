@@ -1,0 +1,301 @@
+{
+  "date": "2026-10-27",
+  "project": "SOLO AI customer Gemini integration",
+  "repository": "joshuawayzwright/ai-download-center",
+  "branch": "feat/solo-customer-access",
+  "sourceCommit": "f4ba7c22e6976c127aefb55a1c0479686cad16f0",
+  "runtimeImplementationCommit": "0af8d9c263a1653128786061f3ffacea99b36894",
+  "commercialSupabaseProject": "tymayhazawkofmiypeqt",
+  "testUserId": "8b6a0501-0441-4476-813b-357657344c61",
+  "target": {
+    "id": "dpl_3e5bP4PSzSbj5ia35oPUUt62qT2P",
+    "url": "https://solo-provider-industrial-oioe10pa4-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "state": "READY",
+    "normalDeployment": true,
+    "buildOverride": false
+  },
+  "verification": {
+    "initialAttempt": {
+      "window": {
+        "enabled": true,
+        "user_minute_limit": 2,
+        "user_day_limit": 9,
+        "global_minute_limit": 2,
+        "global_day_limit": 13,
+        "window_opened_at": "2026-10-27 09:28:00.733092+00",
+        "window_expires_at": "2026-10-27 09:48:00.733092+00"
+      },
+      "clientCapture": "unavailable: orchestration notify(empty output) error lost client stdout; no client HTTP/context assertions claimed",
+      "ledger": [
+        {
+          "request_id": "dacb4ced-977a-401a-b852-aba9d4ae8824",
+          "status": "succeeded",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "input_tokens": 139,
+          "output_tokens": 18,
+          "created_at": "2026-10-27 09:28:23.128413+00",
+          "completed_at": "2026-10-27 09:28:24.513875+00"
+        },
+        {
+          "request_id": "5beee5d8-df2a-4bf6-8595-19334c6c090f",
+          "status": "succeeded",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "input_tokens": 176,
+          "output_tokens": 18,
+          "created_at": "2026-10-27 09:28:25.988174+00",
+          "completed_at": "2026-10-27 09:28:26.775231+00"
+        }
+      ],
+      "closure": {
+        "enabled": false,
+        "user_minute_limit": 3,
+        "user_day_limit": 20,
+        "global_minute_limit": 20,
+        "global_day_limit": 200,
+        "closed_at": "2026-10-27 09:28:29.431403+00"
+      },
+      "postflight": {
+        "policy_enabled": false,
+        "ledger_total": 13,
+        "reserved": 11,
+        "succeeded": 2,
+        "sessions": 0,
+        "active_members": 0,
+        "restored_caps": {
+          "user_day": 20,
+          "global_day": 200,
+          "user_minute": 3,
+          "global_minute": 20
+        }
+      }
+    },
+    "capturedAttempt": {
+      "window": {
+        "enabled": true,
+        "user_minute_limit": 2,
+        "user_day_limit": 11,
+        "global_minute_limit": 2,
+        "global_day_limit": 15,
+        "window_opened_at": "2026-10-27 09:32:02.826062+00",
+        "window_expires_at": "2026-10-27 09:52:02.826062+00"
+      },
+      "exitCode": 0,
+      "stdout": [
+        {
+          "code": "CUSTOMER_LOGIN_HTTP_RESULT",
+          "status": 200,
+          "durationMs": 2697,
+          "vercelRequestId": "cle1::iad1::528rq-1793093538072-358aca2d5897"
+        },
+        {
+          "code": "CUSTOMER_TWO_TURN_PLAN",
+          "requestIds": [
+            "2351e9d3-151d-48c2-a760-c8940cc93005",
+            "a840cc02-673e-4ee5-8baa-3a3f4f7bfb49"
+          ],
+          "targetOrigin": "https://solo-provider-industrial-oioe10pa4-wrightwayz.vercel.app",
+          "remainingDailyBefore": 2,
+          "dailyLimit": 11
+        },
+        {
+          "code": "CUSTOMER_CHAT_REQUEST_PLANNED",
+          "turn": 1,
+          "requestId": "2351e9d3-151d-48c2-a760-c8940cc93005"
+        },
+        {
+          "code": "CUSTOMER_CHAT_HTTP_RESULT",
+          "turn": 1,
+          "requestId": "2351e9d3-151d-48c2-a760-c8940cc93005",
+          "status": 200,
+          "durationMs": 2617,
+          "vercelRequestId": "cle1::iad1::k99fv-1793093540769-51df67ddf000"
+        },
+        {
+          "code": "CUSTOMER_GEMINI_TURN_VERIFIED",
+          "turn": 1,
+          "requestId": "2351e9d3-151d-48c2-a760-c8940cc93005",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "contextMatched": true,
+          "replyCharacters": 21,
+          "remainingDaily": 1,
+          "dailyLimit": 11
+        },
+        {
+          "code": "CUSTOMER_CHAT_REQUEST_PLANNED",
+          "turn": 2,
+          "requestId": "a840cc02-673e-4ee5-8baa-3a3f4f7bfb49"
+        },
+        {
+          "code": "CUSTOMER_CHAT_HTTP_RESULT",
+          "turn": 2,
+          "requestId": "a840cc02-673e-4ee5-8baa-3a3f4f7bfb49",
+          "status": 200,
+          "durationMs": 2603,
+          "vercelRequestId": "cle1::iad1::k99fv-1793093543387-b3a33d931bb8"
+        },
+        {
+          "code": "CUSTOMER_GEMINI_TURN_VERIFIED",
+          "turn": 2,
+          "requestId": "a840cc02-673e-4ee5-8baa-3a3f4f7bfb49",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "contextMatched": true,
+          "replyCharacters": 21,
+          "remainingDaily": 0,
+          "dailyLimit": 11
+        },
+        {
+          "code": "CUSTOMER_POST_CHAT_STATUS",
+          "status": 200,
+          "durationMs": 1358,
+          "vercelRequestId": "cle1::iad1::q2r29-1793093545989-7663189f2e32"
+        },
+        {
+          "code": "CUSTOMER_LOGOUT_HTTP_RESULT",
+          "status": 200,
+          "durationMs": 776,
+          "vercelRequestId": "cle1::iad1::8bgmp-1793093547348-c64901edc511"
+        },
+        {
+          "code": "SOLO_CUSTOMER_GEMINI_TWO_TURN_PASS",
+          "requestIds": [
+            "2351e9d3-151d-48c2-a760-c8940cc93005",
+            "a840cc02-673e-4ee5-8baa-3a3f4f7bfb49"
+          ],
+          "chatCallsAttempted": 2,
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "contextVerified": true,
+          "remainingDailyBefore": 2,
+          "remainingDailyAfter": 0,
+          "dailyLimit": 11
+        }
+      ],
+      "ledger": [
+        {
+          "request_id": "2351e9d3-151d-48c2-a760-c8940cc93005",
+          "status": "succeeded",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "input_tokens": 135,
+          "output_tokens": 14,
+          "created_at": "2026-10-27 09:32:22.082905+00",
+          "completed_at": "2026-10-27 09:32:23.17874+00",
+          "successful_finalization": true,
+          "provider_token_counts_recorded": true,
+          "expected_user": true
+        },
+        {
+          "request_id": "a840cc02-673e-4ee5-8baa-3a3f4f7bfb49",
+          "status": "succeeded",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "input_tokens": 168,
+          "output_tokens": 14,
+          "created_at": "2026-10-27 09:32:24.170877+00",
+          "completed_at": "2026-10-27 09:32:25.777824+00",
+          "successful_finalization": true,
+          "provider_token_counts_recorded": true,
+          "expected_user": true
+        }
+      ],
+      "closure": {
+        "enabled": false,
+        "user_minute_limit": 3,
+        "user_day_limit": 20,
+        "global_minute_limit": 20,
+        "global_day_limit": 200,
+        "closed_at": "2026-10-27 09:32:37.881436+00"
+      },
+      "marker": "SOLO_CUSTOMER_GEMINI_TWO_TURN_PASS",
+      "customerCredentialTransport": "login cookies only; no owner-test token or Authorization header",
+      "chatPostCount": 2,
+      "noAutomaticRetries": true,
+      "contextCheck": "Second user question omitted the random code; the submitted history contained the actual first user/assistant exchange. Both replies matched the expected code.",
+      "contextStorage": "Client-supplied conversation history; no claim of server-stored conversation memory"
+    },
+    "totalGeminiRequests": 4,
+    "initialRowsRetained": 11,
+    "allNewRowsRetained": true
+  },
+  "cleanup": {
+    "checked_at": "2026-10-27 09:33:16.297712+00",
+    "policy_enabled": false,
+    "ledger_total": 15,
+    "preserved_admission_only_rows": 11,
+    "succeeded_gemini_rows": 4,
+    "sessions": 0,
+    "eligible_members": 0,
+    "blocked_expired_members": 2,
+    "fixture_a_rows": 11,
+    "fixture_b_rows": 4,
+    "captured_conversation_sessions": 1,
+    "restored_caps": {
+      "user_day": 20,
+      "global_day": 200,
+      "user_minute": 3,
+      "global_minute": 20
+    }
+  },
+  "finalNormalPreview": {
+    "id": "dpl_Fciqz77hEPSAg1FQ59UTcX13n9yM",
+    "url": "https://solo-provider-industrial-qoyn70gb8-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "state": "READY",
+    "sourceCommit": "f4ba7c22e6976c127aefb55a1c0479686cad16f0",
+    "buildOverride": false,
+    "customerAuthEnabled": false,
+    "customerChatEnabled": false,
+    "httpExitCode": 0,
+    "httpChecks": [
+      {
+        "case": "NEW_CONFIG_ACCOUNT_DISABLED",
+        "status": 200,
+        "response": {
+          "enabled": false,
+          "authenticated": false,
+          "chatEnabled": false
+        },
+        "cache": "no-store, private",
+        "result": "pass"
+      },
+      {
+        "case": "NEW_CONFIG_AUTH_POST_DISABLED",
+        "status": 503,
+        "code": "auth_disabled",
+        "result": "pass"
+      },
+      {
+        "case": "NEW_CONFIG_CUSTOMER_CHAT_DISABLED",
+        "status": 503,
+        "code": "customer_disabled",
+        "result": "pass"
+      }
+    ],
+    "marker": "SOLO_CUSTOMER_CONFIG_DISABLED_PASS"
+  },
+  "production": {
+    "url": "https://thesoloserviceprovider.com.au/",
+    "deploymentId": "dpl_9KijhLqwcEABqisC59RiLYJgyeV8",
+    "maintenance": true,
+    "changed": false
+  },
+  "priorCI": {
+    "runId": 40478171099,
+    "commit": "0af8d9c263a1653128786061f3ffacea99b36894",
+    "apiBrowserSmokeTests": 137,
+    "sqlTests": 21,
+    "totalPassed": 158,
+    "rerunThisCycle": false,
+    "runtimeCodeChanged": false
+  },
+  "limitations": [
+    "Customer browser sign-in/conversation not verified; the cloud-browser secure credential flow cannot automatically consume the controlled test account credentials.",
+    "Samsung/mobile and full desktop/accessibility acceptance remain pending.",
+    "Real provider-error/timeout and finalization-failure accounting remain pending; prior mocked tests are separate.",
+    "Observed input/output token counts do not establish billing charges or monetary cost ceilings.",
+    "Public/Production release, Android and subscriptions remain unfinished."
+  ]
+}

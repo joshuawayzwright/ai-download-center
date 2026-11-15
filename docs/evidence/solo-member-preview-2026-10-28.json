@@ -1,0 +1,162 @@
+{
+  "verified_at_utc": "2026-10-28T01:19:46.715415+00:00",
+  "source_commit": "3c9b214cf115f4b4e27373975b8737b45d5bee4c",
+  "preview": {
+    "deployment": "dpl_8bpvb8yQuvuVwUYFFPQMApD5c3cN",
+    "url": "https://solo-provider-industrial-qgmf0sfeq-wrightwayz.vercel.app",
+    "ready_verified": true
+  },
+  "ci": {
+    "run_id": 40610633207,
+    "javascript_tests": 246,
+    "sql_tests": 45,
+    "failures": 0,
+    "skips": 0,
+    "test_job": 122561030111,
+    "database_job": 122561029855,
+    "quality_run_id": 40610633182
+  },
+  "static_files": [
+    {
+      "path": "/solo-ai.html",
+      "status": 200,
+      "bytes": 12942,
+      "sha256": "a658bf415ec56dc506304b84863ac1362ceea53aa2577746372e12a88016bb53",
+      "exact_source_match": true
+    },
+    {
+      "path": "/solo-account.js",
+      "status": 200,
+      "bytes": 10326,
+      "sha256": "83d43b715fd4ec27f4a726d6835cad842e23ad4591b7c71f7af690128070dd32",
+      "exact_source_match": true
+    },
+    {
+      "path": "/solo-onboarding.js",
+      "status": 200,
+      "bytes": 16117,
+      "sha256": "0217753fb7dae22a6535dc603e64db785762e26c62a2683875836c6edb7169fa",
+      "exact_source_match": true
+    },
+    {
+      "path": "/solo-onboarding.css",
+      "status": 200,
+      "bytes": 2341,
+      "sha256": "b8666df7458ba711763eb717d56c7e175bd51236debb07ffbd24c688abd417ba",
+      "exact_source_match": true
+    },
+    {
+      "path": "/solo-conversation.js",
+      "status": 200,
+      "bytes": 9284,
+      "sha256": "54ffd3cb48ab71a24d37b9607458d8fcd6d80eb1d93017d40793b13e5eedbb96",
+      "exact_source_match": true
+    }
+  ],
+  "api_checks": [
+    {
+      "check": "onboarding_capabilities_disabled",
+      "status": 200,
+      "code": null,
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0,
+      "enabled": false,
+      "signupEnabled": false,
+      "recoveryEnabled": false
+    },
+    {
+      "check": "signup_disabled",
+      "status": 503,
+      "code": "onboarding_disabled",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "verify_email_disabled",
+      "status": 503,
+      "code": "onboarding_disabled",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "request_reset_disabled",
+      "status": 503,
+      "code": "onboarding_disabled",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "reset_password_disabled",
+      "status": 503,
+      "code": "onboarding_disabled",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "onboarding_cross_origin",
+      "status": 403,
+      "code": "invalid_origin",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "onboarding_missing_origin",
+      "status": 403,
+      "code": "invalid_origin",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "onboarding_method",
+      "status": 405,
+      "code": "method_not_allowed",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "account_remains_disabled",
+      "status": 200,
+      "code": null,
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0,
+      "enabled": false,
+      "authenticated": false,
+      "chatEnabled": false
+    },
+    {
+      "check": "logout_remains_available",
+      "status": 200,
+      "code": null,
+      "no_store": true,
+      "solo_cookie_slots_cleared": 2,
+      "enabled": false,
+      "authenticated": false,
+      "chatEnabled": false
+    },
+    {
+      "check": "chat_get_method",
+      "status": 405,
+      "code": null,
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    },
+    {
+      "check": "customer_chat_remains_disabled",
+      "status": 503,
+      "code": "customer_disabled",
+      "no_store": true,
+      "solo_cookie_slots_cleared": 0
+    }
+  ],
+  "production": {
+    "unchanged_deployment": "dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt",
+    "alias_verified": true,
+    "url": "https://thesoloserviceprovider.com.au/"
+  },
+  "scope": "Closed-gate HTTP checks and exact deployed-source comparisons only. No real customer credentials, email, account creation, password mutation or model call. Hosted migration, live onboarding and signed-in desktop/mobile acceptance remain unverified.",
+  "temporary_preview_share": {
+    "revoked": true,
+    "protection_bypass_entries_after_revocation": 0,
+    "cached_cookie_invalidation_independently_verified": false
+  }
+}
