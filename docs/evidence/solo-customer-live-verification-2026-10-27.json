@@ -1,0 +1,216 @@
+{
+  "date": "2026-10-27",
+  "cycle_status": "auth_and_quota_verification_complete_window_closed",
+  "scope": "Controlled commercial Preview customer authentication and hosted admission checks",
+  "supabase_project": "tymayhazawkofmiypeqt",
+  "supabase_organisation": "txfdoppxcbylrguxsjod",
+  "auth_settings": {
+    "http_status": 200,
+    "disable_signup": true,
+    "email": true,
+    "anonymous": false,
+    "mailer_autoconfirm": false
+  },
+  "fixtures": {
+    "tool_commit": "0af8d9c263a1653128786061f3ffacea99b36894",
+    "deployment_id": "dpl_GSZGNr8jbyXZTBBgVxJRQ3X84kSF",
+    "marker": "SOLO_CUSTOMER_FIXTURES_CREATED_PASS",
+    "created_without_email": true,
+    "user_ids": [
+      "8b6a0501-0441-4476-813b-357657344c61",
+      "222e2393-6d53-449b-a350-0e29a36664a3"
+    ],
+    "membership_expires_at": "2026-10-27T09:27:07Z",
+    "initial_temporary_caps": {
+      "user_minute": 12,
+      "user_daily": 12,
+      "global_minute": 12,
+      "global_daily": 12
+    }
+  },
+  "target": {
+    "deployment_id": "dpl_FvPg89QKpc7WXs1yhfYaWBU6KCy6",
+    "commit": "0af8d9c263a1653128786061f3ffacea99b36894",
+    "state": "READY",
+    "url": "https://solo-provider-industrial-2u2q8mspq-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "preview_customer_auth_enabled_during_window": true,
+    "preview_customer_chat_enabled": false
+  },
+  "hosted_auth": {
+    "status": "passed",
+    "deployment_id": "dpl_Df7orHwpZ76zNkZk5Ch31Bpcc2eK",
+    "run_id": "4bc1de46-0ec9-4bca-bafc-51a571fde85a",
+    "checks_passed": [
+      "Real login with host-only Secure HttpOnly SameSite=Strict cookies",
+      "Live status without quota debit",
+      "Refresh credential rotation without a new session or debit",
+      "Remote logout and cookie clearing",
+      "Still-unexpired revoked JWT denied by application and database session check",
+      "Revoked-session admission denied",
+      "Authentication-run session cleanup"
+    ],
+    "reservation_count": 0,
+    "provider_calls": 0
+  },
+  "duplicate_race": {
+    "status": "passed",
+    "deployment_id": "dpl_E151N3bLHrUoWkYLf39iTUXxMuHj",
+    "request_id": "803c6d5a-6f15-4d82-8bf3-f866d3e94200",
+    "independent_https_requests": 4,
+    "admitted": 1,
+    "denied": 3,
+    "duration_ms": 580,
+    "changed_payload_conflict_verified": true,
+    "persisted_allowance_decrement_verified": true,
+    "session_logout_verified": true,
+    "provider_calls": 0,
+    "reservation_retained": true
+  },
+  "quota_races": {
+    "execution_order_after_duplicate": ["user_daily", "user_minute", "global_daily", "global_minute"],
+    "user_daily": {
+      "status": "passed",
+      "deployment_id": "dpl_HTT2ZdQxs1zJ2s6ZTqiqNeK9R6x6",
+      "run_id": "3e72ad11-18cd-4313-9dc0-dae61e90a59e",
+      "independent_https_requests": 4,
+      "admitted": 2,
+      "denied": 2,
+      "duration_ms": 552,
+      "admitted_request_ids": [
+        "c83fb07a-9bdd-4173-bec8-20a5c5068153",
+        "64ad50af-8dbb-4edc-8a5f-ef3313dbb6bc"
+      ],
+      "persisted_allowance_decrement_verified": true,
+      "session_logout_verified": true
+    },
+    "user_minute": {
+      "status": "passed",
+      "deployment_id": "dpl_P5bqEafGhGqEAzCqDMSCuFaXNvV5",
+      "run_id": "613aa20e-863e-4127-95bc-df2c7f6b4547",
+      "fixture_user_id": "222e2393-6d53-449b-a350-0e29a36664a3",
+      "independent_https_requests": 4,
+      "admitted": 2,
+      "denied": 2,
+      "duration_ms": 525,
+      "admitted_request_ids": [
+        "244d7d67-3817-470d-9d82-f33cdfe93c87",
+        "5e023651-2734-4567-901a-511ac917d540"
+      ],
+      "persisted_allowance_decrement_verified": true,
+      "session_logout_verified": true
+    },
+    "global_daily": {
+      "status": "passed",
+      "deployment_id": "dpl_BubZnyvgMZp8XW1NADtu4YKQzHBi",
+      "run_id": "1170f168-595c-4259-9a0a-c92ce1968d11",
+      "independent_https_requests": 8,
+      "admitted": 3,
+      "denied": 5,
+      "duration_ms": 559,
+      "admitted_request_ids": [
+        "b80bd1ed-d79b-4fde-8beb-54ebaf2cda8d",
+        "3e348ccd-2602-49e4-8584-6536a13857a3",
+        "848629d0-fea8-401d-84f8-6cf9cac25ea2"
+      ],
+      "persisted_allowance_decrement_verified": true,
+      "session_logout_verified": true
+    },
+    "global_minute": {
+      "status": "passed",
+      "deployment_id": "dpl_CPRJGJPiG4Jyr4YMbfUNFKX48F7o",
+      "run_id": "a2e66292-287d-4a62-a7b1-9b12f0b942ba",
+      "independent_https_requests": 8,
+      "admitted": 3,
+      "denied": 5,
+      "duration_ms": 589,
+      "rolling_minute_count_before": 0,
+      "prepared_global_minute_cap": 3,
+      "admitted_request_ids": [
+        "4a9604d8-23d3-4071-8a50-e5bf292e74d0",
+        "fed42e87-4738-41f4-b8c6-2fd06731709e",
+        "db2273ec-23f2-4762-b61f-631f8fafffb2"
+      ],
+      "persisted_allowance_decrement_verified": true,
+      "session_logout_verified": true
+    },
+    "ledger_rows_after_completed_races": 11
+  },
+  "customer_api_quota_rejection": {
+    "status": "passed",
+    "deployment_id": "dpl_HS65tfZkn5o3umneFj6r2C52f2sv",
+    "deployment_state": "READY",
+    "url": "https://solo-provider-industrial-6m3m4iksn-wrightwayz.vercel.app",
+    "marker": "SOLO_CUSTOMER_API_QUOTA_DENIAL_PASS",
+    "global_daily_cap": 11,
+    "existing_global_daily_count": 11,
+    "exhausted_cap_set_before_temporary_preview_chat_enablement": true,
+    "cookie_login_http_status": 200,
+    "request_id": "54a17024-5212-4e56-854a-6c22cbb96d75",
+    "chat_http_status": 429,
+    "code": "global_daily_limit",
+    "retry_after_valid": true,
+    "reply_present": false,
+    "logout_http_status": 200,
+    "ledger_rows_for_denied_request": 0,
+    "provider_calls": 0
+  },
+  "final_window_cleanup": {
+    "status": "verified",
+    "policy_disabled_verified": true,
+    "restored_caps": { "user_minute": 3, "user_daily": 20, "global_minute": 20, "global_daily": 200 },
+    "test_memberships_closed_verified": true,
+    "member_rows": 2,
+    "active_members": 0,
+    "all_test_members_blocked_and_expired": true,
+    "fixture_auth_sessions": 0,
+    "preview_auth_disabled_verified": true,
+    "preview_chat_disabled_verified": true,
+    "temporary_fixture_identity_target_values_cleared": true,
+    "final_ledger_inspection_verified": true,
+    "ledger_rows": 11,
+    "all_ledger_rows_reserved": true,
+    "all_ledger_provider_fields_null": true,
+    "denied_request_ledger_rows": 0
+  },
+  "final_normal_deployment": {
+    "deployment_id": "dpl_BDfkTt3NR4rJwy9XoBT9tJwsLnx8",
+    "state": "READY",
+    "commit": "0af8d9c263a1653128786061f3ffacea99b36894",
+    "url": "https://solo-provider-industrial-9i280wcne-wrightwayz.vercel.app/solo-ai.html#conversation",
+    "build_override": false,
+    "normal_build_logs_verified": true,
+    "marker": "SOLO_CUSTOMER_CONFIG_DISABLED_PASS",
+    "account_get": {
+      "status": 200,
+      "enabled": false,
+      "authenticated": false,
+      "chatEnabled": false,
+      "cache_control_directives": ["private", "no-store"]
+    },
+    "account_refresh_post": { "status": 503, "code": "auth_disabled" },
+    "dummy_bearer_chat_post": { "status": 503, "code": "customer_disabled" }
+  },
+  "production_maintenance_deployment": "dpl_9KijhLqwcEABqisC59RiLYJgyeV8",
+  "ci": {
+    "run_id": 40478171099,
+    "job_ids": [122101471635, 122101471320],
+    "api_browser_smoke_passed": 137,
+    "sql_passed": 21,
+    "total_passed": 158,
+    "failed": 0,
+    "skipped": 0,
+    "fixture_tool_tests_added": 5,
+    "quality_run_id": 40478171124,
+    "quality_conclusion": "success"
+  },
+  "customer_inference": {
+    "status": "unverified",
+    "provider_calls_this_cycle": 0
+  },
+  "remaining_release_gates": [
+    "Customer-authenticated Gemini reply and provider-outcome failure accounting",
+    "Actual desktop and Samsung customer experience",
+    "Monetary controls and public production release approval"
+  ],
+  "sensitive_values_included": false
+}
