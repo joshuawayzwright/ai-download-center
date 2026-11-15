@@ -213,7 +213,12 @@ def render_video(spec: dict, out_dir: Path, voice: Path, piper: str) -> Path:
                         "-i", str(concat), str(audio)], check=True)
 
         bg = background(spec.get("pillar", "AI Explained"))
-        heads = [headline_layer(s.screen) for s in segs]
+        # crop each headline to its bounding box so per-frame pasting is cheap
+        heads = []
+        for s in segs:
+            layer = headline_layer(s.screen)
+            box = layer.getbbox() or (0, 0, 1, 1)
+            heads.append((layer.crop(box), box[0], box[1]))
         words = [word_times(s) for s in segs]
         glow = glow_layer()
 
@@ -240,12 +245,12 @@ def render_video(spec: dict, out_dir: Path, voice: Path, piper: str) -> Path:
             # headline fades and rises in over 0.3s at the start of each segment
             k = min(1.0, (now - seg.start) / 0.3)
             ease = 1 - (1 - k) ** 3
-            layer = heads[si]
+            layer, hx, hy = heads[si]
             if ease < 1:
                 alpha = layer.getchannel("A").point(lambda a, e=ease: int(a * e))
                 layer = layer.copy()
                 layer.putalpha(alpha)
-            frame.paste(layer, (0, int(40 * (1 - ease))), layer)
+            frame.paste(layer, (hx, hy + int(40 * (1 - ease))), layer)
             d = ImageDraw.Draw(frame)
             step = f"{si + 1} / {len(segs)}"
             d.text(((W - d.textlength(step, font=F_PILLAR)) / 2, 470), step, font=F_PILLAR, fill=CORAL)
