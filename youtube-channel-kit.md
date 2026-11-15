@@ -110,10 +110,16 @@ vidIQ title scores: #1 = 94, #2 = 90, #3 = 83.
 Done on 15 Nov 2026 (via vidIQ):
 - [x] Added a channel line and keyword tags to both public Shorts. Existing descriptions and links were kept.
 - [x] Generated draft thumbnails for episodes 1–3 (`marketing/youtube/thumbnails/`). Each needs your real face before use.
+- [x] Channel banner (2560×1440) and profile picture (circle-safe) made in Canva: `marketing/youtube/channel-art/`.
+- [x] Copy-paste setup text (profile, links, trailer script, playlists, upload defaults, pinned comments, end screens): `marketing/youtube/channel-setup.md`.
+- [x] Eight Shorts scripts and a 4-week posting order: `marketing/youtube/shorts-batch-01.md`.
+- [x] Outlines for episodes 4–10: `marketing/youtube/ep04-10-outlines.md`.
 
 Still to do, in YouTube Studio:
 - [ ] Rename the channel and change the handle.
-- [ ] Update the description, banner, profile image and links.
-- [ ] Create 4 playlists and add the two Shorts to "AI for Solo Business".
+- [ ] Paste in the profile text and links, and upload the banner and profile picture from `channel-art/`.
+- [ ] Create the 5 playlists in `channel-setup.md` (the 4 pillars plus Shorts) and add the two existing Shorts.
+- [ ] Set the upload defaults.
+- [ ] Record the channel trailer after episodes 1–3.
 - [ ] Decide what to do with the unlisted 31-second "SOLO AI" promo: leave it unlisted, or make it the channel trailer.
 - [ ] Run the episode 1 test, record episodes 1–3, then announce.
