@@ -9,9 +9,11 @@ Data in this kit comes from vidIQ, pulled 15 Nov 2026. Search figures are vidIQ 
 **Name:** Josh Wright | AI Field Notes  
 **Handle ideas:** `@AIFieldNotes`, or `@JoshWrightAI` as a fallback. Availability not checked.  
 **Tagline:** AI tools without the hype.  
-**Promise:** Practical AI for people who run a business on their own: tested tools, real workflows, honest trade-offs.
+**Promise (updated 15 Nov 2026):** Everything artificial intelligence, explained and tested without the hype: how it works, the tools and models, safety, and how to use it in real life and real business.
 
-**Audience:** sole traders, freelancers, coaches, consultants and tradies who want AI to save them time and aren't interested in AI as a hobby.
+**Audience:** curious non-experts first, then the people who want to use AI at work. Sole traders and freelancers stay the core audience for the long-form "AI for Solo Business" videos.
+
+**Scope trade-off, noted:** a broad "all of AI" channel competes with very large channels on head terms. To stay distinctive, every video keeps the same promise (plain language, tested, sourced, no hype) and the same visual identity, and each topic still targets a specific, winnable question rather than "AI news" in general.
 
 **Editorial stance:** test workflows on real tasks; state tool versions, prices and dates; show limitations and mistakes; link primary sources; disclose sponsorships, affiliate links and your own products (SOLO AI, AI Download Center); keep what you observed separate from opinion.
 
@@ -49,10 +51,19 @@ A breakout shows that a video did well. It doesn't prove why, or that the same t
 
 ## Content pillars (one playlist each)
 
-1. **AI for Solo Business:** proposals, email, admin, marketing, client follow-ups. This is the core pillar.
-2. **Run AI Privately:** Ollama, LM Studio, offline AI. Searches here stay steady over time.
-3. **Tool Field Tests:** one tool, one real task, an honest verdict.
-4. **New Model, Real Test:** fast tests of new releases, made within days of a spike in searches. Rising terms seen on 15 Nov 2026 include "claude animation skill" (269K, competition 23) and "clipping with claude" (144K, competition 30). These fade quickly, so check current data before you commit to one.
+1. **AI Explained:** how AI works in plain language: tokens, context windows, hallucinations, RAG, agents, image generation, model sizes, open vs closed models. Mostly Shorts, made with the video factory.
+2. **AI for Solo Business:** proposals, email, admin, marketing, client follow-ups. The long-form core.
+3. **Run AI Privately:** Ollama, LM Studio, offline AI. Searches here stay steady over time.
+4. **Tool Field Tests:** one tool, one real task, an honest verdict.
+5. **New Model, Real Test:** fast tests of new releases, made within days of a spike in searches.
+6. **AI Safety & Society:** scams, deepfakes, privacy settings, how to check AI claims. Very shareable, and useful to people who'll never open a chatbot.
+7. **AI in Everyday Life:** AI for study, health admin, travel, home and hobbies. Practical, with the risks named.
+
+## Video factory (AI-made Shorts)
+
+`marketing/youtube/factory/` renders vertical explainer videos from a JSON script: animated captions, brand visuals and a local AI narration voice with a commercially usable licence. Batch 01 has 12 videos (`videos/batch-01.json`). See the factory README for setup, writing rules and disclosure.
+
+**Cadence:** 1 factory Short a day across YouTube Shorts, TikTok and Instagram Reels, plus 1 long video a week. Rising terms seen on 15 Nov 2026 include "claude animation skill" (269K, competition 23) and "clipping with claude" (144K, competition 30). These fade quickly, so check current data before you commit to one.
 
 ## Brand direction
 

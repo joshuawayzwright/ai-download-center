@@ -1,0 +1,438 @@
+[
+  {
+    "id": "001-why-ai-makes-things-up",
+    "pillar": "AI Explained",
+    "title": "Why AI makes things up (in 40 seconds) #Shorts",
+    "description": "Chatbots don't look facts up by default. They predict likely next words, which is why they can sound certain and still be wrong. How to catch it. Narrated with an AI voice.\n\nAI Field Notes: practical AI, explained without the hype.\n#AI #ChatGPT #AIexplained #Shorts",
+    "tags": [
+      "AI hallucination",
+      "why AI makes things up",
+      "how ChatGPT works",
+      "AI explained",
+      "large language model",
+      "AI for beginners"
+    ],
+    "segments": [
+      {
+        "screen": "Why does AI make things up?",
+        "say": "Why does AI sometimes make things up, and sound completely sure about it?"
+      },
+      {
+        "screen": "It predicts words",
+        "say": "A chatbot like ChatGPT is built on a language model. At its core, it predicts the next most likely piece of text, over and over."
+      },
+      {
+        "screen": "Likely is not true",
+        "say": "Most of the time, likely text is also correct. But when the model doesn't have the answer, it can still produce something that sounds right."
+      },
+      {
+        "screen": "That's a hallucination",
+        "say": "That's called a hallucination. A fake quote, a wrong date, a book that doesn't exist, written in the same confident tone."
+      },
+      {
+        "screen": "How to catch it",
+        "say": "So ask it for sources, then open them yourself. Turn on web search if your tool has it. And double check every number, name and date that matters."
+      },
+      {
+        "screen": "Confident ≠ correct",
+        "say": "Confident doesn't mean correct. Follow for more AI, explained without the hype."
+      }
+    ]
+  },
+  {
+    "id": "002-what-is-a-token",
+    "pillar": "AI Explained",
+    "title": "What is a token in AI? #Shorts",
+    "description": "AI models read and write in tokens, not words. Here's what that means for limits and pricing. Narrated with an AI voice.\n\n#AI #LLM #AIexplained #Shorts",
+    "tags": [
+      "what is a token",
+      "AI tokens explained",
+      "LLM tokens",
+      "ChatGPT tokens",
+      "AI explained",
+      "AI for beginners"
+    ],
+    "segments": [
+      {
+        "screen": "What is a token?",
+        "say": "When people talk about AI tokens, what are they actually counting?"
+      },
+      {
+        "screen": "Pieces of text",
+        "say": "Language models don't read whole words. They break text into small pieces called tokens. A short common word might be one token. A long or rare word might be several."
+      },
+      {
+        "screen": "Roughly ¾ of a word",
+        "say": "For English, a token is often about three quarters of a word on average. It varies between models and languages."
+      },
+      {
+        "screen": "Why it matters",
+        "say": "Tokens matter because they're how limits and prices are measured. How much the model can read at once, and what an API charges you, are both counted in tokens."
+      },
+      {
+        "screen": "Shorter = cheaper",
+        "say": "So a tighter prompt isn't just neater. It can be faster and cheaper too. Follow for more AI, explained simply."
+      }
+    ]
+  },
+  {
+    "id": "003-context-window",
+    "pillar": "AI Explained",
+    "title": "Why AI forgets what you said earlier #Shorts",
+    "description": "Every AI model has a context window: the amount of text it can consider at once. Here's why long chats drift. Narrated with an AI voice.\n\n#AI #ChatGPT #AIexplained #Shorts",
+    "tags": [
+      "context window",
+      "why ChatGPT forgets",
+      "AI memory",
+      "LLM context",
+      "AI explained",
+      "AI tips"
+    ],
+    "segments": [
+      {
+        "screen": "Why does AI forget?",
+        "say": "Ever had a long chat with AI, and it suddenly forgets something you told it at the start?"
+      },
+      {
+        "screen": "The context window",
+        "say": "Every model has a context window. That's the maximum amount of text it can consider at one time: your messages, its replies, and any files you added."
+      },
+      {
+        "screen": "Long chats overflow",
+        "say": "When a conversation gets longer than that, the oldest parts may be dropped or summarised. Some apps also struggle with details buried in the middle of very long inputs."
+      },
+      {
+        "screen": "The fix",
+        "say": "The fix is simple. For a new task, start a new chat. Put the most important instructions near the end. And paste only the part of a document you actually need."
+      },
+      {
+        "screen": "Fresh chat, better answers",
+        "say": "A fresh chat often gives better answers. Follow for more practical AI tips."
+      }
+    ]
+  },
+  {
+    "id": "004-what-is-rag",
+    "pillar": "AI Explained",
+    "title": "RAG explained in 45 seconds #Shorts",
+    "description": "Retrieval-augmented generation, or RAG, is how AI tools answer questions about your own documents. Here's the simple version. Narrated with an AI voice.\n\n#AI #RAG #AIexplained #Shorts",
+    "tags": [
+      "what is RAG",
+      "retrieval augmented generation",
+      "RAG explained",
+      "AI with your documents",
+      "AI explained",
+      "LLM"
+    ],
+    "segments": [
+      {
+        "screen": "What is RAG?",
+        "say": "How does an AI tool answer questions about your own documents, when it was never trained on them?"
+      },
+      {
+        "screen": "Retrieve, then generate",
+        "say": "Usually, with something called RAG. Retrieval augmented generation. It works in two steps."
+      },
+      {
+        "screen": "Step 1: find",
+        "say": "Step one. When you ask a question, the system searches your documents and pulls out the passages that look most relevant."
+      },
+      {
+        "screen": "Step 2: answer",
+        "say": "Step two. It hands those passages to the language model along with your question, and the model writes an answer based on them."
+      },
+      {
+        "screen": "Check the citations",
+        "say": "That's why good RAG tools show citations. If the search grabs the wrong passage, the answer will be wrong too. So click the source. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "005-chatbot-vs-agent",
+    "pillar": "AI Explained",
+    "title": "AI chatbot vs AI agent: what's the difference? #Shorts",
+    "description": "Everyone's talking about AI agents. Here's how an agent differs from a chatbot, and why it needs more checking. Narrated with an AI voice.\n\n#AI #AIagents #AIexplained #Shorts",
+    "tags": [
+      "AI agents explained",
+      "chatbot vs agent",
+      "what is an AI agent",
+      "agentic AI",
+      "AI explained",
+      "AI automation"
+    ],
+    "segments": [
+      {
+        "screen": "Chatbot vs agent",
+        "say": "What's the actual difference between an AI chatbot and an AI agent?"
+      },
+      {
+        "screen": "Chatbot: you ask, it answers",
+        "say": "A chatbot answers. You ask a question, it writes a reply, and you decide what to do with it."
+      },
+      {
+        "screen": "Agent: it takes steps",
+        "say": "An agent acts. You give it a goal, and it plans steps and uses tools to carry them out. Searching the web, editing files, filling in forms, or sending messages, checking its own progress as it goes."
+      },
+      {
+        "screen": "More power, more risk",
+        "say": "That makes agents useful for multi-step work, but mistakes can turn into real actions. A wrong email sent, a wrong file changed."
+      },
+      {
+        "screen": "Approve the big steps",
+        "say": "So give agents only the access they need, and keep a human approval step for anything you can't undo. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "006-how-image-generators-work",
+    "pillar": "AI Explained",
+    "title": "How AI image generators actually work #Shorts",
+    "description": "Most AI image generators use diffusion: they start from random noise and remove it step by step, guided by your prompt. Narrated with an AI voice.\n\n#AI #AIart #AIexplained #Shorts",
+    "tags": [
+      "how AI image generators work",
+      "diffusion model explained",
+      "AI art explained",
+      "text to image",
+      "AI explained",
+      "generative AI"
+    ],
+    "segments": [
+      {
+        "screen": "How AI makes images",
+        "say": "How does AI turn a sentence into a picture?"
+      },
+      {
+        "screen": "Start with noise",
+        "say": "Many popular image generators use a method called diffusion. They start with an image of pure random noise, like TV static."
+      },
+      {
+        "screen": "Remove noise, step by step",
+        "say": "Then a model removes a little noise at a time. It learned how to do that by studying huge numbers of images that had noise added to them."
+      },
+      {
+        "screen": "Your prompt steers it",
+        "say": "Your prompt steers each step, so the shapes that appear match the words you wrote. After enough steps, you get a finished image."
+      },
+      {
+        "screen": "Why hands go weird",
+        "say": "It's building patterns, not following a blueprint. That's why details like hands, text and logos sometimes come out strange. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "007-open-vs-closed-models",
+    "pillar": "AI Explained",
+    "title": "Open vs closed AI models, explained #Shorts",
+    "description": "Some AI models you can download and run yourself. Others you can only use through a company's app or API. Here's the trade-off. Narrated with an AI voice.\n\n#AI #OpenSource #AIexplained #Shorts",
+    "tags": [
+      "open source AI",
+      "open weight models",
+      "open vs closed AI",
+      "local AI",
+      "AI explained",
+      "LLM"
+    ],
+    "segments": [
+      {
+        "screen": "Open vs closed AI",
+        "say": "What do people mean by open AI models and closed AI models?"
+      },
+      {
+        "screen": "Closed: use it, can't download it",
+        "say": "A closed model, you can only use through the company's app or API. You never get the model itself, and the company controls the rules and the price."
+      },
+      {
+        "screen": "Open: download the weights",
+        "say": "An open-weight model, you can download and run on your own hardware. That means more privacy, more control, and no per-message fee."
+      },
+      {
+        "screen": "Read the licence",
+        "say": "But open doesn't always mean free for any use. Each model has its own licence, and some restrict commercial use. Read it before you build on it."
+      },
+      {
+        "screen": "Pick for the job",
+        "say": "Closed models often lead on the hardest tasks. Open models win on control and privacy. Pick for the job. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "008-run-ai-offline",
+    "pillar": "Run AI Privately",
+    "title": "You can run AI with no internet #Shorts",
+    "description": "Free tools like Ollama and LM Studio let you run open AI models on your own computer, offline. What you need and the trade-offs. Narrated with an AI voice.\n\n#AI #LocalAI #Ollama #Shorts",
+    "tags": [
+      "run AI locally",
+      "offline AI",
+      "local LLM",
+      "Ollama",
+      "LM Studio",
+      "private AI"
+    ],
+    "segments": [
+      {
+        "screen": "AI with no internet",
+        "say": "You can run AI on your own computer, with no internet connection at all."
+      },
+      {
+        "screen": "Free tools",
+        "say": "Free apps like Ollama and LM Studio download an open AI model to your machine. After that, your chats can stay on your computer."
+      },
+      {
+        "screen": "Memory matters most",
+        "say": "The main limit is memory. Smaller models run on many ordinary laptops. Bigger models need more RAM or a good graphics card."
+      },
+      {
+        "screen": "The trade-off",
+        "say": "The trade-off is that small local models are usually slower and less capable than the biggest cloud models on hard tasks."
+      },
+      {
+        "screen": "Great for private work",
+        "say": "But for rewriting, summarising, and anything private, they're surprisingly useful. Full setup guide on the channel. Follow for more."
+      }
+    ]
+  },
+  {
+    "id": "009-prompting-vs-fine-tuning",
+    "pillar": "AI Explained",
+    "title": "Prompting vs fine-tuning: which do you need? #Shorts",
+    "description": "Most people who think they need to fine-tune an AI model actually need a better prompt or better documents. Here's how to tell. Narrated with an AI voice.\n\n#AI #FineTuning #PromptEngineering #Shorts",
+    "tags": [
+      "fine tuning vs prompting",
+      "what is fine tuning",
+      "prompt engineering",
+      "custom AI",
+      "AI explained",
+      "LLM"
+    ],
+    "segments": [
+      {
+        "screen": "Do you need fine-tuning?",
+        "say": "Want an AI that works your way? You might not need to fine-tune it."
+      },
+      {
+        "screen": "Prompting",
+        "say": "Prompting means giving instructions and examples in the message. It's instant, free to change, and it's where you should start."
+      },
+      {
+        "screen": "Your documents",
+        "say": "If the AI needs to know your information, like products or policies, connect your documents with a tool that searches them. That's usually easier than retraining."
+      },
+      {
+        "screen": "Fine-tuning",
+        "say": "Fine-tuning means further training the model on many of your own examples. It's best for a consistent style or format at scale, but it costs time and money, and needs good data."
+      },
+      {
+        "screen": "Prompt first",
+        "say": "So, prompt first. Add documents second. Fine-tune last. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "010-temperature",
+    "pillar": "AI Explained",
+    "title": "The hidden AI setting that changes every answer #Shorts",
+    "description": "Temperature controls how predictable or varied an AI model's answers are. When to turn it up or down. Narrated with an AI voice.\n\n#AI #LLM #AItips #Shorts",
+    "tags": [
+      "AI temperature",
+      "LLM temperature explained",
+      "why AI answers change",
+      "AI settings",
+      "AI explained",
+      "API tips"
+    ],
+    "segments": [
+      {
+        "screen": "Same question, different answer?",
+        "say": "Ask AI the same question twice, and you can get two different answers. Here's one reason why."
+      },
+      {
+        "screen": "Temperature",
+        "say": "Many models have a setting called temperature. It controls how much randomness goes into picking each next word."
+      },
+      {
+        "screen": "Low = predictable",
+        "say": "Low temperature makes answers more focused and predictable. Good for facts, data extraction and code."
+      },
+      {
+        "screen": "High = creative",
+        "say": "Higher temperature makes answers more varied. Good for brainstorming and creative writing, but more likely to drift."
+      },
+      {
+        "screen": "Where to find it",
+        "say": "Chat apps usually set it for you. You can change it in developer tools and APIs. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "011-what-7b-means",
+    "pillar": "AI Explained",
+    "title": "What does 7B mean in AI models? #Shorts",
+    "description": "7B, 70B, 400B: the B is billions of parameters. What parameters are, and why bigger isn't always better. Narrated with an AI voice.\n\n#AI #LLM #LocalAI #Shorts",
+    "tags": [
+      "what does 7B mean",
+      "AI parameters explained",
+      "model size",
+      "LLM parameters",
+      "local AI",
+      "AI explained"
+    ],
+    "segments": [
+      {
+        "screen": "What does 7B mean?",
+        "say": "Seen AI models called 7B, 70B or bigger? Here's what the B means."
+      },
+      {
+        "screen": "Billions of parameters",
+        "say": "B stands for billions of parameters. Parameters are the numbers a model learned during training. They hold what it learned."
+      },
+      {
+        "screen": "Bigger needs more memory",
+        "say": "More parameters usually means more capability, but also more memory and slower answers. That's why size matters most when you run AI on your own computer."
+      },
+      {
+        "screen": "Bigger isn't always better",
+        "say": "Size isn't everything. Newer, smaller models can beat older, bigger ones, and compressed versions can fit on ordinary hardware."
+      },
+      {
+        "screen": "Test on your task",
+        "say": "So don't pick by size alone. Try a few on your actual task. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "012-ai-voice-scam",
+    "pillar": "AI Safety",
+    "title": "How to protect your family from AI voice scams #Shorts",
+    "description": "AI can clone a voice from short recordings. Scammers use it for fake emergency calls. Two simple habits that protect you. Narrated with an AI voice.\n\n#AI #Scams #Deepfake #Shorts",
+    "tags": [
+      "AI voice scam",
+      "voice cloning scam",
+      "deepfake scam",
+      "family safe word",
+      "AI safety",
+      "scam awareness"
+    ],
+    "segments": [
+      {
+        "screen": "AI voice scams",
+        "say": "AI tools can now copy a person's voice from short recordings, and scammers are using it."
+      },
+      {
+        "screen": "The fake emergency",
+        "say": "The scam often sounds like a family member in trouble, asking for money fast, and telling you not to tell anyone."
+      },
+      {
+        "screen": "Habit 1: hang up and call back",
+        "say": "Habit one. Hang up, and call the person back on a number you already know. Not the number that called you."
+      },
+      {
+        "screen": "Habit 2: a family code word",
+        "say": "Habit two. Agree on a family code word that's never posted online. A real emergency caller will know it. A clone won't."
+      },
+      {
+        "screen": "Urgency is the red flag",
+        "say": "Pressure, secrecy, and payment by gift cards, crypto or wire transfer are all red flags. Share this with someone you love. Follow for more AI safety tips."
+      }
+    ]
+  }
+]
