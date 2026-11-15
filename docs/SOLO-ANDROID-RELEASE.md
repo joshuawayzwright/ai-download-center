@@ -17,7 +17,7 @@ Both must use the same server-side AI API and versioned knowledge source.
 - `solo-knowledge.json`: public business and project knowledge.
 - `data/tools.json`: public AI Hub discovery catalogue.
 - `/api/solo-chat`: Vercel-hosted inference endpoint, using server-only credentials.
-- Android client: Kotlin + Jetpack Compose, or Trusted Web Activity for first release if PWA passes installability and app-quality checks.
+- Android client: native Java app in `apps/solo-android` (framework views, no third-party SDKs).
 - Authentication: optional for free discovery, required for accounts, purchases, and private conversation history.
 - Versioned API and shared privacy policy for web/mobile.
 
@@ -39,5 +39,10 @@ Both must use the same server-side AI API and versioned knowledge source.
 - [ ] Test on Samsung Galaxy S26 Ultra and other Android screen sizes.
 - [ ] Internal testing, closed testing if required, then staged release.
 
-## Current status
-Specification only. Not published to Google Play. Live generative model and production abuse controls remain outstanding.
+## Current status (12 November 2026)
+- The client is release-ready, targets API 36 and passes 29 automated tests. A release
+  `.aab` builds and needs the owner's upload key to sign it.
+- Not published to Google Play.
+- Live chat is blocked on the server: the production endpoint returns 404, there is no
+  native sign-in path, and in-app reporting is not built.
+- Step-by-step Play Console instructions: [SOLO-ANDROID-PLAY-CONSOLE.md](SOLO-ANDROID-PLAY-CONSOLE.md).

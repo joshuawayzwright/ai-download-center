@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Solo" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/solo_bg</item>
+        <item name="android:colorBackground">@color/solo_bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Branded launch screen: the approved SOLO AI icon on charcoal. -->
+    <style name="Theme.Solo.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/solo_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.Solo</item>
+    </style>
+</resources>
