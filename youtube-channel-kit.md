@@ -1,92 +1,119 @@
-# AI Field Notes: YouTube Channel Launch Kit
+# AI Field Notes: YouTube Channel Kit
 
-**Status:** proposed channel concept. Check channel name and handle availability before creating the account.
+**Status:** repositioning an existing channel. The channel is currently "Josh Wright" (@joshwright-y2y). As of 15 Nov 2026 it had 1 subscriber, 48 lifetime views, 2 public Shorts, 1 unlisted promo, and no public long-form videos. The name and handle changes below haven't been made yet, and handle availability hasn't been checked.
+
+Data in this kit comes from vidIQ, pulled 15 Nov 2026. Search figures are vidIQ estimates and change over time.
 
 ## Positioning
 
-**Working name:** AI Field Notes  
+**Name:** Josh Wright | AI Field Notes  
+**Handle ideas:** `@AIFieldNotes`, or `@JoshWrightAI` as a fallback. Availability not checked.  
 **Tagline:** AI tools without the hype.  
-**One-line promise:** Independent, practical explainers that help people choose and use AI models and tools with evidence, clear trade-offs, and no breathless claims.
+**Promise:** Practical AI for people who run a business on their own: tested tools, real workflows, honest trade-offs.
 
-**Audience:** curious builders, creators, students, and small teams who want to use AI but need help separating practical capability from marketing.
+**Audience:** sole traders, freelancers, coaches, consultants and tradies who want AI to save them time and aren't interested in AI as a hobby.
 
-**Editorial stance:** test workflows; link primary sources; state versions and dates; show limitations; disclose sponsorships and affiliate links; distinguish observed results from opinion.
+**Editorial stance:** test workflows on real tasks; state tool versions, prices and dates; show limitations and mistakes; link primary sources; disclose sponsorships, affiliate links and your own products (SOLO AI, AI Download Center); keep what you observed separate from opinion.
+
+### Why this angle
+
+Broad AI terms are crowded, and some are shrinking. Small-business terms get real searches with much less competition. Competition is vidIQ's 0–100 score, where lower is easier to rank for.
+
+| Keyword | Est. monthly searches | Competition | Notes |
+|---|---|---|---|
+| ai tools | 666K | 70 | Too crowded for a new channel |
+| best ai tools | 148K | 65 | Demand down 32.5% |
+| ai tools for small business | 54K | 52 | Demand down 38.6% |
+| ai proposal writing | 4.6K | 14 | Easy to rank |
+| ai tools for freelancers | 6.2K | 22 | Easy to rank |
+| save time with ai | 9.0K | 23 | Easy to rank |
+| ollama tutorial | 116K | 46 | Big demand that lasts |
+| how to use ollama | 45K | 46 | |
+| lm studio tutorial | 28K | 38 | |
+| local llm | 69K | 48 | |
+
+Small channels breaking out on this angle in the last three months ("breakout" means views compared with the channel's usual):
+
+- "Don't Get Left Behind: The AI Plan for Small Business Owners": 55.7K views on an 8.2K-subscriber channel, 13x its usual
+- "The Easiest Way to Create UGC Ads in Minutes (FOR FREE)": 37.9K views on a 792-subscriber channel, 10x
+- "5 AI Tools I Would Use If I Started YouTube Today": 26K views on a 24.1K-subscriber channel, 2.3x
+
+A breakout shows that a video did well. It doesn't prove why, or that the same thing will work here.
 
 ## Channel description
 
-> AI Field Notes is an independent guide to the fast-moving AI landscape. Get practical model explainers, hands-on tool reviews, local AI walkthroughs, and creator workflows without the hype. Every episode aims to show what was tested, what it costs, what to verify, and who it may suit. Models and tools change quickly, so check linked sources for current versions, pricing, licensing, and requirements. Hosted by @joshuawayzwright.
+> Practical AI for people who run a business on their own. Every week I test an AI tool or workflow on a real task: proposals, marketing, admin, content and local/private AI. I show what worked, what it costs and where it breaks. No hype, sources linked, sponsorships always disclosed.
+
+**Banner text:** Tested AI tools & workflows for solo businesses · New video every [DAY]  
+**Links:** AI Download Center (https://joshuawayzwright.github.io/ai-download-center/), SOLO AI (https://thesoloserviceprovider.com.au/solo-ai.html), The Solo Service Provider (https://thesoloserviceprovider.com.au)
+
+## Content pillars (one playlist each)
+
+1. **AI for Solo Business:** proposals, email, admin, marketing, client follow-ups. This is the core pillar.
+2. **Run AI Privately:** Ollama, LM Studio, offline AI. Searches here stay steady over time.
+3. **Tool Field Tests:** one tool, one real task, an honest verdict.
+4. **New Model, Real Test:** fast tests of new releases, made within days of a spike in searches. Rising terms seen on 15 Nov 2026 include "claude animation skill" (269K, competition 23) and "clipping with claude" (144K, competition 30). These fade quickly, so check current data before you commit to one.
 
 ## Brand direction
 
-- **Voice:** curious, direct, skeptical but fair, and useful to newcomers without talking down to technical viewers.
-- **Visuals:** field-note motif, clear labels, restrained lime/coral accents, readable model names, real interface capture, and source links on screen.
-- **Thumbnail system:** one question or comparison, one recognizable product/model label, no more than a few words, and imagery from the actual workflow where possible.
-- **Handle ideas:** `@AIFieldNotes`, `@AIFieldNotesYT`, or a personal-name variant. Availability is not checked.
+- **Voice:** direct, practical, skeptical but fair. Talk like a sole trader helping another sole trader.
+- **Thumbnails:** your real face, one object or tool, at most 3 words, solid dark background, lime/coral accents. Never use an AI-generated face in place of yours, and never use a company's logo in a way that implies a partnership.
+- **Visuals:** real screen capture, readable model names, sources on screen.
 
-## Repeatable formats
+## First 10 videos
 
-1. **Model field test:** a consistent task, setup details, observed outputs, limitations, and links to model cards.
-2. **Release briefing:** what changed, who can access it, requirements, pricing, and what remains unknown.
-3. **Workflow walkthrough:** an end-to-end task using real screens, with costs and failure points.
-4. **Tool comparison:** defined criteria and a small, reproducible test rather than an unsupported universal ranking.
-5. **Shorts:** one finding, one caveat, one source or next step in 30–60 seconds.
+| # | Title | Target keyword | Status |
+|---|---|---|---|
+| 1 | I Let AI Write My Business Proposals for a Week | ai proposal writing | Template ready: `marketing/youtube/ep01-ai-proposals-week.md` (needs your test results) |
+| 2 | The AI Plan for Sole Traders: 5 Jobs to Hand Over First | ai tools for freelancers | Script ready: `marketing/youtube/ep02-sole-trader-ai-plan.md` |
+| 3 | Ollama Tutorial: Run AI Free and Private on Your Laptop | ollama tutorial | Script ready: `marketing/youtube/ep03-ollama-tutorial.md` (needs your specs and results) |
+| 4 | I Saved [X] Hours a Week With AI: The Exact Workflow | save time with ai | Idea; only use a number you measured |
+| 5 | LM Studio Tutorial for Beginners: No Coding, No Subscription | lm studio tutorial | Idea |
+| 6 | Doing Your Own Marketing? My AI System From Blank Page to Posted | ai tools for content creation | Idea; extends an existing Short |
+| 7 | 5 Free AI Tools I'd Use If I Started a Business Today | free ai tools | Idea |
+| 8 | Can a Free Local AI Replace ChatGPT for Small Business Work? | local llm | Idea |
+| 9 | I Built an AI App for Sole Traders: What I Learned | (origin story) | Idea; extends an existing Short; disclose that it's your app |
+| 10 | AI Email Replies That Don't Sound Like a Robot | ai email writing | Idea |
 
-**Starter cadence:** one researched long-form video per week and two Shorts cut from that research. Reduce cadence rather than skip source checking.
+vidIQ title scores: #1 = 94, #2 = 90, #3 = 83.
 
-## First ten episode briefs
+## Weekly routine
 
-1. How to choose a local AI model for your laptop
-2. What model-card fields matter before you download a model
-3. A repeatable way to compare two AI coding assistants
-4. Running a small language model locally: setup, memory, and trade-offs
-5. How to verify an AI model's license before using it
-6. What happens when the internet goes away: an offline AI workflow
-7. Image-generation model comparison using one prompt and clear criteria
-8. AI voice tools: quality, consent, and commercial-use checks
-9. Building a private document assistant with local tools
-10. How to keep an AI workflow's recurring costs visible
-
-For comparisons, document exact model versions, prompts, hardware, settings, date, and source links. Do not publish a result as a benchmark unless the test supports that claim.
-
-## First-video outline
-
-**Working title:** How to choose a local AI model for your laptop  
-**Viewer takeaway:** leave with a short checklist for matching a model to hardware, task, and privacy needs.
-
-- Cold open: the model name is only half the decision; hardware and use case matter too.
-- Define the task: chat, coding, transcription, image generation, or embeddings.
-- Show how to check memory requirements, quantization, format, and supported runtimes.
-- Demonstrate one real download/run workflow and note setup friction.
-- Compare local privacy and control with speed, quality, and hardware trade-offs.
-- Close with a checklist and links to official model cards and licenses.
+- 1 long video a week, 8–15 minutes. Structure: what I tested, the setup, the result, the cost, who it suits.
+- 2–3 Shorts cut from each long video: one finding plus one caveat, linking to the full video.
+- Have 3 videos ready before announcing the relaunch.
+- Cut back how often you post rather than skip checking sources.
 
 ## Production workflow
 
 1. Pick a viewer question and write the one-sentence takeaway.
-2. Collect primary sources: model card, release notes, official docs, license, and pricing page.
-3. Test the workflow yourself. Record environment, versions, prompts, settings, and failures.
-4. Draft in Creator Studio; replace placeholders with verified evidence and citations.
-5. Record narration or camera, then capture genuine screen footage. Use licensed music, visuals, and clips.
-6. Edit for clarity, add readable citations, captions, chapters, and a truthful thumbnail/title.
-7. Review all factual claims, links, disclosure language, and accessibility before upload.
-8. Publish; then review impressions, click-through rate, retention, and useful viewer questions to choose the next test.
+2. Collect primary sources: official docs, release notes, licence, pricing page.
+3. Run the test yourself. Record tool versions, prompts, settings, times and failures.
+4. Fill every `[NEEDS INFO]` placeholder in the script from your own results.
+5. Record, capture real screens, and use licensed music and visuals.
+6. Edit; add captions, chapters and on-screen sources.
+7. Check every claim, link and disclosure before upload.
+8. After publishing, review impressions, click-through rate, retention and viewer questions to pick the next test.
 
 ## Upload checklist
 
-- Confirm title matches the actual test; avoid claiming a winner without evidence.
-- Add a concise description, primary-source links, and chapters where useful.
-- Use a custom thumbnail with legible text and accurate imagery.
-- Add captions and review their technical names.
-- Disclose paid placements, affiliate links, free access, and material relationships clearly.
-- Check music, footage, logos, model licenses, and any voice or likeness permissions.
-- Pin a question that invites corrections and source-backed follow-up.
+- The title matches what you actually tested.
+- The description includes the tool, version, price, date, sources and chapters.
+- The custom thumbnail shows your real face and accurate imagery.
+- Captions are checked for technical names.
+- Paid placements, affiliate links, free access, and your own products are disclosed.
+- Music, footage, logos and model licences are checked.
+- A pinned comment invites corrections.
 
-## Launch tasks
+## Relaunch tasks
 
-- Check YouTube name/handle availability and create the channel using your own Google account.
-- Add channel art, profile image, description, links, and contact details.
-- Create playlists for model explainers, workflow walkthroughs, tool comparisons, and Shorts.
-- Prepare three videos before announcing the channel so the first release has follow-ups.
-- Submit your first few videos only after the evidence, license, and disclosure review.
+Done on 15 Nov 2026 (via vidIQ):
+- [x] Added a channel line and keyword tags to both public Shorts. Existing descriptions and links were kept.
+- [x] Generated draft thumbnails for episodes 1–3 (`marketing/youtube/thumbnails/`). Each needs your real face before use.
 
-This kit is a planning document, not a claim that a YouTube channel or handle has already been created.
+Still to do, in YouTube Studio:
+- [ ] Rename the channel and change the handle.
+- [ ] Update the description, banner, profile image and links.
+- [ ] Create 4 playlists and add the two Shorts to "AI for Solo Business".
+- [ ] Decide what to do with the unlisted 31-second "SOLO AI" promo: leave it unlisted, or make it the channel trailer.
+- [ ] Run the episode 1 test, record episodes 1–3, then announce.
