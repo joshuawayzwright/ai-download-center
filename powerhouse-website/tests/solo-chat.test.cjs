@@ -352,3 +352,18 @@ test('customer intent with expired cookies remains disabled when the customer ga
     },env);
   }
 });
+
+test('customer chat runs only allowlisted models; anything else is switched off before Auth',async()=>{
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body,headers});
+    assert.equal(result.status,200);
+    assert.equal(result.body.model,'gemini-3.8-flash');
+    assert.deepEqual(calls,['auth','admit','provider','finish']);
+  },{SOLO_AI_MODEL:'gemini-3.8-flash'});
+  await withCustomer(async({calls,body,headers})=>{
+    const result=await request({body,headers});
+    assert.equal(result.status,503);
+    assert.equal(result.body.code,'provider_unavailable');
+    assert.deepEqual(calls,[]);
+  },{SOLO_AI_MODEL:'gemini-4-carbon'});
+});

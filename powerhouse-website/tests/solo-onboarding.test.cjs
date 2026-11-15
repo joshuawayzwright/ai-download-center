@@ -484,3 +484,36 @@ test('successful password update with failed global logout reports change but ne
   assert.equal(api.calls.filter(call => call.options.method === 'PUT').length, 1);
   assert.equal(api.calls.filter(call => call.url.endsWith('scope=global')).length, 1);
 });
+
+const NATIVE = { host: 'solo-preview.example', 'content-type': 'application/json', 'x-solo-client': 'android',
+  origin: undefined };
+
+test('the Android app uses the same code flows with its own switch and no browser context', async () => {
+  const on = setup({ env: { SOLO_NATIVE_AUTH_ENABLED: 'true' } });
+  const flags = await on.request({ method: 'GET', headers: NATIVE });
+  assert.deepEqual(flags.body, { enabled: true, signupEnabled: true, recoveryEnabled: true });
+  for (const action of ['signup', 'verify_email', 'request_reset', 'reset_password']) {
+    const api = setup({ env: { SOLO_NATIVE_AUTH_ENABLED: 'true' } });
+    const result = await api.request({ headers: NATIVE, body: BODIES[action] });
+    assert.ok(result.status === 200 || result.status === 202, action + ' ' + result.status);
+    assert.equal(result.headers['Set-Cookie'], undefined, action + ' sets no cookies for the app');
+    assert.deepEqual(api.admissions.map(a => a.attempt.action), [action]);
+  }
+  const off = setup({ env: { SOLO_NATIVE_AUTH_ENABLED: 'false' } });
+  assert.deepEqual((await off.request({ method: 'GET', headers: NATIVE })).body,
+    { enabled: false, signupEnabled: false, recoveryEnabled: false });
+  const refused = await off.request({ headers: NATIVE, body: BODIES.signup });
+  assert.equal(refused.status, 503);
+  assert.equal(refused.body.code, 'onboarding_disabled');
+  assert.equal(off.calls.length + off.admissions.length, 0);
+});
+
+test('app requests that look like a browser are refused before any account call', async () => {
+  for (const extra of [{ origin: ORIGIN }, { cookie: '__Host-solo-access=x' }, { 'x-solo-client': 'web' }]) {
+    const api = setup({ env: { SOLO_NATIVE_AUTH_ENABLED: 'true' } });
+    const result = await api.request({ headers: { ...NATIVE, ...extra }, body: BODIES.signup });
+    assert.equal(result.status, 400);
+    assert.equal(result.body.code, 'invalid_client');
+    assert.equal(api.calls.length + api.admissions.length, 0);
+  }
+});
