@@ -87,3 +87,18 @@ unfinished features as live.
 **Play Console data safety and account deletion.** The app creates accounts, so Play needs
 an account deletion URL as well as the in-app option, for example
 https://thesoloserviceprovider.com.au/privacy.html#solo-ai with the deletion steps.
+
+## Release notes: 1.1.1
+
+Paste into "What's new" for the 1.1.1 release (en-AU, under 500 characters):
+
+```
+Smoother display on Android 15 and newer: SOLO AI now draws edge to edge, with the top bar, chat box and keyboard kept clear of the system bars. Updated Android libraries.
+```
+
+Technical note: 1.1.1 removes the app's own deprecated window bar colours and updates
+androidx.activity (1.13.0) and core-splashscreen (1.2.0). AndroidX still contains
+version-gated calls to `Window.setStatusBarColor` / `setNavigationBarColor` /
+`setDecorFitsSystemWindows` for Android 14 and older (EdgeToEdgeApi26/29/35 and Compose
+`ViewCompatShims`). They never run on Android 15+, but Play's static scan may still list
+them. Play treats that notice as a recommendation, not a blocker.
