@@ -1,0 +1,63 @@
+{
+  "id": "rnd",
+  "version": "1.0.0",
+  "title": "R&D Lead",
+  "layer": "L2",
+  "model": {
+    "primary": "claude-sonnet-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "cto",
+  "dotted_to": [],
+  "veto": [],
+  "mission": "Find the next growth curve.",
+  "responsibilities": [
+    "Technology and market scouting",
+    "Prototypes",
+    "Run the internal idea market"
+  ],
+  "kpis": [
+    {
+      "name": "bets_launched_per_quarter",
+      "target": ">=2",
+      "weight": 0.4
+    },
+    {
+      "name": "bet_graduation_rate",
+      "target": ">=0.25",
+      "weight": 0.6
+    }
+  ],
+  "tools": {
+    "web_research": [
+      "read"
+    ],
+    "sandbox": [
+      "run"
+    ],
+    "model_apis": [
+      "call"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T2",
+    "spend_limit_usd": {
+      "per_action": 10,
+      "monthly": 30
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "*"
+    ],
+    "write": [
+      "semantic.research"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 8
+  },
+  "workers": []
+}

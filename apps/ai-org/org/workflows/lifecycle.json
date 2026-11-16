@@ -1,0 +1,28 @@
+{
+  "id": "venture-lifecycle",
+  "version": "1.0.0",
+  "stages": [
+    { "id": "idea", "owner": "rnd", "evaluator": "ceo", "artifacts": ["idea_card"],
+      "gate": [ { "metric": "strategic_fit", "op": ">=", "value": 0.6 }, { "metric": "novelty", "op": ">=", "value": 0.5 } ] },
+    { "id": "research", "owner": "product", "evaluator": "eval-lab", "artifacts": ["research_brief"],
+      "gate": [ { "metric": "sam_usd", "op": ">=", "value": 100000 }, { "metric": "evidence_grade", "op": ">=", "value": 0.7 },
+                { "metric": "legal_blockers", "op": "==", "value": 0, "veto_owner": "clo" } ] },
+    { "id": "validation", "owner": "product", "evaluator": "cfo", "artifacts": ["validation_report", "unit_economics"],
+      "gate": [ { "metric": "landing_conversion", "op": ">=", "value": 0.05 }, { "metric": "ltv_to_cac", "op": ">=", "value": 3 } ] },
+    { "id": "build", "owner": "eng", "evaluator": "cto", "artifacts": ["prd", "code", "test_report"],
+      "gate": [ { "metric": "acceptance_pass_rate", "op": "==", "value": 1 }, { "metric": "critical_vulns", "op": "==", "value": 0 } ] },
+    { "id": "launch", "owner": "marketing", "evaluator": "cmo", "artifacts": ["gtm_plan", "campaign_assets"],
+      "gate": [ { "metric": "compliance_approved", "op": "==", "value": 1, "veto_owner": "compliance" }, { "metric": "tracking_verified", "op": "==", "value": 1 } ] },
+    { "id": "sell", "owner": "sales", "evaluator": "cfo", "artifacts": ["pipeline"],
+      "gate": [ { "metric": "cac_payback_months", "op": "<=", "value": 3 }, { "metric": "win_rate", "op": ">=", "value": 0.15 } ] },
+    { "id": "succeed", "owner": "support", "evaluator": "coo", "artifacts": ["health_dashboard"],
+      "gate": [ { "metric": "net_revenue_retention", "op": ">=", "value": 1 }, { "metric": "csat", "op": ">=", "value": 0.85 } ] },
+    { "id": "scale", "owner": "coo", "evaluator": "cfo", "artifacts": ["scaling_plan"],
+      "gate": [ { "metric": "contribution_margin_at_2x", "op": ">=", "value": 0.5 } ] },
+    { "id": "optimize", "owner": "chro", "evaluator": "eval-lab", "artifacts": ["experiment_log"], "gate": [], "continuous": true }
+  ],
+  "kill_criteria_examples": [
+    { "metric": "cac_usd", "op": ">", "value": 198, "consecutive_periods": 2, "action": "pause_initiative" },
+    { "metric": "refund_rate", "op": ">", "value": 0.1, "consecutive_periods": 1, "action": "pause_initiative" }
+  ]
+}

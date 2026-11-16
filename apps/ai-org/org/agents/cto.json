@@ -1,0 +1,81 @@
+{
+  "id": "cto",
+  "version": "1.0.0",
+  "title": "Chief Technology Officer",
+  "layer": "L1",
+  "model": {
+    "primary": "claude-opus-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "ceo",
+  "dotted_to": [],
+  "veto": [],
+  "mission": "Build and run the technology safely and cheaply.",
+  "responsibilities": [
+    "Own architecture and release gates",
+    "Security and secret handling",
+    "Infrastructure cost"
+  ],
+  "kpis": [
+    {
+      "name": "change_failure_rate",
+      "target": "<=0.1",
+      "weight": 0.3,
+      "guardrail": true
+    },
+    {
+      "name": "deploys_per_week",
+      "target": ">=3",
+      "weight": 0.3
+    },
+    {
+      "name": "mttr_hours",
+      "target": "<=4",
+      "weight": 0.2
+    },
+    {
+      "name": "infra_cost_usd",
+      "target": "<=20",
+      "weight": 0.2
+    }
+  ],
+  "tools": {
+    "github": [
+      "read",
+      "review",
+      "merge"
+    ],
+    "ci": [
+      "read",
+      "run"
+    ],
+    "hosting": [
+      "deploy"
+    ],
+    "observability": [
+      "read"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T3",
+    "spend_limit_usd": {
+      "per_action": 50,
+      "monthly": 50
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "*"
+    ],
+    "write": [
+      "semantic.tech",
+      "procedural.eng"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 15
+  },
+  "workers": []
+}

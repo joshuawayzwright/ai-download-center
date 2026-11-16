@@ -1,0 +1,62 @@
+{
+  "id": "fpa",
+  "version": "1.0.0",
+  "title": "FP&A and Treasury",
+  "layer": "L2",
+  "model": {
+    "primary": "claude-sonnet-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "cfo",
+  "dotted_to": [],
+  "veto": [],
+  "mission": "Produce numbers the organization can trust.",
+  "responsibilities": [
+    "Maintain the driver model",
+    "Monthly close and variance analysis",
+    "Cash management"
+  ],
+  "kpis": [
+    {
+      "name": "forecast_error",
+      "target": "<=0.1",
+      "weight": 0.7
+    },
+    {
+      "name": "close_days",
+      "target": "<=3",
+      "weight": 0.3
+    }
+  ],
+  "tools": {
+    "ledger": [
+      "read",
+      "write"
+    ],
+    "bi": [
+      "read"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T2",
+    "spend_limit_usd": {
+      "per_action": 0,
+      "monthly": 0
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "financial.*",
+      "episodic.*"
+    ],
+    "write": [
+      "financial.model"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 8
+  },
+  "workers": []
+}

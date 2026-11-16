@@ -1,0 +1,71 @@
+{
+  "id": "clo",
+  "version": "1.0.0",
+  "title": "Chief Legal Officer",
+  "layer": "L1",
+  "model": {
+    "primary": "claude-opus-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "ceo",
+  "dotted_to": [
+    "board"
+  ],
+  "veto": [
+    "legal",
+    "regulatory"
+  ],
+  "mission": "Keep operations lawful and defensible.",
+  "responsibilities": [
+    "Terms, privacy policy and contracts",
+    "Australian Consumer Law, Spam Act 2003 and Privacy Act 1988 compliance",
+    "Regulatory monitoring"
+  ],
+  "kpis": [
+    {
+      "name": "legal_incidents",
+      "target": "==0",
+      "weight": 0.5,
+      "guardrail": true
+    },
+    {
+      "name": "review_turnaround_hours",
+      "target": "<=24",
+      "weight": 0.5
+    }
+  ],
+  "tools": {
+    "contracts": [
+      "read",
+      "draft"
+    ],
+    "esign": [
+      "draft"
+    ],
+    "regulation_feeds": [
+      "read"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T3",
+    "spend_limit_usd": {
+      "per_action": 0,
+      "monthly": 0
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "*"
+    ],
+    "write": [
+      "semantic.legal",
+      "procedural.legal"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 15
+  },
+  "workers": []
+}

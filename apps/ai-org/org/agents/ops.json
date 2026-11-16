@@ -1,0 +1,64 @@
+{
+  "id": "ops",
+  "version": "1.0.0",
+  "title": "Operations Lead",
+  "layer": "L2",
+  "model": {
+    "primary": "claude-sonnet-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "coo",
+  "dotted_to": [],
+  "veto": [],
+  "mission": "Keep day-to-day operations smooth and cheap.",
+  "responsibilities": [
+    "Vendors and procurement",
+    "Runbooks",
+    "Featured-listing fulfilment"
+  ],
+  "kpis": [
+    {
+      "name": "fulfilment_sla_hours",
+      "target": "<=24",
+      "weight": 0.6
+    },
+    {
+      "name": "ops_cost_share",
+      "target": "<=0.1",
+      "weight": 0.4,
+      "guardrail": true
+    }
+  ],
+  "tools": {
+    "procurement": [
+      "read",
+      "request"
+    ],
+    "runbooks": [
+      "read",
+      "write"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T2",
+    "spend_limit_usd": {
+      "per_action": 20,
+      "monthly": 30
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "procedural.*",
+      "semantic.customers"
+    ],
+    "write": [
+      "procedural.ops"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 8
+  },
+  "workers": []
+}
