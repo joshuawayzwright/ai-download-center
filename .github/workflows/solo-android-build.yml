@@ -35,7 +35,7 @@ jobs:
       # Unsigned outputs only. The upload key is never stored in this repository.
       - name: Build debug APK and unsigned release bundle
         run: ./gradlew :app:assembleDebug :app:bundleRelease --stacktrace
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: solo-ai-android-reports
@@ -44,12 +44,12 @@ jobs:
             apps/solo-android/app/build/screenshots/
             apps/solo-android/build/reports/problems/
           if-no-files-found: ignore
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: solo-ai-debug-apk
           path: apps/solo-android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: solo-ai-release-bundle-unsigned
           path: apps/solo-android/app/build/outputs/bundle/release/*.aab
