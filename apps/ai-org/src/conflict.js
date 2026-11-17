@@ -1,5 +1,5 @@
 // Conflict resolution ladder: veto -> empirical test -> common manager -> reversibility default.
-import { chainOfCommand } from './registry.js';
+import { chainOfCommand } from './org-model.js';
 
 export function commonManager(org, a, b) {
   const chainA = [a, ...chainOfCommand(org, a)];

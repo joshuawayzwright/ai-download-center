@@ -1,0 +1,104 @@
+<title>Board Console</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an operations console. Sticky top bar with status, a tab row, and one working view below. */
+:root {
+  --bg: #f4f6f5; --surface: #ffffff; --sunk: #eaeeec; --fg: #17201c; --muted: #5a6762; --line: #d5ddd9;
+  --accent: #1d6b58; --accent-fg: #ffffff; --accent-soft: #dcede6;
+  --ok: #1d6b58; --ok-soft: #dcede6; --warn: #8f5600; --warn-soft: #fbedd6; --bad: #a3312a; --bad-soft: #f7e1df;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --r: 8px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #101513; --surface: #171d1a; --sunk: #0c100e; --fg: #e2e8e5; --muted: #95a39d; --line: #2a3430;
+  --accent: #66c2a6; --accent-fg: #0c1512; --accent-soft: #1b2f28;
+  --ok: #66c2a6; --ok-soft: #1b2f28; --warn: #e6aa57; --warn-soft: #33281a; --bad: #ee8a80; --bad-soft: #3a2220; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #101513; --surface: #171d1a; --sunk: #0c100e; --fg: #e2e8e5; --muted: #95a39d; --line: #2a3430;
+  --accent: #66c2a6; --accent-fg: #0c1512; --accent-soft: #1b2f28;
+  --ok: #66c2a6; --ok-soft: #1b2f28; --warn: #e6aa57; --warn-soft: #33281a; --bad: #ee8a80; --bad-soft: #3a2220; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 14px/1.55 var(--sans) }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface) }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.inner { max-width: 1120px; margin: 0 auto }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line) }
+.topbar .inner { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding-block: 12px 0 }
+.brand { font: 600 16px var(--sans); margin-right: auto }
+.brand small { font: 400 12px var(--mono); color: var(--muted); margin-left: 8px }
+.pills { display: flex; flex-wrap: wrap; gap: 6px }
+.pill { font: 500 12px var(--mono); padding: 3px 10px; border-radius: 999px; background: var(--sunk); color: var(--muted); white-space: nowrap }
+.pill.ok { background: var(--ok-soft); color: var(--ok) } .pill.warn { background: var(--warn-soft); color: var(--warn) } .pill.bad { background: var(--bad-soft); color: var(--bad) }
+nav.tabs { flex-basis: 100%; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-top: 4px }
+nav.tabs a { padding: 10px 12px; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; font-weight: 500 }
+nav.tabs a[aria-current="page"] { color: var(--fg); border-bottom-color: var(--accent) }
+nav.tabs a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+nav.tabs .count { font: 500 11px var(--mono); background: var(--bad-soft); color: var(--bad); border-radius: 999px; padding: 0 6px; margin-left: 4px }
+main { padding-block: 24px 64px }
+h1 { font: 600 22px/1.25 var(--sans); margin: 0 0 4px; text-wrap: balance }
+h2 { font: 600 15px var(--sans); margin: 0 0 10px }
+.sub { color: var(--muted); margin: 0 0 20px; max-width: 70ch }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
+.split { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) }
+.split > * { min-width: 0 }
+@media (max-width: 760px) { .split { grid-template-columns: minmax(0, 1fr) } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; min-width: 0 }
+.stack { display: flex; flex-direction: column; gap: 12px }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.label { font: 500 11px var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted) }
+.big { font: 600 28px/1.1 var(--sans); font-variant-numeric: tabular-nums }
+.muted { color: var(--muted) }
+.mono { font-family: var(--mono); font-size: 13px }
+.notice { border-radius: var(--r); padding: 12px 14px; background: var(--warn-soft); color: var(--fg); border-left: 3px solid var(--warn) }
+.notice.info { background: var(--accent-soft); border-left-color: var(--accent) }
+.notice.bad { background: var(--bad-soft); border-left-color: var(--bad) }
+.scroll { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+td.num, th.num { text-align: right }
+button { font: 500 13px var(--sans); border: 1px solid var(--line); background: var(--surface); color: var(--fg); padding: 7px 12px; border-radius: 6px; cursor: pointer }
+button:hover { border-color: var(--muted) }
+button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent) }
+button.danger { color: var(--bad); border-color: var(--bad) }
+button:disabled { opacity: .5; cursor: not-allowed }
+label.field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted) }
+input, select, textarea { font: 14px var(--sans); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; width: 100%; min-width: 0 }
+textarea { min-height: 64px; resize: vertical }
+.check { display: flex; gap: 8px; align-items: center; font-size: 13px }
+.check input { width: auto }
+.form { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) }
+.tier { font: 600 11px var(--mono); padding: 2px 7px; border-radius: 4px; background: var(--sunk); color: var(--muted) }
+.tier.T2 { background: var(--warn-soft); color: var(--warn) } .tier.T3, .tier.T4 { background: var(--bad-soft); color: var(--bad) }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.card.overdue { border-left: 3px solid var(--bad) }
+.card h3 { margin: 0; font: 600 15px var(--sans); overflow-wrap: anywhere }
+.opts { display: flex; flex-direction: column; gap: 6px }
+.opt { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px }
+.opt input { width: auto; margin-top: 3px }
+.opt .rec { font: 500 11px var(--mono); color: var(--accent) }
+ul.reasons { margin: 0; padding-left: 18px }
+.tree, .tree ul { list-style: none; margin: 0; padding-left: 16px; border-left: 1px solid var(--line) }
+.tree { padding-left: 0; border-left: 0 }
+.tree button { border: 0; background: none; padding: 3px 6px; text-align: left; border-radius: 4px; display: inline-flex; gap: 6px; align-items: center }
+.tree button[aria-pressed="true"] { background: var(--accent-soft); color: var(--fg) }
+.bar { height: 10px; background: var(--sunk); border-radius: 999px; overflow: hidden }
+.bar > span { display: block; height: 100%; background: var(--accent) }
+.empty { text-align: center; padding: 32px 16px; color: var(--muted) }
+.verdict { font: 600 18px var(--sans) }
+.verdict.allow { color: var(--ok) } .verdict.deny { color: var(--bad) } .verdict.needs_approval { color: var(--warn) }
+svg text { fill: var(--muted); font: 11px var(--mono) }
+@media (prefers-reduced-motion: no-preference) { button { transition: border-color .15s } }
+</style>
+
+<div class="topbar gutter">
+  <div class="inner">
+    <div class="brand">Board Console <small>AI Download Center</small></div>
+    <div class="pills" id="status-pills"><span class="pill">Loading…</span></div>
+    <nav class="tabs" id="tabs" aria-label="Views"></nav>
+  </div>
+</div>
+<main class="gutter"><div class="inner" id="view"><p class="muted">Loading the organization…</p></div></main>
+
+<script type="module" src="app.js"></script>

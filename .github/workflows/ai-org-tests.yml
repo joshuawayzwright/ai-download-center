@@ -20,3 +20,4 @@ jobs:
           node-version: '22'
       - run: npm --prefix apps/ai-org run validate
       - run: npm --prefix apps/ai-org test
+      - run: npm --prefix apps/ai-org run build:web

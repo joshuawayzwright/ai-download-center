@@ -1,7 +1,7 @@
 // Policy engine: decides whether an agent action is allowed, denied, or needs approval.
 // Deterministic code, not an LLM; agents cannot bypass it.
 import { TIER_RANK, tierMax } from './util.js';
-import { chainOfCommand } from './registry.js';
+import { chainOfCommand } from './org-model.js';
 
 const EXTERNAL_TYPES = new Set(['external_comm', 'publish_content', 'public_statement', 'ad_spend', 'discount', 'refund']);
 
@@ -54,6 +54,19 @@ export class Controls {
 
   recordSpend(agent, usd) {
     this.monthlySpend.set(agent, (this.monthlySpend.get(agent) ?? 0) + usd);
+  }
+
+  /** Serializable kill-switch state, for storage outside the process. */
+  toState() {
+    return { levels: [...this.levels].sort(), paused: [...this.paused].sort() };
+  }
+
+  /** Rebuild controls from stored state; unknown levels and agents are ignored. */
+  static fromState(org, { levels = [], paused = [] } = {}) {
+    const c = new Controls(org);
+    for (const l of levels) if (l in org.policy.kill_switch_levels && l !== 'L1') c.levels.add(l);
+    for (const a of paused) if (org.agents.has(a)) c.paused.add(a);
+    return c;
   }
 }
 
