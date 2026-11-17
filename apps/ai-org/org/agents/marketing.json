@@ -1,0 +1,85 @@
+{
+  "id": "marketing",
+  "version": "1.0.0",
+  "title": "Marketing Lead",
+  "layer": "L2",
+  "model": {
+    "primary": "claude-sonnet-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "cmo",
+  "dotted_to": [],
+  "veto": [],
+  "mission": "Execute the channel plan.",
+  "responsibilities": [
+    "Campaigns, SEO and content",
+    "Lifecycle email",
+    "Creative tests"
+  ],
+  "kpis": [
+    {
+      "name": "organic_sessions_mom",
+      "target": ">=0.1",
+      "weight": 0.5
+    },
+    {
+      "name": "content_published_per_week",
+      "target": ">=3",
+      "weight": 0.3
+    },
+    {
+      "name": "compliance_rejections",
+      "target": "<=1/mo",
+      "weight": 0.2,
+      "guardrail": true
+    }
+  ],
+  "tools": {
+    "cms": [
+      "write"
+    ],
+    "social": [
+      "draft",
+      "publish"
+    ],
+    "email": [
+      "draft",
+      "send"
+    ],
+    "analytics": [
+      "read"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T2",
+    "spend_limit_usd": {
+      "per_action": 25,
+      "monthly": 60
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "semantic.market",
+      "semantic.product",
+      "procedural.marketing"
+    ],
+    "write": [
+      "episodic.marketing"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 8
+  },
+  "workers": [
+    "campaign-strategist",
+    "seo-writer",
+    "x-writer",
+    "linkedin-writer",
+    "reddit-writer",
+    "newsletter-writer",
+    "launch-writer",
+    "video-scriptwriter"
+  ]
+}
