@@ -186,9 +186,20 @@ Every T2+ action is ledgered, so an audit is a query.
 - **Weekly:** read the Board digest and review a 2% audit sample of T2 actions.
 - **Legal and identity acts agents cannot perform:** signing, banking, KYC.
 
-## 14. Next phase
+## 14. Tool gateway
+
+Agents never call business tools directly. `apps/ai-org/src/gateway.js` handles every action in four steps:
+
+1. Validate the action's parameters.
+2. Map it to a policy action type.
+3. File it for the Board.
+4. Re-check everything at the moment it runs.
+
+The Board Console then runs the action through the Board's own claude.ai connectors (Gmail, Stripe, HubSpot, Linear) and records the result in the decision log. Approvals are pinned to the exact action approved. Outcomes that may or may not have happened block any re-run until the Board records what happened.
+
+## 15. Next phase
 
 1. Owner confirms the Board envelope (`owner_confirmed: true`) or edits the values.
-2. Add a tool gateway: wrap Stripe, CRM, email and GitHub calls so each passes through `evaluate()` and writes to the ledger.
+2. Choose the Stripe account and Linear team in the Board Console's Connections view.
 3. Run the first revenue loop (Marketing → Compliance → Sales → Support) at T1/T2 with the existing `.claude/agents` as workers.
 4. Stand up Eval Lab golden sets before enabling any automatic agent promotion.
