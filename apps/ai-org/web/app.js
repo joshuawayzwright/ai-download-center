@@ -5,6 +5,7 @@
 import { orgFromBundle, validateOrg, chainOfCommand } from './lib/org-model.js';
 import { evaluate, Controls } from './lib/policy.js';
 import { unitEconomics, budgetSplit, thompsonAllocate, monteCarloRunway } from './lib/finance.js';
+import { ACTIONS, CONNECTORS, executionPlan, summarizeResult, canonical, RUN_OPTION } from './lib/gateway.js';
 
 const VIEWS = [
   ['overview', 'Overview'],
@@ -14,6 +15,7 @@ const VIEWS = [
   ['ledger', 'Decision log'],
   ['finance', 'Finance'],
   ['controls', 'Kill switches'],
+  ['connections', 'Connections'],
 ];
 
 const state = {
@@ -21,6 +23,12 @@ const state = {
   orgErrors: [],
   mode: 'local', // 'db' once the artifact store answers
   db: null,
+  mcp: null,
+  servers: null, // listTools() result: which connectors this viewer has
+  cfg: { stripe: { account: null, livemode: true, name: '' }, linear: { team: '' } },
+  stripeAccounts: null,
+  running: new Set(),
+  viewerId: null,
   canWrite: true,
   writeError: null,
   loading: true,
@@ -59,6 +67,10 @@ const num = (v, fallback = 0) => {
 };
 const isOverdue = (r) => r.status === 'pending' && Date.parse(r.deadline) < Date.now();
 const pending = () => state.requests.filter((r) => r.status === 'pending');
+// Requests with something to run that the Board or policy has cleared and that haven't finished.
+const runnable = (r) => Boolean(r.execution) && r.run?.state !== 'done'
+  && (r.status === 'ready' || (r.status === 'approved' && r.choice === RUN_OPTION));
+const toRun = () => state.requests.filter(runnable);
 const controlsObj = () => Controls.fromState(state.org, state.controls);
 const agentTitle = (id) => (id === 'board' ? 'Board (you)' : state.org.agents.get(id)?.title ?? id);
 
@@ -74,7 +86,7 @@ async function sha256(text) {
 
 // The hash covers the decision itself; a later outcome is recorded beside it and is not hashed.
 function hashBody(e) {
-  return JSON.stringify({ seq: e.seq, at: e.at, requestId: e.requestId, agent: e.agent, summary: e.summary, tier: e.tier, approved: e.approved, choice: e.choice, rationale: e.rationale, p: e.p, prev: e.prev });
+  return JSON.stringify({ seq: e.seq, at: e.at, kind: e.kind, requestId: e.requestId, agent: e.agent, summary: e.summary, tier: e.tier, approved: e.approved, choice: e.choice, rationale: e.rationale, p: e.p, prev: e.prev });
 }
 
 async function verifyChain() {
@@ -114,39 +126,130 @@ async function saveControls(next) {
   return true;
 }
 
-async function decideRequest(req, { approved, choice, rationale }) {
-  const at = new Date().toISOString();
+async function ledgerEntry(req, fields) {
   const sorted = [...state.ledger].sort((a, b) => a.seq - b.seq);
   const last = sorted.at(-1);
   const entry = {
     seq: (last?.seq ?? -1) + 1,
-    at,
+    at: new Date().toISOString(),
     requestId: req.id,
     agent: String(req.from ?? 'unknown'),
     summary: String(req.subject ?? ''),
     tier: String(req.tier ?? ''),
-    approved,
-    choice: choice ?? null,
-    rationale: rationale ?? '',
     p: typeof req.confidence === 'number' ? req.confidence : null,
     prev: last?.hash ?? 'genesis',
     example: Boolean(req.example),
+    ...fields,
   };
   entry.hash = await sha256(hashBody(entry));
-  const update = { status: approved ? 'approved' : 'denied', choice: choice ?? null, rationale: rationale ?? '', decidedAt: at };
+  return entry;
+}
 
+async function writeRequestAndLedger(req, update, entry) {
   if (state.mode === 'db') {
-    const ok = await guardedWrite(async () => {
+    return guardedWrite(async () => {
       await state.db.doc(`requests/${req.id}`).update(update);
-      await state.db.doc(`ledger/d${String(entry.seq).padStart(6, '0')}`).set(entry);
+      if (entry) await state.db.doc(`ledger/d${String(entry.seq).padStart(6, '0')}`).set(entry);
     });
-    return ok;
   }
   Object.assign(req, update);
-  state.ledger.push({ ...entry, id: `d${entry.seq}` });
-  await verifyChain();
+  if (entry) { state.ledger.push({ ...entry, id: `d${entry.seq}` }); await verifyChain(); }
   render();
   return true;
+}
+
+async function decideRequest(req, { approved, choice, rationale }) {
+  const entry = await ledgerEntry(req, { approved, choice: choice ?? null, rationale: rationale ?? '' });
+  const update = { status: approved ? 'approved' : 'denied', choice: choice ?? null, rationale: rationale ?? '', decidedAt: entry.at };
+  // Pin the approval to exactly what was shown, so a later edit needs a fresh approval.
+  if (approved && req.execution) update.approvedExecution = canonical(req.execution);
+  return writeRequestAndLedger(req, update, entry);
+}
+
+// Codes where the connector call certainly did not reach the tool, or the tool reported failure.
+const NOT_RUN = new Set(['not_in_manifest', 'server_not_connected', 'selection_required', 'blocked_by_policy', 'bad_request', 'approval_required', 'needs_reauth', 'not_granted', 'capability_disabled', 'capability_removed', 'consent_required', 'transform_error', 'server_not_found', 'tool_error', 'self_only']);
+const CONNECTOR_HELP = {
+  needs_reauth: 'reconnect it in claude.ai Settings → Connectors',
+  server_not_connected: 'add it in claude.ai Settings → Connectors',
+  not_in_manifest: 'you turned this connector off for the app; allow it in the app’s permissions',
+  approval_required: 'the connector asked for your approval and didn’t get it',
+  selection_required: 'you have more than one connector with this name; choose one when asked',
+  blocked_by_policy: 'your organization’s policy blocks this tool',
+};
+
+async function runRequest(req, { approvalToken } = {}) {
+  if (!state.mcp) { state.writeError = 'Running actions needs the published app with your connectors.'; render(); return; }
+  if (state.mode !== 'db') return;
+  const base = approvalToken ? { ...req, run: undefined } : req;
+  const plan = executionPlan(state.org, controlsObj(), state.cfg, base);
+  if (!plan.ok) { state.writeError = `Not run: ${plan.reasons.join('; ')}.`; render(); return; }
+  if (state.running.has(req.id)) return;
+  state.running.add(req.id);
+  render();
+  const ref = state.db.doc(`requests/${req.id}`);
+  try {
+    // Only one viewer may run a request; others back off.
+    const lease = await ref.acquire({ holder: state.viewerId ?? 'board', ttlMs: 180000 });
+    if (!lease.acquired) throw Object.assign(new Error('Someone else is running this right now.'), { local: true });
+    const fresh = await ref.get();
+    const current = fresh.exists ? { id: req.id, ...fresh.data() } : null;
+    const recheck = current && executionPlan(state.org, controlsObj(), state.cfg, approvalToken ? { ...current, run: undefined } : current);
+    if (!recheck?.ok) throw Object.assign(new Error(`Not run: ${(recheck?.reasons ?? ['the request is gone']).join('; ')}.`), { local: true });
+    await ref.update({ run: { state: 'running', startedAt: new Date().toISOString() } });
+
+    const input = approvalToken ? { ...recheck.call.input, human_confirmation: { approval_token: approvalToken } } : recheck.call.input;
+    let result;
+    try {
+      result = await state.mcp.callTool(recheck.call.server, recheck.call.tool, input, { cache: false });
+    } catch (e) {
+      const code = e?.code ?? 'upstream_error';
+      const certain = NOT_RUN.has(code);
+      const run = {
+        state: certain ? 'failed' : 'unknown',
+        finishedAt: new Date().toISOString(),
+        code,
+        error: String(e?.message ?? 'The connector call failed.').slice(0, 1000),
+        ...(CONNECTOR_HELP[code] ? { help: CONNECTOR_HELP[code] } : {}),
+      };
+      const entry = await ledgerEntry(current, { kind: 'execution', approved: false, choice: 'run', rationale: certain ? `Run failed (${code}): ${run.error}` : `Run outcome unknown (${code}); check ${recheck.call.server} before retrying` });
+      await writeRequestAndLedger(current, { run }, entry);
+      return;
+    }
+    const out = summarizeResult(current.execution.kind, result?.payload ?? result?.content?.[0]?.text);
+    const run = {
+      state: out.needsApproval ? 'needs_confirmation' : 'done',
+      finishedAt: new Date().toISOString(),
+      summary: out.summary,
+      ...(out.id ? { resultId: out.id } : {}),
+      ...(out.url ? { url: out.url } : {}),
+    };
+    const entry = await ledgerEntry(current, { kind: 'execution', approved: !out.needsApproval, choice: 'run', rationale: out.summary });
+    await writeRequestAndLedger(current, { run }, entry);
+  } catch (e) {
+    state.writeError = e?.local ? e.message : 'The run could not be recorded. Check the connector before trying again.';
+    render();
+  } finally {
+    state.running.delete(req.id);
+    render();
+  }
+}
+
+/** After checking the connector by hand, the Board records whether an uncertain run went through. */
+async function settleRun(req, done) {
+  const run = { ...(req.run ?? {}), state: done ? 'done' : 'failed', settledAt: new Date().toISOString(), settledByBoard: true };
+  const entry = await ledgerEntry(req, { kind: 'execution', approved: done, choice: 'run', rationale: done ? 'Board confirmed the run went through' : 'Board confirmed the run did not go through' });
+  return writeRequestAndLedger(req, { run }, entry);
+}
+
+async function saveCfg(next) {
+  if (state.mode !== 'db') { state.cfg = next; render(); return; }
+  await guardedWrite(() => state.db.doc('settings/connectors').set(next));
+}
+
+async function refreshServers() {
+  if (!state.mcp) return;
+  try { state.servers = (await state.mcp.listTools()).servers ?? []; } catch { state.servers = []; }
+  render();
 }
 
 async function recordOutcome(entry, success) {
@@ -160,14 +263,25 @@ async function recordOutcome(entry, success) {
 async function connect() {
   const claude = window.claude;
   if (!claude?.use) return finishLocal();
-  const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]);
+  const [db, user, mcp] = await Promise.all([claude.use('db'), claude.use('user'), claude.use('mcp')]);
+  state.mcp = mcp;
   if (!db) return finishLocal();
   state.mode = 'db';
   state.db = db;
   if (user) {
     const edit = await user.canEdit().catch(() => null);
     state.canWrite = edit !== false;
+    state.viewerId = await user.id().catch(() => null);
   }
+  refreshServers();
+  db.doc('settings/connectors').onSnapshot((snap) => {
+    const d = snap.exists ? snap.data() : {};
+    state.cfg = {
+      stripe: { account: typeof d.stripe?.account === 'string' ? d.stripe.account : null, livemode: d.stripe?.livemode !== false, name: typeof d.stripe?.name === 'string' ? d.stripe.name : '' },
+      linear: { team: typeof d.linear?.team === 'string' ? d.linear.team : '' },
+    };
+    render();
+  }, () => {});
 
   const timer = setTimeout(() => { state.slow = true; render(); }, 10_000);
   let pendingFirst = 3;
@@ -218,13 +332,14 @@ function statusPills() {
   if (c.levels.includes('L4')) pills.push('<span class="pill bad">Full stop</span>');
   else if (c.levels.length) pills.push(`<span class="pill bad">${esc(c.levels.join(' + '))} active</span>`);
   else pills.push('<span class="pill ok">Kill switches clear</span>');
+  if (toRun().length) pills.push(`<span class="pill warn">${toRun().length} ready to run</span>`);
   if (state.mode === 'local') pills.push('<span class="pill">Preview: not saved</span>');
   else if (!state.canWrite) pills.push('<span class="pill">Read-only</span>');
   return pills.join('');
 }
 
 function tabsHtml(current) {
-  const n = pending().length;
+  const n = pending().length + toRun().length;
   return VIEWS.map(([id, label]) => `<a href="#${id}" ${id === current ? 'aria-current="page"' : ''}>${label}${id === 'approvals' && n ? `<span class="count">${n}</span>` : ''}</a>`).join('');
 }
 
@@ -290,18 +405,23 @@ function requestCard(r) {
     check = `<div class="muted">Policy check: <strong>${esc(v.decision.replace('_', ' '))}</strong> at ${tierChip(v.tier)}${v.missing.length ? `, needs ${esc(v.missing.join(', '))}` : ''}${v.reasons.length ? `. ${esc(v.reasons.at(-1))}` : ''}</div>`;
   }
   const decided = r.status !== 'pending';
+  const exec = executionBlock(r);
   return `
   <article class="card ${overdue ? 'overdue' : ''}" data-id="${esc(r.id)}">
     <div class="row">${tierChip(r.tier)}<span class="muted">from ${esc(agentTitle(r.from))}</span>${r.example ? '<span class="pill">Example</span>' : ''}
-      ${decided ? `<span class="pill ${r.status === 'approved' ? 'ok' : 'bad'}">${esc(r.status)}</span>` : overdue ? '<span class="pill bad">Overdue, not approved</span>' : `<span class="pill">Due ${esc(when(r.deadline))}</span>`}</div>
+      ${r.run?.state === 'done' ? '<span class="pill ok">Ran</span>' : r.status === 'ready' ? '<span class="pill warn">Allowed by policy</span>' : decided ? `<span class="pill ${r.status === 'approved' ? 'ok' : 'bad'}">${esc(r.status)}</span>` : overdue ? '<span class="pill bad">Overdue, not approved</span>' : `<span class="pill">Due ${esc(when(r.deadline))}</span>`}</div>
     <h3>${esc(r.subject)}</h3>
     ${r.body ? `<p style="margin:0">${esc(r.body)}</p>` : ''}
-    ${check}
-    <div class="opts">${options.map((o) => `
+    ${exec || check}
+    ${r.status === 'ready' ? '' : `<div class="opts">${options.map((o) => `
       <label class="opt"><input type="radio" name="opt-${esc(r.id)}" value="${esc(o.id)}" ${o.id === (decided ? r.choice : r.recommendation) ? 'checked' : ''} ${decided ? 'disabled' : ''}>
-        <span><strong>${esc(o.id)}.</strong> ${esc(o.summary ?? '')}${o.id === r.recommendation ? ` <span class="rec">Recommended · ${pct(num(r.confidence))} confident</span>` : ''}</span></label>`).join('')}</div>
+        <span><strong>${esc(o.id)}.</strong> ${esc(o.summary ?? '')}${o.id === r.recommendation ? ` <span class="rec">Recommended · ${pct(num(r.confidence))} confident</span>` : ''}</span></label>`).join('')}</div>`}
     ${evidence.length ? `<div class="muted mono">Evidence: ${evidence.map((e) => `${esc(e.kind)} ${esc(e.ref)}`).join(' · ')}</div>` : ''}
-    ${decided
+    ${r.status === 'ready' && r.run?.state === 'done'
+      ? ''
+      : r.status === 'ready'
+      ? `<div class="row"><span class="muted">Allowed by policy without your approval.</span><button class="danger" data-act="deny" data-id="${esc(r.id)}" ${state.canWrite ? '' : 'disabled'}>Cancel it</button></div>`
+      : decided
       ? `<div class="muted">Decided ${esc(when(r.decidedAt))}${r.rationale ? `: ${esc(r.rationale)}` : ''}</div>`
       : `<label class="field">Reason (saved in the decision log)<textarea id="why-${esc(r.id)}"></textarea></label>
          <div class="row"><button class="primary" data-act="approve" data-id="${esc(r.id)}" ${state.canWrite ? '' : 'disabled'}>Approve selected option</button>
@@ -312,18 +432,19 @@ function requestCard(r) {
 function viewApprovals() {
   const f = state.approvalFilter;
   const list = state.requests
-    .filter((r) => (f === 'pending' ? r.status === 'pending' : r.status !== 'pending'))
+    .filter((r) => (f === 'pending' ? r.status === 'pending' : f === 'run' ? runnable(r) : r.status !== 'pending' && !runnable(r)))
     .sort((a, b) => (f === 'pending' ? Date.parse(a.deadline) - Date.parse(b.deadline) : Date.parse(b.decidedAt ?? 0) - Date.parse(a.decidedAt ?? 0)));
   return `
   <h1>Approvals</h1>
   <p class="sub">Requests the organization can’t settle without you: T4 decisions, and every external or spending action while your limits are unconfirmed. Silence never counts as approval: a request past its deadline stays unapproved.</p>
   <div class="row" style="margin-bottom:16px">
     <button data-filter="pending" class="${f === 'pending' ? 'primary' : ''}">Waiting (${pending().length})</button>
-    <button data-filter="decided" class="${f === 'decided' ? 'primary' : ''}">Decided (${state.requests.length - pending().length})</button>
+    <button data-filter="run" class="${f === 'run' ? 'primary' : ''}">Ready to run (${toRun().length})</button>
+    <button data-filter="decided" class="${f === 'decided' ? 'primary' : ''}">Done (${state.requests.length - pending().length - toRun().length})</button>
   </div>
   ${state.loading && state.mode === 'db' ? '<p class="muted">Loading requests…</p>' : list.length
     ? `<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">${list.map(requestCard).join('')}</div>`
-    : `<div class="panel empty">${f === 'pending' ? 'Nothing is waiting for you. When an agent files a request that needs the Board, it appears here with its options, evidence and deadline. You can also ask Claude to file one.' : 'You haven’t decided any requests yet.'}</div>`}`;
+    : `<div class="panel empty">${f === 'pending' ? 'Nothing is waiting for you. When an agent files a request that needs the Board, it appears here with its options, evidence and deadline. You can also ask Claude to file one.' : f === 'run' ? 'Nothing is ready to run. Approved actions and actions the policy allows on its own appear here.' : 'Nothing is finished yet.'}</div>`}`;
 }
 
 function treeHtml(parent) {
@@ -417,7 +538,7 @@ function viewPolicy() {
 function calibration() {
   const by = new Map();
   for (const e of state.ledger) {
-    if (!e.outcome || typeof e.p !== 'number' || !e.approved) continue;
+    if (e.kind === 'execution' || !e.outcome || typeof e.p !== 'number' || !e.approved) continue;
     const y = e.outcome.success ? 1 : 0;
     const s = by.get(e.agent) ?? { n: 0, sq: 0 };
     s.n += 1;
@@ -443,8 +564,8 @@ function viewLedger() {
     ${entries.length ? `<div class="scroll"><table><tr><th>#</th><th>When</th><th>Request</th><th>Decision</th><th>Result</th></tr>${entries.map((e) => `<tr>
       <td class="mono">${e.seq}</td><td class="mono">${esc(when(e.at))}</td>
       <td>${esc(e.summary)}${e.example ? ' <span class="pill">Example</span>' : ''}<div class="muted">${esc(agentTitle(e.agent))} · ${tierChip(e.tier)}${typeof e.p === 'number' ? ` · ${pct(e.p)} confident` : ''}</div>${e.rationale ? `<div class="muted">“${esc(e.rationale)}”</div>` : ''}</td>
-      <td>${e.approved ? `<span class="pill ok">Approved${e.choice ? ` ${esc(e.choice)}` : ''}</span>` : '<span class="pill bad">Denied</span>'}</td>
-      <td>${e.outcome ? (e.outcome.success ? '<span class="pill ok">Worked</span>' : '<span class="pill bad">Didn’t work</span>') : e.approved ? `<div class="row"><button data-outcome="1" data-entry="${esc(e.id)}" ${state.canWrite ? '' : 'disabled'}>Worked</button><button data-outcome="0" data-entry="${esc(e.id)}" ${state.canWrite ? '' : 'disabled'}>Didn’t</button></div>` : '<span class="muted">—</span>'}</td></tr>`).join('')}</table></div>` : '<p class="muted">No decisions yet.</p>'}
+      <td>${e.kind === 'execution' ? (e.approved ? '<span class="pill ok">Ran</span>' : '<span class="pill warn">Run not completed</span>') : e.approved ? `<span class="pill ok">Approved${e.choice ? ` ${esc(e.choice)}` : ''}</span>` : '<span class="pill bad">Denied</span>'}</td>
+      <td>${e.kind === 'execution' ? '<span class="muted">—</span>' : e.outcome ? (e.outcome.success ? '<span class="pill ok">Worked</span>' : '<span class="pill bad">Didn’t work</span>') : e.approved ? `<div class="row"><button data-outcome="1" data-entry="${esc(e.id)}" ${state.canWrite ? '' : 'disabled'}>Worked</button><button data-outcome="0" data-entry="${esc(e.id)}" ${state.canWrite ? '' : 'disabled'}>Didn’t</button></div>` : '<span class="muted">—</span>'}</td></tr>`).join('')}</table></div>` : '<p class="muted">No decisions yet.</p>'}
   </div>`;
 }
 
@@ -531,6 +652,93 @@ function viewControls() {
     ${c.log.length ? `<div class="scroll"><table><tr><th>When</th><th>Change</th><th>Reason</th></tr>${[...c.log].reverse().map((e) => `<tr><td class="mono">${esc(when(e.at))}</td><td>${esc(e.action)} ${esc(e.level)}${e.target ? ` on ${esc(agentTitle(e.target))}` : ''}</td><td>${esc(e.reason || '—')}</td></tr>`).join('')}</table></div>` : '<p class="muted">No switches have been used.</p>'}</div>`;
 }
 
+function serverStatus(name) {
+  if (!state.mcp) return { label: 'Unavailable here', cls: '' };
+  if (!state.servers) return { label: 'Checking…', cls: '' };
+  const s = state.servers.find((x) => x.server === name);
+  if (!s) return { label: 'Not connected', cls: 'warn' };
+  if (s.authStatus === 'needs_reauth') return { label: 'Needs reconnecting', cls: 'bad' };
+  return { label: s.authStatus === 'connected' ? 'Connected' : 'Available', cls: 'ok' };
+}
+
+function executionBlock(r) {
+  const ex = r.execution;
+  if (!ex || typeof ex !== 'object') return '';
+  const spec = ACTIONS[ex.kind];
+  if (!spec) return `<div class="notice bad">Unknown action “${esc(ex.kind)}”. It can’t run.</div>`;
+  const params = ex.params && typeof ex.params === 'object' ? ex.params : {};
+  const errors = spec.validate(params);
+  if (errors.length) return `<div class="notice bad">This action is malformed and can’t run: ${esc(errors.join('; '))}.</div>`;
+  const conn = CONNECTORS[spec.connector];
+  const st = serverStatus(conn.server);
+  const rows = spec.describe(params).map(([k, v]) => `<tr><th style="width:30%">${esc(k)}</th><td style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(v)}</td></tr>`).join('');
+  const compliance = r.action?.compliance?.status;
+  const run = r.run ?? {};
+  const plan = executionPlan(state.org, controlsObj(), state.cfg, r);
+  const busy = state.running.has(r.id) || run.state === 'running';
+  let runUi = '';
+  if (run.state === 'done') {
+    runUi = `<div class="notice info">${esc(run.summary ?? 'Done.')}${run.url ? ` <a href="${esc(run.url)}" target="_blank" rel="noopener">Open</a>` : ''}<div class="muted">${esc(when(run.finishedAt ?? run.settledAt))}</div></div>`;
+  } else if (run.state === 'needs_confirmation') {
+    runUi = `<div class="notice">${esc(run.summary)} ${run.url ? `<a href="${esc(run.url)}" target="_blank" rel="noopener">Open Stripe</a>` : ''}
+      <div class="row" style="margin-top:8px"><input id="token-${esc(r.id)}" placeholder="Approval token from Stripe" style="max-width:280px">
+      <button data-finish="${esc(r.id)}" ${state.canWrite ? '' : 'disabled'}>Finish run</button>
+      <button data-settle="${esc(r.id)}" data-done="0" ${state.canWrite ? '' : 'disabled'}>Abandon</button></div></div>`;
+  } else if (run.state === 'unknown') {
+    runUi = `<div class="notice bad">The last run may or may not have gone through (${esc(run.code)}). Check ${esc(conn.label)} first, then record what happened.
+      <div class="row" style="margin-top:8px"><button data-settle="${esc(r.id)}" data-done="1" ${state.canWrite ? '' : 'disabled'}>It went through</button>
+      <button data-settle="${esc(r.id)}" data-done="0" ${state.canWrite ? '' : 'disabled'}>It didn’t</button></div></div>`;
+  } else if (runnable(r)) {
+    runUi = `${run.state === 'failed' ? `<div class="notice bad">Last run failed: ${esc(run.error ?? run.code)}${run.help ? `. Fix: ${esc(run.help)}` : ''}.</div>` : ''}
+      ${plan.ok
+        ? `<button class="primary" data-run="${esc(r.id)}" ${busy || !state.canWrite || !state.mcp ? 'disabled' : ''}>${busy ? 'Running…' : `Run in ${esc(conn.label)}`}</button>${state.mcp ? '' : ' <span class="muted">Open the published app to run actions.</span>'}`
+        : `<div class="muted">Can’t run yet: ${esc(plan.reasons.join('; '))}.</div>`}`;
+  }
+  return `<div class="panel" style="background:var(--sunk);padding:12px">
+    <div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">What will run · ${esc(spec.label)}</span><span class="pill ${st.cls}">${esc(conn.label)}: ${esc(st.label)}</span></div>
+    <div class="scroll"><table>${rows}</table></div>
+    ${compliance ? `<div class="muted" style="margin-top:6px">Compliance: ${esc(compliance)}</div>` : ''}
+    ${runUi ? `<div style="margin-top:10px">${runUi}</div>` : ''}
+  </div>`;
+}
+
+function viewConnections() {
+  const cfg = state.cfg;
+  const card = (key, body) => {
+    const conn = CONNECTORS[key];
+    const st = serverStatus(conn.server);
+    const actions = Object.values(ACTIONS).filter((a) => a.connector === key).map((a) => a.label);
+    return `<div class="panel stack">
+      <div class="row" style="justify-content:space-between"><h2 style="margin:0">${esc(conn.label)}</h2><span class="pill ${st.cls}">${esc(st.label)}</span></div>
+      <div class="muted">Can: ${esc(actions.join(' · '))}</div>${body}</div>`;
+  };
+  const stripeBody = `
+    <div>${cfg.stripe.account ? `Using <strong>${esc(cfg.stripe.name || cfg.stripe.account)}</strong> <span class="mono">${esc(cfg.stripe.account)}</span>${cfg.stripe.livemode ? ' <span class="pill warn">Live money</span>' : ' <span class="pill">Test mode</span>'}` : '<span class="pill warn">No account chosen. Stripe actions won’t run until you pick one.</span>'}</div>
+    ${state.stripeAccounts
+      ? `<label class="field">Account<select id="stripe-account">${state.stripeAccounts.map((a) => `<option value="${esc(a.id)}" ${a.id === cfg.stripe.account ? 'selected' : ''}>${esc(a.name)} · ${esc(a.id)}${a.livemode ? ' (live)' : ' (test)'}</option>`).join('')}</select></label>
+         <div class="row"><button class="primary" data-conn="stripe-save" ${state.canWrite ? '' : 'disabled'}>Use this account</button></div>`
+      : `<div class="row"><button data-conn="stripe-load" ${state.mcp ? '' : 'disabled'}>Load my Stripe accounts</button></div>`}`;
+  const linearBody = `
+    <label class="field">Team that gets new tasks<input id="linear-team" value="${esc(cfg.linear.team)}" placeholder="Team name or key"></label>
+    <div class="row"><button class="primary" data-conn="linear-save" ${state.canWrite ? '' : 'disabled'}>Save</button></div>`;
+  return `
+  <h1>Connections</h1>
+  <p class="sub">Approved actions run through your own claude.ai connectors, with your permission each time a connector is first used. Nothing here stores passwords or keys.</p>
+  ${state.mcp ? '' : '<div class="notice" style="margin-bottom:16px">Connectors are only available in the published app.</div>'}
+  <div class="row" style="margin-bottom:16px"><button data-conn="refresh" ${state.mcp ? '' : 'disabled'}>Check connections</button></div>
+  <div class="grid">
+    ${card('gmail', '<div class="muted">No setup needed. Emails go out from the Gmail account connected to claude.ai.</div>')}
+    ${card('stripe', stripeBody)}
+    ${card('hubspot', '<div class="muted">No setup needed. Your click to run counts as the confirmation HubSpot requires.</div>')}
+    ${card('linear', linearBody)}
+  </div>
+  <div class="panel" style="margin-top:16px"><h2>How an action reaches a connector</h2>
+    <ol class="reasons"><li>An agent files the action. Its details are checked and the policy decides: allowed, needs your approval, or refused (refused actions never reach you).</li>
+    <li>You approve it. Your approval is pinned to exactly what you saw.</li>
+    <li>When you press Run, everything is checked again: kill switches, approvals, setup, and that it hasn’t already run.</li>
+    <li>The connector runs it once, and the result goes in the decision log.</li></ol></div>`;
+}
+
 // ---------- render & events ----------
 function currentView() {
   const h = location.hash.slice(1);
@@ -542,7 +750,7 @@ function render() {
   const v = currentView();
   $('#status-pills').innerHTML = statusPills();
   $('#tabs').innerHTML = tabsHtml(v);
-  const body = { overview: viewOverview, approvals: viewApprovals, org: viewOrg, policy: viewPolicy, ledger: viewLedger, finance: viewFinance, controls: viewControls }[v]();
+  const body = { overview: viewOverview, approvals: viewApprovals, org: viewOrg, policy: viewPolicy, ledger: viewLedger, finance: viewFinance, controls: viewControls, connections: viewConnections }[v]();
   // Live data re-renders the view; keep what the viewer was typing or had selected.
   const root = $('#view');
   const focusedId = document.activeElement?.id;
@@ -612,13 +820,52 @@ document.addEventListener('click', async (ev) => {
   if (t.dataset.agent) { state.selectedAgent = t.dataset.agent; render(); return; }
   if (t.dataset.act) {
     const req = state.requests.find((r) => r.id === t.dataset.id);
-    if (!req || req.status !== 'pending') return;
+    if (!req || !(req.status === 'pending' || (req.status === 'ready' && t.dataset.act === 'deny'))) return;
     const choice = document.querySelector(`input[name="opt-${CSS.escape(req.id)}"]:checked`)?.value ?? null;
     const rationale = document.getElementById(`why-${req.id}`)?.value.trim() ?? '';
     const approved = t.dataset.act === 'approve';
     if (approved && !choice) { state.writeError = 'Choose an option before approving.'; render(); return; }
     t.disabled = true;
     await decideRequest(req, { approved, choice: approved ? choice : null, rationale });
+    return;
+  }
+  if (t.dataset.run) {
+    const req = state.requests.find((r) => r.id === t.dataset.run);
+    if (req) await runRequest(req);
+    return;
+  }
+  if (t.dataset.finish) {
+    const req = state.requests.find((r) => r.id === t.dataset.finish);
+    const token = document.getElementById(`token-${t.dataset.finish}`)?.value.trim();
+    if (req && token) await runRequest(req, { approvalToken: token });
+    return;
+  }
+  if (t.dataset.settle) {
+    const req = state.requests.find((r) => r.id === t.dataset.settle);
+    if (req) { t.disabled = true; await settleRun(req, t.dataset.done === '1'); }
+    return;
+  }
+  if (t.dataset.conn === 'refresh') { await refreshServers(); return; }
+  if (t.dataset.conn === 'stripe-load') {
+    try {
+      const res = await state.mcp.callTool('Stripe', 'list_available_accounts_or_orgs', {}, { cache: false });
+      const accounts = Array.isArray(res?.payload?.accounts) ? res.payload.accounts : [];
+      state.stripeAccounts = accounts.filter((a) => typeof a.stripe_context === 'string').map((a) => ({ id: a.stripe_context, name: String(a.name ?? a.stripe_context), livemode: a.livemode !== false }));
+    } catch (e) {
+      state.writeError = `Couldn’t list Stripe accounts: ${CONNECTOR_HELP[e?.code] ?? e?.message ?? 'unknown error'}.`;
+    }
+    render();
+    return;
+  }
+  if (t.dataset.conn === 'stripe-save') {
+    const id = $('#stripe-account')?.value;
+    const acct = state.stripeAccounts?.find((a) => a.id === id);
+    if (acct) await saveCfg({ ...state.cfg, stripe: { account: acct.id, livemode: acct.livemode, name: acct.name } });
+    return;
+  }
+  if (t.dataset.conn === 'linear-save') {
+    const team = $('#linear-team')?.value.trim() ?? '';
+    await saveCfg({ ...state.cfg, linear: { team } });
     return;
   }
   if (t.dataset.outcome) {

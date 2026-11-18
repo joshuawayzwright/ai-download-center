@@ -147,7 +147,11 @@ export function evaluate(org, controls, action) {
   required.delete(agent.id);
 
   const approvals = new Set(action.approvals ?? []);
-  const missing = [...required].filter((r) => !approvals.has(r));
+  // The Board sits at the top of every approval chain, so its approval covers every approver below it.
+  // Denials above (kill switches, compliance, separation of duties, forbidden actions) still apply.
+  const boardApproved = approvals.has('board');
+  const missing = boardApproved ? [] : [...required].filter((r) => !approvals.has(r));
+  if (boardApproved && required.size > 0) reasons.push('approved by the Board');
   return {
     decision: missing.length === 0 ? 'allow' : 'needs_approval',
     tier,

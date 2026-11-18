@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { loadOrg, validateOrg, bundleFromOrg } from '../src/registry.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-export const BROWSER_MODULES = ['util.js', 'org-model.js', 'policy.js', 'finance.js', 'lifecycle.js', 'performance.js', 'conflict.js', 'improvement.js'];
+export const BROWSER_MODULES = ['util.js', 'org-model.js', 'policy.js', 'finance.js', 'lifecycle.js', 'performance.js', 'conflict.js', 'improvement.js', 'gateway.js'];
 
 export function buildWeb(outDir = join(root, 'web', 'build')) {
   const org = loadOrg();
