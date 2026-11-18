@@ -25,7 +25,21 @@ data class ChatMessage(
   val error: String? = null,
   /** Web pages a reply drew on (Google Search). HTTPS only. */
   val sources: List<Source> = emptyList(),
+  /** Connected apps read for this reply, e.g. "google_calendar". */
+  val connectors: List<String> = emptyList(),
 )
+
+/** An app the account can connect in Settings → Connected apps. */
+data class ConnectedApp(val provider: String, val name: String, val connected: Boolean)
+
+/** What a reply's connector note says, e.g. "Checked your Google Calendar". */
+object Connectors {
+  @JvmStatic
+  fun label(provider: String): String = when (provider) {
+    "google_calendar" -> "Checked your Google Calendar"
+    else -> "Checked a connected app"
+  }
+}
 
 /** A web page a reply drew on. */
 data class Source(val title: String, val url: String) {
@@ -75,6 +89,15 @@ data class UiState(
   val streamingText: String = "",
   val speakingMessageId: String? = null,
   val voiceAvailable: Boolean = false,
+  /** True when the server offers connected apps to this signed-in account. */
+  val connectorsAvailable: Boolean = false,
+  /** SOLO AI Pro (or a tester during the closed test): may connect apps. */
+  val connectorsPro: Boolean = false,
+  val connectedApps: List<ConnectedApp> = emptyList(),
+  /** The app being connected or disconnected right now. */
+  val connectorBusy: String? = null,
+  /** Shown while a reply is being written, e.g. "Checked your Google Calendar". */
+  val toolNote: String? = null,
 ) {
   val canChat: Boolean get() = service == ServiceState.READY
   val lastSoloMessageId: String? get() = messages.lastOrNull { it.role == Role.SOLO && it.status == MessageStatus.DONE }?.id

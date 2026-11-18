@@ -1,6 +1,7 @@
 package au.com.thesoloserviceprovider.solo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -115,5 +116,16 @@ public class ConversationTest {
     assertEquals(0, c.history().size());
     c.restore(Arrays.asList(new Conversation.Message("user", "q"), new Conversation.Message("assistant", "a")));
     assertEquals(2, c.history().size());
+  }
+
+  @Test public void connectedAppsAreSentAsAHintOnlyWhenSet() throws Exception {
+    Conversation c = new Conversation();
+    c.setStream(true);
+    assertFalse(new org.json.JSONObject(c.prepare("Plan my week", null).body).has("connectors"));
+    c.setConnectors(java.util.Collections.singletonList("google_calendar"));
+    org.json.JSONObject body = new org.json.JSONObject(c.prepare("Plan my week", null).body);
+    assertEquals("google_calendar", body.getJSONArray("connectors").getString(0));
+    c.setConnectors(null);
+    assertFalse(new org.json.JSONObject(c.prepare("Plan my week", null).body).has("connectors"));
   }
 }

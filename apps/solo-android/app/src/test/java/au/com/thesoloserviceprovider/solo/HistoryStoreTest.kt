@@ -71,4 +71,12 @@ class HistoryStoreTest {
     val direct = Source("Cash rate", "https://www.rba.gov.au/statistics/cash-rate/")
     assertEquals("rba.gov.au", direct.site)
   }
+
+  @Test fun connectorNotesSurviveSaveAndLoad() {
+    val m = ChatMessage("1", Role.SOLO, "Thursday is free.", connectors = listOf("google_calendar"))
+    val thread = ChatThread("t", "Plan", 1L, listOf(m), emptyList())
+    val store = HistoryStore(File("unused.json"))
+    val loaded = store.parse(store.encode(listOf(thread)))
+    assertEquals(listOf("google_calendar"), loaded[0].messages[0].connectors)
+  }
 }

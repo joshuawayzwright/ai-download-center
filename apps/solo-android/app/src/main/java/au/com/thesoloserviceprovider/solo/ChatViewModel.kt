@@ -111,6 +111,73 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
           dailyLimit = (if (st?.authenticated == true) st.dailyLimit else null) ?: it.dailyLimit.takeIf { session.hasSession() },
         )
       }
+      if (st?.authenticated == true) loadConnections() else clearConnections()
+    }
+  }
+
+  // ---- Connected apps --------------------------------------------------------------
+
+  private fun clearConnections() {
+    _state.update { it.copy(connectorsAvailable = false, connectorsPro = false, connectedApps = emptyList(), connectorBusy = null) }
+  }
+
+  private fun applyConnections(c: AccountApi.Connections) {
+    if (c.httpStatus != 200) {
+      // Switched off on the server: hide the section. A temporary failure keeps what is shown.
+      if (!c.available) clearConnections()
+      return
+    }
+    _state.update {
+      it.copy(connectorsAvailable = true, connectorsPro = c.pro,
+        connectedApps = c.apps.map { a -> ConnectedApp(a.provider, a.name, a.connected) })
+    }
+  }
+
+  /** Reads which apps are connected. IO thread only. */
+  private fun loadConnections() {
+    val token = currentAccessToken() ?: return
+    applyConnections(account.connections(token))
+  }
+
+  /** Re-reads connected apps, e.g. on return from the browser. [announce]: say what changed. */
+  fun refreshConnections(announce: Boolean = false) {
+    if (!session.hasSession()) return
+    val before = _state.value.connectedApps.filter { it.connected }.map { it.provider }.toSet()
+    viewModelScope.launch(Dispatchers.IO) {
+      loadConnections()
+      if (!announce) return@launch
+      val now = _state.value.connectedApps.filter { it.connected }
+      now.firstOrNull { it.provider !in before }?.let { notify("${it.name} is connected") }
+    }
+  }
+
+  /** Starts connecting [provider]. Returns the link to open in the browser, or null after a notice. */
+  suspend fun connect(provider: String): String? = withContext(Dispatchers.IO) {
+    _state.update { it.copy(connectorBusy = provider) }
+    try {
+      val token = currentAccessToken() ?: run { notify("Sign in again to connect apps."); return@withContext null }
+      val start = account.connect(token, provider)
+      if (start.url == null) notify(start.error ?: "Couldn't start connecting. Please try again.")
+      start.url
+    } finally {
+      _state.update { it.copy(connectorBusy = null) }
+    }
+  }
+
+  fun disconnect(provider: String) {
+    val name = _state.value.connectedApps.firstOrNull { it.provider == provider }?.name ?: "The app"
+    _state.update { it.copy(connectorBusy = provider) }
+    viewModelScope.launch(Dispatchers.IO) {
+      try {
+        val token = currentAccessToken() ?: run { notify("Sign in again to disconnect apps."); return@launch }
+        val result = account.disconnect(token, provider)
+        if (result.httpStatus == 200) {
+          applyConnections(result)
+          notify("$name is disconnected")
+        } else notify(result.error ?: "Couldn't disconnect. Please try again.")
+      } finally {
+        _state.update { it.copy(connectorBusy = null) }
+      }
     }
   }
 
@@ -225,6 +292,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       newChat()
       _state.update { it.copy(threads = emptyList(), signedIn = false, email = null, tier = null,
         remainingDaily = null, dailyLimit = null) }
+      clearConnections()
       notify("Your SOLO AI account was deleted")
       checkService()
     }
@@ -238,6 +306,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     session.clear()
     stopGenerating()
     _state.update { it.copy(signedIn = false, email = null, tier = null, remainingDaily = null, dailyLimit = null) }
+    clearConnections()
     viewModelScope.launch(Dispatchers.IO) { account.logout(access, refresh) }
     notify("Signed out")
     checkService()
@@ -304,6 +373,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     val text = raw.trim()
     val s = _state.value
     if (s.sending || !s.canChat || Conversation.validateDraft(text) != null) return
+    conversation.setConnectors(if (s.connectorsPro) s.connectedApps.filter { it.connected }.map { it.provider } else emptyList())
     val request = try {
       conversation.prepare(text, UUID.randomUUID().toString())
     } catch (e: Exception) {
@@ -312,7 +382,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     }
     val base = s.messages.filterNot { it.role == Role.USER && it.status == MessageStatus.FAILED }
     val userMessage = ChatMessage(UUID.randomUUID().toString(), Role.USER, text)
-    _state.update { it.copy(messages = base + userMessage, sending = true, streamingText = "") }
+    _state.update { it.copy(messages = base + userMessage, sending = true, streamingText = "", toolNote = null) }
     val gen = generation
     val signedIn = session.hasSession()
     val live = StringBuilder()
@@ -325,7 +395,12 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
           if (gen == generation) _state.update { if (it.streamingText != now) it.copy(streamingText = now) else it }
         }
       }
-      val listener = SoloApi.DeltaListener { delta -> synchronized(live) { live.append(delta) } }
+      val listener = object : SoloApi.DeltaListener {
+        override fun onDelta(text: String) { synchronized(live) { live.append(text) } }
+        override fun onTool(provider: String, label: String) {
+          if (gen == generation) _state.update { it.copy(toolNote = label) }
+        }
+      }
       var attempt = request
       var result: SoloApi.Result
       val token = if (signedIn) currentAccessToken() else null
@@ -357,10 +432,10 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       conversation.commit(sent, r.reply)
       val reply = ChatMessage(UUID.randomUUID().toString(), Role.SOLO, r.reply,
         requestId = if (signedIn) sent.requestId else null, truncated = r.truncated,
-        sources = r.sources.map { Source(it.title, it.url) })
+        sources = r.sources.map { Source(it.title, it.url) }, connectors = r.connectors.toList())
       val messages = current + reply
       _state.update {
-        it.copy(messages = messages, sending = false, streamingText = "",
+        it.copy(messages = messages, sending = false, streamingText = "", toolNote = null,
           remainingDaily = r.remainingDaily ?: it.remainingDaily)
       }
       saveCurrent(messages)
@@ -372,7 +447,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       val messages = if (partial.isNotEmpty())
         current + ChatMessage(UUID.randomUUID().toString(), Role.SOLO, partial, MessageStatus.STOPPED)
       else current.dropLast(1)
-      _state.update { it.copy(messages = messages, sending = false, streamingText = "") }
+      _state.update { it.copy(messages = messages, sending = false, streamingText = "", toolNote = null) }
       if (partial.isNotEmpty()) saveCurrent(messages)
       return
     }
@@ -383,7 +458,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       return
     }
     val failed = user.copy(status = MessageStatus.FAILED, error = r.error)
-    _state.update { it.copy(messages = current.dropLast(1) + failed, sending = false, streamingText = "") }
+    _state.update { it.copy(messages = current.dropLast(1) + failed, sending = false, streamingText = "", toolNote = null) }
     when {
       signedIn && r.status == 401 -> {
         session.clear()

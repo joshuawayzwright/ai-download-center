@@ -37,6 +37,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Mic
@@ -258,6 +259,7 @@ fun SoloMessage(
           color = Solo.Steel, modifier = Modifier.padding(top = 8.dp))
       }
       if (message.sources.isNotEmpty()) SourcesRow(message.sources, onOpenSource)
+      for (provider in message.connectors) ConnectorNote(au.com.thesoloserviceprovider.solo.Connectors.label(provider), top = 10.dp)
       Row(Modifier.padding(top = 2.dp), verticalAlignment = Alignment.CenterVertically) {
         ActionIcon(Icons.Outlined.ContentCopy, "Copy reply", onCopy)
         ActionIcon(if (speaking) Icons.Outlined.StopCircle else Icons.AutoMirrored.Outlined.VolumeUp,
@@ -267,6 +269,17 @@ fun SoloMessage(
         if (canReport) ActionIcon(Icons.Outlined.Flag, "Report this reply", onReport)
       }
     }
+  }
+}
+
+/** A small note that a connected app (for example Google Calendar) was read for this reply. */
+@Composable
+fun ConnectorNote(text: String, top: androidx.compose.ui.unit.Dp = 0.dp) {
+  Row(Modifier.padding(top = top, bottom = 6.dp).testTag("connector-note"), verticalAlignment = Alignment.CenterVertically) {
+    Icon(Icons.Outlined.CalendarMonth, contentDescription = null, tint = Solo.TextMuted,
+      modifier = Modifier.size(16.dp))
+    Spacer(Modifier.width(6.dp))
+    Text(text, style = MaterialTheme.typography.labelMedium, color = Solo.TextMuted)
   }
 }
 
@@ -311,12 +324,13 @@ private fun ActionIcon(icon: ImageVector, description: String, onClick: () -> Un
 
 /** The reply being written right now: the aura spins until text arrives, then the text flows in. */
 @Composable
-fun StreamingMessage(text: String, onCopyCode: (String) -> Unit) {
+fun StreamingMessage(text: String, onCopyCode: (String) -> Unit, toolNote: String? = null) {
   Row(Modifier.fillMaxWidth()) {
     SoloAvatar(30.dp, thinking = true)
     Spacer(Modifier.width(12.dp))
     Column(Modifier.weight(1f)) {
       Text("SOLO AI", style = MaterialTheme.typography.labelMedium, color = Solo.Gold, modifier = Modifier.padding(top = 5.dp, bottom = 6.dp))
+      toolNote?.let { ConnectorNote(it) }
       if (text.isEmpty()) {
         val pulse = rememberInfiniteTransition(label = "thinking")
         val a by pulse.animateFloat(0.35f, 1f, infiniteRepeatable(tween(800), RepeatMode.Reverse), label = "alpha")

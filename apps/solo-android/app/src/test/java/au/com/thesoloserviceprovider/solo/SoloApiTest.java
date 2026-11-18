@@ -200,4 +200,34 @@ public class SoloApiTest {
     assertEquals(1, r.sources.size());
     assertEquals("RBA", r.sources.get(0).title);
   }
+
+  @Test public void toolEventIsReportedAndDoneCarriesConnectedApps() throws Exception {
+    final StringBuilder tools = new StringBuilder();
+    String body = sse(
+        "event: tool\ndata: {\"provider\":\"google_calendar\",\"label\":\"Checked your Google Calendar\"}",
+        "event: tool\ndata: {\"provider\":\"something_else\",\"label\":\"ignored\"}",
+        "event: delta\ndata: {\"text\":\"Thursday is free.\"}",
+        "event: done\ndata: {\"reply\":\"Thursday is free.\",\"connectors\":[\"google_calendar\",\"unknown\",\"google_calendar\"]}");
+    try (TinyHttpServer s = new TinyHttpServer(200, "text/event-stream; charset=utf-8", body)) {
+      SoloApi api = new SoloApi("http://127.0.0.1:" + s.port() + "/api/solo-chat", () -> null, null);
+      Conversation c = new Conversation();
+      c.setStream(true);
+      SoloApi.Result r = api.send(c.prepare("hi", ID), new SoloApi.DeltaListener() {
+        @Override public void onDelta(String text) {}
+        @Override public void onTool(String provider, String label) { tools.append(provider).append('|').append(label); }
+      });
+      assertTrue(r.ok);
+      assertEquals("google_calendar|Checked your Google Calendar", tools.toString());
+      assertEquals(java.util.Collections.singletonList("google_calendar"), r.connectors);
+    }
+  }
+
+  @Test public void olderListenersIgnoreToolEvents() throws Exception {
+    StringBuilder deltas = new StringBuilder();
+    SoloApi.Result r = stream(sse(
+        "event: tool\ndata: {\"provider\":\"google_calendar\",\"label\":\"Checked your Google Calendar\"}",
+        "event: done\ndata: {\"reply\":\"Done.\"}"), deltas);
+    assertTrue(r.ok);
+    assertTrue(r.connectors.isEmpty());
+  }
 }

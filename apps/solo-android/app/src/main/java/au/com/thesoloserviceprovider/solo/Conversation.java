@@ -58,6 +58,12 @@ public final class Conversation {
   private int assistantCap = MAX_ASSISTANT_CHARS;
   /** Ask the server to stream the reply. */
   private boolean stream;
+  /** Apps shown as connected in Settings; a hint so the server can offer them. */
+  private List<String> connectors = Collections.emptyList();
+
+  public void setConnectors(List<String> connectors) {
+    this.connectors = connectors == null ? Collections.<String>emptyList() : new ArrayList<>(connectors);
+  }
 
   public void setStream(boolean stream) {
     this.stream = stream;
@@ -94,10 +100,10 @@ public final class Conversation {
     List<Message> pending = new ArrayList<>(committed);
     pending.add(new Message("user", text));
     while (pending.size() > MAX_MESSAGES) dropOldestPair(pending);
-    String body = encode(pending, requestId, stream);
+    String body = encode(pending, requestId, stream, connectors);
     while (utf8Length(body) > MAX_BODY_BYTES && pending.size() > 1) {
       dropOldestPair(pending);
-      body = encode(pending, requestId, stream);
+      body = encode(pending, requestId, stream, connectors);
     }
     if (utf8Length(body) > MAX_BODY_BYTES) throw new IllegalArgumentException("Message is too large");
     return new Request(body, Collections.unmodifiableList(pending), requestId);
@@ -142,6 +148,11 @@ public final class Conversation {
   }
 
   static String encode(List<Message> messages, String requestId, boolean stream) throws JSONException {
+    return encode(messages, requestId, stream, Collections.<String>emptyList());
+  }
+
+  static String encode(List<Message> messages, String requestId, boolean stream, List<String> connectors)
+      throws JSONException {
     JSONArray array = new JSONArray();
     for (Message m : messages) {
       array.put(new JSONObject().put("role", m.role).put("content", m.content));
@@ -149,6 +160,7 @@ public final class Conversation {
     JSONObject body = new JSONObject().put("messages", array);
     if (requestId != null) body.put("requestId", requestId);
     if (stream) body.put("stream", true);
+    if (connectors != null && !connectors.isEmpty()) body.put("connectors", new JSONArray(connectors));
     return body.toString();
   }
 
