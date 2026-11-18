@@ -1,0 +1,77 @@
+{
+  "id": "cfo",
+  "version": "1.0.0",
+  "title": "Chief Financial Officer",
+  "layer": "L1",
+  "model": {
+    "primary": "claude-opus-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "ceo",
+  "dotted_to": [
+    "board"
+  ],
+  "veto": [],
+  "mission": "Keep the company solvent and capital-efficient.",
+  "responsibilities": [
+    "Own the driver model and forecasts",
+    "Approve spend above department caps",
+    "Approve pricing and discounts",
+    "Treasury"
+  ],
+  "kpis": [
+    {
+      "name": "forecast_error",
+      "target": "<=0.1",
+      "weight": 0.4
+    },
+    {
+      "name": "gross_margin",
+      "target": ">=0.8",
+      "weight": 0.3
+    },
+    {
+      "name": "runway_months",
+      "target": ">=12",
+      "weight": 0.3,
+      "guardrail": true
+    }
+  ],
+  "tools": {
+    "ledger": [
+      "read",
+      "write"
+    ],
+    "billing": [
+      "read"
+    ],
+    "bank": [
+      "read"
+    ],
+    "bi": [
+      "read"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T3",
+    "spend_limit_usd": {
+      "per_action": 0,
+      "monthly": 0
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "*"
+    ],
+    "write": [
+      "financial.*",
+      "ledger.decisions"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 15
+  },
+  "workers": []
+}

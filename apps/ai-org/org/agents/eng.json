@@ -1,0 +1,68 @@
+{
+  "id": "eng",
+  "version": "1.0.0",
+  "title": "Engineering Lead",
+  "layer": "L2",
+  "model": {
+    "primary": "claude-sonnet-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "cto",
+  "dotted_to": [],
+  "veto": [],
+  "mission": "Ship correct software.",
+  "responsibilities": [
+    "Break work into tasks",
+    "Run worker coders",
+    "Route independent code review",
+    "Keep tests green"
+  ],
+  "kpis": [
+    {
+      "name": "lead_time_days",
+      "target": "<=3",
+      "weight": 0.5
+    },
+    {
+      "name": "escaped_defects",
+      "target": "<=1/mo",
+      "weight": 0.5,
+      "guardrail": true
+    }
+  ],
+  "tools": {
+    "github": [
+      "read",
+      "write",
+      "pull_request"
+    ],
+    "ci": [
+      "run"
+    ],
+    "sandbox": [
+      "run"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T2",
+    "spend_limit_usd": {
+      "per_action": 0,
+      "monthly": 0
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "semantic.tech",
+      "procedural.eng"
+    ],
+    "write": [
+      "episodic.eng"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 8
+  },
+  "workers": []
+}

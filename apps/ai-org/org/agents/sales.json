@@ -1,0 +1,83 @@
+{
+  "id": "sales",
+  "version": "1.0.0",
+  "title": "Sales Lead",
+  "layer": "L2",
+  "model": {
+    "primary": "claude-sonnet-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "cmo",
+  "dotted_to": [
+    "cfo"
+  ],
+  "veto": [],
+  "mission": "Convert sponsor demand into profitable revenue.",
+  "responsibilities": [
+    "Sponsor ICP and prospect research",
+    "Outreach sequences",
+    "Proposals and close"
+  ],
+  "kpis": [
+    {
+      "name": "win_rate",
+      "target": ">=0.2",
+      "weight": 0.4
+    },
+    {
+      "name": "new_sponsors_per_month",
+      "target": ">=2",
+      "weight": 0.4
+    },
+    {
+      "name": "avg_discount",
+      "target": "<=0.1",
+      "weight": 0.2,
+      "guardrail": true
+    }
+  ],
+  "tools": {
+    "crm": [
+      "read",
+      "write"
+    ],
+    "email": [
+      "send"
+    ],
+    "calendar": [
+      "read",
+      "write"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T2",
+    "spend_limit_usd": {
+      "per_action": 0,
+      "monthly": 0
+    },
+    "discount_limit": 0.15,
+    "forbidden": [
+      "sign_contracts",
+      "price_change",
+      "refund"
+    ]
+  },
+  "memory": {
+    "read": [
+      "semantic.customers",
+      "semantic.product",
+      "procedural.sales"
+    ],
+    "write": [
+      "episodic.sales",
+      "semantic.customers"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 8
+  },
+  "workers": [
+    "sponsor-outreach"
+  ]
+}

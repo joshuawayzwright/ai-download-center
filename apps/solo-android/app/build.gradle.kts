@@ -20,8 +20,8 @@ android {
         applicationId = "au.com.thesoloserviceprovider.solo"
         minSdk = 26
         targetSdk = 36
-        versionCode = (signingValue("SOLO_VERSION_CODE") ?: "2").toInt()
-        versionName = "1.1.0"
+        versionCode = (signingValue("SOLO_VERSION_CODE") ?: "3").toInt()
+        versionName = "1.1.1"
         // Shared SOLO API (docs/SOLO-SHARED-API-CONTRACT.md). Override with
         // -PSOLO_API_URL=https://... for testing; it must be HTTPS.
         val apiUrl = signingValue("SOLO_API_URL") ?: "https://thesoloserviceprovider.com.au/api/solo-chat"
@@ -78,8 +78,8 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2026.06.01")
     implementation(composeBom)
     implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.activity:activity-compose:1.12.4")
+    implementation("androidx.core:core-splashscreen:1.2.0")
+    implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
     implementation("androidx.compose.ui:ui")

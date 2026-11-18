@@ -1,0 +1,78 @@
+{
+  "id": "support",
+  "version": "1.0.0",
+  "title": "Support and Customer Success Lead",
+  "layer": "L2",
+  "model": {
+    "primary": "claude-sonnet-5-5",
+    "escalate": "claude-opus-5-5",
+    "workers": "claude-haiku-5-5"
+  },
+  "reports_to": "coo",
+  "dotted_to": [
+    "product"
+  ],
+  "veto": [],
+  "mission": "Make sponsors succeed and renew.",
+  "responsibilities": [
+    "Ticket triage",
+    "Sponsor onboarding",
+    "Health scores and renewal saves",
+    "Knowledge base"
+  ],
+  "kpis": [
+    {
+      "name": "csat",
+      "target": ">=0.9",
+      "weight": 0.3
+    },
+    {
+      "name": "first_response_hours",
+      "target": "<=12",
+      "weight": 0.3
+    },
+    {
+      "name": "net_revenue_retention",
+      "target": ">=1.0",
+      "weight": 0.4
+    }
+  ],
+  "tools": {
+    "helpdesk": [
+      "read",
+      "write"
+    ],
+    "email": [
+      "send"
+    ],
+    "billing": [
+      "read"
+    ],
+    "kb": [
+      "write"
+    ]
+  },
+  "permissions": {
+    "max_tier": "T2",
+    "spend_limit_usd": {
+      "per_action": 99,
+      "monthly": 99
+    },
+    "forbidden": []
+  },
+  "memory": {
+    "read": [
+      "semantic.customers",
+      "semantic.product",
+      "procedural.support"
+    ],
+    "write": [
+      "episodic.support",
+      "semantic.customers"
+    ]
+  },
+  "budget": {
+    "llm_usd_monthly": 8
+  },
+  "workers": []
+}

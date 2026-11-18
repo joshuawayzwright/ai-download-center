@@ -1,0 +1,172 @@
+[
+  {
+    "id": "013-spot-ai-images",
+    "pillar": "AI Safety",
+    "title": "How to check if an image is AI-generated #Shorts",
+    "description": "There's no single perfect test for AI images, but four checks catch a lot. Narrated with an AI voice.\n\n#AI #Deepfake #FactCheck #Shorts",
+    "tags": ["how to spot AI images", "is this image AI", "AI image detection", "deepfake check", "fact check images", "AI safety"],
+    "segments": [
+      {"screen": "Real or AI?", "say": "That viral image. Is it real, or made by AI? There's no single perfect test, but four checks catch a lot."},
+      {"screen": "1. Look closely", "say": "One. Zoom in. Look at hands, text, jewellery, reflections and backgrounds. AI still slips on small details, though it's getting better."},
+      {"screen": "2. Search the image", "say": "Two. Do a reverse image search. See where it first appeared, and whether trusted news outlets are using it."},
+      {"screen": "3. Check the credentials", "say": "Three. Some tools now attach content credentials, a label in the file saying how it was made. If a site shows them, read them. Missing credentials don't prove anything either way."},
+      {"screen": "4. Check the source", "say": "Four. Ask who posted it first, and why. Emotional, shocking images are the ones to slow down on."},
+      {"screen": "Pause before you share", "say": "When in doubt, don't share. Follow for more AI safety tips."}
+    ]
+  },
+  {
+    "id": "014-ai-detectors",
+    "pillar": "AI Safety",
+    "title": "Why AI text detectors can't be trusted #Shorts",
+    "description": "AI writing detectors make mistakes, including flagging human writing as AI. Why, and what to do instead. Narrated with an AI voice.\n\n#AI #Education #AIdetector #Shorts",
+    "tags": ["AI detectors", "AI writing detector accuracy", "false positive AI detection", "AI in schools", "ChatGPT detector", "AI explained"],
+    "segments": [
+      {"screen": "Can AI writing be detected?", "say": "Can a tool reliably tell whether text was written by AI? Not reliably, no."},
+      {"screen": "They guess from patterns", "say": "AI detectors look for patterns, like how predictable the wording is. But plain, careful human writing can look predictable too."},
+      {"screen": "False positives happen", "say": "So detectors can flag real human work as AI. Writers using a second language and very formal writers can be flagged unfairly. And lightly edited AI text can slip through."},
+      {"screen": "Don't judge on a score", "say": "A detector score shouldn't be the only evidence against anyone. Look at drafts, version history, or just talk to the person about their work."},
+      {"screen": "Evidence, not scores", "say": "Evidence, not scores. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "015-is-my-chat-private",
+    "pillar": "AI Safety",
+    "title": "Is your AI chat being used for training? Check this #Shorts",
+    "description": "Two privacy settings to check in any AI chatbot before you share personal details. Narrated with an AI voice.\n\n#AI #Privacy #ChatGPT #Shorts",
+    "tags": ["AI privacy settings", "ChatGPT privacy", "is AI chat private", "AI data training", "AI safety", "privacy tips"],
+    "segments": [
+      {"screen": "Is your AI chat private?", "say": "Before you tell an AI chatbot something personal, check two settings."},
+      {"screen": "1. Training", "say": "One. Does the company use your conversations to improve its models? Many apps let you switch this off in settings, but the default varies by app and by plan."},
+      {"screen": "2. History", "say": "Two. How long are chats kept, and can you delete them? Look for chat history or data controls."},
+      {"screen": "Work accounts differ", "say": "Business and education plans often have different rules from free personal accounts. If you use AI at work, ask what your employer has agreed to."},
+      {"screen": "When unsure, leave it out", "say": "If you can't find a clear answer, leave out names, addresses, health details and passwords. Follow for more AI safety tips."}
+    ]
+  },
+  {
+    "id": "016-why-ai-needs-gpus",
+    "pillar": "AI Explained",
+    "title": "Why does AI need GPUs? #Shorts",
+    "description": "AI runs on graphics chips because they can do huge amounts of simple maths at the same time. Narrated with an AI voice.\n\n#AI #GPU #AIexplained #Shorts",
+    "tags": ["why AI needs GPUs", "GPU explained", "AI chips", "Nvidia AI", "AI hardware", "AI explained"],
+    "segments": [
+      {"screen": "Why AI needs GPUs", "say": "Why are graphics chips, made for video games, now powering AI?"},
+      {"screen": "AI is mostly maths", "say": "Under the hood, an AI model is mostly multiplying and adding enormous grids of numbers."},
+      {"screen": "CPU: a few at a time", "say": "A normal processor is great at doing a few complicated things quickly, one after another."},
+      {"screen": "GPU: thousands at once", "say": "A graphics chip has thousands of simpler cores that work at the same time. That's ideal for drawing pixels, and also for the maths inside AI."},
+      {"screen": "Memory matters too", "say": "Memory matters just as much, because the whole model has to fit somewhere fast. That's why AI chips are in such demand. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "017-training-vs-inference",
+    "pillar": "AI Explained",
+    "title": "Does AI learn from your chats? Training vs using #Shorts",
+    "description": "Training builds an AI model. Inference is using it. Why a chatbot doesn't instantly learn from your conversation. Narrated with an AI voice.\n\n#AI #MachineLearning #AIexplained #Shorts",
+    "tags": ["training vs inference", "does AI learn from chats", "how AI learns", "machine learning explained", "AI explained", "LLM"],
+    "segments": [
+      {"screen": "Does AI learn from you?", "say": "When you correct a chatbot, does it learn and remember for everyone? Usually not instantly."},
+      {"screen": "Training: building the model", "say": "Training is when a model is built. It studies huge amounts of data over weeks or months, and its internal numbers are adjusted."},
+      {"screen": "Inference: using it", "say": "Inference is when you use the finished model. Your chat runs through it, but the model's numbers don't change while you talk."},
+      {"screen": "Memory is a feature", "say": "When an app remembers you, that's usually a separate memory feature storing notes, not the model retraining. And your chats might be used in future training, depending on your settings."},
+      {"screen": "Check your settings", "say": "So check your privacy settings. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "018-prompt-formula",
+    "pillar": "AI Tips",
+    "title": "The 4-part prompt that fixes bad AI answers #Shorts",
+    "description": "Most weak AI answers come from vague prompts. A simple four-part structure that works in any chatbot. Narrated with an AI voice.\n\n#AI #PromptEngineering #ChatGPT #Shorts",
+    "tags": ["how to write prompts", "prompt formula", "better ChatGPT answers", "prompt engineering for beginners", "AI tips", "AI productivity"],
+    "segments": [
+      {"screen": "Better AI answers", "say": "Getting bland answers from AI? Add these four parts to your prompt."},
+      {"screen": "1. The task", "say": "One. The task, stated clearly. Not just write an email, but write a reply declining this meeting politely."},
+      {"screen": "2. The context", "say": "Two. The context. Who it's for, what they already know, and anything the AI can't guess."},
+      {"screen": "3. An example", "say": "Three. An example of what good looks like. Paste something you've written before, so it copies your style."},
+      {"screen": "4. The format", "say": "Four. The format. Length, bullet points or paragraphs, and the tone."},
+      {"screen": "Task. Context. Example. Format.", "say": "Task, context, example, format. Try it on your next prompt. Follow for more AI tips."}
+    ]
+  },
+  {
+    "id": "019-why-ai-cant-count-letters",
+    "pillar": "AI Explained",
+    "title": "Why AI struggles to count letters in a word #Shorts",
+    "description": "Ask some chatbots how many letters are in a word and they can slip up. The reason is tokens. Narrated with an AI voice.\n\n#AI #LLM #AIexplained #Shorts",
+    "tags": ["why AI can't count letters", "AI tokens", "LLM limitations", "ChatGPT mistakes", "AI explained", "how AI reads"],
+    "segments": [
+      {"screen": "Why can't AI count letters?", "say": "AI can write an essay in seconds, but some models have tripped up counting the letters in a word. Why?"},
+      {"screen": "It doesn't see letters", "say": "Language models don't read letter by letter. They read tokens, which are chunks of text. A whole word might be one or two tokens."},
+      {"screen": "Letters are hidden", "say": "So the individual letters inside a chunk aren't directly in front of the model. It has to infer them, and that's where slips happen."},
+      {"screen": "Newer models do better", "say": "Newer models often handle this better, especially when they reason step by step or use a tool like code."},
+      {"screen": "Exact tasks: use tools", "say": "For exact counting and maths, ask the AI to use a calculator or code, or check it yourself. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "020-ai-ml-deep-learning",
+    "pillar": "AI Explained",
+    "title": "AI vs machine learning vs deep learning #Shorts",
+    "description": "Three terms people mix up, explained with one picture: circles inside circles. Narrated with an AI voice.\n\n#AI #MachineLearning #DeepLearning #Shorts",
+    "tags": ["AI vs machine learning", "deep learning explained", "what is machine learning", "AI basics", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "AI vs ML vs deep learning", "say": "AI, machine learning, deep learning. What's the difference? Picture circles inside circles."},
+      {"screen": "AI: the big circle", "say": "Artificial intelligence is the big circle. Any technique that gets computers to do tasks we'd call intelligent."},
+      {"screen": "ML: learns from data", "say": "Inside it is machine learning. Instead of writing every rule by hand, the system learns patterns from examples."},
+      {"screen": "Deep learning: neural networks", "say": "Inside that is deep learning. Machine learning using large neural networks with many layers. It powers today's chatbots, image generators and voice tools."},
+      {"screen": "Circles inside circles", "say": "All deep learning is machine learning, and all machine learning is AI. Not the other way round. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "021-what-is-an-embedding",
+    "pillar": "AI Explained",
+    "title": "How AI understands meaning: embeddings explained #Shorts",
+    "description": "Embeddings turn words into lists of numbers so that similar meanings land close together. That's how AI search finds what you mean. Narrated with an AI voice.\n\n#AI #Embeddings #AIexplained #Shorts",
+    "tags": ["what is an embedding", "embeddings explained", "semantic search", "vector database", "AI explained", "RAG"],
+    "segments": [
+      {"screen": "How AI finds meaning", "say": "How does AI search know that cheap flights and budget airfare mean the same thing?"},
+      {"screen": "Meaning as numbers", "say": "With embeddings. A model turns a piece of text into a long list of numbers that captures its meaning."},
+      {"screen": "Similar = close together", "say": "Texts with similar meanings get similar numbers, so they land close together, like points on a map."},
+      {"screen": "Search by meaning", "say": "To search, your question is turned into numbers too, and the system finds the closest matches, even if they share no words."},
+      {"screen": "Powers AI search", "say": "It's how AI tools search your documents and recommend similar things. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "022-multimodal-ai",
+    "pillar": "AI Explained",
+    "title": "What is multimodal AI? #Shorts",
+    "description": "Multimodal AI can work with text, images, audio and more in one model. What it's good for, and its limits. Narrated with an AI voice.\n\n#AI #MultimodalAI #AIexplained #Shorts",
+    "tags": ["multimodal AI", "what is multimodal AI", "AI vision", "AI that sees images", "AI explained", "generative AI"],
+    "segments": [
+      {"screen": "What is multimodal AI?", "say": "You've heard AI can now see, hear and talk. That's called multimodal AI."},
+      {"screen": "More than text", "say": "Multimodal means one model can handle more than one kind of input or output. Text, images, audio, and sometimes video."},
+      {"screen": "What it can do", "say": "Snap a photo of a broken part and ask what it is. Upload a chart and ask for the key point. Talk to it out loud."},
+      {"screen": "Same limits apply", "say": "The same limits still apply. It can misread an image just as confidently as it misstates a fact."},
+      {"screen": "Check what matters", "say": "So double check anything important. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "023-ai-for-studying",
+    "pillar": "AI in Everyday Life",
+    "title": "Use AI to actually learn, not just get answers #Shorts",
+    "description": "Three ways to use AI as a study partner that makes you better, not lazier. Check your school's AI rules. Narrated with an AI voice.\n\n#AI #Study #StudyTips #Shorts",
+    "tags": ["AI for studying", "study with ChatGPT", "AI study tips", "AI tutor", "student AI tools", "learn with AI"],
+    "segments": [
+      {"screen": "Learn with AI", "say": "Using AI to do your homework teaches you nothing. Using it like a tutor can teach you a lot."},
+      {"screen": "1. Explain it simply", "say": "One. Ask it to explain a topic simply, then explain it back in your own words, and ask it what you got wrong."},
+      {"screen": "2. Quiz me", "say": "Two. Paste your notes and say, quiz me one question at a time, and don't give me the answer until I try."},
+      {"screen": "3. Check the facts", "say": "Three. Check anything you'll be graded on against your textbook or teacher. AI can be confidently wrong."},
+      {"screen": "Know the rules", "say": "And check your school's rules on AI before you use it for assessed work. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "024-on-device-vs-cloud",
+    "pillar": "AI in Everyday Life",
+    "title": "Is the AI on your phone sending your data to the cloud? #Shorts",
+    "description": "Some AI features run on your device, others in the cloud. Why it matters for privacy and how to check. Narrated with an AI voice.\n\n#AI #Privacy #Smartphone #Shorts",
+    "tags": ["on device AI", "phone AI privacy", "cloud AI vs local AI", "smartphone AI", "AI privacy", "AI in everyday life"],
+    "segments": [
+      {"screen": "Where does phone AI run?", "say": "When your phone uses AI, is it thinking on the phone, or sending your data somewhere else?"},
+      {"screen": "On-device", "say": "Some features run on the device itself. Your data stays on the phone, and it can even work offline. But the models are smaller."},
+      {"screen": "Cloud", "say": "Other features send your request to a company's servers, where bigger models do the work. More powerful, but your data leaves the phone."},
+      {"screen": "Often it's both", "say": "Many phones now mix both, choosing based on the task. The privacy details vary by brand and feature."},
+      {"screen": "Check the settings", "say": "Look in your phone's AI or privacy settings for what's processed where. Follow for more AI explained."}
+    ]
+  }
+]

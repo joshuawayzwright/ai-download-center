@@ -1,5 +1,7 @@
 # Cross-project audit and controlled cleanup — 27 October 2026
 
+> **Superseded on 17 November 2026:** the SOLO shop is now live with 16 products on sale. See [SOLO shop status](SOLO-SHOP-STATUS-2026-11-17.md). The "orders paused" and "coming soon" statements below are historical.
+
 **Historical audit:** the following tables record earlier 27 October observations. The [current checklist](https://github.com/joshuawayzwright/ai-download-center/issues/31) and [28 October website release](SOLO-WEBSITE-RELEASE-2026-10-28.md) supersede their maintenance/customer-verification statuses. Preserve the recorded profile/contact work; do not repeat completed customer API tests based on this earlier snapshot.
 
 ## Current information and profile audit — later on 27 October 2026

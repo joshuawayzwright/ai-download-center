@@ -1,0 +1,144 @@
+{
+  "tiers": {
+    "T0": "Read or analyze only",
+    "T1": "Internal and reversible",
+    "T2": "External or bounded spend, reversible within 24h",
+    "T3": "Material or hard to reverse; owner exec plus independent co-signer",
+    "T4": "Existential or irreversible; human Board approval"
+  },
+  "action_types": {
+    "research": {
+      "tier": "T0"
+    },
+    "draft": {
+      "tier": "T0"
+    },
+    "create_task": {
+      "tier": "T1"
+    },
+    "open_pull_request": {
+      "tier": "T1"
+    },
+    "deploy_staging": {
+      "tier": "T1"
+    },
+    "external_comm": {
+      "tier": "T2",
+      "requires_compliance": true
+    },
+    "publish_content": {
+      "tier": "T2",
+      "requires_compliance": true
+    },
+    "ad_spend": {
+      "tier": "T2"
+    },
+    "refund": {
+      "tier": "T2"
+    },
+    "deploy_production": {
+      "tier": "T2",
+      "separation_of_duties": "author_cannot_approve"
+    },
+    "merge_pull_request": {
+      "tier": "T2",
+      "separation_of_duties": "author_cannot_approve"
+    },
+    "discount": {
+      "tier": "T2"
+    },
+    "vendor_contract": {
+      "tier": "T3",
+      "cosigner": "cfo"
+    },
+    "price_change": {
+      "tier": "T3",
+      "cosigner": "cfo",
+      "also_requires": [
+        "clo"
+      ]
+    },
+    "hire_contractor": {
+      "tier": "T3",
+      "cosigner": "cfo"
+    },
+    "public_statement": {
+      "tier": "T3",
+      "cosigner": "clo"
+    },
+    "promote_agent_version": {
+      "tier": "T3",
+      "cosigner": "eval-lab",
+      "separation_of_duties": "author_cannot_approve"
+    },
+    "change_org_structure": {
+      "tier": "T3",
+      "cosigner": "ceo"
+    },
+    "raise_capital": {
+      "tier": "T4"
+    },
+    "enter_jurisdiction": {
+      "tier": "T4"
+    },
+    "delete_customer_data": {
+      "tier": "T4"
+    },
+    "change_constitution": {
+      "tier": "T4"
+    },
+    "kill_product": {
+      "tier": "T4"
+    }
+  },
+  "escalation": {
+    "t3_spend_over_usd": 100,
+    "t4_spend_over_usd": 500,
+    "discount_cfo_cosign_over": 0.15
+  },
+  "kill_switch_levels": {
+    "L1": {
+      "effect": "pause_agent",
+      "triggered_by": [
+        "manager",
+        "risk",
+        "board"
+      ]
+    },
+    "L2": {
+      "effect": "freeze_external",
+      "triggered_by": [
+        "risk",
+        "cto",
+        "ceo",
+        "coo",
+        "cmo",
+        "cfo",
+        "clo",
+        "chro",
+        "board"
+      ]
+    },
+    "L3": {
+      "effect": "freeze_spend",
+      "triggered_by": [
+        "cfo",
+        "risk",
+        "board"
+      ]
+    },
+    "L4": {
+      "effect": "full_stop",
+      "triggered_by": [
+        "board",
+        "risk"
+      ]
+    }
+  },
+  "auto_triggers": {
+    "daily_spend_over_forecast_multiple": 2,
+    "error_rate_over": 0.05,
+    "outbound_messages_per_hour_over": 500
+  },
+  "audit_sample_rate_t2": 0.02
+}

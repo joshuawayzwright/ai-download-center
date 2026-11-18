@@ -1,5 +1,7 @@
 # Commercial website release — 28 October 2026
 
+> **Superseded on 17 November 2026:** the SOLO shop is now live with 16 products on sale. See [SOLO shop status](SOLO-SHOP-STATUS-2026-11-17.md). The "orders paused" and "coming soon" statements below are historical.
+
 ## Owner instruction and scope
 
 Joshua explicitly requested: “the website live with all products say coming soon”.
