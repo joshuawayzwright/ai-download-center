@@ -74,6 +74,9 @@ jobs:
       - name: Test directory privacy controls
         run: node --test scripts/test-directory-privacy.cjs
 
+      - name: Keep guide pages in step with the catalog
+        run: node --test scripts/test-guide-catalog.mjs
+
       - name: Test staged Pages directory in Chrome
         run: |
           python3 scripts/test-public-site.py

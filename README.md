@@ -86,6 +86,8 @@ Settings live in [config.js](config.js).
 - **Affiliate links:** run `node scripts/set-affiliate.mjs "<Tool name>" "<https tracking link>"` (or `--remove`, or `--list`), then `node scripts/validate-catalog.mjs`. It sets `"affiliateUrl"` on that one catalog line; the card's link then uses it (marked `rel="sponsored"`) instead of the plain `url`. Which tools run programs, and where to apply, is in [docs/AFFILIATE-PROGRAMS.md](docs/AFFILIATE-PROGRAMS.md).
 - **Newsletter:** the signup box on the homepage and guides stays hidden until you set a provider in `config.js`. Easiest: paste your provider's hosted subscribe page (Beehiiv, Kit, Substack, ...) into `newsletterSignupUrl`. For an email box on the page itself, set `newsletterFormAction` to the provider's HTML form action URL and `newsletterEmailField` to its email field name. No provider code loads on the site; the address goes to the provider only when a visitor submits. The [free AI tools starter kit](free-ai-tools.html) is the lead magnet: link it in your welcome email, or print it to PDF (the guide pages have a clean print layout) and attach that.
 
+**Guide pages and the catalog:** tool cards on `free-ai-tools.html` and `free-ai-explained.html` carry `data-tool` and `data-price` attributes. `node --test scripts/test-guide-catalog.mjs` (run in CI) fails if a card's price type or official link stops matching `data/tools.json`, or if the starter kit lists a tool that isn't free to start. After changing a catalog entry that appears on those pages, update the page to match.
+
 The footer tells visitors that sponsored placements are paid and that some links are affiliate links. Keep it there: advertising rules in most countries require that disclosure.
 
 ## Marketing agents

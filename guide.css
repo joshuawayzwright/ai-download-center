@@ -151,3 +151,89 @@
     word-break: break-all;
   }
 }
+
+/* Long-form explainer pieces (e.g. free-ai-explained.html). */
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0 0 26px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.byline strong {
+  color: var(--text);
+}
+.key-points {
+  margin: 0 0 30px;
+  padding: 20px 22px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 16px 16px 0;
+  background: var(--panel);
+}
+.key-points h2 {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.key-points ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.toc {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+.toc h2 {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.toc ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.guide h2[id],
+.guide h3[id] {
+  scroll-margin-top: 16px;
+}
+.app .fact {
+  font-size: 0.92rem;
+}
+.sources {
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.sources li {
+  margin-bottom: 6px;
+}
+.correction-note {
+  margin-top: 28px;
+  font-size: 0.9rem;
+}
+@media print {
+  .toc,
+  .byline {
+    border-color: #999;
+  }
+  .key-points {
+    background: #fff;
+    border-left-color: #000;
+  }
+  .key-points h2 {
+    color: #000;
+  }
+}
+.guide sup {
+  line-height: 0;
+  font-size: 0.7em;
+}
+.guide sup a {
+  text-decoration: none;
+}
