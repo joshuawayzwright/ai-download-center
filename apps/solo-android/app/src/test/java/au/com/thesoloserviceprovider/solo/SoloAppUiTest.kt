@@ -413,8 +413,15 @@ class SoloAppUiTest {
     waitForText("That code is invalid or expired")
     assertEquals(null, lastAction("login"))
 
-    compose.onNodeWithTag("resend-code").performClick()
+    // A new code can't be requested until 60 seconds after the last one (the email limit).
+    waitForText("Send a new code in")
+    compose.onNodeWithTag("resend-code").assertIsNotEnabled()
+    compose.mainClock.autoAdvance = false
+    repeat(62) { compose.mainClock.advanceTimeBy(1000) }
+    compose.mainClock.autoAdvance = true
+    compose.onNodeWithTag("resend-code").assertIsEnabled().performClick()
     waitForText("We sent a new code to new@example.test")
+    waitForText("Send a new code in")
     compose.waitUntil(20000) { synchronized(server!!.requests) { server!!.requests.count { it.body.contains("\"action\":\"signup\"") } } == 2 }
 
     compose.onNodeWithTag("code").performTextClearance()
