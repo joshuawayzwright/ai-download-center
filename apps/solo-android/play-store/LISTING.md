@@ -88,6 +88,19 @@ unfinished features as live.
 an account deletion URL as well as the in-app option, for example
 https://thesoloserviceprovider.com.au/privacy.html#solo-ai with the deletion steps.
 
+## Release notes: 1.2.0
+
+Paste into "What's new" for the 1.2.0 release (en-AU, under 500 characters):
+
+```
+New for testers: connect Google Calendar (read-only) in Settings > Connected apps, then ask "What's on this week?". Read aloud now works on more phones and speaks on the first tap. New sign-up codes can be requested after 60 seconds, and the code email tells you to check Spam.
+```
+
+Play Console: update Data safety before this release goes beyond testers. The app now
+lets users connect Google Calendar; event titles, times, locations and busy status are
+read by the server for that user's reply (not stored, encrypted in transit). The stored
+Google connection key is encrypted and deleted on disconnect or account deletion.
+
 ## Release notes: 1.1.1
 
 Paste into "What's new" for the 1.1.1 release (en-AU, under 500 characters):
