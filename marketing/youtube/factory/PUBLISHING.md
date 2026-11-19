@@ -26,3 +26,12 @@ vidIQ can't cancel or edit a scheduled post. To pull one, delete it on the platf
 ## Batch 02: drafted 15 Nov 2026, waiting for approval
 
 Planned dates: 013 on 28 Nov, then one a day through 024 on 9 Dec.
+
+## AI Turning Points (long-form): uploaded 19 Nov 2026, private for review
+
+Four landscape episodes from `videos/ai-turning-points.json`, uploaded to YouTube (@joshwright-y2y) as **private** so the channel owner can review them before release. Category Science & Technology. Thumbnails are the generated text versions; swap in a real-face thumbnail later if wanted.
+
+Before making them public: watch each one, check the names are pronounced acceptably (Uszkoreit, Łukasz Kaiser and Llion Jones are spelled phonetically in the narration), and set end screens and the series playlist in YouTube Studio (vidIQ can't set those).
+
+| # | Title | Length | YouTube (private) |
+|---|---|---|---|

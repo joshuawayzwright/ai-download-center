@@ -1,6 +1,6 @@
 # AI Field Notes video factory
 
-This turns a JSON script into finished vertical videos (1080×1920, H.264, AAC) for YouTube Shorts, TikTok and Instagram Reels. Everything runs locally: no paid video credits and no cloud voice service.
+This turns a JSON script into finished videos (H.264, AAC): vertical 1080×1920 for YouTube Shorts, TikTok and Instagram Reels, or landscape 1920×1080 for long-form YouTube. Everything runs locally: no paid video credits and no cloud voice service.
 
 Each video has:
 - a notebook-style background in the brand colours (charcoal, lime, coral)
@@ -61,6 +61,15 @@ Add an object to a batch file in `videos/`:
 - Keep `screen` text short (2–6 words). It's the headline, not a transcript.
 - **Accuracy:** explain stable concepts plainly; hedge where things vary ("often", "many models"); never invent numbers, quotes or news. For news or new releases, use the official announcement and put the date in the description.
 - Spell out symbols in `say` text so the voice pronounces them ("three quarters", not "¾").
+
+## Long-form (landscape) videos
+
+Add `"format": "landscape"` to a video to render it at 1920×1080 in the same style. Two optional fields help with long videos:
+
+- `"chapter"` on a segment starts a YouTube chapter there. The chapter name replaces the step counter on screen, and the renderer writes real timestamps into the metadata file. Put `{chapters}` in the description and it's replaced with the timed chapter list, so chapters never need re-timing by hand. YouTube needs the first chapter at 0:00, at least three chapters, and each at least 10 seconds long.
+- `"thumbnail": {"text": "Move 37", "kicker": "Series · Episode 1", "tag": "1 in 10,000"}` makes a 1280×720 `<id>-thumb.png`: big text (3 words at most), kicker in coral, optional coral tag. The channel kit prefers your real face on long-form thumbnails, so treat these as stand-ins.
+
+`videos/ai-turning-points.json` holds the four-episode *AI Turning Points* series (about 9–10 minutes each). Each one takes roughly 10 minutes to render on 4 CPU cores.
 
 ## Disclosure
 
