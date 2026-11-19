@@ -18,7 +18,7 @@ The public AI directory is live on GitHub Pages. This repository also contains c
 | --- | --- | --- |
 | AI Download Centre | Repository root | Live public directory; latest audited Pages deployment succeeded. |
 | The Solo Service Provider shop | Live at [thesoloserviceprovider.com.au/shop/](https://thesoloserviceprovider.com.au/shop/) | **On sale.** Checked 17 November 2026: 16 products are listed with Buy Now, from A$9 to A$79, through a live Stripe checkout. See the [current SOLO status](docs/SOLO-SHOP-STATUS-2026-11-17.md). The live shop's source is not in this repository; [powerhouse-website/](powerhouse-website/) holds the older coming-soon build. |
-| SOLO AI assistant | [powerhouse-website/](powerhouse-website/) | Still marked COMING SOON on the live site and not a public service. |
+| SOLO AI assistant | Private `solo-commerce` repository (API and website); database migrations in [supabase/](supabase/) | Still marked COMING SOON on the live site and not a public service. The old copy in `powerhouse-website/` was retired on 19 November 2026; see [its README](powerhouse-website/README.md). |
 | SOLO customer access | [Draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34) | Login/session and durable quota implementation is under review, not merged. Live customer login, hosted concurrency and customer Gemini conversation remain unverified. |
 | Android work | [Master release checklist](https://github.com/joshuawayzwright/ai-download-center/issues/31) | Source/build work exists; Google Play publication is not verified. |
 
