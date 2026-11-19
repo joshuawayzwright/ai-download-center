@@ -230,3 +230,10 @@
     color: #000;
   }
 }
+.guide sup {
+  line-height: 0;
+  font-size: 0.7em;
+}
+.guide sup a {
+  text-decoration: none;
+}

@@ -15,7 +15,7 @@ const catalog = new Map(
 );
 
 // Pages whose tool cards are bound to the catalog.
-const PAGES = ['free-ai-tools.html'];
+const PAGES = ['free-ai-tools.html', 'free-ai-explained.html'];
 
 const decode = (value) =>
   value.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
