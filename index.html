@@ -38,7 +38,7 @@
         }
       }
     </script>
-    <link rel="stylesheet" href="styles.css?v=20261104-solo-brand1" />
+    <link rel="stylesheet" href="styles.css?v=20261119-newsletter1" />
     <script src="analytics.js" defer></script>
   </head>
   <body>
@@ -268,7 +268,26 @@
               <h3>Best AI image generators</h3>
               <p>Open models you run yourself, hosted generators, and design-focused tools.</p>
             </a>
+            <a class="collection-card accent-gold" href="free-ai-tools.html">
+              <span class="collection-kicker">Starter kit</span>
+              <h3>Free AI tools starter kit</h3>
+              <p>25 free and free-to-start tools for chat, coding, images, audio, video and everyday work.</p>
+            </a>
           </div>
+        </section>
+
+        <section class="newsletter" id="newsletter" data-newsletter hidden aria-labelledby="newsletterTitle">
+          <span class="section-label">Newsletter</span>
+          <h2 id="newsletterTitle">New AI tools worth knowing about, once a week.</h2>
+          <p>One short email: new and notable tools from the directory, what each is for, and a link to the official source. Free, and you can unsubscribe any time. Start with our <a href="free-ai-tools.html">free AI tools starter kit</a>.</p>
+          <form class="newsletter-form" data-newsletter-form method="post" target="_blank" hidden>
+            <label>Email address
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <button class="primary-btn" type="submit">Subscribe</button>
+          </form>
+          <a class="primary-btn" data-newsletter-link href="#" target="_blank" rel="noopener" hidden>Subscribe for free</a>
+          <p class="disclosure">Subscribing sends your email address to our newsletter provider, which sends the emails. We don't sell it. See the <a href="privacy.html#newsletter">privacy policy</a>.</p>
         </section>
 
         <section class="list-tool" id="list-your-tool" aria-label="List your tool">
@@ -360,5 +379,6 @@
     <script src="config.js"></script>
     <script src="hf-classify.js?v=20261001-classify1"></script>
     <script src="app.js?v=20261104-directory-privacy1"></script>
+    <script src="newsletter.js?v=20261119-newsletter1"></script>
   </body>
 </html>

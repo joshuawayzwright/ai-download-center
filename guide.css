@@ -106,3 +106,48 @@
 .guide-cta .primary-btn {
   color: var(--bg);
 }
+.kit-print-hint {
+  font-size: 0.9rem;
+}
+
+/* Print / "Save as PDF": a clean, light copy of a guide for keeping or emailing. */
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .topbar,
+  .newsletter,
+  .guide-cta,
+  .kit-print-hint,
+  .site-footer .disclosure {
+    display: none !important;
+  }
+  .guide,
+  .guide p,
+  .guide li,
+  .guide td,
+  .guide th,
+  .app-meta span {
+    color: #000;
+  }
+  .guide a {
+    color: #000;
+  }
+  .app,
+  .table-wrap,
+  table {
+    background: #fff;
+    border-color: #999;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+  .guide .app a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    word-break: break-all;
+  }
+}

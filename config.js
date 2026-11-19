@@ -16,6 +16,14 @@ window.SITE_CONFIG = {
   // The business name customers see on Stripe checkout and their card statement.
   merchantName: 'The Solo Service Provider',
 
+  // Email newsletter. While both are empty, the signup box stays hidden on every page.
+  // Easiest: paste your provider's hosted subscribe page (Beehiiv, Kit, Substack, ...) into newsletterSignupUrl.
+  // Optional: for an email box on the page itself, paste the provider's HTML form "action" URL into
+  // newsletterFormAction and the name of its email field into newsletterEmailField. This takes priority.
+  newsletterSignupUrl: '',
+  newsletterFormAction: '',
+  newsletterEmailField: 'email',
+
   // Google Analytics 4 Measurement ID (Admin > Data streams > Web), e.g. 'G-ABC123XYZ9'.
   // While it is empty, no analytics code loads.
   gaMeasurementId: 'G-18D31VQ9SB',
