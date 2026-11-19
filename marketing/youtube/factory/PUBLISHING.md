@@ -35,3 +35,9 @@ Before making them public: watch each one, check the names are pronounced accept
 
 | # | Title | Length | YouTube (private) |
 |---|---|---|---|
+| TP1 | The Move That Broke the Best Human Player Alive | 6:28 | https://www.youtube.com/watch?v=eupv0I2OYDY |
+| TP2 | The 1966 Chatbot People Couldn't Stop Confiding In | 6:15 | https://www.youtube.com/watch?v=naMSOmVxu0Y |
+| TP3 | The Paper With a Joke Title That Built Modern AI | 5:48 | https://www.youtube.com/watch?v=OkyRdvau45U |
+| TP4 | How an Amateur Beat a Superhuman AI | 4:53 | https://www.youtube.com/watch?v=Z0gfg4sGMP0 |
+
+The narration runs faster than planned, so the episodes are 5–6.5 minutes rather than the 9–10 the scripts were timed for.

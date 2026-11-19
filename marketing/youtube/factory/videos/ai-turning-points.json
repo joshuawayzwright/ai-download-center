@@ -181,7 +181,7 @@
    {"screen": "Humans see it coming", "say": "A competent human player sees that kind of danger coming from a long way off."},
    {"screen": "The AI didn't", "say": "The superhuman AI didn't. It kept playing elsewhere as if the group was safe, until it was captured and the game collapsed."},
    {"screen": "A blind spot", "say": "The superhuman AI had a blind spot. And it was big enough to lose whole games through."},
-   {"chapter": "A human learns the trick", "screen": "The headline", "say": "But here's the part that turned a research paper into headlines. You didn't need the attacking AI to use the trick. A human could learn it."},
+   {"screen": "The headline", "say": "But here's the part that turned a research paper into headlines. You didn't need the attacking AI to use the trick. A human could learn it."},
    {"screen": "And one did", "say": "And one did."},
    {"chapter": "The amateur who won", "screen": "Kellin Pelrine", "say": "Kellin Pelrine, an American player and one of the researchers on the project, was a strong amateur, ranked one level below the top amateur grade. Nowhere near professional."},
    {"screen": "No computer help", "say": "He studied the cyclic strategy, then played against KataGo himself, with no computer helping him during the games."},
