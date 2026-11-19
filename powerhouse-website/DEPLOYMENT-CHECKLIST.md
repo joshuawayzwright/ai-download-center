@@ -3,6 +3,14 @@
 The single current checklist is [GitHub issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31).
 Use its current-status section and retain its historical audit trail.
 
+## 30 October 2026 — V4.2 protected-preview status
+
+The final visual staging changes are on draft, unmerged PR #34. Its protected
+Preview, `dpl_HSedboPZNTHUmjvUH7RBuy9eKxJ3`, was READY in `hnd1` at commit
+`21a2d38`; the staging checks are recorded in issue #31. Owner visual approval
+is still required. Do not merge or promote this work, enable public SOLO AI, or
+open checkout without that approval. Production remains unchanged.
+
 As of 28 October 2026 (Brisbane), the commercial website is live with all ten
 launch products marked COMING SOON. Runtime commit `eabe97a` is deployed as
 `dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt`. The original A$79 Marketing Kit remains
