@@ -32,6 +32,8 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
   companion object {
     val REPORT_REASONS = listOf("harmful", "hateful", "sexual", "misleading", "other")
     private const val STREAM_FRAME_MS = 50L
+    const val NO_VOICE = "Read aloud needs a voice on your phone. Open Settings, search for \"Text-to-speech\", " +
+      "choose Speech Recognition and Synthesis from Google, and install English (Australia)."
   }
 
   private val endpoint = SoloConfig.endpointOverride ?: BuildConfig.SOLO_API_URL
@@ -56,7 +58,6 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
   private var serviceGeneration = 0
   private var sendJob: Job? = null
   private var tts: TextToSpeech? = null
-  private var ttsReady = false
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
@@ -66,6 +67,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       _state.update { it.copy(threads = summaries(), voiceAvailable = voice) }
     }
     checkService()
+    startTts()
   }
 
   // ---- Service and account ----------------------------------------------------
@@ -512,39 +514,90 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
   }
 
   // ---- Read aloud -----------------------------------------------------------------
+  // The phone's own text-to-speech engine reads replies on the device. It is started
+  // when the app opens, so the first tap on the speaker speaks straight away.
+
+  private enum class Tts { OFF, STARTING, READY, FAILED }
+  private var ttsStatus = Tts.OFF
+  /** A reply tapped while the engine was still starting: (message id, text). */
+  private var pendingSpeech: Pair<String, String>? = null
+
+  private fun startTts() {
+    if (tts != null && ttsStatus != Tts.FAILED) return
+    tts?.shutdown()
+    ttsStatus = Tts.STARTING
+    tts = try {
+      TextToSpeech(getApplication()) { status -> onTtsReady(status) }
+    } catch (e: Exception) {
+      ttsStatus = Tts.FAILED
+      null
+    }
+  }
+
+  private fun onTtsReady(status: Int) {
+    val engine = tts
+    if (status != TextToSpeech.SUCCESS || engine == null || !chooseVoice(engine)) {
+      ttsStatus = Tts.FAILED
+      if (pendingSpeech != null) {
+        pendingSpeech = null
+        _state.update { it.copy(speakingMessageId = null) }
+        notify(NO_VOICE)
+      }
+      return
+    }
+    engine.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+      override fun onStart(id: String?) {}
+      override fun onDone(id: String?) { _state.update { if (it.speakingMessageId == id) it.copy(speakingMessageId = null) else it } }
+      @Deprecated("Deprecated in Java") override fun onError(id: String?) { onDone(id) }
+      override fun onError(id: String?, errorCode: Int) {
+        onDone(id)
+        notify("Read aloud stopped. Check your phone's text-to-speech voice and media volume.")
+      }
+    })
+    ttsStatus = Tts.READY
+    pendingSpeech?.let { (id, text) -> pendingSpeech = null; speakNow(engine, id, text) }
+  }
+
+  /** Australian English if the phone has it, otherwise any English voice. */
+  private fun chooseVoice(engine: TextToSpeech): Boolean {
+    for (locale in listOf(Locale("en", "AU"), Locale.UK, Locale.US, Locale.ENGLISH)) {
+      val result = try { engine.setLanguage(locale) } catch (e: Exception) { TextToSpeech.LANG_NOT_SUPPORTED }
+      if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) return true
+    }
+    return false
+  }
 
   fun toggleSpeak(message: ChatMessage) {
     if (_state.value.speakingMessageId == message.id) {
+      pendingSpeech = null
       tts?.stop()
       _state.update { it.copy(speakingMessageId = null) }
       return
     }
     val speakText = MarkdownText.plain(message.text)
+    // Show the stop button at once, even while the engine finishes starting.
+    _state.update { it.copy(speakingMessageId = message.id) }
+    if (mediaVolumeOff()) notify("Your media volume is off. Turn it up to hear SOLO.")
     val engine = tts
-    if (engine != null && ttsReady) {
-      speakNow(engine, message.id, speakText)
-      return
-    }
-    tts = TextToSpeech(getApplication()) { status ->
-      ttsReady = status == TextToSpeech.SUCCESS
-      val e = tts
-      if (ttsReady && e != null) {
-        e.language = Locale("en", "AU")
-        e.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-          override fun onStart(id: String?) {}
-          override fun onDone(id: String?) { _state.update { if (it.speakingMessageId == id) it.copy(speakingMessageId = null) else it } }
-          @Deprecated("Deprecated in Java") override fun onError(id: String?) { onDone(id) }
-        })
-        speakNow(e, message.id, speakText)
-      } else {
-        notify("Read aloud isn't available on this phone.")
-      }
+    when {
+      engine != null && ttsStatus == Tts.READY -> speakNow(engine, message.id, speakText)
+      else -> { pendingSpeech = message.id to speakText; startTts() }
     }
   }
 
+  private fun mediaVolumeOff(): Boolean = try {
+    val audio = getApplication<Application>().getSystemService(android.content.Context.AUDIO_SERVICE) as android.media.AudioManager
+    audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC) == 0
+  } catch (e: Exception) { false }
+
   private fun speakNow(engine: TextToSpeech, id: String, text: String) {
-    engine.speak(text.take(TextToSpeech.getMaxSpeechInputLength() - 1), TextToSpeech.QUEUE_FLUSH, null, id)
-    _state.update { it.copy(speakingMessageId = id) }
+    val result = engine.speak(text.take(TextToSpeech.getMaxSpeechInputLength() - 1), TextToSpeech.QUEUE_FLUSH, null, id)
+    if (result == TextToSpeech.ERROR) {
+      _state.update { if (it.speakingMessageId == id) it.copy(speakingMessageId = null) else it }
+      notify(NO_VOICE)
+    } else {
+      _state.update { it.copy(speakingMessageId = id) }
+    }
   }
 
   private fun notify(text: String) {

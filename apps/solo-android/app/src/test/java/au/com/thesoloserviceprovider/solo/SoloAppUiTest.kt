@@ -91,6 +91,7 @@ class SoloAppUiTest {
   }
 
   @After fun tearDown() {
+    org.robolectric.shadows.ShadowTextToSpeech.reset()
     scenario?.close()
     server?.close()
     SoloConfig.endpointOverride = null
@@ -562,5 +563,46 @@ class SoloAppUiTest {
     compose.onNodeWithText("Settings and account").performClick()
     waitForText("Your data")
     compose.onNodeWithText("Connected apps").assertDoesNotExist()
+  }
+
+  private fun lastSpoken(): String? = org.robolectric.shadows.ShadowTextToSpeech.getLastTextToSpeechInstance()
+    ?.let { org.robolectric.Shadows.shadowOf(it).lastSpokenText }
+
+  /** Robolectric's engine never answers by itself: report it ready, as a phone would. */
+  private fun ttsReady() {
+    compose.waitUntil(20000) { org.robolectric.shadows.ShadowTextToSpeech.getLastTextToSpeechInstance() != null }
+    scenario!!.onActivity {
+      org.robolectric.Shadows.shadowOf(org.robolectric.shadows.ShadowTextToSpeech.getLastTextToSpeechInstance())
+        .onInitListener.onInit(android.speech.tts.TextToSpeech.SUCCESS)
+    }
+  }
+
+  @Test fun readAloudSpeaksTheReplyOnTheFirstTap() {
+    org.robolectric.shadows.ShadowTextToSpeech.addLanguageAvailability(java.util.Locale("en", "AU"))
+    chatResponse = json(200, """{"reply":"Here is **your plan**."}""")
+    start()
+    waitForText("Plan my week")
+    send("Plan my week")
+    waitForText("Here is your plan.")
+    ttsReady()
+    compose.onNodeWithContentDescription("Read aloud").performClick()
+    // The engine was started with the app, so the first tap speaks plain text at once.
+    // (Robolectric's engine finishes instantly, so the Stop state is checked in the next test.)
+    compose.waitUntil(20000) { lastSpoken() == "Here is your plan." }
+  }
+
+  @Test fun readAloudExplainsHowToGetAVoiceWhenThePhoneHasNone() {
+    chatResponse = json(200, """{"reply":"Hello."}""")
+    start()
+    waitForText("Plan my week")
+    send("Hi")
+    waitForText("Hello.")
+    // Tapped while the engine is still starting: it then reports no English voice.
+    compose.onNodeWithContentDescription("Read aloud").performClick()
+    waitForDescription("Stop reading")
+    ttsReady()
+    waitForText("Read aloud needs a voice on your phone")
+    waitForDescription("Read aloud")
+    assertEquals(null, lastSpoken())
   }
 }

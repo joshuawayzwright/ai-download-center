@@ -3,10 +3,15 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Voice input uses the device's speech service via an intent; the app never records audio. -->
+    <!-- Voice input and read aloud use the device's own speech services; the app never records audio. -->
     <queries>
         <intent>
             <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+        <!-- Read aloud: Android 11+ only lets the app reach the phone's text-to-speech
+             engine when it declares this. -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
     </queries>
 
