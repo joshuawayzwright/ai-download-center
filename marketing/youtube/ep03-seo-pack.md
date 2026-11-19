@@ -15,10 +15,12 @@ The first ~150 characters show in search results and above the "...more" fold, s
 ```
 Ollama tutorial for beginners: install Ollama, download a free AI model, and run it privately on your own laptop, even with the Wi-Fi off. Then I test it on three real small-business jobs to see where local AI is good enough and where it isn't.
 
-My setup: [NEEDS INFO: laptop, chip, RAM, OS]
-Model used: [NEEDS INFO: model name and size tag]
-Ollama version: [NEEDS INFO]
+My setup: Lenovo IdeaPad Slim 3x 15.3" Copilot+ PC, Snapdragon X (X1-26-100), 16GB RAM, 512GB SSD, Windows 11 [CONFIRM: Home or Pro]
+Model used: qwen3:4b [CONFIRM: change if you demo a different model]
+Ollama version: [NEEDS INFO: run ollama --version on recording day]
 Recorded: [NEEDS INFO: date]. Ollama and its models change often, so check ollama.com for the current steps.
+
+On a Snapdragon (Windows on Arm) laptop, Ollama runs the model on the CPU. It doesn't use the Copilot+ NPU, so expect slower replies than on a laptop with a supported graphics card. [CONFIRM on recording day in Ollama's release notes.]
 
 ⏱ CHAPTERS
 0:00 Ollama running with the Wi-Fi off
@@ -171,7 +173,9 @@ Paste as-is: 23 tags, 398 characters, under YouTube's 500-character limit. YouTu
 ollama tutorial, how to use ollama, ollama, what is ollama, ollama tutorial for beginners, ollama tutorial windows, ollama install windows, how to install ollama, how to download ollama, ollama setup, ollama models, local llm, local ai, run ai locally, how to run local ai, local ai tutorial, offline ai, private ai, is local ai safe, run llm locally, free ai, ai for small business, ai field notes
 ```
 
-Add `ollama mac tutorial` if you record on a Mac, `ollama windows 11` if you record on Windows 11, and your demo model's name (for example `qwen` or `gemma`).
+For your setup (Windows 11 on Snapdragon, qwen3:4b), add `ollama windows 11, qwen3, ollama snapdragon`. That makes 443 characters, still under the limit. `ollama snapdragon` has no vidIQ data, but few tutorials cover Windows on Arm, so it's a cheap niche to claim.
+
+**Best title for your setup:** #1, or #6 (*How to Install Ollama on Windows 11 and Run AI Offline*) since you're recording on Windows 11.
 
 ---
 
