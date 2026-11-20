@@ -8,7 +8,7 @@ A public directory for discovering major AI models, assistants, self-hosted tool
 
 **Manage billing:** https://billing.stripe.com/p/login/eVq00je9s5GX8oobxZeAg00
 
-**Maintainer and support:** [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com) · [0452 272 820](tel:+61452272820)
+**Maintainer and support:** [hello@thesoloserviceprovider.com.au](mailto:hello@thesoloserviceprovider.com.au) · [0452 272 820](tel:+61452272820)
 
 ## Current portfolio status — updated 17 November 2026
 
@@ -82,7 +82,7 @@ Settings live in [config.js](config.js).
 - **Free submissions:** the "Submit a tool" button opens a GitHub issue form ([submit-tool.yml](.github/ISSUE_TEMPLATE/submit-tool.yml)). To accept a submission, add an entry to `data/tools.json`.
 - **Featured listings:** the public "Start 7-day free trial" button opens the live Stripe subscription checkout at $99 USD/month after trial. Paid entries use `"sponsored": true` and are clearly labeled Sponsored.
 - **Customer billing:** sponsors can update payment details, view invoices, or cancel through the Stripe customer portal linked from the site and confirmation page.
-- **Customer support:** billing and listing enquiries use [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com), phone **0452 272 820**. Please name AI Download Centre in the enquiry.
+- **Customer support:** billing and listing enquiries use [hello@thesoloserviceprovider.com.au](mailto:hello@thesoloserviceprovider.com.au), phone **0452 272 820**. Please name AI Download Centre in the enquiry.
 - **Affiliate links:** run `node scripts/set-affiliate.mjs "<Tool name>" "<https tracking link>"` (or `--remove`, or `--list`), then `node scripts/validate-catalog.mjs`. It sets `"affiliateUrl"` on that one catalog line; the card's link then uses it (marked `rel="sponsored"`) instead of the plain `url`. Which tools run programs, and where to apply, is in [docs/AFFILIATE-PROGRAMS.md](docs/AFFILIATE-PROGRAMS.md).
 - **Newsletter:** the signup box on the homepage and guides stays hidden until you set a provider in `config.js`. Easiest: paste your provider's hosted subscribe page (Beehiiv, Kit, Substack, ...) into `newsletterSignupUrl`. For an email box on the page itself, set `newsletterFormAction` to the provider's HTML form action URL and `newsletterEmailField` to its email field name. No provider code loads on the site; the address goes to the provider only when a visitor submits. The [free AI tools starter kit](free-ai-tools.html) is the lead magnet: link it in your welcome email, or print it to PDF (the guide pages have a clean print layout) and attach that.
 
