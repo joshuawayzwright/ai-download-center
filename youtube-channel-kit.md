@@ -68,7 +68,8 @@ A breakout shows that a video did well. It doesn't prove why, or that the same t
 ## Brand direction
 
 - **Voice:** direct, practical, skeptical but fair. Talk like a sole trader helping another sole trader.
-- **Thumbnails:** your real face, one object or tool, at most 3 words, solid dark background, lime/coral accents. Never use an AI-generated face in place of yours, and never use a company's logo in a way that implies a partnership.
+- **Brand (owner's instruction, 20 Nov 2026):** every video, Short, thumbnail and piece of channel art uses the SOLO brand lock (`docs/SOLO-BRAND-LOCK.md`): charcoal `#0A0A0A`, weathered steel `#8A8F98`, burnished gold `#D4AF37`, restrained electric blue `#0087FF`; headlines in Montra Bold (Rajdhani Bold until the font file is supplied), subheadings in Rajdhani SemiBold, body in Inter; the approved angular-S business emblem, never enlarged. The earlier lime/coral "AI Field Notes" look is retired.
+- **Thumbnails:** your real face, one object or tool, at most 3 words, charcoal background, gold headline, electric-blue accent. Never use an AI-generated face in place of yours, and never use a company's logo in a way that implies a partnership. The three drafts in `marketing/youtube/thumbnails/` predate the brand rule (lime/coral, an AI-generated face and a third-party logo): don't use them; remake them with your photo.
 - **Visuals:** real screen capture, readable model names, sources on screen.
 
 ## First 10 videos

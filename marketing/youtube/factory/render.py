@@ -52,13 +52,20 @@ GAP_SECONDS = 0.18          # pause between segments
 TAIL_SECONDS = 0.6          # hold on the last frame
 CAPTION_WORDS = 4           # words shown per caption chunk
 
-BG = (24, 25, 28)
-RULE = (38, 40, 44)
-MARGIN = (90, 52, 46)
-INK = (246, 243, 236)
-DIM = (150, 150, 146)
-LIME = (184, 230, 62)
-CORAL = (247, 104, 84)
+# SOLO brand lock palette (ai-download-center/docs/SOLO-BRAND-LOCK.md):
+# charcoal #0A0A0A, weathered steel #8A8F98, burnished gold #D4AF37,
+# restrained electric blue #0087FF. INK is the light text colour for contrast.
+BG = (10, 10, 10)
+RULE = (30, 32, 36)          # faint steel grid
+INK = (238, 238, 234)
+DIM = (138, 143, 152)        # weathered steel
+GOLD = (212, 175, 55)
+BLUE = (0, 135, 255)
+GOLD_DARK = (58, 48, 15)     # caption highlight behind the gold word
+
+# Approved business emblem: a small source crop (285x282), so it is only ever
+# scaled down, never enlarged. See docs/SOLO-BRAND-LOCK.md.
+EMBLEM = HERE.parents[2] / "powerhouse-website" / "assets" / "approved-stage" / "business-emblem.png"
 
 DEFAULT_VOICE = HERE / ".cache" / "voices" / "en_US-joe-medium.onnx"
 FONT_DIRS = [Path("/usr/share/fonts/opentype/inter"), HERE / ".cache" / "fonts"]
@@ -69,14 +76,27 @@ def find_font(name: str) -> str:
         p = d / name
         if p.exists():
             return str(p)
-    sys.exit(f"Font {name} not found. Install Inter (see README.md).")
+    sys.exit(f"Font {name} not found. Run setup.sh (Inter and Rajdhani, see README.md).")
 
 
-F_BRAND = ImageFont.truetype(find_font("Inter-Bold.otf"), 40)
-F_PILLAR = ImageFont.truetype(find_font("Inter-SemiBold.otf"), 34)
-F_HEAD = ImageFont.truetype(find_font("InterDisplay-Bold.otf"), 104)
-F_CAP = ImageFont.truetype(find_font("Inter-Bold.otf"), 66)
+# Brand type: headline Montra Bold (no font file available yet, so Rajdhani
+# Bold stands in), subheading Rajdhani SemiBold, body Inter.
+HEAD_FONT = next((n for n in ("Montra-Bold.otf", "Montra-Bold.ttf", "Montra Bold.otf")
+                  if any((d / n).exists() for d in FONT_DIRS)), "Rajdhani-Bold.ttf")
+F_BRAND = ImageFont.truetype(find_font("Rajdhani-Bold.ttf"), 46)
+F_PILLAR = ImageFont.truetype(find_font("Rajdhani-SemiBold.ttf"), 38)
+F_HEAD = ImageFont.truetype(find_font(HEAD_FONT), 120)
+F_CAP = ImageFont.truetype(find_font("Inter-SemiBold.otf"), 66)
 F_SMALL = ImageFont.truetype(find_font("Inter-Medium.otf"), 32)
+
+
+def emblem(size: int) -> Image.Image:
+    """The approved business emblem, scaled down to fit a size x size box."""
+    img = Image.open(EMBLEM).convert("RGBA")
+    if size > max(img.size):
+        size = max(img.size)       # never enlarge the source crop
+    img.thumbnail((size, size), Image.LANCZOS)
+    return img
 
 
 def apply_format(name: str) -> None:
@@ -86,8 +106,8 @@ def apply_format(name: str) -> None:
         sys.exit(f"Unknown format {name!r}; use one of {sorted(FORMATS)}")
     L = FORMATS[name]
     W, H = L["size"]
-    F_HEAD = ImageFont.truetype(find_font("InterDisplay-Bold.otf"), L["head"])
-    F_CAP = ImageFont.truetype(find_font("Inter-Bold.otf"), L["cap"])
+    F_HEAD = ImageFont.truetype(find_font(HEAD_FONT), int(L["head"] * 1.15))
+    F_CAP = ImageFont.truetype(find_font("Inter-SemiBold.otf"), L["cap"])
 
 
 @dataclass
@@ -130,14 +150,23 @@ def wrap(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, wid
 def background(pillar: str) -> Image.Image:
     img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
-    for y in range(L["rule_top"], H - L["rule_bottom"], 72):   # ruled notebook lines
-        d.line([(60, y), (W - 60, y)], fill=RULE, width=2)
-    d.line([(118, L["rule_top"] - 60), (118, H - L["rule_bottom"] + 20)], fill=MARGIN, width=3)  # margin line
+    top, bottom = L["rule_top"] - 40, H - L["rule_bottom"] + 20
+    for y in range(top, bottom, 72):            # faint industrial grid
+        d.line([(60, y), (W - 60, y)], fill=RULE, width=1)
+    for x in range(60, W - 59, 72):
+        d.line([(x, top), (x, bottom)], fill=RULE, width=1)
+    k = 46                                      # gold corner brackets
+    for (x, y, sx, sy) in [(60, top, 1, 1), (W - 60, top, -1, 1), (60, bottom, 1, -1), (W - 60, bottom, -1, -1)]:
+        d.line([(x, y), (x + sx * k, y)], fill=GOLD, width=4)
+        d.line([(x, y), (x, y + sy * k)], fill=GOLD, width=4)
     by = L["brand_y"]
-    d.text((150, by), "AI FIELD NOTES", font=F_BRAND, fill=LIME)
+    mark = emblem(64)
+    img.paste(mark, (90, by - 10), mark)
+    d.text((90 + mark.width + 18, by - 2), "AI FIELD NOTES", font=F_BRAND, fill=GOLD)
     pw = d.textlength(pillar.upper(), font=F_PILLAR)
-    d.rounded_rectangle([W - 90 - pw - 36, by - 8, W - 90, by + 52], radius=30, outline=CORAL, width=3)
-    d.text((W - 90 - pw - 18, by + 2), pillar.upper(), font=F_PILLAR, fill=CORAL)
+    d.rectangle([W - 90 - pw - 36, by - 6, W - 90, by + 50], outline=DIM, width=2)
+    d.line([(W - 90 - pw - 36, by + 50), (W - 90, by + 50)], fill=BLUE, width=4)
+    d.text((W - 90 - pw - 18, by), pillar.upper(), font=F_PILLAR, fill=INK)
     return img
 
 
@@ -147,7 +176,7 @@ def glow_layer(size: int = 900, peak: int = 34) -> Image.Image:
     ys, xs = np.mgrid[0:size, 0:size]
     dist = np.sqrt((xs - r) ** 2 + (ys - r) ** 2) / r
     alpha = (np.clip(1 - dist, 0, 1) ** 2 * peak).astype(np.uint8)
-    layer = Image.new("RGBA", (size, size), LIME + (0,))
+    layer = Image.new("RGBA", (size, size), GOLD + (0,))
     layer.putalpha(Image.fromarray(alpha, "L"))
     return layer
 
@@ -155,7 +184,7 @@ def glow_layer(size: int = 900, peak: int = 34) -> Image.Image:
 def headline_layer(text: str) -> Image.Image:
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    lines = wrap(d, text, F_HEAD, W - L["head_w"])
+    lines = wrap(d, text.upper(), F_HEAD, W - L["head_w"])
     lh = L["head_lh"]
     top = L["head_y"] - (len(lines) * lh) // 2
     for i, line in enumerate(lines):
@@ -202,8 +231,8 @@ def draw_caption(d: ImageDraw.ImageDraw, words: list[tuple[str, float]], now: fl
         for i in line:
             active = start + i == idx
             if active:
-                d.rounded_rectangle([x - 12, y - 6, x + widths[i] + 12, y + L["cap"] + 16], radius=14, fill=(52, 60, 30))
-            d.text((x, y), texts[i], font=F_CAP, fill=LIME if active else INK)
+                d.rounded_rectangle([x - 12, y - 6, x + widths[i] + 12, y + L["cap"] + 16], radius=14, fill=GOLD_DARK)
+            d.text((x, y), texts[i], font=F_CAP, fill=GOLD if active else INK)
             x += widths[i] + space
         y += L["cap_lh"]
 
@@ -216,34 +245,41 @@ def stamp(seconds: float) -> str:
 
 
 def thumbnail(spec: dict, pillar: str) -> Image.Image:
-    """1280x720 thumbnail in the channel style: dark, one big phrase, lime and coral."""
+    """1280x720 thumbnail in the SOLO brand: charcoal, steel grid, gold headline, blue tag."""
     tw, th = 1280, 720
     img = Image.new("RGB", (tw, th), BG)
     d = ImageDraw.Draw(img)
-    for y in range(120, th - 40, 64):
-        d.line([(40, y), (tw - 40, y)], fill=RULE, width=2)
-    d.line([(96, 80), (96, th - 40)], fill=MARGIN, width=3)
-    glow = glow_layer(820, 60)
-    img.paste(glow, (tw - 760, -120), glow)
+    for y in range(40, th - 39, 64):
+        d.line([(40, y), (tw - 40, y)], fill=RULE, width=1)
+    for x in range(40, tw - 39, 64):
+        d.line([(x, 40), (x, th - 40)], fill=RULE, width=1)
+    glow = glow_layer(900, 46)
+    img.paste(glow, (tw - 820, -180), glow)
     d = ImageDraw.Draw(img)
-    f_kick = ImageFont.truetype(find_font("Inter-Bold.otf"), 34)
-    d.text((130, 56), spec.get("kicker", pillar).upper(), font=f_kick, fill=CORAL)
+    k = 54
+    for (x, y, sx, sy) in [(40, 40, 1, 1), (tw - 40, 40, -1, 1), (40, th - 40, 1, -1), (tw - 40, th - 40, -1, -1)]:
+        d.line([(x, y), (x + sx * k, y)], fill=GOLD, width=6)
+        d.line([(x, y), (x, y + sy * k)], fill=GOLD, width=6)
+    mark = emblem(84)
+    img.paste(mark, (96, 74), mark)
+    f_kick = ImageFont.truetype(find_font("Rajdhani-SemiBold.ttf"), 40)
+    d.text((96 + mark.width + 22, 92), spec.get("kicker", pillar).upper(), font=f_kick, fill=DIM)
     words = spec["text"].upper().split()
-    size = 200
-    while size > 80:
-        f = ImageFont.truetype(find_font("InterDisplay-Black.otf"), size)
-        lines = wrap(d, " ".join(words), f, tw - 260)
-        if len(lines) <= 2 and len(lines) * size * 1.05 <= th - 260:
+    size = 230
+    while size > 90:
+        f = ImageFont.truetype(find_font(HEAD_FONT), size)
+        lines = wrap(d, " ".join(words), f, tw - 220)
+        if len(lines) <= 2 and len(lines) * size * 0.95 <= th - 300:
             break
         size -= 8
-    y = (th - len(lines) * size * 1.05) / 2 + 30
+    y = (th - len(lines) * size * 0.95) / 2 + 20
     for i, line in enumerate(lines):
-        d.text((130, y + i * size * 1.05), line, font=f, fill=LIME if i == len(lines) - 1 else INK)
+        d.text((96, y + i * size * 0.95), line, font=f, fill=GOLD if i == len(lines) - 1 else INK)
     if spec.get("tag"):
-        f_tag = ImageFont.truetype(find_font("Inter-Bold.otf"), 40)
+        f_tag = ImageFont.truetype(find_font("Rajdhani-Bold.ttf"), 46)
         tw2 = d.textlength(spec["tag"].upper(), font=f_tag)
-        d.rounded_rectangle([130, th - 120, 130 + tw2 + 48, th - 52], radius=34, fill=CORAL)
-        d.text((154, th - 112), spec["tag"].upper(), font=f_tag, fill=BG)
+        d.rectangle([96, th - 136, 96 + tw2 + 48, th - 70], fill=BLUE)
+        d.text((120, th - 134), spec["tag"].upper(), font=f_tag, fill=INK)
     return img
 
 
@@ -324,13 +360,13 @@ def render_video(spec: dict, out_dir: Path, voice: Path, piper: str) -> Path:
             frame.paste(layer, (hx, hy + int(40 * (1 - ease))), layer)
             d = ImageDraw.Draw(frame)
             step = (chapter_of[si] or "").upper() if chapter_of[si] else f"{si + 1} / {len(segs)}"
-            d.text(((W - d.textlength(step, font=F_PILLAR)) / 2, L["step_y"]), step, font=F_PILLAR, fill=CORAL)
+            d.text(((W - d.textlength(step, font=F_PILLAR)) / 2, L["step_y"]), step, font=F_PILLAR, fill=BLUE)
             if now <= seg.start + seg.duration + GAP_SECONDS:
                 draw_caption(d, words[si], now)
             # progress bar
             by = L["bar_y"]
             d.rounded_rectangle([150, by, W - 150, by + 12], radius=6, fill=RULE)
-            d.rounded_rectangle([150, by, 150 + (W - 300) * min(1.0, now / total), by + 12], radius=6, fill=LIME)
+            d.rounded_rectangle([150, by, 150 + (W - 300) * min(1.0, now / total), by + 12], radius=6, fill=GOLD)
             d.text((150, by + 30), spec.get("footer", "Follow for daily AI field notes"), font=F_SMALL, fill=DIM)
             ff.stdin.write(frame.tobytes())
             if cover is None and now >= min(0.6, segs[0].duration):

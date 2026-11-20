@@ -15,7 +15,7 @@
    {"screen": "The strangest part", "say": "But the strangest part of this story isn't what the machine did. It's what happened to the humans afterwards. We'll get there."},
    {"chapter": "What this video covers", "screen": "Three chapters", "say": "First, why this game was supposed to be impossible for computers. Then, the five games in Seoul that shocked the world. And finally, the one human move the machine never saw coming."},
    {"chapter": "Why Go was impossible for AI", "screen": "2,500 years old", "say": "Go is more than two thousand five hundred years old. The rules fit on a napkin. Two players take turns placing black and white stones on a nineteen by nineteen grid, trying to surround territory."},
-   {"screen": "10¹⁷⁰ positions", "say": "But the number of possible board positions is around ten to the power of one hundred and seventy."},
+   {"screen": "10^170 positions", "say": "But the number of possible board positions is around ten to the power of one hundred and seventy."},
    {"screen": "More than atoms", "say": "For comparison, there are roughly ten to the power of eighty atoms in the observable universe. Go has vastly more positions than that."},
    {"screen": "Brute force fails", "say": "That's why brute force doesn't work. In 1997, IBM's Deep Blue beat Garry Kasparov at chess largely by searching through enormous numbers of positions. Go was far too big for that."},
    {"screen": "Intuition. Shape. Feel.", "say": "Top Go players can't always explain their best moves. They talk about intuition. Shape. Feel."},

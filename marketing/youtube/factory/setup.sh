@@ -17,6 +17,18 @@ for v in joe norman; do
   [ -f "$f.json" ] || curl -fsSL -o "$f.json" "$base/$v/medium/en_US-$v-medium.onnx.json"
 done
 
+# Brand fonts (SOLO brand lock): Rajdhani from Google Fonts (SIL Open Font
+# Licence). Montra Bold is the brand headline font but isn't freely
+# downloadable: copy Montra-Bold.otf into .cache/fonts/ and it's used
+# automatically; until then Rajdhani Bold stands in.
+mkdir -p .cache/fonts
+css=$(curl -fsSL "https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700")
+for pair in "600:SemiBold" "700:Bold"; do
+  f=.cache/fonts/Rajdhani-${pair#*:}.ttf
+  url=$(printf '%s\n' "$css" | awk -v w="font-weight: ${pair%%:*};" 'index($0,w){f=1} f&&/src:/{print;exit}' | grep -o 'https://[^)]*')
+  [ -f "$f" ] || curl -fsSL -o "$f" "$url"
+done
+
 command -v ffmpeg >/dev/null || echo "Install ffmpeg (e.g. 'brew install ffmpeg' or 'apt-get install ffmpeg')."
 fc-list 2>/dev/null | grep -qi "Inter" || echo "Install the Inter font family, or put Inter-*.otf files in .cache/fonts/."
 echo "Ready. Render with: PATH=.cache/venv/bin:\$PATH .cache/venv/bin/python render.py videos/batch-01.json"
