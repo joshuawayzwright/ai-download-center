@@ -67,7 +67,7 @@ SAMPLE_TOOLS = {
 # Strings that identify this site or its owner. Any template file that still
 # contains one is reported for manual editing.
 OWNER_MARKERS = (
-    'superadmin2712', '0452 272 820', '61452272820', 'joshuawayzwright',
+    'superadmin2712', 'thesoloserviceprovider', '0452 272 820', '61452272820', 'joshuawayzwright',
     'Solo Service Provider', 'AI Download Center', 'G-18D31VQ9SB',
     'buy.stripe.com', 'billing.stripe.com',
 )
