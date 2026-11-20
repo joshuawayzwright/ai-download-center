@@ -2,33 +2,45 @@
 
 Copy-paste text for YouTube Studio. Fields are listed in the order YouTube Studio shows them (Customisation, then Profile, then Layout). Character limits are as of Nov 2026 and may change.
 
-## Profile
+## Profile (SOLO brand, 20 Nov 2026)
 
-**Name:** Josh Wright | AI Field Notes  
+Every field below follows the SOLO brand lock (`docs/SOLO-BRAND-LOCK.md`): charcoal, weathered steel, burnished gold, restrained electric blue; the approved angular-S business emblem; a locked tagline. Studio links use channel ID `UC17ksFHoZD2kqL4_E4oTjHg`.
+
+**Where:** Studio → Customisation → Profile: https://studio.youtube.com/channel/UC17ksFHoZD2kqL4_E4oTjHg/editing/profile
+
+**Name:** `Josh Wright | AI Field Notes`  
 **Handle:** `@AIFieldNotes`, or `@JoshWrightAI` as a fallback. YouTube shows whether a handle is free when you type it.
 
-**Description:**
+**Description (bio):**
 
 ```
-Practical AI for people who run a business on their own.
+AI explained and tested, without the hype.
 
-Every week I test an AI tool or workflow on a real task: proposals, quotes, emails, marketing, admin, and private AI that runs on your own laptop. I show what worked, what it cost, and where it broke.
+How AI actually works, the tools and models worth knowing, how to stay safe, and how to use it in real life and real business. Short explainers most days, longer stories and tests every week.
 
-No hype. Tool versions, prices and sources in every description. Sponsorships, affiliate links and my own products are always disclosed.
+Sources in every description. Sponsorships, affiliate links and my own products (SOLO AI, AI Download Center) are always disclosed.
 
-New long video every [DAY], with Shorts in between.
+Real tools. Real results.
 
-Made on the Gold Coast by Josh Wright, sole trader and builder of SOLO AI.
+Made on the Gold Coast by Josh Wright, founder of The Solo Service Provider.
 ```
 
 **Links (shown on the banner):**
 1. SOLO AI: https://thesoloserviceprovider.com.au/solo-ai.html
-2. Free AI marketing prompts: https://thesoloserviceprovider.com.au
-3. AI tool directory: https://joshuawayzwright.github.io/ai-download-center/
+2. The Solo Service Provider: https://thesoloserviceprovider.com.au
+3. AI Download Center: https://joshuawayzwright.github.io/ai-download-center/
 
-**Contact email:** use your business address (for example hello@thesoloserviceprovider.com.au). Don't use your personal Gmail.
+**Contact email:** your business address, not a personal Gmail.
 
-**Banner and profile picture:** Canva drafts (links in the PR and chat). Check the banner on a phone preview before saving. Only the centre strip shows on mobile.
+## Branding images
+
+**Where:** Studio → Customisation → Branding: https://studio.youtube.com/channel/UC17ksFHoZD2kqL4_E4oTjHg/editing/images
+
+| Slot | File | Notes |
+|---|---|---|
+| Picture | `channel-art/profile.png` (512×512) | Approved business emblem at its native size on charcoal, circle-safe. Not enlarged. |
+| Banner image | `channel-art/banner.png` (2560×1440) | Emblem, "AI FIELD NOTES" in gold, locked tagline "REAL TOOLS. REAL RESULTS." All text sits inside YouTube's 1546×423 safe area. |
+| Video watermark | `channel-art/watermark.png` (150×150) | Approved white business watermark, scaled down. Display: entire video. |
 
 ## Channel trailer (for people who haven't subscribed yet)
 

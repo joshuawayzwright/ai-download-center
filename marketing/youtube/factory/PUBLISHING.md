@@ -72,6 +72,8 @@ vidIQ allows 10 YouTube uploads a day, so Shorts 007–012 go up after the limit
 | p51B1DrxOGg, Dkw7wjndkik, e4VO3lkafQk, Vx8Ah3UZdN0 | Public Shorts 001–004, replaced above (deleting loses their views) |
 | qmawapQ5ybM, PNB0BsYpBUo, 3MKUlbcqyLY, SbNxsHsejAY, e6w8PSsTEDw, DmFdLX8Vccc, HeBjlKBHCUE, 71EtQ6_ZBuY | Old scheduled Shorts 005–012, held as private with release dates pushed to Nov 2027 so they never go out |
 
-Not factory videos, so not rebranded: "I built an AI app for sole traders" (5uYMWl96PCE), "Doing your own marketing?" (HFYABlxduUE) and the unlisted SOLO AI promo (wZqU1oIleaQ). They need re-editing from their original footage.
+Not factory videos, checked 20 Nov:
+- "I built an AI app for sole traders" (5uYMWl96PCE) and the unlisted SOLO AI promo (wZqU1oIleaQ) already use the brand (charcoal, gold, electric blue, approved SOLO AI emblem). Kept as they are.
+- "Doing your own marketing?" (HFYABlxduUE) ended on an off-brand cream/serif card. A copy with a SOLO-branded end card (`channel-art/endcard-solo-service-provider.png`) is approved and goes up on 21 Nov with Shorts 007–012; then delete HFYABlxduUE. Its footage shows a realistic person who appears AI-generated: tick YouTube's "altered or synthetic content" box in Studio if so.
 
 TikTok and Instagram copies of batch 01 were not changed.
