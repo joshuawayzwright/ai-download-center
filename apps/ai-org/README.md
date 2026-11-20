@@ -11,19 +11,55 @@ The full design is in [docs/AI-ORG-DESIGN.md](../../docs/AI-ORG-DESIGN.md). The 
 | Org config: constitution, policy, 18 agent manifests, lifecycle workflow | Done, validated by `npm run validate` |
 | Policy engine, kill switches, ledger, memory, message bus, conflict ladder, scorecards, promotion gate, finance, stage gates | Done, 41 unit tests |
 | Board Console web app (`web/`): approvals, org chart, policy check, decision log, finance, kill switches | Done, published as a private app; 4 build tests |
-| Wiring to real LLM agents and business tools (Stripe, CRM, email, GitHub) | **Not built.** This is the next phase |
+| Tool gateway (`src/gateway.js`): Gmail, Stripe, HubSpot and Linear actions behind the policy engine, run from the Board Console | Done; 11 gateway tests plus a mocked end-to-end browser run. Live connector results not yet observed |
+| Agents filing requests on their own schedule | **Not built.** Today Claude files requests on request (see below) |
 | Board envelope (spend caps, burn cap, cash floor) | **Defaults, not confirmed by the owner.** Until `constitution.board.owner_confirmed` is `true`, every T2+ action requires Board approval |
 
 ## Commands
 
 ```bash
 cd apps/ai-org
-npm test            # 45 tests, Node 22+, no dependencies
+npm test            # 56 tests, Node 22+, no dependencies
 npm run validate    # structural checks on the org config
 npm run chart       # print the reporting hierarchy
 npm run simulate    # demo: policy decisions, unit economics, allocation, cash scenarios, a stage gate
 npm run build:web   # build the Board Console into web/build
+node src/cli.js propose intent.json   # check an agent's action and print the request to file
 ```
+
+## Tool gateway
+
+`src/gateway.js` is the only path from an agent's intent to a real tool call. Nothing in it holds credentials: calls run through the Board's own claude.ai connectors from the Board Console.
+
+| Action | Connector and tool | Policy type | Notes |
+| --- | --- | --- | --- |
+| `email.draft` | Gmail `create_draft` | `save_email_draft` (T1) | Draft only; nothing is sent |
+| `email.send` | Gmail `send_message` | `external_comm` (T2) | Needs `compliance.status: "approved"` |
+| `stripe.coupon` | Stripe `stripe_api_write` → `PostCoupons` | `discount` (T2, T3 above 15%) | Needs a Stripe account chosen under Connections |
+| `stripe.refund` | Stripe `stripe_api_write` → `PostRefunds` | `refund` (T2; spend limits apply) | `amount` in cents, or `full_amount_usd` for a full refund |
+| `crm.update` | HubSpot `manage_crm_objects` | `update_crm` (T1) | One record, up to 20 properties |
+| `task.create` | Linear `save_issue` | `create_task` (T1) | Needs a Linear team set under Connections |
+
+How an action moves:
+
+1. **File.** `buildRequest()` validates the parameters, maps them to a policy action and evaluates it. Refused actions throw and never reach the Board. Allowed actions are filed as `ready`, and everything else as `pending`.
+2. **Approve.** The Board approves in the console. The approval is pinned to the exact action (`approvedExecution`), so any later edit needs a fresh approval. A Board approval covers the co-signers below it, but never overrides a denial such as a kill switch, missing compliance approval, separation of duties or a forbidden action.
+3. **Run.** `executionPlan()` re-checks everything at the moment of running: approval, pinned parameters, kill switches, connector setup and run state. The console takes a short lease so only one viewer runs it, calls the connector once, and writes the result to the request and the decision log.
+4. **Uncertain results.** If the connector fails in a way that may still have gone through, the request is marked `unknown` and won't run again until the Board checks the connector and records what happened. If Stripe asks for its own confirmation, the request waits in `needs_confirmation` until the Board finishes it with Stripe's approval token.
+
+To file an action, write an intent file and check it:
+
+```json
+{
+  "id": "task-check-links-2026-11-18",
+  "agent": "eng",
+  "kind": "task.create",
+  "params": { "title": "Check catalog links", "priority": 3 },
+  "evidence": [{ "kind": "link-report", "ref": "link-check workflow run" }]
+}
+```
+
+`node src/cli.js propose intent.json` prints `{id, request}`. Store `request` in the app's database at `requests/<id>`; Claude can do this with the artifact data tool.
 
 ## Board Console app
 
@@ -46,6 +82,7 @@ When published as a claude.ai artifact it stores data in the artifact database. 
 | `requests/<id>` | Decision requests (the `bus.js` decision_request shape, plus `status`, optional `action` for a live policy check) |
 | `ledger/d<seq>` | Board decisions, chained by `prev`/`hash` |
 | `controls/state` | Kill-switch levels, paused agents, history |
+| `settings/connectors` | Chosen Stripe account and mode, Linear team |
 
 Opened anywhere else (for example a local static server on `web/build`), it runs in preview mode and keeps changes in memory only.
 

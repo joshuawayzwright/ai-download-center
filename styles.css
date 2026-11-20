@@ -1410,3 +1410,73 @@ button, input, select, textarea, .tool-name { font-family: var(--font-body); }
 #searchLiveModels:hover {
   background: var(--card-alt);
 }
+
+/* Newsletter signup: hidden until a provider is set in config.js (see newsletter.js). */
+.newsletter {
+  margin-top: 26px;
+  padding: 24px;
+  border: 1px solid var(--gold);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.09), var(--panel));
+}
+
+.newsletter[hidden],
+.newsletter [hidden] {
+  display: none;
+}
+
+.newsletter h2 {
+  margin: 0.3rem 0 0.6rem;
+}
+
+.newsletter p {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+.newsletter a:not(.primary-btn) {
+  color: var(--primary);
+}
+
+.newsletter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 16px 0 12px;
+}
+
+.newsletter-form label {
+  display: grid;
+  gap: 6px;
+  flex: 1 1 260px;
+  font-weight: 600;
+}
+
+.newsletter-form input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+}
+
+.newsletter-form input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.newsletter-form .primary-btn,
+.newsletter > .primary-btn {
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.newsletter > .primary-btn {
+  margin: 8px 0 12px;
+}
