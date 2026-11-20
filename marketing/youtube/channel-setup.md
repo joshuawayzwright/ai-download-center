@@ -40,7 +40,7 @@ Made on the Gold Coast by Josh Wright, founder of The Solo Service Provider.
 |---|---|---|
 | Picture | `channel-art/profile.png` (512×512) | Approved business emblem at its native size on charcoal, circle-safe. Not enlarged. |
 | Banner image | `channel-art/banner.png` (2560×1440) | Emblem, "AI FIELD NOTES" in gold, locked tagline "REAL TOOLS. REAL RESULTS." All text sits inside YouTube's 1546×423 safe area. |
-| Video watermark | `channel-art/watermark.png` (150×150) | Approved white business watermark, scaled down. Display: entire video. |
+| Video watermark | `channel-art/watermark.png` (150×150) | Approved gold business emblem on charcoal, scaled down, so it shows on light and dark footage. Display: entire video. |
 
 ## Channel trailer (for people who haven't subscribed yet)
 
