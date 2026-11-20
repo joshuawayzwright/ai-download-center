@@ -16,7 +16,7 @@ The public AI directory is live on GitHub Pages. This repository also contains c
 
 | Area | Source | Current status |
 | --- | --- | --- |
-| AI Download Centre | Repository root | Live public directory; latest audited Pages deployment succeeded. |
+| AI Download Center | Repository root | Live public directory; latest audited Pages deployment succeeded. |
 | The Solo Service Provider shop | Live at [thesoloserviceprovider.com.au/shop/](https://thesoloserviceprovider.com.au/shop/) | **On sale.** Checked 17 November 2026: 16 products are listed with Buy Now, from A$9 to A$79, through a live Stripe checkout. See the [current SOLO status](docs/SOLO-SHOP-STATUS-2026-11-17.md). The live shop's source is not in this repository; [powerhouse-website/](powerhouse-website/) holds the older coming-soon build. |
 | SOLO AI assistant | [powerhouse-website/](powerhouse-website/) | Still marked COMING SOON on the live site and not a public service. |
 | SOLO customer access | [Draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34) | Login/session and durable quota implementation is under review, not merged. Live customer login, hosted concurrency and customer Gemini conversation remain unverified. |
@@ -82,7 +82,7 @@ Settings live in [config.js](config.js).
 - **Free submissions:** the "Submit a tool" button opens a GitHub issue form ([submit-tool.yml](.github/ISSUE_TEMPLATE/submit-tool.yml)). To accept a submission, add an entry to `data/tools.json`.
 - **Featured listings:** the public "Start 7-day free trial" button opens the live Stripe subscription checkout at $99 USD/month after trial. Paid entries use `"sponsored": true` and are clearly labeled Sponsored.
 - **Customer billing:** sponsors can update payment details, view invoices, or cancel through the Stripe customer portal linked from the site and confirmation page.
-- **Customer support:** billing and listing enquiries use [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com), phone **0452 272 820**. Please name AI Download Centre in the enquiry.
+- **Customer support:** billing and listing enquiries use [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com), phone **0452 272 820**. Please name AI Download Center in the enquiry.
 - **Affiliate links:** add `"affiliateUrl": "https://..."` to an entry. The card's link uses it (marked `rel="sponsored"`) instead of the plain `url`.
 
 The footer tells visitors that sponsored placements are paid and that some links are affiliate links. Keep it there: advertising rules in most countries require that disclosure.
