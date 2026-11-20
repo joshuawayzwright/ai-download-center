@@ -85,3 +85,14 @@ On the owner's instruction, every old lime/coral copy is now private: the four o
 ### 20 Nov 2026, 18:34 UTC: published early (owner's instruction)
 
 The owner asked for everything to go public now instead of daily. Made public: TP1 TkrmEwfk1os, TP2 ef3_xmU_EAw, TP3 pRr7vNajCsQ, TP4 t1j-5WbzddE, 005 Tfkync37dns, 006 Lf8TpiqpWMY. Shorts 007–012, the fixed 002 (the first branded 002, gn8tkMYo15o, showed an empty box for "¾" and is hidden) and the rebranded "Doing your own marketing?" upload as public at 21 Nov 08:05 UTC, when vidIQ's 10-a-day upload limit resets.
+
+### Upload queue: 10 a day (owner's instruction, 20 Nov 2026)
+
+vidIQ uploads at most 10 YouTube videos a day (resets 08:00 UTC; Max plan doesn't change it). All drafts below are in vidIQ storage and approved, public on upload.
+
+| Run (Brisbane) | Videos |
+|---|---|
+| 21 Nov, 6:05pm | 007–012, fixed 002 "What is a token", "Doing your own marketing?", 013, 014 |
+| 22 Nov, 6:05pm | 015–024 |
+
+Batch 02 (013–024) approved by the owner on 20 Nov. After 22 Nov the queue is empty: new scripts need writing, fact-checking and owner approval before upload.
