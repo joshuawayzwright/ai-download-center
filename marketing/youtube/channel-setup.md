@@ -9,7 +9,9 @@ Every field below follows the SOLO brand lock (`docs/SOLO-BRAND-LOCK.md`): charc
 **Where:** Studio → Customisation → Profile: https://studio.youtube.com/channel/UC17ksFHoZD2kqL4_E4oTjHg/editing/profile
 
 **Name:** `Josh Wright | AI Field Notes`  
-**Handle:** `@AIFieldNotes`, or `@JoshWrightAI` as a fallback. YouTube shows whether a handle is free when you type it.
+**Handle:** `@JoshWrightAI` (set 20 Nov 2026). Channel URL: https://www.youtube.com/@JoshWrightAI
+
+**Status (20 Nov 2026):** name, handle, bio, three links, picture, banner and watermark are all live and in the SOLO brand.
 
 **Description (bio):**
 

@@ -1,6 +1,6 @@
 # AI Field Notes: YouTube Channel Kit
 
-**Status:** repositioning an existing channel. The channel is currently "Josh Wright" (@joshwright-y2y). As of 15 Nov 2026 it had 1 subscriber, 48 lifetime views, 2 public Shorts, 1 unlisted promo, and no public long-form videos. The name and handle changes below haven't been made yet, and handle availability hasn't been checked.
+**Status:** repositioning an existing channel. The channel was "Josh Wright" (@joshwright-y2y); on 20 Nov 2026 it became "Josh Wright | AI Field Notes" (@JoshWrightAI). As of 15 Nov 2026 it had 1 subscriber, 48 lifetime views, 2 public Shorts, 1 unlisted promo, and no public long-form videos. The name and handle changes below haven't been made yet, and handle availability hasn't been checked.
 
 Data in this kit comes from vidIQ, pulled 15 Nov 2026. Search figures are vidIQ estimates and change over time.
 
@@ -128,8 +128,8 @@ Done on 15 Nov 2026 (via vidIQ):
 - [x] Outlines for episodes 4–10: `marketing/youtube/ep04-10-outlines.md`.
 
 Still to do, in YouTube Studio:
-- [ ] Rename the channel and change the handle.
-- [ ] Paste in the profile text and links, and upload the banner and profile picture from `channel-art/`.
+- [x] Rename the channel and change the handle (done 20 Nov 2026: @JoshWrightAI).
+- [x] Paste in the profile text and links, and upload the banner, profile picture and watermark from `channel-art/` (done 20 Nov 2026, SOLO brand).
 - [ ] Create the 5 playlists in `channel-setup.md` (the 4 pillars plus Shorts) and add the two existing Shorts.
 - [ ] Set the upload defaults.
 - [ ] Record the channel trailer after episodes 1–3.
