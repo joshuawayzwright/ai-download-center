@@ -77,3 +77,7 @@ Not factory videos, checked 20 Nov:
 - "Doing your own marketing?" (HFYABlxduUE) ended on an off-brand cream/serif card. A copy with a SOLO-branded end card (`channel-art/endcard-solo-service-provider.png`) is approved and goes up on 21 Nov with Shorts 007–012; then delete HFYABlxduUE. Its footage shows a realistic person who appears AI-generated: tick YouTube's "altered or synthetic content" box in Studio if so.
 
 TikTok and Instagram copies of batch 01 were not changed.
+
+### 20 Nov 2026: old copies hidden
+
+On the owner's instruction, every old lime/coral copy is now private: the four old public Shorts (p51B1DrxOGg, Dkw7wjndkik, e4VO3lkafQk, Vx8Ah3UZdN0) and the old "Doing your own marketing?" (HFYABlxduUE), plus the copies already private above. Only branded videos are public. The owner still needs to delete the old copies in YouTube Studio. The eight old 005–012 copies have release dates in Nov 2027: they will go public then if not deleted first.
