@@ -283,9 +283,23 @@ def thumbnail(spec: dict, pillar: str) -> Image.Image:
     return img
 
 
+def check_glyphs(spec: dict) -> None:
+    """Stop before rendering if on-screen text uses a character the brand
+    fonts can't draw (it would show as an empty box, e.g. "¾")."""
+    from fontTools.ttLib import TTFont
+    head = set(TTFont(find_font(HEAD_FONT)).getBestCmap())
+    texts = [s["screen"].upper() for s in spec["segments"]]
+    th = spec.get("thumbnail", {})
+    texts += [th.get(k, "").upper() for k in ("text", "kicker", "tag")]
+    bad = sorted({c for t in texts for c in t if not c.isspace() and ord(c) not in head})
+    if bad:
+        sys.exit(f"{spec['id']}: the headline font can't draw {bad}. Spell it out (e.g. 3/4, ^, 'to the power of').")
+
+
 def render_video(spec: dict, out_dir: Path, voice: Path, piper: str) -> Path:
     vid = spec["id"]
     apply_format(spec.get("format", "vertical"))
+    check_glyphs(spec)
     work = Path(tempfile.mkdtemp(prefix=f"aifn-{vid}-"))
     try:
         segs: list[Segment] = []

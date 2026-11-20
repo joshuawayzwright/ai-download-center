@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 python3 -m venv .cache/venv
 .cache/venv/bin/pip install -q --upgrade pip
-.cache/venv/bin/pip install -q piper-tts pillow numpy
+.cache/venv/bin/pip install -q piper-tts pillow numpy fonttools
 
 mkdir -p .cache/voices
 base=https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US

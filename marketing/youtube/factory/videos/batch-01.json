@@ -62,7 +62,7 @@
         "say": "Language models don't read whole words. They break text into small pieces called tokens. A short common word might be one token. A long or rare word might be several."
       },
       {
-        "screen": "Roughly ¾ of a word",
+        "screen": "Roughly 3/4 of a word",
         "say": "For English, a token is often about three quarters of a word on average. It varies between models and languages."
       },
       {
