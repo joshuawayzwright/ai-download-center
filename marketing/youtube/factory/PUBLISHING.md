@@ -81,3 +81,7 @@ TikTok and Instagram copies of batch 01 were not changed.
 ### 20 Nov 2026: old copies hidden
 
 On the owner's instruction, every old lime/coral copy is now private: the four old public Shorts (p51B1DrxOGg, Dkw7wjndkik, e4VO3lkafQk, Vx8Ah3UZdN0) and the old "Doing your own marketing?" (HFYABlxduUE), plus the copies already private above. Only branded videos are public. The owner still needs to delete the old copies in YouTube Studio. The eight old 005–012 copies have release dates in Nov 2027: they will go public then if not deleted first.
+
+### 20 Nov 2026, 18:34 UTC: published early (owner's instruction)
+
+The owner asked for everything to go public now instead of daily. Made public: TP1 TkrmEwfk1os, TP2 ef3_xmU_EAw, TP3 pRr7vNajCsQ, TP4 t1j-5WbzddE, 005 Tfkync37dns, 006 Lf8TpiqpWMY. Shorts 007–012, the fixed 002 (the first branded 002, gn8tkMYo15o, showed an empty box for "¾" and is hidden) and the rebranded "Doing your own marketing?" upload as public at 21 Nov 08:05 UTC, when vidIQ's 10-a-day upload limit resets.
