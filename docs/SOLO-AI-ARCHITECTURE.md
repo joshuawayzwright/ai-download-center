@@ -1,3 +1,5 @@
+> **Update, 19 November 2026:** the SOLO AI API and website now live in the private `solo-commerce` repository, which serves thesoloserviceprovider.com.au and the Android app. The `powerhouse-website/` paths below refer to the retired copy in this repository. See [powerhouse-website/README.md](../powerhouse-website/README.md).
+
 # SOLO AI — Shared Product Architecture
 
 Status: verified private Gemini API; real customer sessions, all five hosted admission races and actual API quota rejection are verified. Two captured customer-authenticated Gemini turns now verify context recall, exact quota decrement and durable successful finalization. Cleanup restored disabled customer gates and SQL policy. Real provider-error/timeout and finalization-failure accounting, customer website/mobile acceptance and public release remain open. See [customer Gemini evidence](SOLO-CUSTOMER-GEMINI-VERIFICATION-2026-10-27.md) and the earlier [Auth/quota evidence](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md).

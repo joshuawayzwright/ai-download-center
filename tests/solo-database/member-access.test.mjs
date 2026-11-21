@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { PGlite } from '@electric-sql/pglite';
-import { generatePlan, PROJECT_REF } from '../../powerhouse-website/scripts/solo-member-access.cjs';
+import { generatePlan, PROJECT_REF } from '../../supabase/tools/solo-member-access.cjs';
 
 const db = new PGlite();
 const USER = '00000000-0000-4000-8000-000000000001';
@@ -259,7 +259,7 @@ test('operator email cannot escape E-string literals or the dollar-quoted proced
 });
 
 test('CLI rejects malformed input without printing email, credentials or the supplied text', () => {
-  const script = fileURLToPath(new URL('../../powerhouse-website/scripts/solo-member-access.cjs', import.meta.url));
+  const script = fileURLToPath(new URL('../../supabase/tools/solo-member-access.cjs', import.meta.url));
   for (const payload of [JSON.stringify(input({ projectRef: 'not-commercial', expectedEmail: 'private@example.invalid' })),
     JSON.stringify(input({ password: 'dummy-secret-do-not-print' })), '{bad private@example.invalid', 'x'.repeat(8193)]) {
     const child = spawnSync(process.execPath, [script], { input: payload, encoding: 'utf8', timeout: 5000 });

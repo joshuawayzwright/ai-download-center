@@ -34,7 +34,9 @@ The trade-off: a model running on a laptop is usually smaller than the big cloud
 
 [SCREEN: your system info]
 
-I'm on [NEEDS INFO: laptop model, chip, RAM, operating system].
+I'm on a Lenovo IdeaPad Slim 3x. It's a Copilot+ PC with a Snapdragon X chip, 16GB of RAM and Windows 11. [CONFIRM: Windows 11 Home or Pro]
+
+One thing to know if you have a laptop like this. The "AI chip" these laptops advertise, the NPU, isn't what Ollama uses. On Snapdragon, Ollama runs the model on the main processor. It still works. It's just slower than a laptop with a supported graphics card, and I'll show you how fast. [CONFIRM on recording day: check Ollama's release notes for Windows on Arm, in case GPU or NPU support has been added.]
 
 Memory is what matters most. Each model has a download size listed on the Ollama site, and you need enough free RAM to hold it. Smaller models, in the range of a few billion parameters, are the realistic starting point for an ordinary laptop. Apple Silicon Macs use their GPU automatically. On Windows and Linux, a supported graphics card speeds things up but isn't required.
 
@@ -46,7 +48,7 @@ Check the model's size before downloading, and start small.
 
 Go to ollama.com/download and pick your system.
 
-On Windows, run the installer. It adds an Ollama icon to your system tray. If you prefer the terminal, you can also install it with winget:
+On Windows, run the installer. It adds an Ollama icon to your system tray. On a Snapdragon laptop, make sure you download the ARM64 version, not the x64 one. [CONFIRM on recording day: how the download page labels the Windows ARM64 build.] If you prefer the terminal, you can also install it with winget:
 
 ```
 winget install Ollama.Ollama
@@ -80,7 +82,11 @@ If Windows says the command isn't found, restart your computer so it picks up th
 
 The Ollama website has a library of models. Each page shows the sizes available and, importantly, the licence.
 
-For a first try, pick a small general-purpose chat model. I'm using [NEEDS INFO: model name and size tag] because [NEEDS INFO: reason, e.g. it fits in my RAM and is licensed for commercial use].
+For a first try, pick a small general-purpose chat model. I'm using qwen3:4b. It's about a 2.5GB download, it fits comfortably in 16GB of RAM, and it's released under the Apache 2.0 licence, which allows commercial use. [CONFIRM on recording day: the size and licence shown on ollama.com/library/qwen3.]
+
+If you have 8GB of RAM, try a smaller model such as llama3.2:3b. If you have 32GB or more, an 8B model will usually give better answers.
+
+Qwen3 can "think" before it answers, which makes it slower on a laptop processor. If replies feel slow, type `/no_think` at the end of your message. [CONFIRM on recording day that this still works in your Ollama version.]
 
 If you'll use it for business work, read the model's licence. Open models come with different terms, and some limit commercial use.
 
@@ -142,7 +148,7 @@ Commands and links are in the description. Next, I'm testing [NEEDS INFO: next e
 ```
 How to install Ollama and run a free, private AI model on your own laptop, plus a real test on small-business tasks.
 
-My setup: [NEEDS INFO: laptop, chip, RAM, OS]. Model used: [NEEDS INFO: model and size]. Ollama version: [NEEDS INFO]. Recorded [NEEDS INFO: date]; steps and models change, so check ollama.com for the latest.
+My setup: Lenovo IdeaPad Slim 3x 15.3" (Snapdragon X X1-26-100, 16GB RAM, 512GB SSD), Windows 11. Model used: qwen3:4b [CONFIRM]. The full upload description is in ep03-seo-pack.md. Ollama version: [NEEDS INFO]. Recorded [NEEDS INFO: date]; steps and models change, so check ollama.com for the latest.
 
 Commands
 Windows (optional): winget install Ollama.Ollama
