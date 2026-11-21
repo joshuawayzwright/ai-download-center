@@ -96,3 +96,24 @@ vidIQ uploads at most 10 YouTube videos a day (resets 08:00 UTC; Max plan doesn'
 | 22 Nov, 6:05pm | 015–024 |
 
 Batch 02 (013–024) approved by the owner on 20 Nov. After 22 Nov the queue is empty: new scripts need writing, fact-checking and owner approval before upload.
+
+### 21 Nov 2026, 08:05 UTC run: 10 published (public)
+
+None had been uploaded manually, so nothing was skipped.
+
+| # | Title | YouTube |
+|---|---|---|
+| 007 | Open vs closed AI models, explained | https://www.youtube.com/watch?v=PnSUC7l_y00 |
+| 008 | You can run AI with no internet | https://www.youtube.com/watch?v=iHpGtFbagzs |
+| 009 | Prompting vs fine-tuning: which do you need? | https://www.youtube.com/watch?v=PG3BGHMa5fk |
+| 010 | The hidden AI setting that changes every answer | https://www.youtube.com/watch?v=Ig2gf6CaVe4 |
+| 011 | What does 7B mean in AI models? | https://www.youtube.com/watch?v=vauO7fAX9w4 |
+| 012 | How to protect your family from AI voice scams | https://www.youtube.com/watch?v=Vvb0BJnL0fY |
+| — | Doing your own marketing? (branded end card) | https://www.youtube.com/watch?v=0U2UJjzrfg4 |
+| 002 | What is a token in AI? (fixed "3/4") | https://www.youtube.com/watch?v=Skjo_pLcOjo |
+| 013 | How to check if an image is AI-generated | https://www.youtube.com/watch?v=kWYNqDwn_Wg |
+| 014 | Why AI text detectors can't be trusted | https://www.youtube.com/watch?v=dJTM19Hfmqg |
+
+008 arrived with no tags; they were re-added. Next run: 22 Nov 08:05 UTC, Shorts 015–024.
+
+Old copies still to delete in Studio: eupv0I2OYDY, naMSOmVxu0Y, OkyRdvau45U, Z0gfg4sGMP0, gn8tkMYo15o (broken token Short, now replaced by Skjo_pLcOjo).
