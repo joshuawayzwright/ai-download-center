@@ -127,7 +127,7 @@ On the owner's instruction ("Swap all to branded"), every TikTok/Instagram post 
 | 007–012 | 22–27 Nov, one a day (branded media swapped into the existing scheduled posts) |
 | 013–024 | 27 Nov 23:30 UTC to 3 Dec 08:30 UTC, two a day |
 
-Old lime/coral posts 001–006 are already live on TikTok/Instagram. vidIQ can't delete them, so the owner deletes them in the app if wanted. Instagram account connected in vidIQ: @soloserviceproviderau (the Solo site links @soloservicepro).
+Old lime/coral posts 001–006 are already live on TikTok/Instagram. vidIQ can't delete them, so the owner deletes them in the app if wanted. Instagram account: @soloserviceproviderau. On 21 Nov the Solo site Instagram and Threads links were corrected to it (they pointed to @soloservicepro).
 
 ### Cadence after the queue (owner approved, 21 Nov 2026)
 
