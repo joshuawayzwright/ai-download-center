@@ -8,7 +8,7 @@ A public directory for discovering major AI models, assistants, self-hosted tool
 
 **Manage billing:** https://billing.stripe.com/p/login/eVq00je9s5GX8oobxZeAg00
 
-**Maintainer and support:** [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com) · [0452 272 820](tel:+61452272820)
+**Maintainer and support:** [hello@thesoloserviceprovider.com.au](mailto:hello@thesoloserviceprovider.com.au) · [0452 272 820](tel:+61452272820)
 
 ## Current portfolio status — updated 17 November 2026
 
@@ -16,9 +16,9 @@ The public AI directory is live on GitHub Pages. This repository also contains c
 
 | Area | Source | Current status |
 | --- | --- | --- |
-| AI Download Centre | Repository root | Live public directory; latest audited Pages deployment succeeded. |
+| AI Download Center | Repository root | Live public directory; latest audited Pages deployment succeeded. |
 | The Solo Service Provider shop | Live at [thesoloserviceprovider.com.au/shop/](https://thesoloserviceprovider.com.au/shop/) | **On sale.** Checked 17 November 2026: 16 products are listed with Buy Now, from A$9 to A$79, through a live Stripe checkout. See the [current SOLO status](docs/SOLO-SHOP-STATUS-2026-11-17.md). The live shop's source is not in this repository; [powerhouse-website/](powerhouse-website/) holds the older coming-soon build. |
-| SOLO AI assistant | [powerhouse-website/](powerhouse-website/) | Still marked COMING SOON on the live site and not a public service. |
+| SOLO AI assistant | Private `solo-commerce` repository (API and website); database migrations in [supabase/](supabase/) | Still marked COMING SOON on the live site and not a public service. The old copy in `powerhouse-website/` was retired on 19 November 2026; see [its README](powerhouse-website/README.md). |
 | SOLO customer access | [Draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34) | Login/session and durable quota implementation is under review, not merged. Live customer login, hosted concurrency and customer Gemini conversation remain unverified. |
 | Android work | [Master release checklist](https://github.com/joshuawayzwright/ai-download-center/issues/31) | Source/build work exists; Google Play publication is not verified. |
 
@@ -82,8 +82,11 @@ Settings live in [config.js](config.js).
 - **Free submissions:** the "Submit a tool" button opens a GitHub issue form ([submit-tool.yml](.github/ISSUE_TEMPLATE/submit-tool.yml)). To accept a submission, add an entry to `data/tools.json`.
 - **Featured listings:** the public "Start 7-day free trial" button opens the live Stripe subscription checkout at $99 USD/month after trial. Paid entries use `"sponsored": true` and are clearly labeled Sponsored.
 - **Customer billing:** sponsors can update payment details, view invoices, or cancel through the Stripe customer portal linked from the site and confirmation page.
-- **Customer support:** billing and listing enquiries use [superadmin2712@gmail.com](mailto:superadmin2712@gmail.com), phone **0452 272 820**. Please name AI Download Centre in the enquiry.
-- **Affiliate links:** add `"affiliateUrl": "https://..."` to an entry. The card's link uses it (marked `rel="sponsored"`) instead of the plain `url`.
+- **Customer support:** billing and listing enquiries use [hello@thesoloserviceprovider.com.au](mailto:hello@thesoloserviceprovider.com.au), phone **0452 272 820**. Please name AI Download Center in the enquiry.
+- **Affiliate links:** run `node scripts/set-affiliate.mjs "<Tool name>" "<https tracking link>"` (or `--remove`, or `--list`), then `node scripts/validate-catalog.mjs`. It sets `"affiliateUrl"` on that one catalog line; the card's link then uses it (marked `rel="sponsored"`) instead of the plain `url`. Which tools run programs, and where to apply, is in [docs/AFFILIATE-PROGRAMS.md](docs/AFFILIATE-PROGRAMS.md).
+- **Newsletter:** the signup box on the homepage and guides stays hidden until you set a provider in `config.js`. Easiest: paste your provider's hosted subscribe page (Beehiiv, Kit, Substack, ...) into `newsletterSignupUrl`. For an email box on the page itself, set `newsletterFormAction` to the provider's HTML form action URL and `newsletterEmailField` to its email field name. No provider code loads on the site; the address goes to the provider only when a visitor submits. The [free AI tools starter kit](free-ai-tools.html) is the lead magnet: link it in your welcome email, or print it to PDF (the guide pages have a clean print layout) and attach that.
+
+**Guide pages and the catalog:** tool cards on `free-ai-tools.html` and `free-ai-explained.html` carry `data-tool` and `data-price` attributes. `node --test scripts/test-guide-catalog.mjs` (run in CI) fails if a card's price type or official link stops matching `data/tools.json`, or if the starter kit lists a tool that isn't free to start. After changing a catalog entry that appears on those pages, update the page to match.
 
 The footer tells visitors that sponsored placements are paid and that some links are affiliate links. Keep it there: advertising rules in most countries require that disclosure.
 

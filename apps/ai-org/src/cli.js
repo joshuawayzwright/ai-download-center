@@ -4,6 +4,8 @@ import { loadOrg, validateOrg, orgChart } from './registry.js';
 import { evaluate, Controls } from './policy.js';
 import { budgetSplit, thompsonAllocate, monteCarloRunway, unitEconomics } from './finance.js';
 import { evaluateGate } from './lifecycle.js';
+import { buildRequest, ACTIONS } from './gateway.js';
+import { readFileSync } from 'node:fs';
 
 const org = loadOrg();
 const cmd = process.argv[2] ?? 'validate';
@@ -70,7 +72,26 @@ if (cmd === 'validate') {
     evaluator: 'cfo',
     metrics: { landing_conversion: 0.07, ltv_to_cac: 2.1 },
   }));
+} else if (cmd === 'propose') {
+  // Validate an agent's intent against the gateway and policy, and print the request document to
+  // file in the Board Console (collection "requests", document id = the intent's id).
+  const file = process.argv[3];
+  if (!file) {
+    console.error(`usage: ai-org propose <intent.json>\nactions: ${Object.keys(ACTIONS).join(', ')}`);
+    process.exitCode = 2;
+  } else {
+    try {
+      const intent = JSON.parse(readFileSync(file, 'utf8'));
+      const { id, deadline, confidence, evidence, subject, body, ...rest } = intent;
+      // Kill switches live in the Board Console; it re-checks them before anything runs.
+      const request = buildRequest(org, new Controls(org), rest, { id, deadline, confidence, evidence, subject, body });
+      console.log(JSON.stringify({ id, request }, null, 2));
+    } catch (e) {
+      console.error(`Not filed: ${e.message}`);
+      process.exitCode = 1;
+    }
+  }
 } else {
-  console.error('usage: ai-org <validate|chart|simulate>');
+  console.error('usage: ai-org <validate|chart|simulate|propose>');
   process.exitCode = 2;
 }

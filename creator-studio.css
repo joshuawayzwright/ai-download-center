@@ -155,7 +155,7 @@
 .studio-field input:focus,
 .studio-field select:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(19, 158, 232, 0.18);
+  box-shadow: 0 0 0 3px rgba(0, 135, 255, 0.18);
 }
 
 .studio-field select option {
@@ -203,8 +203,8 @@
 }
 
 .format-option.active {
-  border-color: rgba(201, 151, 52, 0.32);
-  background: rgba(201, 151, 52, 0.12);
+  border-color: rgba(212, 175, 55, 0.32);
+  background: rgba(212, 175, 55, 0.12);
   color: var(--primary);
 }
 
@@ -255,7 +255,7 @@
 
 .icon-text-btn:hover,
 .text-action:hover {
-  border-color: rgba(201, 151, 52, 0.45);
+  border-color: rgba(212, 175, 55, 0.45);
 }
 
 .package-section {

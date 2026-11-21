@@ -1,53 +1,22 @@
-name: SOLO AI API security tests
+name: SOLO AI database tests
+# The SOLO AI API itself now lives in the private solo-commerce repository (it serves
+# thesoloserviceprovider.com.au and the Android app). This repository keeps the Supabase
+# migrations, email templates and the member-access tool, tested here against PGlite.
 on:
   push:
     branches: [main]
     paths:
-      - 'powerhouse-website/api/solo-chat.js'
-      - 'powerhouse-website/api/solo-auth.js'
-      - 'powerhouse-website/api/solo-onboarding.js'
-      - 'powerhouse-website/api/solo-report.js'
-      - 'powerhouse-website/lib/*.cjs'
-      - 'powerhouse-website/solo-account.js'
-      - 'powerhouse-website/solo-onboarding.js'
-      - 'powerhouse-website/solo-onboarding.css'
-      - 'powerhouse-website/solo-ai.html'
-      - 'powerhouse-website/solo-conversation.js'
-      - 'powerhouse-website/scripts/*.cjs'
-      - 'powerhouse-website/tests/*.test.cjs'
       - '.github/workflows/solo-api-tests.yml'
-      - 'supabase/migrations/*.sql'
-      - 'supabase/templates/*.html'
+      - 'supabase/**'
       - 'tests/solo-database/**'
   pull_request:
     paths:
-      - 'powerhouse-website/api/solo-chat.js'
-      - 'powerhouse-website/api/solo-auth.js'
-      - 'powerhouse-website/api/solo-onboarding.js'
-      - 'powerhouse-website/api/solo-report.js'
-      - 'powerhouse-website/lib/*.cjs'
-      - 'powerhouse-website/solo-account.js'
-      - 'powerhouse-website/solo-onboarding.js'
-      - 'powerhouse-website/solo-onboarding.css'
-      - 'powerhouse-website/solo-ai.html'
-      - 'powerhouse-website/solo-conversation.js'
-      - 'powerhouse-website/scripts/*.cjs'
-      - 'powerhouse-website/tests/*.test.cjs'
       - '.github/workflows/solo-api-tests.yml'
-      - 'supabase/migrations/*.sql'
-      - 'supabase/templates/*.html'
+      - 'supabase/**'
       - 'tests/solo-database/**'
 permissions:
   contents: read
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - run: node --test powerhouse-website/tests/*.test.cjs
   database:
     runs-on: ubuntu-latest
     defaults:
