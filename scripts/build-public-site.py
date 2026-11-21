@@ -10,7 +10,7 @@ PUBLIC_FILES = (
     'free-ai-tools.html', 'free-ai-explained.html',
     'privacy.html', 'terms.html',
     'app.js', 'config.js', 'analytics.js', 'newsletter.js', 'hf-classify.js', 'creator-studio.js',
-    'styles.css', 'guide.css', 'creator-studio.css', 'favicon.svg',
+    'styles.css', 'guide.css', 'creator-studio.css', 'favicon.svg', 'og-image.png',
     'data/tools.json', 'youtube-channel-kit.md',
     'robots.txt', 'sitemap.xml',
     'googled453b50bed92b924.html', 'd20756a2b7842282703f9c37069d3fe8.txt',

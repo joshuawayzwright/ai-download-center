@@ -39,7 +39,7 @@ Checked on 17 November 2026 against the live site, not this repository:
 
 ## Where the code lives
 
-The live shop's source is **not in this repository**. These parts of this repo still describe the older coming-soon build and are out of sync with production:
+The live shop's source is **not in this repository**. It appears to be [`joshuawayzwright/solo-commerce`](https://github.com/joshuawayzwright/solo-commerce) (`public-static-release/public/shop/`, found 21 November 2026 by matching the live shop's files). These parts of this repo still describe the older coming-soon build and are out of sync with production:
 
 - `powerhouse-website/`: coming-soon product cards with no checkout.
 - `data/solo-commerce-catalogue.json` and `data/solo-knowledge.json`: every product is `coming_soon_not_for_sale` with no price.
