@@ -1,0 +1,182 @@
+[
+ {
+  "id": "025-what-is-mcp",
+  "pillar": "AI Explained",
+  "title": "What is MCP in AI? The plug that connects AI to your apps #Shorts",
+  "description": "MCP, the Model Context Protocol, is an open standard for connecting AI assistants to apps and data. Anthropic introduced it in November 2024 and many tools now support it. Narrated with an AI voice.\n\n#AI #MCP #AIexplained #Shorts",
+  "tags": ["what is MCP", "model context protocol", "MCP explained", "AI tools", "AI explained", "AI assistants"],
+  "segments": [
+   {"screen": "What is MCP?", "say": "You keep hearing about MCP in AI. So what actually is it?"},
+   {"screen": "Model Context Protocol", "say": "MCP stands for Model Context Protocol. It's an open standard that lets an AI assistant connect to other apps and data in a consistent way."},
+   {"screen": "Like a USB port", "say": "Think of it like a USB port. Instead of every app building a custom connection for every AI, both sides support one shared plug."},
+   {"screen": "What it unlocks", "say": "With an MCP connection, an assistant can read a file, search a database, or take an action in another app, if you allow it."},
+   {"screen": "Check permissions", "say": "That power cuts both ways. Only connect tools you trust, and check what each connection is allowed to do."},
+   {"screen": "A plug, not magic", "say": "MCP doesn't make the AI smarter. It gives it a standard way to reach your tools. Follow for more AI explained."}
+  ]
+ },
+ {
+  "id": "026-how-ai-video-works",
+  "pillar": "AI Explained",
+  "title": "How AI video generators actually work #Shorts",
+  "description": "AI video generators build short clips from noise, guided by your prompt, while trying to keep each frame consistent with the last. Why that's hard. Narrated with an AI voice.\n\n#AI #AIvideo #AIexplained #Shorts",
+  "tags": ["how to make AI videos", "how AI video generators work", "AI video explained", "text to video", "generative AI", "AI explained"],
+  "segments": [
+   {"screen": "How does AI make video?", "say": "You type a sentence and get a video. What is the AI actually doing?"},
+   {"screen": "Start from noise", "say": "Most video generators work like image generators. They start from random noise and clean it up, step by step, towards what your prompt describes."},
+   {"screen": "Frames that agree", "say": "The hard part is time. Every frame has to agree with the one before it, so objects don't melt, jump or change colour."},
+   {"screen": "Learned from footage", "say": "The model learns how things usually move from huge amounts of video. It predicts motion. It doesn't simulate real physics."},
+   {"screen": "Why clips are short", "say": "Keeping everything consistent gets harder the longer a clip runs. That's why many tools generate seconds at a time."},
+   {"screen": "Prediction, not filming", "say": "So an AI video is a prediction of what a scene might look like, not a recording. Follow for more AI explained."}
+  ]
+ },
+ {
+  "id": "027-why-ai-video-looks-weird",
+  "pillar": "AI Safety",
+  "title": "4 signs a video was made with AI #Shorts",
+  "description": "AI video is getting better, but these four checks still catch a lot. None is proof on its own. Narrated with an AI voice.\n\n#AI #Deepfake #FactCheck #Shorts",
+  "tags": ["how to spot AI videos", "is this video AI", "AI video detection", "deepfake check", "AI safety", "fact check"],
+  "segments": [
+   {"screen": "Real or AI?", "say": "That clip looks real. But was it made by AI? Four things to check."},
+   {"screen": "1. Hands and text", "say": "One. Watch hands, fingers and any writing. AI still slips on small details like these, though it keeps improving."},
+   {"screen": "2. Things that change", "say": "Two. Look for objects that change shape, appear, or vanish between moments. Earrings, buttons and backgrounds are good tells."},
+   {"screen": "3. Odd physics", "say": "Three. Watch how things move. Water, hair and collisions can look floaty or wrong, because the model predicts motion instead of simulating it."},
+   {"screen": "4. The source", "say": "Four. Check who posted it first, and whether trusted outlets are showing it. Labels like AI generated help when platforms show them."},
+   {"screen": "Pause before sharing", "say": "No single sign is proof. When in doubt, don't share. Follow for more AI safety tips."}
+  ]
+ },
+ {
+  "id": "028-ai-job-interviews",
+  "pillar": "AI in Everyday Life",
+  "title": "Is AI reading your job application? #Shorts",
+  "description": "Many employers use software, including AI, to sort applications and schedule interviews. What that means for you and how to prepare. Rules vary by country and state. Narrated with an AI voice.\n\n#AI #Jobs #Careers #Shorts",
+  "tags": ["AI job interview", "AI resume screening", "AI in hiring", "job application tips", "AI in everyday life", "careers"],
+  "segments": [
+   {"screen": "Is AI reading your CV?", "say": "Applied for a job lately? There's a good chance software read your application before a person did."},
+   {"screen": "How it's used", "say": "Many employers use software, sometimes with AI, to sort applications, match keywords, and schedule interviews."},
+   {"screen": "Use their words", "say": "So use the job ad's own words for the skills you actually have. Clear headings and plain formatting are easier for software to read."},
+   {"screen": "You can ask", "say": "You can ask how applications are assessed. Some places have rules. New York City, for example, requires bias audits for some automated hiring tools."},
+   {"screen": "Still be human", "say": "And if you use AI to help write your application, make sure every claim is true and it sounds like you."},
+   {"screen": "Software sorts, people decide", "say": "Software may sort the pile, but people usually make the final call. Follow for more AI in everyday life."}
+  ]
+ },
+ {
+  "id": "029-ai-clipping-tools",
+  "pillar": "AI Explained",
+  "title": "How AI clipping tools pick your best moments #Shorts",
+  "description": "AI clipping tools turn long videos into short clips. Here's what they're doing under the hood, and what to check before you post. Narrated with an AI voice.\n\n#AI #ContentCreation #AItools #Shorts",
+  "tags": ["AI clipping tool", "free clipping AI tool", "how AI clips videos", "long video to shorts", "AI for creators", "AI explained"],
+  "segments": [
+   {"screen": "AI clipping tools", "say": "Upload a long video and get ten short clips back. How do AI clipping tools choose?"},
+   {"screen": "Step 1: transcribe", "say": "First, they transcribe the speech. Now the AI can read your whole video as text."},
+   {"screen": "Step 2: score moments", "say": "Then a model scores sections that look like strong moments: a clear hook, a complete thought, a punchline, or a surprising claim."},
+   {"screen": "Step 3: reframe", "say": "Finally, it crops to vertical, keeps faces in frame, and adds captions."},
+   {"screen": "Check before posting", "say": "Always watch each clip. Cuts can drop context and change what someone meant. And only clip videos you have the rights to use."},
+   {"screen": "Fast first draft", "say": "Treat the clips as a fast first draft, not a finished edit. Follow for more AI explained."}
+  ]
+ },
+ {
+  "id": "030-ai-influencers",
+  "pillar": "AI Safety",
+  "title": "AI influencers: what they are and the labels you need #Shorts",
+  "description": "AI influencers are virtual personas made with image and video generators. Platforms like YouTube and TikTok ask creators to label realistic AI content. Narrated with an AI voice.\n\n#AI #AIinfluencer #SocialMedia #Shorts",
+  "tags": ["AI influencer", "how to create AI influencer", "virtual influencer", "AI content labels", "AI disclosure", "AI safety"],
+  "segments": [
+   {"screen": "AI influencers", "say": "Some of the faces you follow online don't exist. They're AI influencers."},
+   {"screen": "What they are", "say": "An AI influencer is a virtual persona made with image, video and voice generators, usually run by a person or a company."},
+   {"screen": "Labels matter", "say": "Platforms like YouTube and TikTok ask creators to label realistic AI generated content, so viewers know what they're seeing."},
+   {"screen": "Ads still count", "say": "If a virtual persona promotes products, normal advertising disclosure rules still apply, the same as for a human creator."},
+   {"screen": "Never copy real people", "say": "And never make a persona from a real person's face or voice without their permission."},
+   {"screen": "Be upfront", "say": "Being upfront builds more trust than being mistaken for real. Follow for more AI safety."}
+  ]
+ },
+ {
+  "id": "031-website-with-ai",
+  "pillar": "AI for Solo Business",
+  "title": "Can AI build your website? What it gets right and wrong #Shorts",
+  "description": "AI can draft a website fast. Here's what it does well, and four things you still need to check yourself. Narrated with an AI voice.\n\n#AI #WebDesign #SmallBusiness #Shorts",
+  "tags": ["how to make website with AI", "AI website builder", "AI for small business", "build a website with AI", "web design", "AI tools"],
+  "segments": [
+   {"screen": "Can AI build your site?", "say": "Can AI build your business website? Partly. Here's where it helps and where you still need to check."},
+   {"screen": "What it does well", "say": "AI is great at first drafts: page layouts, headings, simple code and starter copy, in minutes instead of days."},
+   {"screen": "Check: facts", "say": "Check every fact it writes about your business. Prices, hours and services are easy for it to get wrong or make up."},
+   {"screen": "Check: phones", "say": "Test it on a phone. Most visitors will see the mobile version first."},
+   {"screen": "Check: forms and privacy", "say": "If you collect emails or payments, use a trusted provider, and make sure you have a privacy policy that matches what you collect."},
+   {"screen": "Draft fast, check slow", "say": "Let AI draft fast. Then check slowly before you launch. Follow for more practical AI."}
+  ]
+ },
+ {
+  "id": "032-ai-for-business-rules",
+  "pillar": "AI for Solo Business",
+  "title": "3 rules for using AI in your business safely #Shorts",
+  "description": "Three simple rules before you use ChatGPT or any AI chatbot with business work. Check your plan's data settings. Narrated with an AI voice.\n\n#AI #SmallBusiness #ChatGPT #Shorts",
+  "tags": ["ChatGPT for business", "AI for small business", "AI safety at work", "AI privacy", "AI for sole traders", "practical AI"],
+  "segments": [
+   {"screen": "AI at work: 3 rules", "say": "Using AI chatbots for your business? Three rules that save a lot of trouble."},
+   {"screen": "1. Protect client data", "say": "One. Don't paste customers' personal details unless your plan and settings allow it. Business plans and consumer apps can handle data differently."},
+   {"screen": "2. Check numbers", "say": "Two. Check every number, date and claim before it goes to a client. Chatbots can sound sure and still be wrong."},
+   {"screen": "3. You sign off", "say": "Three. A person signs off on anything that goes out under your name: quotes, contracts, advice."},
+   {"screen": "Where it shines", "say": "Used like this, AI is great for drafts, summaries, and getting unstuck on a blank page."},
+   {"screen": "Fast drafts, human checks", "say": "Fast drafts, human checks. Follow for more practical AI for small business."}
+  ]
+ },
+ {
+  "id": "033-ai-model-names",
+  "pillar": "AI Explained",
+  "title": "Why AI model names are so confusing #Shorts",
+  "description": "Version numbers, minis, pros and dates: how to read an AI model name, and what matters more than the number. Narrated with an AI voice.\n\n#AI #LLM #AIexplained #Shorts",
+  "tags": ["AI model names explained", "which AI model to use", "AI model versions", "LLM explained", "AI explained", "AI for beginners"],
+  "segments": [
+   {"screen": "So many model names", "say": "New AI models come out every few weeks, with names that are hard to follow. Here's how to read them."},
+   {"screen": "The number", "say": "The version number usually means newer, not always better for your job. Companies number things differently, so you can't compare across brands."},
+   {"screen": "The size word", "say": "Words like mini, flash or lite usually mean a smaller, faster, cheaper model. Pro, max or ultra usually mean bigger and slower."},
+   {"screen": "The date", "say": "Some names include a date. That tells you when that version was released, which matters for what it knows."},
+   {"screen": "What matters more", "say": "What matters most is how it does on your actual task, its price, and what happens to your data."},
+   {"screen": "Test, don't trust names", "say": "So don't pick by name. Test it on your real work. Follow for more AI explained."}
+  ]
+ },
+ {
+  "id": "034-compare-ai-models",
+  "pillar": "Tool Field Tests",
+  "title": "How to compare two AI models yourself in 5 minutes #Shorts",
+  "description": "Benchmarks don't tell you which AI is best for your work. A five-minute side-by-side test you can run yourself. Narrated with an AI voice.\n\n#AI #ChatGPT #AItips #Shorts",
+  "tags": ["compare AI models", "which AI is best", "AI model comparison", "test AI tools", "AI tips", "AI productivity"],
+  "segments": [
+   {"screen": "Which AI is better?", "say": "Two AI models, both claiming to be the best. Here's how to find out which is best for you, in five minutes."},
+   {"screen": "1. Use a real task", "say": "One. Pick a real task you actually do, like a client email or a summary of a long document."},
+   {"screen": "2. Same prompt", "say": "Two. Give both models the exact same prompt and the same files."},
+   {"screen": "3. Hide the names", "say": "Three. Paste both answers somewhere without the names, then pick the one you'd actually use."},
+   {"screen": "4. Check the facts", "say": "Four. Check the facts in both. A confident answer with one wrong number loses."},
+   {"screen": "Your work, your winner", "say": "The best model is the one that wins on your work, at a price you're happy with. Follow for more AI tips."}
+  ]
+ },
+ {
+  "id": "035-free-ai-tools-cost",
+  "pillar": "AI Safety",
+  "title": "What free AI tools really cost you #Shorts",
+  "description": "Free AI tools aren't always free. Five things to check before you rely on one. Narrated with an AI voice.\n\n#AI #Privacy #AItools #Shorts",
+  "tags": ["free AI tools", "are free AI tools safe", "AI privacy", "free AI apps", "AI safety", "AI tips"],
+  "segments": [
+   {"screen": "Free AI tools", "say": "Free AI tools are everywhere. But free usually means you're paying some other way. Check these."},
+   {"screen": "1. Limits", "say": "One. Usage limits. Many free plans cap how much you can do, then stop or slow down."},
+   {"screen": "2. Your data", "say": "Two. Your data. Read whether your uploads can be used to train models, and whether you can switch that off."},
+   {"screen": "3. Watermarks and rights", "say": "Three. Watermarks and rights. Some free plans add watermarks or limit commercial use of what you make."},
+   {"screen": "4. Who runs it", "say": "Four. Who runs it. Stick to tools with a real company, a privacy policy and contact details."},
+   {"screen": "Read before you rely", "say": "Free can be great. Just read the terms before you rely on it. Follow for more AI safety tips."}
+  ]
+ },
+ {
+  "id": "036-ai-shorts-rules",
+  "pillar": "AI Explained",
+  "title": "Making AI Shorts? Don't break these YouTube rules #Shorts",
+  "description": "If you make videos with AI tools, YouTube asks you to label realistic synthetic content, and mass-produced repetitive videos can lose monetisation. Check YouTube's current policies. Narrated with an AI voice.\n\n#AI #YouTubeShorts #CreatorTips #Shorts",
+  "tags": ["how to make AI shorts", "AI content YouTube rules", "YouTube AI disclosure", "AI video monetization", "creator tips", "AI for creators"],
+  "segments": [
+   {"screen": "AI Shorts and the rules", "say": "Making Shorts with AI tools? Here's what YouTube expects, so your channel doesn't get hurt."},
+   {"screen": "1. Label realistic AI", "say": "One. If your video has realistic AI generated people, places or events that viewers could mistake for real, tick the altered or synthetic content box when you upload."},
+   {"screen": "2. Add real value", "say": "Two. Mass produced, repetitive videos can lose monetisation. Each video should add something: your explanation, your test, your opinion."},
+   {"screen": "3. Use what you own", "say": "Three. Only use clips, music and voices you have the rights to. Never clone a real person's voice without permission."},
+   {"screen": "4. Check the policy", "say": "Four. Policies change. Check YouTube's current rules before you scale up."},
+   {"screen": "AI tools, your value", "say": "Use AI as the tool, and make the value yours. Follow for more AI explained."}
+  ]
+ }
+]
