@@ -10,10 +10,10 @@
   --line-soft: #31373c;
   --text: #f2f3f4;
   --muted: #c6c9cc;
-  --gold: #c99734;
+  --gold: #d4af37;
   --primary: #f2c766;
-  --primary-strong: #c99734;
-  --blue: #139ee8;
+  --primary-strong: #d4af37;
+  --blue: #0087ff;
   --success: #c6c9cc;
   --warning: #f2c766;
   --shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
@@ -154,8 +154,8 @@ input {
 }
 
 .nav-cta {
-  background: linear-gradient(135deg, rgba(19, 158, 232, 0.16), rgba(198, 201, 204, 0.16));
-  border: 1px solid rgba(19, 158, 232, 0.25);
+  background: linear-gradient(135deg, rgba(0, 135, 255, 0.16), rgba(198, 201, 204, 0.16));
+  border: 1px solid rgba(0, 135, 255, 0.25);
   color: var(--primary) !important;
 }
 
@@ -169,8 +169,8 @@ input {
 
 .eyebrow {
   display: inline-flex;
-  border: 1px solid rgba(201, 151, 52, 0.4);
-  background: rgba(201, 151, 52, 0.07);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.07);
   color: var(--primary);
   padding: 7px 12px;
   border-radius: 999px;
@@ -471,7 +471,7 @@ input {
   width: 28px;
   height: 28px;
   border-radius: 10px;
-  background: rgba(19, 158, 232, 0.12);
+  background: rgba(0, 135, 255, 0.12);
   color: var(--primary);
 }
 
@@ -531,7 +531,7 @@ input {
 
 .collection-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(19, 158, 232, 0.45);
+  border-color: rgba(0, 135, 255, 0.45);
 }
 
 .collection-count {
@@ -561,11 +561,11 @@ input {
 }
 
 .accent-blue {
-  background: linear-gradient(135deg, rgba(19, 158, 232, 0.2), rgba(17, 20, 23, 0.8));
+  background: linear-gradient(135deg, rgba(0, 135, 255, 0.2), rgba(17, 20, 23, 0.8));
 }
 
 .accent-purple {
-  background: linear-gradient(135deg, rgba(201, 151, 52, 0.16), var(--panel));
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), var(--panel));
 }
 
 .accent-green {
@@ -644,8 +644,8 @@ button:focus-visible {
 }
 
 .search-box input:focus {
-  border-color: rgba(19, 158, 232, 0.6);
-  box-shadow: 0 0 0 3px rgba(19, 158, 232, 0.14);
+  border-color: rgba(0, 135, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(0, 135, 255, 0.14);
 }
 
 .live-search-status {
@@ -668,8 +668,8 @@ button:focus-visible {
 }
 
 .load-more-btn:hover:not(:disabled) {
-  border-color: rgba(19, 158, 232, 0.5);
-  background: rgba(19, 158, 232, 0.08);
+  border-color: rgba(0, 135, 255, 0.5);
+  background: rgba(0, 135, 255, 0.08);
 }
 
 .load-more-btn:disabled {
@@ -699,7 +699,7 @@ button:focus-visible {
 }
 
 .filter-btn.active {
-  background: rgba(201, 151, 52, 0.14);
+  background: rgba(212, 175, 55, 0.14);
   border-color: var(--gold);
   color: var(--text);
 }
@@ -739,9 +739,9 @@ button:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(19, 158, 232, 0.12);
+  background: rgba(0, 135, 255, 0.12);
   color: var(--primary);
-  border: 1px solid rgba(19, 158, 232, 0.2);
+  border: 1px solid rgba(0, 135, 255, 0.2);
   border-radius: 999px;
   padding: 5px 9px;
   font-size: 0.7rem;
@@ -767,8 +767,8 @@ button:focus-visible {
   display: grid;
   place-items: center;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(19, 158, 232, 0.18), rgba(198, 201, 204, 0.18));
-  border: 1px solid rgba(19, 158, 232, 0.25);
+  background: linear-gradient(135deg, rgba(0, 135, 255, 0.18), rgba(198, 201, 204, 0.18));
+  border: 1px solid rgba(0, 135, 255, 0.25);
   color: var(--primary);
   font-weight: 800;
   font-size: 0.8rem;
@@ -1016,8 +1016,8 @@ button:focus-visible {
 }
 
 .plan-card-featured {
-  border-color: rgba(19, 158, 232, 0.4);
-  background: linear-gradient(135deg, rgba(19, 158, 232, 0.1), rgba(198, 201, 204, 0.1));
+  border-color: rgba(0, 135, 255, 0.4);
+  background: linear-gradient(135deg, rgba(0, 135, 255, 0.1), rgba(198, 201, 204, 0.1));
 }
 
 .plan-price {
@@ -1242,7 +1242,7 @@ h3 {
 
 .rank-item strong {
   border-radius: 5px;
-  background: rgba(201, 151, 52, 0.12);
+  background: rgba(212, 175, 55, 0.12);
 }
 
 .brand-chip {
@@ -1269,7 +1269,7 @@ h3 {
 
 .collection-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(201, 151, 52, 0.5);
+  border-color: rgba(212, 175, 55, 0.5);
 }
 
 .catalog-layout {
@@ -1292,7 +1292,7 @@ h3 {
 
 .search-box input:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(19, 158, 232, 0.18);
+  box-shadow: 0 0 0 3px rgba(0, 135, 255, 0.18);
 }
 
 .tool-grid {
@@ -1316,8 +1316,8 @@ h3 {
 }
 
 .company-logo {
-  background: rgba(201, 151, 52, 0.1);
-  border-color: rgba(201, 151, 52, 0.22);
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.22);
 }
 
 .card-link,
@@ -1331,8 +1331,8 @@ h3 {
 }
 
 .plan-card-featured {
-  border-color: rgba(201, 151, 52, 0.36);
-  background: linear-gradient(135deg, rgba(201, 151, 52, 0.07), var(--panel));
+  border-color: rgba(212, 175, 55, 0.36);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.07), var(--panel));
 }
 
 @media (max-width: 820px) {
@@ -1422,4 +1422,74 @@ button, input, select, textarea, .tool-name { font-family: var(--font-body); }
 
 #searchLiveModels:hover {
   background: var(--card-alt);
+}
+
+/* Newsletter signup: hidden until a provider is set in config.js (see newsletter.js). */
+.newsletter {
+  margin-top: 26px;
+  padding: 24px;
+  border: 1px solid var(--gold);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.09), var(--panel));
+}
+
+.newsletter[hidden],
+.newsletter [hidden] {
+  display: none;
+}
+
+.newsletter h2 {
+  margin: 0.3rem 0 0.6rem;
+}
+
+.newsletter p {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+.newsletter a:not(.primary-btn) {
+  color: var(--primary);
+}
+
+.newsletter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 16px 0 12px;
+}
+
+.newsletter-form label {
+  display: grid;
+  gap: 6px;
+  flex: 1 1 260px;
+  font-weight: 600;
+}
+
+.newsletter-form input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+}
+
+.newsletter-form input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.newsletter-form .primary-btn,
+.newsletter > .primary-btn {
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.newsletter > .primary-btn {
+  margin: 8px 0 12px;
 }

@@ -32,6 +32,8 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
   companion object {
     val REPORT_REASONS = listOf("harmful", "hateful", "sexual", "misleading", "other")
     private const val STREAM_FRAME_MS = 50L
+    const val NO_VOICE = "Read aloud needs a voice on your phone. Open Settings, search for \"Text-to-speech\", " +
+      "choose Speech Recognition and Synthesis from Google, and install English (Australia)."
   }
 
   private val endpoint = SoloConfig.endpointOverride ?: BuildConfig.SOLO_API_URL
@@ -56,7 +58,6 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
   private var serviceGeneration = 0
   private var sendJob: Job? = null
   private var tts: TextToSpeech? = null
-  private var ttsReady = false
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
@@ -66,6 +67,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       _state.update { it.copy(threads = summaries(), voiceAvailable = voice) }
     }
     checkService()
+    startTts()
   }
 
   // ---- Service and account ----------------------------------------------------
@@ -110,6 +112,73 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
           remainingDaily = (if (st?.authenticated == true) st.remainingDaily else null) ?: it.remainingDaily.takeIf { session.hasSession() },
           dailyLimit = (if (st?.authenticated == true) st.dailyLimit else null) ?: it.dailyLimit.takeIf { session.hasSession() },
         )
+      }
+      if (st?.authenticated == true) loadConnections() else clearConnections()
+    }
+  }
+
+  // ---- Connected apps --------------------------------------------------------------
+
+  private fun clearConnections() {
+    _state.update { it.copy(connectorsAvailable = false, connectorsPro = false, connectedApps = emptyList(), connectorBusy = null) }
+  }
+
+  private fun applyConnections(c: AccountApi.Connections) {
+    if (c.httpStatus != 200) {
+      // Switched off on the server: hide the section. A temporary failure keeps what is shown.
+      if (!c.available) clearConnections()
+      return
+    }
+    _state.update {
+      it.copy(connectorsAvailable = true, connectorsPro = c.pro,
+        connectedApps = c.apps.map { a -> ConnectedApp(a.provider, a.name, a.connected) })
+    }
+  }
+
+  /** Reads which apps are connected. IO thread only. */
+  private fun loadConnections() {
+    val token = currentAccessToken() ?: return
+    applyConnections(account.connections(token))
+  }
+
+  /** Re-reads connected apps, e.g. on return from the browser. [announce]: say what changed. */
+  fun refreshConnections(announce: Boolean = false) {
+    if (!session.hasSession()) return
+    val before = _state.value.connectedApps.filter { it.connected }.map { it.provider }.toSet()
+    viewModelScope.launch(Dispatchers.IO) {
+      loadConnections()
+      if (!announce) return@launch
+      val now = _state.value.connectedApps.filter { it.connected }
+      now.firstOrNull { it.provider !in before }?.let { notify("${it.name} is connected") }
+    }
+  }
+
+  /** Starts connecting [provider]. Returns the link to open in the browser, or null after a notice. */
+  suspend fun connect(provider: String): String? = withContext(Dispatchers.IO) {
+    _state.update { it.copy(connectorBusy = provider) }
+    try {
+      val token = currentAccessToken() ?: run { notify("Sign in again to connect apps."); return@withContext null }
+      val start = account.connect(token, provider)
+      if (start.url == null) notify(start.error ?: "Couldn't start connecting. Please try again.")
+      start.url
+    } finally {
+      _state.update { it.copy(connectorBusy = null) }
+    }
+  }
+
+  fun disconnect(provider: String) {
+    val name = _state.value.connectedApps.firstOrNull { it.provider == provider }?.name ?: "The app"
+    _state.update { it.copy(connectorBusy = provider) }
+    viewModelScope.launch(Dispatchers.IO) {
+      try {
+        val token = currentAccessToken() ?: run { notify("Sign in again to disconnect apps."); return@launch }
+        val result = account.disconnect(token, provider)
+        if (result.httpStatus == 200) {
+          applyConnections(result)
+          notify("$name is disconnected")
+        } else notify(result.error ?: "Couldn't disconnect. Please try again.")
+      } finally {
+        _state.update { it.copy(connectorBusy = null) }
       }
     }
   }
@@ -225,6 +294,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       newChat()
       _state.update { it.copy(threads = emptyList(), signedIn = false, email = null, tier = null,
         remainingDaily = null, dailyLimit = null) }
+      clearConnections()
       notify("Your SOLO AI account was deleted")
       checkService()
     }
@@ -238,6 +308,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     session.clear()
     stopGenerating()
     _state.update { it.copy(signedIn = false, email = null, tier = null, remainingDaily = null, dailyLimit = null) }
+    clearConnections()
     viewModelScope.launch(Dispatchers.IO) { account.logout(access, refresh) }
     notify("Signed out")
     checkService()
@@ -304,6 +375,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     val text = raw.trim()
     val s = _state.value
     if (s.sending || !s.canChat || Conversation.validateDraft(text) != null) return
+    conversation.setConnectors(if (s.connectorsPro) s.connectedApps.filter { it.connected }.map { it.provider } else emptyList())
     val request = try {
       conversation.prepare(text, UUID.randomUUID().toString())
     } catch (e: Exception) {
@@ -312,7 +384,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     }
     val base = s.messages.filterNot { it.role == Role.USER && it.status == MessageStatus.FAILED }
     val userMessage = ChatMessage(UUID.randomUUID().toString(), Role.USER, text)
-    _state.update { it.copy(messages = base + userMessage, sending = true, streamingText = "") }
+    _state.update { it.copy(messages = base + userMessage, sending = true, streamingText = "", toolNote = null) }
     val gen = generation
     val signedIn = session.hasSession()
     val live = StringBuilder()
@@ -325,7 +397,12 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
           if (gen == generation) _state.update { if (it.streamingText != now) it.copy(streamingText = now) else it }
         }
       }
-      val listener = SoloApi.DeltaListener { delta -> synchronized(live) { live.append(delta) } }
+      val listener = object : SoloApi.DeltaListener {
+        override fun onDelta(text: String) { synchronized(live) { live.append(text) } }
+        override fun onTool(provider: String, label: String) {
+          if (gen == generation) _state.update { it.copy(toolNote = label) }
+        }
+      }
       var attempt = request
       var result: SoloApi.Result
       val token = if (signedIn) currentAccessToken() else null
@@ -357,10 +434,10 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       conversation.commit(sent, r.reply)
       val reply = ChatMessage(UUID.randomUUID().toString(), Role.SOLO, r.reply,
         requestId = if (signedIn) sent.requestId else null, truncated = r.truncated,
-        sources = r.sources.map { Source(it.title, it.url) })
+        sources = r.sources.map { Source(it.title, it.url) }, connectors = r.connectors.toList())
       val messages = current + reply
       _state.update {
-        it.copy(messages = messages, sending = false, streamingText = "",
+        it.copy(messages = messages, sending = false, streamingText = "", toolNote = null,
           remainingDaily = r.remainingDaily ?: it.remainingDaily)
       }
       saveCurrent(messages)
@@ -372,7 +449,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       val messages = if (partial.isNotEmpty())
         current + ChatMessage(UUID.randomUUID().toString(), Role.SOLO, partial, MessageStatus.STOPPED)
       else current.dropLast(1)
-      _state.update { it.copy(messages = messages, sending = false, streamingText = "") }
+      _state.update { it.copy(messages = messages, sending = false, streamingText = "", toolNote = null) }
       if (partial.isNotEmpty()) saveCurrent(messages)
       return
     }
@@ -383,7 +460,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       return
     }
     val failed = user.copy(status = MessageStatus.FAILED, error = r.error)
-    _state.update { it.copy(messages = current.dropLast(1) + failed, sending = false, streamingText = "") }
+    _state.update { it.copy(messages = current.dropLast(1) + failed, sending = false, streamingText = "", toolNote = null) }
     when {
       signedIn && r.status == 401 -> {
         session.clear()
@@ -437,39 +514,90 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
   }
 
   // ---- Read aloud -----------------------------------------------------------------
+  // The phone's own text-to-speech engine reads replies on the device. It is started
+  // when the app opens, so the first tap on the speaker speaks straight away.
+
+  private enum class Tts { OFF, STARTING, READY, FAILED }
+  private var ttsStatus = Tts.OFF
+  /** A reply tapped while the engine was still starting: (message id, text). */
+  private var pendingSpeech: Pair<String, String>? = null
+
+  private fun startTts() {
+    if (tts != null && ttsStatus != Tts.FAILED) return
+    tts?.shutdown()
+    ttsStatus = Tts.STARTING
+    tts = try {
+      TextToSpeech(getApplication()) { status -> onTtsReady(status) }
+    } catch (e: Exception) {
+      ttsStatus = Tts.FAILED
+      null
+    }
+  }
+
+  private fun onTtsReady(status: Int) {
+    val engine = tts
+    if (status != TextToSpeech.SUCCESS || engine == null || !chooseVoice(engine)) {
+      ttsStatus = Tts.FAILED
+      if (pendingSpeech != null) {
+        pendingSpeech = null
+        _state.update { it.copy(speakingMessageId = null) }
+        notify(NO_VOICE)
+      }
+      return
+    }
+    engine.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+      override fun onStart(id: String?) {}
+      override fun onDone(id: String?) { _state.update { if (it.speakingMessageId == id) it.copy(speakingMessageId = null) else it } }
+      @Deprecated("Deprecated in Java") override fun onError(id: String?) { onDone(id) }
+      override fun onError(id: String?, errorCode: Int) {
+        onDone(id)
+        notify("Read aloud stopped. Check your phone's text-to-speech voice and media volume.")
+      }
+    })
+    ttsStatus = Tts.READY
+    pendingSpeech?.let { (id, text) -> pendingSpeech = null; speakNow(engine, id, text) }
+  }
+
+  /** Australian English if the phone has it, otherwise any English voice. */
+  private fun chooseVoice(engine: TextToSpeech): Boolean {
+    for (locale in listOf(Locale("en", "AU"), Locale.UK, Locale.US, Locale.ENGLISH)) {
+      val result = try { engine.setLanguage(locale) } catch (e: Exception) { TextToSpeech.LANG_NOT_SUPPORTED }
+      if (result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED) return true
+    }
+    return false
+  }
 
   fun toggleSpeak(message: ChatMessage) {
     if (_state.value.speakingMessageId == message.id) {
+      pendingSpeech = null
       tts?.stop()
       _state.update { it.copy(speakingMessageId = null) }
       return
     }
     val speakText = MarkdownText.plain(message.text)
+    // Show the stop button at once, even while the engine finishes starting.
+    _state.update { it.copy(speakingMessageId = message.id) }
+    if (mediaVolumeOff()) notify("Your media volume is off. Turn it up to hear SOLO.")
     val engine = tts
-    if (engine != null && ttsReady) {
-      speakNow(engine, message.id, speakText)
-      return
-    }
-    tts = TextToSpeech(getApplication()) { status ->
-      ttsReady = status == TextToSpeech.SUCCESS
-      val e = tts
-      if (ttsReady && e != null) {
-        e.language = Locale("en", "AU")
-        e.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-          override fun onStart(id: String?) {}
-          override fun onDone(id: String?) { _state.update { if (it.speakingMessageId == id) it.copy(speakingMessageId = null) else it } }
-          @Deprecated("Deprecated in Java") override fun onError(id: String?) { onDone(id) }
-        })
-        speakNow(e, message.id, speakText)
-      } else {
-        notify("Read aloud isn't available on this phone.")
-      }
+    when {
+      engine != null && ttsStatus == Tts.READY -> speakNow(engine, message.id, speakText)
+      else -> { pendingSpeech = message.id to speakText; startTts() }
     }
   }
 
+  private fun mediaVolumeOff(): Boolean = try {
+    val audio = getApplication<Application>().getSystemService(android.content.Context.AUDIO_SERVICE) as android.media.AudioManager
+    audio.getStreamVolume(android.media.AudioManager.STREAM_MUSIC) == 0
+  } catch (e: Exception) { false }
+
   private fun speakNow(engine: TextToSpeech, id: String, text: String) {
-    engine.speak(text.take(TextToSpeech.getMaxSpeechInputLength() - 1), TextToSpeech.QUEUE_FLUSH, null, id)
-    _state.update { it.copy(speakingMessageId = id) }
+    val result = engine.speak(text.take(TextToSpeech.getMaxSpeechInputLength() - 1), TextToSpeech.QUEUE_FLUSH, null, id)
+    if (result == TextToSpeech.ERROR) {
+      _state.update { if (it.speakingMessageId == id) it.copy(speakingMessageId = null) else it }
+      notify(NO_VOICE)
+    } else {
+      _state.update { it.copy(speakingMessageId = id) }
+    }
   }
 
   private fun notify(text: String) {

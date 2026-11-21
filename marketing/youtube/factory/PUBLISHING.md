@@ -127,7 +127,7 @@ On the owner's instruction ("Swap all to branded"), every TikTok/Instagram post 
 | 007–012 | 22–27 Nov, one a day (branded media swapped into the existing scheduled posts) |
 | 013–024 | 27 Nov 23:30 UTC to 3 Dec 08:30 UTC, two a day |
 
-Old lime/coral posts 001–006 are already live on TikTok/Instagram. vidIQ can't delete them, so the owner deletes them in the app if wanted. Instagram account: @soloserviceproviderau. On 21 Nov the Solo site Instagram and Threads links were corrected to it (they pointed to @soloservicepro).
+Old lime/coral posts 001–006 are already live on TikTok/Instagram. vidIQ can't delete them, so the owner deletes them in the app if wanted. Instagram account: @soloserviceproviderau. The Solo site's Instagram and Threads links are corrected to it in solo-commerce.
 
 ### Cadence after the queue (owner approved, 21 Nov 2026)
 
@@ -148,4 +148,4 @@ All 12 are in vidIQ storage with ready YouTube drafts (public, category 28). Sch
 
 If this session isn't running, publish each draft in vidIQ (Social → Drafts) on its day. Batch 04 needs writing before 27 Nov to keep 3 a day going.
 
-Solo Service Provider site: the YouTube icon on index.html and contact.html now links https://www.youtube.com/@JoshWrightAI.
+Solo Service Provider site: the live site is in the private solo-commerce repository (powerhouse-website/ here is a retired copy). Its YouTube, Instagram and Threads links are updated there.

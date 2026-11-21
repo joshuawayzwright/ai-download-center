@@ -26,6 +26,9 @@ public final class SoloApi {
   /** Receives streamed text as it arrives (on the calling worker thread). */
   public interface DeltaListener {
     void onDelta(String text);
+
+    /** A connected app (for example Google Calendar) was read for this reply. */
+    default void onTool(String provider, String label) {}
   }
 
   /** A web page the reply drew on (Google Search grounding). HTTPS only. */
@@ -59,6 +62,21 @@ public final class SoloApi {
       boolean duplicate = false;
       for (Source s : out) if (s.url.equals(url)) { duplicate = true; break; }
       if (!duplicate) out.add(new Source(title, url));
+    }
+    return out;
+  }
+
+  /** Connected apps this client knows how to show. */
+  static final java.util.List<String> KNOWN_CONNECTORS = java.util.Collections.singletonList("google_calendar");
+
+  /** Reads {@code connectors: ["google_calendar"]}, keeping only known names. */
+  static java.util.List<String> parseConnectors(JSONObject json) {
+    java.util.List<String> out = new java.util.ArrayList<>();
+    org.json.JSONArray array = json == null ? null : json.optJSONArray("connectors");
+    if (array == null) return out;
+    for (int i = 0; i < array.length(); i++) {
+      String name = array.optString(i, "");
+      if (KNOWN_CONNECTORS.contains(name) && !out.contains(name)) out.add(name);
     }
     return out;
   }
@@ -99,6 +117,8 @@ public final class SoloApi {
     public final String partial;
     /** Web pages the reply drew on; empty when none. Never null. */
     public final java.util.List<Source> sources;
+    /** Connected apps read for this reply, e.g. {@code google_calendar}. Never null. */
+    public java.util.List<String> connectors = java.util.Collections.emptyList();
 
     private Result(boolean ok, int status, String reply, String error, String code, Integer remainingDaily,
         boolean truncated, String partial, java.util.List<Source> sources) {
@@ -305,7 +325,17 @@ public final class SoloApi {
       case "done": {
         Result r = interpret(200, data, null);
         if (!r.ok) return Result.failure(200, r.error, r.code, partial.toString());
-        return Result.success(200, r.reply, r.remainingDaily, json.optBoolean("truncated", false), r.sources);
+        Result done = Result.success(200, r.reply, r.remainingDaily, json.optBoolean("truncated", false), r.sources);
+        done.connectors = parseConnectors(json);
+        return done;
+      }
+      case "tool": {
+        String provider = json.optString("provider", "");
+        String label = json.optString("label", "").replaceAll("[\\x00-\\x1f\\x7f]", " ").trim();
+        if (KNOWN_CONNECTORS.contains(provider) && listener != null) {
+          listener.onTool(provider, label.isEmpty() || label.length() > 80 ? "Checked a connected app" : label);
+        }
+        return null;
       }
       case "error": {
         String error = json.optString("error", "SOLO AI couldn't finish the reply.");
