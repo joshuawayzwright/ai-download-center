@@ -118,12 +118,14 @@ public final class AccountApi {
   private final String authUrl;
   private final String onboardingUrl;
   private final String reportUrl;
+  private final String connectUrl;
   private final String userAgent;
 
   public AccountApi(String chatEndpoint, String userAgent) {
     this.authUrl = sibling(chatEndpoint, "solo-auth");
     this.onboardingUrl = sibling(chatEndpoint, "solo-onboarding");
     this.reportUrl = sibling(chatEndpoint, "solo-report");
+    this.connectUrl = sibling(chatEndpoint, "solo-connect");
     this.userAgent = userAgent;
   }
 
@@ -327,6 +329,122 @@ public final class AccountApi {
   }
 
   // ---- HTTP -------------------------------------------------------------------
+
+
+  // ---- Connected apps ({@code /api/solo-connect}) ----------------------------------
+
+  /** One app the account can connect. */
+  public static final class App {
+    public final String provider;
+    public final String name;
+    public final boolean connected;
+
+    App(String provider, String name, boolean connected) {
+      this.provider = provider;
+      this.name = name;
+      this.connected = connected;
+    }
+  }
+
+  /** Connected apps for the signed-in account. {@code available} is false when the server has them off. */
+  public static final class Connections {
+    public final boolean available;
+    public final boolean pro;
+    public final java.util.List<App> apps;
+    public final int httpStatus;
+    public final String error;
+    public final String code;
+
+    Connections(boolean available, boolean pro, java.util.List<App> apps, int httpStatus, String error, String code) {
+      this.available = available;
+      this.pro = pro;
+      this.apps = java.util.Collections.unmodifiableList(apps);
+      this.httpStatus = httpStatus;
+      this.error = error;
+      this.code = code;
+    }
+  }
+
+  /** The browser link that starts connecting an app, or the error to show. */
+  public static final class ConnectStart {
+    public final String url;
+    public final String error;
+    public final int httpStatus;
+
+    ConnectStart(String url, String error, int httpStatus) {
+      this.url = url;
+      this.error = error;
+      this.httpStatus = httpStatus;
+    }
+  }
+
+  public Connections connections(String accessToken) {
+    return toConnections(call("GET", connectUrl, null, accessToken));
+  }
+
+  public Connections disconnect(String accessToken, String provider) {
+    try {
+      return toConnections(call("POST", connectUrl,
+          new JSONObject().put("action", "disconnect").put("provider", provider), accessToken));
+    } catch (JSONException e) {
+      return new Connections(true, false, new java.util.ArrayList<App>(), 0, "Couldn't prepare the request.", "client_error");
+    }
+  }
+
+  public ConnectStart connect(String accessToken, String provider) {
+    try {
+      Response r = call("POST", connectUrl, new JSONObject().put("action", "connect").put("provider", provider), accessToken);
+      return toConnectStart(r);
+    } catch (JSONException e) {
+      return new ConnectStart(null, "Couldn't prepare the request.", 0);
+    }
+  }
+
+  /** Only the server's own https sign-in link is accepted. Package-private for tests. */
+  static ConnectStart toConnectStart(Response r) {
+    String url = r.status == 200 && r.json != null ? r.json.optString("url", "") : "";
+    if (r.status == 200 && isConnectLink(url)) return new ConnectStart(url, null, 200);
+    if (r.status == 0) return new ConnectStart(null, "Can't reach SOLO AI. Check your connection and try again.", 0);
+    String message = r.json == null ? null : r.json.optString("error", null);
+    if (r.status == 200 || message == null || message.trim().isEmpty()) {
+      message = "Couldn't start connecting (HTTP " + r.status + ").";
+    }
+    return new ConnectStart(null, message.trim(), r.status);
+  }
+
+  static boolean isConnectLink(String url) {
+    if (url == null || url.length() > 4096) return false;
+    try {
+      java.net.URI uri = new java.net.URI(url);
+      return "https".equals(uri.getScheme()) && uri.getUserInfo() == null && uri.getHost() != null
+          && "/api/solo-connect".equals(uri.getPath()) && uri.getRawQuery() != null && uri.getRawQuery().startsWith("start=");
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  /** Package-private for tests. A 503 means connected apps are switched off on the server. */
+  static Connections toConnections(Response r) {
+    java.util.List<App> apps = new java.util.ArrayList<>();
+    if (r.status == 200 && r.json != null && r.json.optJSONArray("apps") != null) {
+      org.json.JSONArray array = r.json.optJSONArray("apps");
+      for (int i = 0; i < array.length() && i < 10; i++) {
+        JSONObject a = array.optJSONObject(i);
+        if (a == null) continue;
+        String provider = a.optString("provider", "");
+        String name = a.optString("name", "").replaceAll("[\\x00-\\x1f\\x7f]", " ").trim();
+        if (!SoloApi.KNOWN_CONNECTORS.contains(provider) || name.isEmpty() || name.length() > 60) continue;
+        apps.add(new App(provider, name, a.optBoolean("connected", false)));
+      }
+      return new Connections(true, r.json.optBoolean("pro", false), apps, 200, null, null);
+    }
+    String code = r.json == null ? null : r.json.optString("code", null);
+    String error = r.json == null ? null : r.json.optString("error", null);
+    boolean off = r.status == 404 || (r.status == 503 && "connectors_disabled".equals(code));
+    if (r.status == 0) error = "Can't reach SOLO AI. Check your connection and try again.";
+    if (error == null || error.trim().isEmpty()) error = "Connected apps are unavailable (HTTP " + r.status + ").";
+    return new Connections(!off, false, apps, r.status, error.trim(), code);
+  }
 
   static final class Response {
     final int status;

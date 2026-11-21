@@ -53,6 +53,7 @@ class HistoryStore(private val file: File) {
             for (src in m.sources) sources.put(JSONObject().put("title", src.title).put("url", src.url))
             put("sources", sources)
           }
+          if (m.connectors.isNotEmpty()) put("connectors", JSONArray(m.connectors))
         })
       }
       val history = JSONArray()
@@ -85,6 +86,7 @@ class HistoryStore(private val file: File) {
           truncated = m.optBoolean("truncated", false),
           error = m.optString("error").ifEmpty { null },
           sources = parseSources(m),
+          connectors = SoloApi.parseConnectors(m),
         )
       }
       val h = t.getJSONArray("history")

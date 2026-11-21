@@ -204,4 +204,54 @@ public class AccountApiTest {
   private static JSONObject json(String s) {
     try { return new JSONObject(s); } catch (Exception e) { throw new AssertionError(e); }
   }
+
+  @Test public void connectionsListOnlyKnownAppsAndSayIfTheAccountIsPro() throws Exception {
+    AccountApi.Connections c = AccountApi.toConnections(new AccountApi.Response(200, new JSONObject(
+        "{\"pro\":true,\"apps\":[{\"provider\":\"google_calendar\",\"name\":\"Google Calendar\",\"connected\":true},"
+        + "{\"provider\":\"gmail\",\"name\":\"Gmail\",\"connected\":true}]}"), null));
+    assertTrue(c.available);
+    assertTrue(c.pro);
+    assertEquals(1, c.apps.size());
+    assertEquals("Google Calendar", c.apps.get(0).name);
+    assertTrue(c.apps.get(0).connected);
+  }
+
+  @Test public void switchedOffConnectionsAreHiddenButOutagesAreNot() throws Exception {
+    AccountApi.Connections off = AccountApi.toConnections(new AccountApi.Response(503,
+        new JSONObject("{\"error\":\"Connected apps are not available yet.\",\"code\":\"connectors_disabled\"}"), null));
+    assertFalse(off.available);
+    assertFalse(AccountApi.toConnections(new AccountApi.Response(404, null, null)).available);
+    AccountApi.Connections down = AccountApi.toConnections(new AccountApi.Response(0, null, null));
+    assertTrue(down.available);
+    assertEquals("Can't reach SOLO AI. Check your connection and try again.", down.error);
+  }
+
+  @Test public void onlyTheServersOwnHttpsConnectLinkIsOpened() throws Exception {
+    assertTrue(AccountApi.isConnectLink("https://thesoloserviceprovider.com.au/api/solo-connect?start=v1.abc"));
+    assertFalse(AccountApi.isConnectLink("http://thesoloserviceprovider.com.au/api/solo-connect?start=v1.abc"));
+    assertFalse(AccountApi.isConnectLink("https://evil.example/phish?start=v1"));
+    assertFalse(AccountApi.isConnectLink("https://user@thesoloserviceprovider.com.au/api/solo-connect?start=x"));
+    assertFalse(AccountApi.isConnectLink("intent://x#Intent;end"));
+    AccountApi.ConnectStart bad = AccountApi.toConnectStart(new AccountApi.Response(200,
+        new JSONObject("{\"url\":\"https://evil.example/x\"}"), null));
+    assertNull(bad.url);
+    AccountApi.ConnectStart pro = AccountApi.toConnectStart(new AccountApi.Response(403,
+        new JSONObject("{\"error\":\"Connected apps are part of SOLO AI Pro.\",\"code\":\"pro_required\"}"), null));
+    assertEquals("Connected apps are part of SOLO AI Pro.", pro.error);
+  }
+
+  @Test public void connectAndDisconnectUseTheSignedInSession() throws Exception {
+    try (TinyHttpServer server = new TinyHttpServer(200, "application/json",
+        "{\"url\":\"https://thesoloserviceprovider.com.au/api/solo-connect?start=v1.abc\"}")) {
+      AccountApi api = new AccountApi("http://127.0.0.1:" + server.port() + "/api/solo-chat", "test");
+      AccountApi.ConnectStart start = api.connect("acc-token-123", "google_calendar");
+      assertEquals("https://thesoloserviceprovider.com.au/api/solo-connect?start=v1.abc", start.url);
+      TinyHttpServer.Seen seen = server.requests.get(0);
+      assertEquals("/api/solo-connect", seen.path);
+      assertEquals("Bearer acc-token-123", seen.headers.get("authorization"));
+      JSONObject body = new JSONObject(seen.body);
+      assertEquals("connect", body.getString("action"));
+      assertEquals("google_calendar", body.getString("provider"));
+    }
+  }
 }

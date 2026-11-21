@@ -134,6 +134,8 @@ fun SoloApp(vm: ChatViewModel) {
       onSignOut = vm::signOut,
       onClearHistory = vm::clearAllHistory,
       onDeleteAccount = vm::deleteAccount,
+      onConnect = vm::connect,
+      onDisconnect = vm::disconnect,
     )
   } else {
     ModalNavigationDrawer(
@@ -289,7 +291,7 @@ private fun ChatScaffold(
               )
             }
           }
-          if (state.sending) item(key = "streaming") { StreamingMessage(state.streamingText, onCopied) }
+          if (state.sending) item(key = "streaming") { StreamingMessage(state.streamingText, onCopied, state.toolNote) }
           if (!state.canChat && state.service != ServiceState.CHECKING) {
             item(key = "status") { StatusCard(state, onSignIn, onCreateAccount, onRecheck) }
           }

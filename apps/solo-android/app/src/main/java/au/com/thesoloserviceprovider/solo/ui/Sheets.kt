@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +60,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Checkbox
@@ -85,6 +87,7 @@ private const val MIN_PASSWORD = 12
 private const val MAX_PASSWORD = 128
 private val EMAIL = Regex("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
 private val CODE = Regex("^[0-9]{6,10}$")
+private const val RESEND_SECONDS = 60
 
 /** The server's password rules for new passwords: 12–128 characters, not blank, no control characters. */
 internal fun newPasswordProblem(password: String): String? {
@@ -128,6 +131,12 @@ fun SignInSheet(
   var busy by remember { mutableStateOf(false) }
   var error by remember { mutableStateOf<String?>(null) }
   var notice by remember { mutableStateOf<String?>(null) }
+  // The email service refuses a new code within 60 seconds of the last one, so the
+  // "Send a new code" button waits that long instead of failing.
+  var resendWait by rememberSaveable { mutableStateOf(0) }
+  LaunchedEffect(resendWait) {
+    if (resendWait > 0) { delay(1000); resendWait -= 1 }
+  }
 
   fun go(next: Step) {
     if (busy) return
@@ -141,7 +150,7 @@ fun SignInSheet(
       val result = action()
       busy = false
       when {
-        result.needsCode -> { step = Step.VERIFY; code = ""; password = ""; notice = result.error }
+        result.needsCode -> { step = Step.VERIFY; code = ""; password = ""; notice = result.error; resendWait = RESEND_SECONDS }
         result.error != null -> error = result.error
         else -> onOk()
       }
@@ -162,13 +171,13 @@ fun SignInSheet(
       Step.CREATE -> {
         newPasswordProblem(password)?.let { error = it; return }
         if (!agreed) { error = "Tick the box to agree to the Terms and Privacy Policy."; return }
-        run({ onSignUp(address, password) }) { step = Step.VERIFY; code = ""; password = "" }
+        run({ onSignUp(address, password) }) { step = Step.VERIFY; code = ""; password = ""; resendWait = RESEND_SECONDS }
       }
       Step.VERIFY -> {
         if (!CODE.matches(code)) { error = "Enter the 8-digit code from the email."; return }
         run({ onVerify(address, code) }) { password = ""; code = ""; onDismiss() }
       }
-      Step.RESET -> run({ onRequestReset(address) }) { step = Step.RESET_CODE; code = ""; password = "" }
+      Step.RESET -> run({ onRequestReset(address) }) { step = Step.RESET_CODE; code = ""; password = ""; resendWait = RESEND_SECONDS }
       Step.RESET_CODE -> {
         if (!CODE.matches(code)) { error = "Enter the 8-digit code from the email."; return }
         newPasswordProblem(password)?.let { error = it; return }
@@ -178,7 +187,8 @@ fun SignInSheet(
   }
 
   fun resend() {
-    if (busy) return
+    if (busy || resendWait > 0) return
+    resendWait = RESEND_SECONDS
     val address = email.trim()
     val action: suspend () -> AccountResult = if (step == Step.RESET_CODE) ({ onRequestReset(address) }) else ({ onResendCode(address) })
     run(action) { notice = "We sent a new code to $address. Use the newest one." }
@@ -198,7 +208,7 @@ fun SignInSheet(
     Step.RESET -> "We'll email you a code"
     Step.RESET_CODE -> "Enter the code we emailed you"
   }
-  val codeSent = "We emailed an 8-digit code to ${email.trim()}. It can take a minute; check spam if it doesn't arrive."
+  val codeSent = "We emailed an 8-digit code to ${email.trim()}. It can take up to 2 minutes to arrive, so please wait before asking for another. Check Spam and Promotions too."
 
   ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheet, containerColor = Solo.Surface) {
     Column(
@@ -215,7 +225,7 @@ fun SignInSheet(
       }
       if (step == Step.VERIFY || step == Step.RESET_CODE) {
         Text(
-          if (step == Step.RESET_CODE) "If ${email.trim()} has a SOLO AI account, we emailed it an 8-digit code. It can take a minute; check spam if it doesn't arrive."
+          if (step == Step.RESET_CODE) "If ${email.trim()} has a SOLO AI account, we emailed it an 8-digit code. It can take up to 2 minutes to arrive, so please wait before asking for another. Check Spam and Promotions too."
           else codeSent,
           style = MaterialTheme.typography.bodyMedium, color = Solo.Text, modifier = Modifier.testTag("code-sent"),
         )
@@ -311,8 +321,9 @@ fun SignInSheet(
             }
           }
           Step.VERIFY, Step.RESET_CODE -> {
-            TextButton(onClick = ::resend, enabled = !busy, modifier = Modifier.testTag("resend-code")) {
-              Text("Send a new code", color = Solo.Gold)
+            TextButton(onClick = ::resend, enabled = !busy && resendWait == 0, modifier = Modifier.testTag("resend-code")) {
+              Text(if (resendWait > 0) "Send a new code in ${resendWait}s" else "Send a new code",
+                color = if (resendWait > 0) Solo.TextMuted else Solo.Gold)
             }
             TextButton(onClick = { go(if (step == Step.VERIFY) Step.SIGN_IN else Step.RESET) }, modifier = Modifier.testTag("change-email")) {
               Text(if (step == Step.VERIFY) "Back to sign in" else "Use a different email", color = Solo.Gold)

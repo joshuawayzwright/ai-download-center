@@ -60,6 +60,9 @@ class SoloAppUiTest {
   private val emailVerified = AtomicBoolean(true)
   @Volatile private var chatResponse: Array<String> = json(200, """{"reply":"Hello from SOLO."}""")
   private val chatCalls = AtomicInteger()
+  private val connectorsOn = AtomicBoolean(false)
+  private val calendarConnected = AtomicBoolean(false)
+  private fun apps() = json(200, """{"pro":true,"apps":[{"provider":"google_calendar","name":"Google Calendar","access":"read-only","connected":${calendarConnected.get()}}]}""")
 
   private val app: Context get() = RuntimeEnvironment.getApplication()
 
@@ -88,6 +91,7 @@ class SoloAppUiTest {
   }
 
   @After fun tearDown() {
+    org.robolectric.shadows.ShadowTextToSpeech.reset()
     scenario?.close()
     server?.close()
     SoloConfig.endpointOverride = null
@@ -142,6 +146,13 @@ class SoloAppUiTest {
           }
         }
         path == "/api/solo-report" -> json(200, """{"ok":true,"code":"reported"}""")
+        path == "/api/solo-connect" && !connectorsOn.get() ->
+          json(503, """{"error":"Connected apps are not available yet.","code":"connectors_disabled"}""")
+        path == "/api/solo-connect" && method == "GET" -> apps()
+        path == "/api/solo-connect" -> when (JSONObject(body).optString("action")) {
+          "disconnect" -> { calendarConnected.set(false); apps() }
+          else -> json(200, """{"url":"https://thesoloserviceprovider.com.au/api/solo-connect?start=v1.test"}""")
+        }
         else -> arrayOf("404", "text/plain", "not found")
       }
     }
@@ -403,8 +414,15 @@ class SoloAppUiTest {
     waitForText("That code is invalid or expired")
     assertEquals(null, lastAction("login"))
 
-    compose.onNodeWithTag("resend-code").performClick()
+    // A new code can't be requested until 60 seconds after the last one (the email limit).
+    waitForText("Send a new code in")
+    compose.onNodeWithTag("resend-code").assertIsNotEnabled()
+    compose.mainClock.autoAdvance = false
+    repeat(62) { compose.mainClock.advanceTimeBy(1000) }
+    compose.mainClock.autoAdvance = true
+    compose.onNodeWithTag("resend-code").assertIsEnabled().performClick()
     waitForText("We sent a new code to new@example.test")
+    waitForText("Send a new code in")
     compose.waitUntil(20000) { synchronized(server!!.requests) { server!!.requests.count { it.body.contains("\"action\":\"signup\"") } } == 2 }
 
     compose.onNodeWithTag("code").performTextClearance()
@@ -496,5 +514,95 @@ class SoloAppUiTest {
     assertEquals("DELETE", JSONObject(delete.body).getString("confirm"))
     compose.waitUntil(20000) { storedRefresh() == null && historyText() == null }
     compose.onNodeWithText("Saved reply.").assertDoesNotExist()
+  }
+
+  @Test fun aConnectedCalendarIsUsedInChatAndCanBeDisconnected() {
+    accountsOn.set(true)
+    connectorsOn.set(true)
+    calendarConnected.set(true)
+    start()
+    waitForText("Sign in to chat with SOLO AI")
+    compose.onNodeWithText("Sign in").performClick()
+    signIn()
+    waitForText("Plan my week")
+    compose.waitUntil(20000) { lastRequest("/api/solo-connect") != null || synchronized(server!!.requests) {
+      server!!.requests.any { it.path == "/api/solo-connect" && it.method == "GET" } } }
+
+    chatResponse = arrayOf("200", "text/event-stream",
+      "event: tool\ndata: {\"provider\":\"google_calendar\",\"label\":\"Checked your Google Calendar\"}\n\n" +
+        "event: delta\ndata: {\"text\":\"Thursday 9am is the Smith quote.\"}\n\n" +
+        "event: done\ndata: {\"reply\":\"Thursday 9am is the Smith quote.\",\"connectors\":[\"google_calendar\"]}\n\n")
+    send("What's on this week?")
+    waitForText("Thursday 9am is the Smith quote.")
+    waitForText("Checked your Google Calendar")
+    val chat = JSONObject(lastRequest("/api/solo-chat")!!.body)
+    assertEquals("google_calendar", chat.getJSONArray("connectors").getString(0))
+
+    compose.onNodeWithContentDescription("Conversations and settings").performClick()
+    waitForText("Settings and account")
+    compose.onNodeWithText("Settings and account").performClick()
+    waitForText("Connected · read-only")
+    compose.onNodeWithTag("connector-google_calendar-action").performClick()
+    waitForText("Disconnect Google Calendar?")
+    compose.onNodeWithTag("confirm-disconnect").performClick()
+    waitForText("Read-only. Plan your week around real bookings")
+    val disconnect = lastAction("disconnect", "/api/solo-connect")!!
+    assertEquals("Bearer access-1", disconnect.headers["authorization"])
+    assertEquals("google_calendar", JSONObject(disconnect.body).getString("provider"))
+  }
+
+  @Test fun connectedAppsStayHiddenWhileSwitchedOff() {
+    accountsOn.set(true)
+    start()
+    waitForText("Sign in to chat with SOLO AI")
+    compose.onNodeWithText("Sign in").performClick()
+    signIn()
+    waitForText("Plan my week")
+    compose.onNodeWithContentDescription("Conversations and settings").performClick()
+    waitForText("Settings and account")
+    compose.onNodeWithText("Settings and account").performClick()
+    waitForText("Your data")
+    compose.onNodeWithText("Connected apps").assertDoesNotExist()
+  }
+
+  private fun lastSpoken(): String? = org.robolectric.shadows.ShadowTextToSpeech.getLastTextToSpeechInstance()
+    ?.let { org.robolectric.Shadows.shadowOf(it).lastSpokenText }
+
+  /** Robolectric's engine never answers by itself: report it ready, as a phone would. */
+  private fun ttsReady() {
+    compose.waitUntil(20000) { org.robolectric.shadows.ShadowTextToSpeech.getLastTextToSpeechInstance() != null }
+    scenario!!.onActivity {
+      org.robolectric.Shadows.shadowOf(org.robolectric.shadows.ShadowTextToSpeech.getLastTextToSpeechInstance())
+        .onInitListener.onInit(android.speech.tts.TextToSpeech.SUCCESS)
+    }
+  }
+
+  @Test fun readAloudSpeaksTheReplyOnTheFirstTap() {
+    org.robolectric.shadows.ShadowTextToSpeech.addLanguageAvailability(java.util.Locale("en", "AU"))
+    chatResponse = json(200, """{"reply":"Here is **your plan**."}""")
+    start()
+    waitForText("Plan my week")
+    send("Plan my week")
+    waitForText("Here is your plan.")
+    ttsReady()
+    compose.onNodeWithContentDescription("Read aloud").performClick()
+    // The engine was started with the app, so the first tap speaks plain text at once.
+    // (Robolectric's engine finishes instantly, so the Stop state is checked in the next test.)
+    compose.waitUntil(20000) { lastSpoken() == "Here is your plan." }
+  }
+
+  @Test fun readAloudExplainsHowToGetAVoiceWhenThePhoneHasNone() {
+    chatResponse = json(200, """{"reply":"Hello."}""")
+    start()
+    waitForText("Plan my week")
+    send("Hi")
+    waitForText("Hello.")
+    // Tapped while the engine is still starting: it then reports no English voice.
+    compose.onNodeWithContentDescription("Read aloud").performClick()
+    waitForDescription("Stop reading")
+    ttsReady()
+    waitForText("Read aloud needs a voice on your phone")
+    waitForDescription("Read aloud")
+    assertEquals(null, lastSpoken())
   }
 }

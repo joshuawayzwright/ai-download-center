@@ -1,5 +1,6 @@
 package au.com.thesoloserviceprovider.solo
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,5 +31,17 @@ class MainActivity : ComponentActivity() {
     )
     super.onCreate(savedInstanceState)
     setContent { SoloTheme { SoloApp(vm) } }
+  }
+
+  // Back from connecting an app in the browser: soloai://connected (or the user just
+  // switched back). Re-read connected apps either way.
+  override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    if (intent.data?.scheme == "soloai") vm.refreshConnections(announce = true)
+  }
+
+  override fun onRestart() {
+    super.onRestart()
+    vm.refreshConnections()
   }
 }
