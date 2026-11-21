@@ -117,3 +117,35 @@ None had been uploaded manually, so nothing was skipped.
 008 arrived with no tags; they were re-added. Next run: 22 Nov 08:05 UTC, Shorts 015–024.
 
 Old copies still to delete in Studio: eupv0I2OYDY, naMSOmVxu0Y, OkyRdvau45U, Z0gfg4sGMP0, gn8tkMYo15o (broken token Short, now replaced by Skjo_pLcOjo).
+
+### 21 Nov 2026: TikTok and Instagram switched to branded videos
+
+On the owner's instruction ("Swap all to branded"), every TikTok/Instagram post that hasn't gone out yet now uses the SOLO-branded video.
+
+| Shorts | TikTok + Instagram schedule (08:30 UTC = 6:30pm Brisbane unless noted) |
+|---|---|
+| 007–012 | 22–27 Nov, one a day (branded media swapped into the existing scheduled posts) |
+| 013–024 | 27 Nov 23:30 UTC to 3 Dec 08:30 UTC, two a day |
+
+Old lime/coral posts 001–006 are already live on TikTok/Instagram. vidIQ can't delete them, so the owner deletes them in the app if wanted. Instagram account connected in vidIQ: @soloserviceproviderau (the Solo site links @soloservicepro).
+
+### Cadence after the queue (owner approved, 21 Nov 2026)
+
+- YouTube: 3 Shorts a day at 08:05 UTC (6:05pm Brisbane).
+- TikTok + Instagram: 2 a day.
+- Each new batch is written from vidIQ keyword research, fact-checked, and approved by the owner before it uploads.
+
+### Batch 03 (025–036): approved, scheduled 3 a day, public
+
+All 12 are in vidIQ storage with ready YouTube drafts (public, category 28). Scheduled tasks in this session publish them at 08:05 UTC:
+
+| Day | Shorts | vidIQ postIds |
+|---|---|---|
+| 23 Nov | 025 What is MCP · 026 How AI video works · 027 4 signs a video was made with AI | a82f20fe · da48e907 · 646fa786 |
+| 24 Nov | 028 Is AI reading your job application? · 029 AI clipping tools · 030 AI influencers | 957f9f97 · 2b8c6a44 · cabca76f |
+| 25 Nov | 031 Can AI build your website? · 032 3 rules for AI in business · 033 AI model names | e303d342 · d6a2eeb8 · df6885b0 |
+| 26 Nov | 034 Compare two AI models · 035 What free AI tools cost · 036 AI Shorts rules | f1734d49 · dc9c75bc · 69c84b4a |
+
+If this session isn't running, publish each draft in vidIQ (Social → Drafts) on its day. Batch 04 needs writing before 27 Nov to keep 3 a day going.
+
+Solo Service Provider site: the YouTube icon on index.html and contact.html now links https://www.youtube.com/@JoshWrightAI.
