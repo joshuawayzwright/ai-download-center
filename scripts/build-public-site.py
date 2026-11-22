@@ -8,6 +8,7 @@ PUBLIC_FILES = (
     'index.html', 'featured-thanks.html', 'creator-studio.html',
     'coding-assistants.html', 'image-generators.html', 'local-ai-apps.html',
     'free-ai-tools.html', 'free-ai-explained.html',
+    'chatgpt-alternatives.html', 'ai-voice-video-tools.html',
     'privacy.html', 'terms.html',
     'app.js', 'config.js', 'analytics.js', 'newsletter.js', 'hf-classify.js', 'creator-studio.js',
     'styles.css', 'guide.css', 'creator-studio.css', 'favicon.svg', 'og-image.png',
