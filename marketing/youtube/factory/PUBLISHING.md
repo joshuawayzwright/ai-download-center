@@ -149,3 +149,22 @@ All 12 are in vidIQ storage with ready YouTube drafts (public, category 28). Sch
 If this session isn't running, publish each draft in vidIQ (Social → Drafts) on its day. Batch 04 needs writing before 27 Nov to keep 3 a day going.
 
 Solo Service Provider site: the live site is in the private solo-commerce repository (powerhouse-website/ here is a retired copy). Its YouTube, Instagram and Threads links are updated there.
+
+### 22 Nov 2026, 08:05 UTC run: 10 published (public)
+
+All of 21 Nov's 10 had gone out, so none needed retrying.
+
+| # | Title | YouTube |
+|---|---|---|
+| 015 | Is your AI chat being used for training? Check this | https://www.youtube.com/watch?v=96X_i_GE6kU |
+| 016 | Why does AI need GPUs? | https://www.youtube.com/watch?v=BEaDh5FCKBs |
+| 017 | Does AI learn from your chats? Training vs using | https://www.youtube.com/watch?v=jrSRh11TE_U |
+| 018 | The 4-part prompt that fixes bad AI answers | https://www.youtube.com/watch?v=9a5SuHKNBeM |
+| 019 | Why AI struggles to count letters in a word | https://www.youtube.com/watch?v=CVtyotd9htg |
+| 020 | AI vs machine learning vs deep learning | https://www.youtube.com/watch?v=ngPbV6WG8qY |
+| 021 | How AI understands meaning: embeddings explained | https://www.youtube.com/watch?v=ZT-QIqAQ_YY |
+| 022 | What is multimodal AI? | https://www.youtube.com/watch?v=qhvHbYQC7RQ |
+| 023 | Use AI to actually learn, not just get answers | https://www.youtube.com/watch?v=VdTsbnNEdks |
+| 024 | Is the AI on your phone sending your data to the cloud? | https://www.youtube.com/watch?v=LDEF_KCgbLg |
+
+019 and 023 arrived with no tags; they were re-added. Batch 02 is done. Next: batch 03 at 3 a day, 23–26 Nov 08:05 UTC.
