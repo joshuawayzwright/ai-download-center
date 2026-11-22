@@ -1,0 +1,182 @@
+[
+  {
+    "id": "037-how-ai-works",
+    "pillar": "AI Explained",
+    "title": "How AI chatbots actually work, in 40 seconds #Shorts",
+    "description": "AI chatbots learn patterns from huge amounts of text, then predict what comes next, one small piece at a time. Here's the whole idea in 40 seconds. Narrated with an AI voice.\n\n#AI #HowAIWorks #AIexplained #Shorts",
+    "tags": ["how AI works", "how does AI work", "how chatbots work", "AI explained", "AI for beginners", "what is AI"],
+    "segments": [
+      {"screen": "How does AI work?", "say": "How does an AI chatbot actually work? Here it is in forty seconds."},
+      {"screen": "Step 1: read a lot", "say": "First, the model is trained on a huge amount of text. It isn't memorising pages. It's learning patterns in how words fit together."},
+      {"screen": "Step 2: predict", "say": "Then, when you type a question, it predicts the most likely next piece of text, adds it, and predicts again. One small piece at a time."},
+      {"screen": "Step 3: polish", "say": "After that first training, people rate its answers, and it's tuned to be more helpful and follow instructions."},
+      {"screen": "Patterns, not lookups", "say": "That's why it can sound confident and still be wrong. It's matching patterns, not looking up facts."},
+      {"screen": "Check what matters", "say": "So use it to think and draft, and check anything important. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "038-ai-interview-practice",
+    "pillar": "Practical AI",
+    "title": "Practise for a job interview with AI: 3 steps #Shorts",
+    "description": "Use an AI chatbot as a free mock interviewer: likely questions, practice answers and honest feedback. Plus two rules to follow. Narrated with an AI voice.\n\n#AI #JobInterview #Careers #Shorts",
+    "tags": ["AI interview", "AI interview practice", "mock interview with AI", "job interview tips", "ChatGPT for job seekers", "careers"],
+    "segments": [
+      {"screen": "Interview coming up?", "say": "Got a job interview coming up? An AI chatbot can be a free practice partner. Here's how."},
+      {"screen": "1. Paste the job ad", "say": "Step one. Paste in the job ad and ask for the ten questions you're most likely to get, including the hard ones."},
+      {"screen": "2. Mock interview", "say": "Step two. Ask it to interview you one question at a time, and answer out loud or in writing, like it's real."},
+      {"screen": "3. Ask for feedback", "say": "Step three. Ask for blunt feedback. Was the answer specific? Did you give an example and a result?"},
+      {"screen": "Two rules", "say": "Two rules. Don't paste anything confidential from your current job. And check the employer's rules, because many don't allow AI help during the interview itself."},
+      {"screen": "Practice, not a script", "say": "Use it to practise, not to memorise a script. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "039-api-keys-safety",
+    "pillar": "AI Safety",
+    "title": "Using a free AI API key? Check these 4 things first #Shorts",
+    "description": "An AI API key works like a password linked to your account and your bill. Four things to check before you use one, free tier or not. Narrated with an AI voice.\n\n#AI #API #AISafety #Shorts",
+    "tags": ["free LLM API", "AI API key", "API key safety", "free AI API", "AI for developers", "AI safety"],
+    "segments": [
+      {"screen": "Free AI API key?", "say": "Lots of tutorials show you how to get a free AI API key. Before you use one, check these four things."},
+      {"screen": "It's a password", "say": "First, an API key works like a password linked to your account. Anyone who has it can use it, and you get the bill."},
+      {"screen": "Never post it", "say": "Second, never paste it into public code, a screenshot or a chat. Keep it in a private settings file, and delete it if it leaks."},
+      {"screen": "Set a spend limit", "say": "Third, if the account has billing, set a spending limit or alerts, so a mistake can't run up a big charge."},
+      {"screen": "Read the free terms", "say": "Fourth, free tiers often have tight limits, and some may use what you send to improve their products. Read the terms before you send private data."},
+      {"screen": "Treat it like a password", "say": "Treat every key like a password. Follow for more AI safety tips."}
+    ]
+  },
+  {
+    "id": "040-build-an-ai-agent",
+    "pillar": "AI Explained",
+    "title": "What you actually need to build an AI agent #Shorts",
+    "description": "An AI agent is a model that can use tools in a loop to finish a task. The five parts every agent needs, and the one that keeps it safe. Narrated with an AI voice.\n\n#AI #AIAgents #AIexplained #Shorts",
+    "tags": ["how to build AI agents", "AI agents explained", "what is an AI agent", "AI automation", "AI explained", "agentic AI"],
+    "segments": [
+      {"screen": "Build an AI agent?", "say": "Everyone's talking about building AI agents. Here's what one actually needs."},
+      {"screen": "1. A model", "say": "One, a model. That's the part that reads the task and decides what to do next."},
+      {"screen": "2. Tools", "say": "Two, tools. Things it's allowed to use, like search, a calendar, or a spreadsheet. Without tools, it can only talk."},
+      {"screen": "3. Instructions + loop", "say": "Three and four, clear instructions and a loop. It tries a step, checks the result, and picks the next step until the job's done."},
+      {"screen": "5. Limits", "say": "Five, limits. What it can't touch, how much it can spend, and when it must ask a human first, like before sending an email or paying for something."},
+      {"screen": "Start with one task", "say": "Start with one small, boring task and watch it closely. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "041-ai-knowledge-base",
+    "pillar": "Practical AI",
+    "title": "Turn your documents into an AI knowledge base #Shorts",
+    "description": "An AI knowledge base answers questions from your own documents instead of the whole internet. How it works and three rules for setting one up. Narrated with an AI voice.\n\n#AI #KnowledgeBase #SmallBusiness #Shorts",
+    "tags": ["AI knowledge base", "knowledgebase", "chat with your documents", "AI for small business", "RAG explained", "practical AI"],
+    "segments": [
+      {"screen": "Ask your own docs", "say": "What if you could ask an AI questions about your own documents? That's an AI knowledge base."},
+      {"screen": "How it works", "say": "You give it your files, like policies, price lists or manuals. When you ask a question, it finds the most relevant parts and answers from those."},
+      {"screen": "Rule 1: clean docs", "say": "Rule one. It's only as good as your documents. Remove old versions, or it will happily quote last year's prices."},
+      {"screen": "Rule 2: show sources", "say": "Rule two. Pick a tool that shows which document each answer came from, so you can check it."},
+      {"screen": "Rule 3: permissions", "say": "Rule three. Only add files everyone using it is allowed to see. Private staff or customer details don't belong in a shared assistant."},
+      {"screen": "Your docs, searchable", "say": "Done right, it saves hours of digging. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "042-ai-video-editing",
+    "pillar": "Practical AI",
+    "title": "What AI video editing can do, and what it can't #Shorts",
+    "description": "AI editing tools can caption, cut silences and reframe your videos fast. Here's what they're good at, and the jobs you should still do yourself. Narrated with an AI voice.\n\n#AI #VideoEditing #ContentCreation #Shorts",
+    "tags": ["how to edit with AI", "AI video editing", "edit video with AI", "AI for creators", "AI captions", "AI tools"],
+    "segments": [
+      {"screen": "Edit with AI?", "say": "Can AI edit your videos for you? Some of it, yes. Here's what it's good at."},
+      {"screen": "Captions in seconds", "say": "Captions. AI can transcribe your speech and add captions in seconds. Check names and numbers, because that's where it slips."},
+      {"screen": "Cut the silences", "say": "Silences and filler words. Many editors can cut pauses and ums automatically, or let you edit the video by editing the transcript."},
+      {"screen": "Reframe for vertical", "say": "Reframing. Some tools can track your face and turn a wide video into a vertical one for Shorts."},
+      {"screen": "What it can't do", "say": "What it can't do well is judge your story. Which moment is the hook, what to cut, and what's actually interesting is still your job."},
+      {"screen": "AI for the boring bits", "say": "Use AI for the boring bits, and your time for the story. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "043-make-a-game-with-ai",
+    "pillar": "Practical AI",
+    "title": "Can AI make a video game for you? #Shorts",
+    "description": "AI can help you make a simple game, even if you've never coded. What it can do, where it gets stuck, and how to start. Narrated with an AI voice.\n\n#AI #GameDev #AIcoding #Shorts",
+    "tags": ["how to make a game with AI", "AI game development", "make games with AI", "AI coding for beginners", "game dev", "AI tools"],
+    "segments": [
+      {"screen": "AI made my game?", "say": "Can AI make a video game for you, even if you've never coded? Sort of. Here's the honest version."},
+      {"screen": "It writes the code", "say": "AI chatbots can write code for simple games, like a platformer or a quiz. Some game engines now have AI helpers built in too."},
+      {"screen": "Start tiny", "say": "Start tiny. Ask for one thing at a time, like make the player jump, then test it before asking for the next thing."},
+      {"screen": "Paste the errors", "say": "When it breaks, and it will, copy the exact error message back to the AI. That's how you fix most problems."},
+      {"screen": "Where it struggles", "say": "It struggles as the game gets bigger. Keeping lots of pieces working together still takes planning, and making it fun is still up to you."},
+      {"screen": "Learn as you build", "say": "Ask it to explain the code too, and you'll learn as you build. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "044-what-is-vibe-coding",
+    "pillar": "AI Explained",
+    "title": "What is vibe coding? #Shorts",
+    "description": "Vibe coding means building software by describing what you want to an AI and accepting the code it writes. Andrej Karpathy coined the term in February 2025. Where it works and where it's risky. Narrated with an AI voice.\n\n#AI #VibeCoding #AIcoding #Shorts",
+    "tags": ["what is vibe coding", "vibe coding", "vibe coding explained", "AI coding", "coding with AI", "AI explained"],
+    "segments": [
+      {"screen": "What is vibe coding?", "say": "You keep hearing about vibe coding. So what is it?"},
+      {"screen": "Describe, don't type", "say": "Vibe coding means building software by describing what you want to an AI, and accepting the code it writes, often without reading it closely."},
+      {"screen": "Where it came from", "say": "The term was coined by AI researcher Andrej Karpathy in February 2025, and it spread fast."},
+      {"screen": "Where it shines", "say": "It's great for quick prototypes, personal tools, and trying an idea in an afternoon."},
+      {"screen": "Where it's risky", "say": "It's risky for anything handling money, passwords or customer data. Code you haven't read can hide security holes."},
+      {"screen": "Prototype, then review", "say": "Vibe code the prototype. Have someone review it before real users touch it. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "045-fact-check-ai",
+    "pillar": "AI Safety",
+    "title": "How to fact-check an AI answer in 60 seconds #Shorts",
+    "description": "AI chatbots can be confidently wrong. A quick four-step check before you trust or share an answer. Narrated with an AI voice.\n\n#AI #FactCheck #ChatGPT #Shorts",
+    "tags": ["fact check AI", "is ChatGPT accurate", "AI hallucinations", "check AI answers", "AI safety", "AI tips"],
+    "segments": [
+      {"screen": "Is that true?", "say": "An AI just gave you an answer. Before you trust it or share it, do this sixty-second check."},
+      {"screen": "1. Ask for sources", "say": "One. Ask where that came from. Then actually open the links. AI can invent sources that look real."},
+      {"screen": "2. Check the date", "say": "Two. Check the date. Prices, laws and product details change, and the AI may be working from old information."},
+      {"screen": "3. Second source", "say": "Three. Confirm anything important with one trusted source that isn't an AI, like an official website."},
+      {"screen": "4. Watch exact numbers", "say": "Four. Be extra careful with exact numbers, quotes and names. That's where made-up details hide."},
+      {"screen": "Trust, then verify", "say": "Use AI to get started, not to get the final word. Follow for more AI safety tips."}
+    ]
+  },
+  {
+    "id": "046-ai-electricity",
+    "pillar": "AI Explained",
+    "title": "How much electricity does AI really use? #Shorts",
+    "description": "Data centres used about 1.5% of the world's electricity in 2024, and the International Energy Agency expects that to roughly double by 2030, driven largely by AI. What that means. Source: IEA, Energy and AI (April 2025). Narrated with an AI voice.\n\n#AI #Energy #DataCenters #Shorts",
+    "tags": ["AI electricity use", "AI energy consumption", "data center energy", "AI and climate", "AI explained", "AI in everyday life"],
+    "segments": [
+      {"screen": "AI's power bill", "say": "How much electricity does AI actually use? Here are the real numbers."},
+      {"screen": "About 1.5%", "say": "According to the International Energy Agency, data centres used about one and a half percent of the world's electricity in 2024."},
+      {"screen": "Could double by 2030", "say": "The agency expects that to roughly double by 2030, and AI is one of the biggest reasons."},
+      {"screen": "Training vs using", "say": "Power goes into two things. Training a big model happens once and uses a lot. Then every question everyone asks uses a little, and that adds up."},
+      {"screen": "Estimates vary", "say": "Estimates for a single chatbot question vary a lot, because companies share few details. Be wary of anyone quoting one exact number."},
+      {"screen": "Real, and growing", "say": "It's real, and growing fast, but still a small slice of total electricity. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "047-ai-emails",
+    "pillar": "Practical AI",
+    "title": "Write better emails with AI: the 3-step method #Shorts",
+    "description": "Generic prompts give generic emails. A three-step method for emails that sound like you, plus one rule about what not to paste. Narrated with an AI voice.\n\n#AI #ChatGPT #Productivity #Shorts",
+    "tags": ["ChatGPT for business", "write emails with AI", "AI email writing", "AI productivity", "AI for small business", "AI tips"],
+    "segments": [
+      {"screen": "AI emails sound fake?", "say": "Do your AI emails sound like a robot wrote them? Try this three-step method."},
+      {"screen": "1. Give the context", "say": "Step one. Tell it who the email is to, what happened, and what you want them to do next. One sentence each is enough."},
+      {"screen": "2. Show your voice", "say": "Step two. Paste in one email you've written before and say, match this tone. Short, friendly, or formal, whatever's really you."},
+      {"screen": "3. Ask for options", "say": "Step three. Ask for three short versions, pick the closest, and edit it yourself. The last ten percent is what makes it sound human."},
+      {"screen": "Don't paste secrets", "say": "One rule. Don't paste passwords, bank details or anything a customer told you in confidence."},
+      {"screen": "Faster, still you", "say": "Faster emails that still sound like you. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "048-ai-memory",
+    "pillar": "AI Safety",
+    "title": "Your AI chatbot might remember you. Here's how to check #Shorts",
+    "description": "Some AI assistants can remember details from your chats to personalise answers. How memory works, and where to view, delete or turn it off. Settings names vary by app. Narrated with an AI voice.\n\n#AI #Privacy #ChatGPT #Shorts",
+    "tags": ["AI memory", "ChatGPT memory", "AI privacy settings", "does AI remember", "AI privacy", "AI safety"],
+    "segments": [
+      {"screen": "It remembers you?", "say": "Ever noticed an AI chatbot remembering something you told it weeks ago? That's a memory feature."},
+      {"screen": "What memory does", "say": "Some assistants can save details from your chats, like your job or preferences, and use them later to personalise answers."},
+      {"screen": "Handy, but...", "say": "That can be handy. But it also means things you mentioned once might come back up in a later chat."},
+      {"screen": "Check your settings", "say": "Look in the app's settings for memory or personalisation. In many apps you can see what's saved, delete items, or turn it off."},
+      {"screen": "Temporary chats", "say": "Many also offer a temporary or incognito chat that doesn't use memory. Use it for anything sensitive."},
+      {"screen": "You're in control", "say": "Check it once, and you'll know what your AI knows. Follow for more AI safety tips."}
+    ]
+  }
+]
