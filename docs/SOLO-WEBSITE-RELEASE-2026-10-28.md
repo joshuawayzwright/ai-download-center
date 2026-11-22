@@ -1,6 +1,6 @@
 # Commercial website release — 28 October 2026
 
-> **Superseded on 17 November 2026:** the SOLO shop is now live with 16 products on sale. See [SOLO shop status](SOLO-SHOP-STATUS-2026-11-17.md). The "orders paused" and "coming soon" statements below are historical.
+> **Superseded on 17 November 2026:** the SOLO shop is now live with 16 products on sale. See SOLO shop status (moved to private records). The "orders paused" and "coming soon" statements below are historical.
 
 ## Owner instruction and scope
 
@@ -64,10 +64,10 @@ that entire development branch.
 - Fourteen production HTML/style/script/image/PDF requests returned HTTP 200
   and their bytes match source exactly. The legacy chat route returns GET 405;
   an unauthenticated POST returns 503 with public AI disabled.
-- [Sanitized live results](evidence/solo-website-and-api-live-2026-10-28.json)
+- Sanitized live results (moved to private records)
   include source hashes, browser observations and verification scope.
-- [Collection screenshot](evidence/solo-coming-soon-live-2026-10-28.jpg) and
-  [Terms screenshot](evidence/solo-terms-live-2026-10-28.jpg) capture the real
+- Collection screenshot (moved to private records) and
+  Terms screenshot (moved to private records) capture the real
   production pages, not a design mockup.
 
 ## Separately implemented SOLO access work

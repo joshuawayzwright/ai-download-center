@@ -45,8 +45,8 @@ returned HTTP 200 and matched the exact source-commit hashes.
 Actual Chrome at **1363 × 936** confirmed CHECK ACCESS retained the closed state,
 login/logout controls were hidden, and the page had no horizontal overflow.
 This verifies deployed closed-access behavior, not a real signed-in logout race.
-See the [sanitized evidence](evidence/solo-logout-verification-2026-10-27.json)
-and [desktop screenshot](evidence/solo-logout-preview-2026-10-27.jpg).
+See the sanitized evidence (moved to private records)
+and desktop screenshot (moved to private records).
 
 ## Preserved state and limits
 

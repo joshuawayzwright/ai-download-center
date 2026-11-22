@@ -7,7 +7,7 @@ The Auth-admission migration is **applied**, with managed history version
 six independent, overlapping database backends produced five admissions and
 one denial. Guarded cleanup and independent readback confirmed zero Auth
 counters. See [the deployment record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
-and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+and structured evidence (moved to private records).
 The three earlier connector failures remain historical; connector repair is
 not claimed.
 
@@ -121,8 +121,8 @@ check at **11:36:42 UTC** confirmed disabled policy, original caps
 **3/20/20/200**, zero eligible members/fixture sessions and 15 retained ledger rows with
 four earlier Gemini successes. Production remains the same maintenance alias.
 See [browser-isolation evidence](SOLO-BROWSER-ISOLATION-2026-10-27.md),
-[sanitized results](evidence/solo-browser-isolation-2026-10-27.json) and
-[desktop screenshot](evidence/solo-browser-preview-2026-10-27.jpg).
+sanitized results (moved to private records) and
+desktop screenshot (moved to private records).
 
 ## Immediate local sign-out update
 

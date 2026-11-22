@@ -53,7 +53,7 @@ Earlier server-key configuration evidence:
 - Scoped diagnostic deployment `dpl_Ght3B9TdBX37zQyHAKWvxm3tmGnR` was **READY** at that commit. Its logs contain `SOLO_COMMERCIAL_SERVER_KEY_PASS`, which requires actual RPC HTTP **200** followed by the existing adapter's expected **503 `disabled`** result. Auth settings were `disable_signup:false`, `email:true`, `anonymous:false`, `mailer_autoconfirm:false`.
 - Earlier normal protected Preview: `dpl_B1YYM8g9s9TfoLHGJtFw5ZLr2bCm`, **READY** at the same commit: [SOLO preview](https://solo-provider-industrial-8ig3nmuwt-wrightwayz.vercel.app/solo-ai.html#conversation). No build override was used and build logs confirm the probe did not run.
 - Actual HTTP checks on that normal deployment passed: account GET **200**, `enabled:false`, `authenticated:false`, `chatEnabled:false`, private/no-store caching; refresh POST **503 `auth_disabled`**; dummy customer Bearer chat POST **503 `customer_disabled`**. Marker: `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`.
-- Fresh SQL inspection after the probe confirmed **policy disabled, zero members, zero ledger rows**. The sanitized [server-key and deployment evidence](evidence/solo-server-key-2026-10-27.json) records these results. They establish configuration access and closed gates, not customer login, active quotas or customer-authenticated Gemini chat.
+- Fresh SQL inspection after the probe confirmed **policy disabled, zero members, zero ledger rows**. The sanitized server-key and deployment evidence (moved to private records) records these results. They establish configuration access and closed gates, not customer login, active quotas or customer-authenticated Gemini chat.
 
 Earlier hosted setup evidence:
 
@@ -90,7 +90,7 @@ the private-testing notice and restored the draft. No model reply was invented.
 This verifies the closed-gate browser interaction, not active login or Samsung
 device acceptance. The existing artwork was retained.
 
-![Deployed account gate and honest chat rejection](evidence/solo-customer-preview-2026-10-27.jpg)
+!Deployed account gate and honest chat rejection (moved to private records)
 
 ## Implemented behavior
 
@@ -138,7 +138,7 @@ The hosted migration is version **`20261027071534`**, name
 `solo_customer_admission`. The matching source is
 [`supabase/migrations/20261027071534_solo_customer_admission.sql`](../supabase/migrations/20261027071534_solo_customer_admission.sql).
 The local file was renamed to match the applied version without changing its SQL.
-The sanitized [hosted database evidence](evidence/solo-commercial-database-2026-10-27.json)
+The sanitized hosted database evidence (moved to private records)
 records the observed grants, disabled-state calls and HTTP boundaries.
 
 Live database inspection verified:

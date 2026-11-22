@@ -133,7 +133,7 @@ local run stalled in a nested CLI test; the normal approved execution path compl
 all 45 SQL cases successfully. The local subprocess case now has a five-second
 timeout so a similar environment failure cannot stall the suite indefinitely.
 
-See [sanitized verification evidence](evidence/solo-membership-dry-run-2026-10-28.json).
+See sanitized verification evidence (moved to private records).
 
 ### Committed source, CI and protected Preview
 
@@ -155,7 +155,7 @@ Protected Preview `dpl_8bpvb8yQuvuVwUYFFPQMApD5c3cN` is READY at that runtime:
 Five deployed files match the commit exactly, and twelve actual closed-gate HTTP
 checks passed. The temporary share was revoked afterward and its bypass map was
 empty; cached-cookie invalidation was not independently tested. See
-[HTTP evidence](evidence/solo-member-preview-2026-10-28.json).
+HTTP evidence (moved to private records).
 
 Production still points to `dpl_7Bg2jvu7yKdHk5mfa8GqCHKrD3Nt`. No customer
 access switch was enabled. These checks do not establish live customer signup,

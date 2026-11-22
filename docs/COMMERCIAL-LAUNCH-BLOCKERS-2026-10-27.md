@@ -1,6 +1,6 @@
 # SOLO — Commercial Launch Blocker Audit (27 October 2026)
 
-> **Superseded on 17 November 2026:** the SOLO shop is now live with 16 products on sale. See [SOLO shop status](SOLO-SHOP-STATUS-2026-11-17.md). The "orders paused" and "coming soon" statements below are historical.
+> **Superseded on 17 November 2026:** the SOLO shop is now live with 16 products on sale. See SOLO shop status (moved to private records). The "orders paused" and "coming soon" statements below are historical.
 
 The payment and SOLO API observations below preserve the **27 October audit
 snapshot**. Replacement-product release gates were reconciled on **28 October
