@@ -168,3 +168,21 @@ All of 21 Nov's 10 had gone out, so none needed retrying.
 | 024 | Is the AI on your phone sending your data to the cloud? | https://www.youtube.com/watch?v=LDEF_KCgbLg |
 
 019 and 023 arrived with no tags; they were re-added. Batch 02 is done. Next: batch 03 at 3 a day, 23–26 Nov 08:05 UTC.
+
+### Batch 04 (037–048) and AI Turning Points episodes 5–6: approved 22 Nov 2026
+
+Topics came from vidIQ keyword research (rising and high-demand AI searches). Key claims were checked: IEA *Energy and AI* (2025) data centre figures, Karpathy's February 2025 vibe coding post, and where Deep Blue's towers ended up. All 14 videos are in vidIQ storage with YouTube drafts (public, category 28). Episode thumbnails are attached to their drafts.
+
+**YouTube** (scheduled tasks in this session publish at 08:05 UTC = 6:05pm Brisbane):
+
+| Day | Videos | vidIQ postIds |
+|---|---|---|
+| 27 Nov | 037 How AI chatbots work · 038 AI interview practice · 039 API key safety | b29f1bf8 · 313918c4 · 0c970e91 |
+| 28 Nov | 040 Build an AI agent · 041 AI knowledge base · 042 AI video editing · **Ep 5: The Day a Computer Beat the World Chess Champion** | 7c8ba77f · 0223c4a5 · 146c36a1 · 7547faf1 |
+| 29 Nov | 043 Make a game with AI · 044 Vibe coding · 045 Fact-check AI | b2644718 · 1744028f · 4b48bc07 |
+| 30 Nov | 046 AI electricity · 047 AI emails · 048 AI memory | 92083066 · 0f709fde · 5782c9b1 |
+| 5 Dec | **Ep 6: The Bedroom Experiment That Started the AI Boom** | 62226846 |
+
+If this session isn't running, publish each draft in vidIQ on its day.
+
+**TikTok + Instagram** (owner approved 22 Nov; 2 a day, 9:30am and 6:30pm Brisbane = 23:30 and 08:30 UTC; TikTok public, comments on, AI-generated label on): Shorts 025–048 run 4–15 Dec 2026 (025 at 3 Dec 23:30 UTC through 048 at 15 Dec 08:30 UTC). They are scheduled in vidIQ, so they go out on their own.
