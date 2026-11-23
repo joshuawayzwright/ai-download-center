@@ -1493,3 +1493,10 @@ button, input, select, textarea, .tool-name { font-family: var(--font-body); }
 .newsletter > .primary-btn {
   margin: 8px 0 12px;
 }
+
+/* Keep the subscribe button readable on guide pages, where `.guide a` recolours links. */
+.newsletter .primary-btn,
+.newsletter .primary-btn:visited {
+  color: var(--bg);
+  text-decoration: none;
+}

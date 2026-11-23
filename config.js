@@ -20,7 +20,8 @@ window.SITE_CONFIG = {
   // Easiest: paste your provider's hosted subscribe page (Beehiiv, Kit, Substack, ...) into newsletterSignupUrl.
   // Optional: for an email box on the page itself, paste the provider's HTML form "action" URL into
   // newsletterFormAction and the name of its email field into newsletterEmailField. This takes priority.
-  newsletterSignupUrl: '',
+  // Klaviyo hosted subscribe page for the "AI Download Center Newsletter" list (double opt-in).
+  newsletterSignupUrl: 'https://manage.kmail-lists.com/subscriptions/subscribe?a=UQ4LLB&g=WrAJp2',
   newsletterFormAction: '',
   newsletterEmailField: 'email',
 
