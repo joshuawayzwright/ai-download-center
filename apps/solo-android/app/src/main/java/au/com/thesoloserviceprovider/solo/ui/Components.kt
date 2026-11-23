@@ -83,19 +83,23 @@ import au.com.thesoloserviceprovider.solo.R
 import au.com.thesoloserviceprovider.solo.Role
 import au.com.thesoloserviceprovider.solo.Source
 
-/** The approved SOLO AI icon. While SOLO is thinking, an animated gold-and-blue aura turns around it. */
+/**
+ * The approved SOLO AI icon. The image carries its own rounded blue frame with transparent
+ * corners, so it is drawn unclipped (clipping cut the frame's corners off). While SOLO is
+ * thinking, an animated gold-and-blue aura turns around it.
+ */
 @Composable
 fun SoloAvatar(size: Dp, thinking: Boolean = false, modifier: Modifier = Modifier) {
   Box(modifier.size(size), contentAlignment = Alignment.Center) {
     if (thinking) {
       val spin = rememberInfiniteTransition(label = "aura")
       val angle by spin.animateFloat(0f, 360f, infiniteRepeatable(tween(1600, easing = LinearEasing)), label = "angle")
-      Box(Modifier.size(size).rotate(angle).clip(RoundedCornerShape(size * 0.28f)).background(Solo.AuraGradient))
+      Box(Modifier.size(size).rotate(angle).clip(RoundedCornerShape(size * 0.2f)).background(Solo.AuraGradient))
     }
     Image(
       painter = painterResource(R.drawable.solo_avatar),
       contentDescription = null,
-      modifier = Modifier.size(if (thinking) size - 4.dp else size).clip(RoundedCornerShape(size * 0.24f)),
+      modifier = Modifier.size(if (thinking) size - 4.dp else size),
     )
   }
 }
