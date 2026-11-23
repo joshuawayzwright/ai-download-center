@@ -322,6 +322,14 @@
         "say": "Through the 1990s and 2000s, machine learning grew steadily: spam filters, handwriting recognition, recommendations. Less flashy than robots, but genuinely useful."
       },
       {
+        "screen": "Deep Blue, 1997",
+        "say": "In 1997, IBM's Deep Blue beat world chess champion Garry Kasparov. It used brute-force search and expert-written rules, not learning. That's episode five."
+      },
+      {
+        "screen": "Driverless, 2005",
+        "say": "In 2005, a robot car from Stanford University called Stanley won a US government challenge, driving itself more than two hundred kilometres across the desert. It was an early sign of the self-driving technology still being developed today."
+      },
+      {
         "chapter": "AI in your pocket",
         "screen": "2011",
         "say": "In 2011, two moments brought AI to the public. In February, IBM's Watson system beat two of the best human champions on the American quiz show Jeopardy. And in October, Apple launched Siri, a voice assistant, on the iPhone."
@@ -329,14 +337,6 @@
       {
         "screen": "Not quite smart",
         "say": "Both were impressive, but limited. Watson was hard to turn into everyday products, and voice assistants often misunderstood requests. Still, millions of people were now talking to AI every day."
-      },
-      {
-        "screen": "Deep Blue, 1997",
-        "say": "In 1997, IBM's Deep Blue beat world chess champion Garry Kasparov. It used brute-force search and expert-written rules, not learning. That's episode five."
-      },
-      {
-        "screen": "Driverless, 2005",
-        "say": "In 2005, a robot car from Stanford University called Stanley won a US government challenge, driving itself more than two hundred kilometres across the desert. It was an early sign of the self-driving technology still being developed today."
       },
       {
         "chapter": "Deep learning arrives",
