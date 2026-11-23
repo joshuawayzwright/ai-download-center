@@ -1,0 +1,679 @@
+[
+  {
+    "id": "lf01-how-ai-works",
+    "format": "landscape",
+    "pillar": "AI Explained",
+    "footer": "AI Field Notes · Beginner's guide · Narrated with an AI voice",
+    "title": "How AI Actually Works: A Complete Beginner's Guide",
+    "thumbnail": {
+      "text": "How AI works",
+      "kicker": "Beginner's guide",
+      "tag": "No maths"
+    },
+    "description": "A plain-English guide to how modern AI actually works, from the ground up. No maths, no jargon you aren't told the meaning of.\n\nWe cover what AI is, how machines learn from examples, what a neural network is, how chatbots like ChatGPT, Claude and Gemini write answers, why they sometimes make things up, how image generators work, and how to use AI well.\n\nCHAPTERS\n{chapters}\n\nMORE FROM AI FIELD NOTES\n- AI Turning Points: the moments that built modern AI (playlist on the channel)\n- Shorts on tokens, context windows, embeddings and more\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #HowAIWorks #AIforBeginners",
+    "tags": [
+      "how AI works",
+      "how does AI work",
+      "AI explained",
+      "AI for beginners",
+      "what is AI",
+      "how ChatGPT works",
+      "machine learning explained",
+      "neural networks explained",
+      "artificial intelligence",
+      "AI Field Notes"
+    ],
+    "segments": [
+      {
+        "chapter": "What is AI?",
+        "screen": "How does AI work?",
+        "say": "You use AI every day. In your phone, your search results, your email, and maybe a chatbot. But how does it actually work? By the end of this video, you'll understand it, without any maths."
+      },
+      {
+        "screen": "What AI means",
+        "say": "Let's start with the word. Artificial intelligence just means getting computers to do things that normally need human intelligence, like understanding language, recognising pictures, or making decisions."
+      },
+      {
+        "screen": "AI is a big umbrella",
+        "say": "That's a very broad idea. A chess program, a spam filter, and a chatbot are all called AI. But today, when people say AI, they usually mean one approach: machine learning."
+      },
+      {
+        "chapter": "AI you already use",
+        "screen": "Hidden everywhere",
+        "say": "You probably use AI dozens of times a day without noticing. When your email filters spam, when a map app predicts traffic, when your phone groups photos by face, or when a streaming app suggests what to watch next."
+      },
+      {
+        "screen": "Quietly useful",
+        "say": "Those systems don't chat with you. They quietly make predictions in the background. Chatbots are just the most visible kind of AI, because you can talk to them."
+      },
+      {
+        "chapter": "Rules vs learning",
+        "screen": "The old way: rules",
+        "say": "For a long time, people tried to build AI by writing rules. If an email contains these words, it's spam. If the patient has these symptoms, suggest this."
+      },
+      {
+        "screen": "Rules break",
+        "say": "Rules work for simple, tidy problems. But the real world is messy. Spammers change their words. Photos are blurry. People say the same thing a hundred different ways. The rules keep breaking."
+      },
+      {
+        "screen": "The new way: learning",
+        "say": "Machine learning flips it around. Instead of writing the rules, you show the computer thousands or millions of examples, and it works out the patterns for itself."
+      },
+      {
+        "screen": "Example: spam",
+        "say": "Show it a million emails labelled spam or not spam, and it learns which features tend to mean spam. Then it can judge emails it has never seen."
+      },
+      {
+        "chapter": "Three ways machines learn",
+        "screen": "1. Learning from labels",
+        "say": "There are three main ways machines learn. The first is learning from labelled examples, like those emails marked spam or not spam. This is called supervised learning."
+      },
+      {
+        "screen": "2. Finding patterns",
+        "say": "The second is finding patterns without labels. Give the system lots of data and it groups similar things together, or learns by predicting hidden parts of the data itself. Modern chatbots learn mostly this way, by predicting missing or next words in text."
+      },
+      {
+        "screen": "3. Trial and error",
+        "say": "The third is learning by trial and error, called reinforcement learning. The system tries actions, gets rewards or penalties, and gradually learns what works. That's how AlphaGo got so good at Go, by playing millions of games against itself."
+      },
+      {
+        "chapter": "Neural networks",
+        "screen": "Inside the machine",
+        "say": "Most modern AI learns using something called a neural network. The name comes from a loose comparison with the brain, but it's really a big mathematical system."
+      },
+      {
+        "screen": "Layers of numbers",
+        "say": "Picture layers of simple units, each passing numbers to the next. The connections between them have strengths, called weights. Big modern models have billions of them."
+      },
+      {
+        "screen": "Learning = adjusting",
+        "say": "Training means adjusting those weights. The network makes a guess, checks how wrong it was, and nudges millions of weights slightly so it's a bit less wrong next time."
+      },
+      {
+        "screen": "Millions of times",
+        "say": "Repeat that millions of times, over a huge amount of data, and the network gets very good at the task. Nobody writes the patterns by hand. They emerge from training."
+      },
+      {
+        "screen": "Why it needs power",
+        "say": "That's also why AI needs so much computing power. Training a big model means doing an enormous number of small calculations, which is why companies use thousands of specialised chips."
+      },
+      {
+        "chapter": "How chatbots write",
+        "screen": "Large language models",
+        "say": "Now, chatbots. ChatGPT, Claude, Gemini and others are built on large language models, or LLMs. They're neural networks trained on huge amounts of text."
+      },
+      {
+        "screen": "Predict the next piece",
+        "say": "Their core skill is surprisingly simple. Given some text, predict what comes next. Not a whole answer at once, but one small piece, called a token, at a time."
+      },
+      {
+        "screen": "One token at a time",
+        "say": "When you ask a question, the model predicts the first piece of its answer, adds it, then predicts the next, and the next, until the answer is done. That's why you see the text appear gradually."
+      },
+      {
+        "screen": "What is a token?",
+        "say": "A token is usually a word or part of a word. A short, common word might be one token. A long or unusual word might be split into several. Spaces and punctuation count too."
+      },
+      {
+        "screen": "The context window",
+        "say": "A model can only pay attention to a limited amount of text at once, called its context window. That includes your messages, its replies, and any documents you share. In a very long conversation, the oldest parts can fall out of view."
+      },
+      {
+        "screen": "Meaning as numbers",
+        "say": "Inside the model, every token is turned into a long list of numbers that captures something about its meaning. Words used in similar ways end up with similar numbers. That's how the model can tell that a cat and a kitten are related."
+      },
+      {
+        "screen": "Patterns, not lookups",
+        "say": "To predict well across so many topics, the model has to absorb a lot about grammar, facts, and how ideas connect. But it isn't searching a database. It's generating from patterns it learned."
+      },
+      {
+        "chapter": "Training a chatbot",
+        "screen": "Stage 1: read",
+        "say": "Training a chatbot usually happens in stages. First, pre-training. The model reads a vast amount of text and learns to predict the next piece. This is the expensive part."
+      },
+      {
+        "screen": "Stage 2: follow instructions",
+        "say": "Second, it's tuned on examples of good conversations, so it learns to follow instructions and answer questions, instead of just continuing text."
+      },
+      {
+        "screen": "Stage 3: human feedback",
+        "say": "Third, people rate its answers, and it's adjusted to prefer the answers people found more helpful and safer. This is often called learning from human feedback."
+      },
+      {
+        "screen": "Then: tools",
+        "say": "Many chatbots now also have tools. They can search the web, read files you upload, or run code. That helps with up-to-date information and calculations."
+      },
+      {
+        "chapter": "Why AI makes things up",
+        "screen": "Confident and wrong",
+        "say": "So why do chatbots sometimes state things that simply aren't true? These are often called hallucinations."
+      },
+      {
+        "screen": "Plausible, not checked",
+        "say": "Remember, the model is predicting likely text. If it doesn't know something, the most likely-sounding answer can still be wrong, like a fake book title or a made-up statistic."
+      },
+      {
+        "screen": "How to protect yourself",
+        "say": "So use AI to draft, explain and brainstorm, and check anything important. Ask for sources, open them, and confirm key facts somewhere that isn't AI."
+      },
+      {
+        "chapter": "How AI makes images",
+        "screen": "Images from noise",
+        "say": "Image generators work differently. Most popular ones use a method called diffusion."
+      },
+      {
+        "screen": "Learning to remove noise",
+        "say": "During training, the model sees millions of images with random noise added, and learns to remove that noise step by step, guided by a text description."
+      },
+      {
+        "screen": "Starting from static",
+        "say": "To make a new picture, it starts from pure random static and removes noise again and again, steering towards your prompt, until an image appears. Video generators extend the same idea across many frames."
+      },
+      {
+        "screen": "Why images go wrong",
+        "say": "Early image generators were famous for strange hands and garbled text. They learned what hands and letters usually look like, not how they actually work. Newer models are much better, but small details are still where mistakes tend to hide."
+      },
+      {
+        "chapter": "What AI can't do",
+        "screen": "Real limits",
+        "say": "AI is powerful, but it has real limits. It doesn't truly know whether something is true. It can reflect biases in its training data. And it has no goals or feelings of its own."
+      },
+      {
+        "screen": "Is it conscious?",
+        "say": "People often ask whether chatbots are conscious or have feelings. There's no scientific evidence that they do. They're very good at producing human-sounding language, because they learned from human writing. Sounding human isn't the same as being human."
+      },
+      {
+        "screen": "Data and privacy",
+        "say": "It also matters what you share. Depending on the service and your settings, your chats may be stored or used to improve the product. Check the privacy settings, and don't paste anything sensitive."
+      },
+      {
+        "chapter": "Using AI well",
+        "screen": "Three habits",
+        "say": "So how do you use AI well? Three habits. First, give it context: who you are, what you need, and what good looks like."
+      },
+      {
+        "screen": "Iterate and check",
+        "say": "Second, iterate. Treat the first answer as a draft and ask it to improve. Third, check anything that matters, especially facts, numbers and quotes."
+      },
+      {
+        "screen": "Pick the right tool",
+        "say": "And match the tool to the job. Chatbots for writing and explaining. Search engines and official sources for facts that must be current. Specialist tools for images, audio or code."
+      },
+      {
+        "screen": "The big picture",
+        "say": "That's how AI works. It learns patterns from examples, adjusts billions of numbers during training, and generates new output one piece at a time. Clever, useful, and not magic."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "If this helped, subscribe for more plain-English AI. And if you want the story of how we got here, watch The Entire History of AI on this channel."
+      }
+    ]
+  },
+  {
+    "id": "lf02-history-of-ai",
+    "format": "landscape",
+    "pillar": "AI History",
+    "footer": "AI Field Notes · Documentary · Narrated with an AI voice",
+    "title": "The Entire History of AI, From Turing to ChatGPT",
+    "thumbnail": {
+      "text": "History of AI",
+      "kicker": "1950 to today",
+      "tag": "Documentary"
+    },
+    "description": "The whole story of artificial intelligence in one video: Alan Turing's question, the summer AI got its name, two crashes known as the AI winters, the comeback of neural networks, and the chatbot boom.\n\nCHAPTERS\n{chapters}\n\nGO DEEPER: AI TURNING POINTS (series)\nEp 1: The Move That Broke the Best Human Player Alive (AlphaGo)\nEp 2: The 1966 Chatbot People Couldn't Stop Confiding In (ELIZA)\nEp 3: The Paper With a Joke Title That Built Modern AI (transformers)\nEp 5: The Day a Computer Beat the World Chess Champion (Deep Blue)\nEp 6: The Bedroom Experiment That Started the AI Boom (AlexNet)\n\nSOURCES\n- Turing, \"Computing Machinery and Intelligence\", Mind (1950)\n- McCarthy, Minsky, Rochester & Shannon, \"A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence\" (1955)\n- Lighthill, \"Artificial Intelligence: A General Survey\" (1973)\n- Rumelhart, Hinton & Williams, \"Learning representations by back-propagating errors\", Nature (1986)\n- Vaswani et al., \"Attention Is All You Need\" (2017)\n- Nils J. Nilsson, \"The Quest for Artificial Intelligence\" (2009)\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #AIhistory #ArtificialIntelligence",
+    "tags": [
+      "history of AI",
+      "AI history",
+      "the entire history of AI",
+      "evolution of AI",
+      "history of artificial intelligence",
+      "AI documentary",
+      "Alan Turing",
+      "AI winter",
+      "ChatGPT",
+      "AI Field Notes"
+    ],
+    "segments": [
+      {
+        "chapter": "A 75-year story",
+        "screen": "75 years",
+        "say": "Artificial intelligence feels brand new. But the story is more than seventy-five years old. It's a story of brilliant ideas, huge promises, two crashes, and a comeback nobody expected. Here's the whole thing."
+      },
+      {
+        "chapter": "1950: Can machines think?",
+        "screen": "Alan Turing, 1950",
+        "say": "It starts with Alan Turing, the British mathematician who helped crack German codes in the Second World War. In 1950, he published a paper asking a bold question: can machines think?"
+      },
+      {
+        "screen": "The imitation game",
+        "say": "Instead of arguing about what thinking means, he proposed a test. If a judge chatting by text can't tell a machine from a person, maybe that's enough. We now call it the Turing test."
+      },
+      {
+        "screen": "Before computers were common",
+        "say": "Remember, this was when computers filled whole rooms and only a handful existed. Turing was imagining machines that wouldn't exist for decades."
+      },
+      {
+        "chapter": "1956: AI gets its name",
+        "screen": "Dartmouth, 1956",
+        "say": "In 1955, four researchers, John McCarthy, Marvin Minsky, Nathaniel Rochester and Claude Shannon, proposed a summer research project at Dartmouth College. Their proposal used a new phrase: artificial intelligence."
+      },
+      {
+        "screen": "A summer of optimism",
+        "say": "The workshop ran in the summer of 1956. The proposal said they believed significant progress could be made in a single summer. It's usually seen as the moment AI became a field."
+      },
+      {
+        "screen": "Early wins",
+        "say": "And early progress was exciting. Programs proved maths theorems, played checkers, and solved logic puzzles. Some researchers predicted machines as smart as people within a generation."
+      },
+      {
+        "screen": "Translation, 1954",
+        "say": "Even before the Dartmouth workshop, in 1954, IBM and Georgetown University showed a computer translating about sixty Russian sentences into English. Some predicted fully automatic translation within a few years. It took more than half a century."
+      },
+      {
+        "screen": "Shakey the robot",
+        "say": "In the late 1960s, a robot called Shakey, built at the Stanford Research Institute, could plan simple routes and push boxes around a room. Slow and wobbly, but it was among the first robots to reason about its own actions."
+      },
+      {
+        "chapter": "The first neural network",
+        "screen": "The perceptron, 1958",
+        "say": "In 1958, psychologist Frank Rosenblatt built the perceptron, an early machine that learned to recognise simple patterns by adjusting connections, a very basic neural network."
+      },
+      {
+        "screen": "Big headlines",
+        "say": "Newspapers ran excited stories about thinking machines. But the perceptron could only learn simple patterns, and in 1969 a book by Minsky and Seymour Papert laid out its limits in detail."
+      },
+      {
+        "screen": "Talking machines",
+        "say": "Meanwhile, in 1966, a simple chatbot called ELIZA surprised its own creator by how readily people confided in it. We told that story in episode two of AI Turning Points."
+      },
+      {
+        "chapter": "The first AI winter",
+        "screen": "Promises vs results",
+        "say": "By the 1970s, the gap between promises and results was hard to ignore. Translating languages, understanding speech, and general problem solving all turned out to be far harder than expected."
+      },
+      {
+        "screen": "The Lighthill report",
+        "say": "In 1973, a report for the British government by mathematician James Lighthill was sharply critical of AI research. Funding was cut in Britain, and support also tightened in the United States."
+      },
+      {
+        "screen": "Winter",
+        "say": "This period became known as the first AI winter. Fewer jobs, less money, and a field that had promised too much, too soon."
+      },
+      {
+        "chapter": "The expert system boom",
+        "screen": "Rules for experts",
+        "say": "In the 1980s, AI came back in a new form: expert systems. Programs packed with hand-written rules from human experts, used for tasks like configuring computer orders or suggesting diagnoses."
+      },
+      {
+        "screen": "Big business",
+        "say": "Companies invested heavily, and Japan launched an ambitious national computing project. For a while, AI was big business again."
+      },
+      {
+        "screen": "The second winter",
+        "say": "But expert systems were expensive to build, hard to update, and brittle when things changed. By the end of the decade, the market collapsed, and a second AI winter set in."
+      },
+      {
+        "chapter": "The quiet comeback",
+        "screen": "Backpropagation, 1986",
+        "say": "While the hype faded, a small group kept working on neural networks. In 1986, David Rumelhart, Geoffrey Hinton and Ronald Williams published an influential paper on backpropagation, a practical way to train networks with several layers."
+      },
+      {
+        "screen": "Learning from data",
+        "say": "Through the 1990s and 2000s, machine learning grew steadily: spam filters, handwriting recognition, recommendations. Less flashy than robots, but genuinely useful."
+      },
+      {
+        "chapter": "AI in your pocket",
+        "screen": "2011",
+        "say": "In 2011, two moments brought AI to the public. In February, IBM's Watson system beat two of the best human champions on the American quiz show Jeopardy. And in October, Apple launched Siri, a voice assistant, on the iPhone."
+      },
+      {
+        "screen": "Not quite smart",
+        "say": "Both were impressive, but limited. Watson was hard to turn into everyday products, and voice assistants often misunderstood requests. Still, millions of people were now talking to AI every day."
+      },
+      {
+        "screen": "Deep Blue, 1997",
+        "say": "In 1997, IBM's Deep Blue beat world chess champion Garry Kasparov. It used brute-force search and expert-written rules, not learning. That's episode five."
+      },
+      {
+        "screen": "Driverless, 2005",
+        "say": "In 2005, a robot car from Stanford University called Stanley won a US government challenge, driving itself more than two hundred kilometres across the desert. It was an early sign of the self-driving technology still being developed today."
+      },
+      {
+        "chapter": "Deep learning arrives",
+        "screen": "Data + chips + networks",
+        "say": "Then three things lined up. The internet created huge amounts of data. Graphics chips made training much faster. And researchers found better ways to train deep networks."
+      },
+      {
+        "screen": "AlexNet, 2012",
+        "say": "In 2012, a neural network called AlexNet crushed the world's biggest image recognition contest. Many people date the modern AI boom from that moment. That's episode six."
+      },
+      {
+        "screen": "AlphaGo, 2016",
+        "say": "In 2016, DeepMind's AlphaGo beat Lee Sedol at Go, a game long thought to be too complex for computers, including one move that stunned the experts. That's episode one."
+      },
+      {
+        "screen": "Machines that create",
+        "say": "Around the same time, AI started creating, not just recognising. In 2014, Ian Goodfellow and colleagues introduced generative adversarial networks, where two networks compete, one making fake images and one trying to spot them. It produced the first eerily realistic AI faces."
+      },
+      {
+        "chapter": "The transformer",
+        "screen": "2017: attention",
+        "say": "In 2017, researchers at Google published a paper called Attention Is All You Need. It introduced the transformer, a design that let models learn from text far more efficiently."
+      },
+      {
+        "screen": "The GPT models",
+        "say": "OpenAI and others built large language models on it. Each generation was trained on more data with more computing power, and each became noticeably more capable."
+      },
+      {
+        "screen": "GPT-3, 2020",
+        "say": "In 2020, OpenAI released GPT-3, with a hundred and seventy-five billion parameters. Given just a few examples, it could write essays, answer questions and even write simple code. Developers were amazed, but most of the public hadn't used it yet."
+      },
+      {
+        "screen": "2022: the image boom",
+        "say": "In 2022, AI image generators went mainstream. DALL-E 2, Midjourney and Stable Diffusion let anyone type a description and get a picture in seconds. Artists raised serious questions about how these tools were trained on their work."
+      },
+      {
+        "chapter": "The chatbot boom",
+        "screen": "November 2022",
+        "say": "Then, on November thirtieth, 2022, OpenAI released ChatGPT as a free research preview. It reached an estimated hundred million monthly users within about two months, one of the fastest-growing apps ever."
+      },
+      {
+        "screen": "The race begins",
+        "say": "Big tech raced to respond with chatbots of their own. AI went from a research topic to something millions of people used every day. We'll tell that story in AI Turning Points."
+      },
+      {
+        "screen": "AI in science",
+        "say": "AI also began changing science. In 2020, DeepMind's AlphaFold predicted the 3D shapes of proteins with remarkable accuracy, solving a problem biologists had worked on for fifty years."
+      },
+      {
+        "screen": "Nobel prizes, 2024",
+        "say": "In 2024, the Nobel Prize in Chemistry went partly to Demis Hassabis and John Jumper for AlphaFold. The same year, the Nobel Prize in Physics went to John Hopfield and Geoffrey Hinton for foundational work on neural networks. AI had reached the very top of science."
+      },
+      {
+        "screen": "Agents",
+        "say": "The newest systems don't just answer questions. Some can take multi-step actions, like searching, writing code and using other apps, with a person checking the important steps."
+      },
+      {
+        "screen": "Today",
+        "say": "Since then, models have learned to work with images, audio and video, and to use tools. Alongside that come real debates about jobs, copyright, safety and energy use."
+      },
+      {
+        "chapter": "What history teaches",
+        "screen": "Hype cycles",
+        "say": "So what does seventy-five years of AI history teach us? First, hype cycles are real. Twice, big promises led to crashes. Healthy scepticism is useful."
+      },
+      {
+        "screen": "Ideas come back",
+        "say": "Second, good ideas can wait decades for their moment. Neural networks were dismissed more than once before data and computing power caught up."
+      },
+      {
+        "screen": "The line keeps moving",
+        "say": "And third, every time AI masters something, chess, Go, images, language, people say that's not real intelligence. The finish line keeps moving."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "That's the history of AI. If you want the full story behind each turning point, the AI Turning Points playlist is on this channel. Subscribe for more."
+      }
+    ]
+  },
+  {
+    "id": "tp07-alan-turing",
+    "format": "landscape",
+    "pillar": "AI Turning Points",
+    "footer": "AI Turning Points · Episode 7 · Narrated with an AI voice",
+    "title": "The Question That Started AI: Alan Turing's Imitation Game",
+    "thumbnail": {
+      "text": "Can machines think?",
+      "kicker": "AI Turning Points · Episode 7",
+      "tag": "1950"
+    },
+    "description": "In 1950, Alan Turing asked whether machines could think, and proposed a test to find out. Seventy-five years later, chatbots are being put through it.\n\nThis is the story of Alan Turing: the 1936 idea behind every computer, his wartime codebreaking, the imitation game, how he was treated by his own country, and whether today's AI has passed his test.\n\nAI TURNING POINTS (series)\nEp 1: The Move That Broke the Best Human Player Alive\nEp 2: The 1966 Chatbot People Couldn't Stop Confiding In\nEp 3: The Paper With a Joke Title That Built Modern AI\nEp 4: How an Amateur Beat a Superhuman AI\nEp 5: The Day a Computer Beat the World Chess Champion\nEp 6: The Bedroom Experiment That Started the AI Boom\nEp 7: The Question That Started AI (this video)\n\nCHAPTERS\n{chapters}\n\nSOURCES\n- Turing, \"On Computable Numbers, with an Application to the Entscheidungsproblem\" (1936)\n- Turing, \"Computing Machinery and Intelligence\", Mind (1950)\n- Andrew Hodges, \"Alan Turing: The Enigma\" (1983)\n- Searle, \"Minds, Brains, and Programs\", Behavioral and Brain Sciences (1980)\n- Jones & Bergen, \"Large Language Models Pass the Turing Test\", arXiv preprint (2025)\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #AlanTuring #TuringTest",
+    "tags": [
+      "Alan Turing",
+      "Turing test",
+      "imitation game",
+      "can machines think",
+      "Alan Turing biography",
+      "AI history",
+      "Enigma",
+      "Bletchley Park",
+      "artificial intelligence",
+      "AI documentary",
+      "AI Turning Points"
+    ],
+    "segments": [
+      {
+        "chapter": "A strange question",
+        "screen": "Can machines think?",
+        "say": "In 1950, a British mathematician opened a paper with a question that sounded almost absurd at the time: can machines think?"
+      },
+      {
+        "screen": "Still asking",
+        "say": "Computers were rare, room-sized calculators. Yet Alan Turing's question, and the test he proposed to answer it, still shape how we argue about AI today. This is his story."
+      },
+      {
+        "chapter": "The machine on paper",
+        "screen": "1936",
+        "say": "Turing was born in London in 1912. At twenty-four, while at Cambridge, he wrote a paper that would change the world, though few people noticed at first."
+      },
+      {
+        "screen": "A universal machine",
+        "say": "He imagined a simple machine that reads and writes symbols on a tape, following a list of instructions. He showed that one such machine could, in principle, carry out any step-by-step calculation, if given the right instructions."
+      },
+      {
+        "screen": "Every computer",
+        "say": "That idea, a single machine that can run any program, is the foundation of every computer you've ever used, including the one in your pocket."
+      },
+      {
+        "chapter": "Bletchley Park",
+        "screen": "Codebreaker",
+        "say": "When the Second World War began, Turing joined Britain's codebreakers at Bletchley Park. Their job was to read German military messages scrambled by the Enigma machine."
+      },
+      {
+        "screen": "The bombe",
+        "say": "Turing played a central role in designing the bombe, an electromechanical machine that helped find the daily Enigma settings, and in breaking the naval Enigma used by German submarines."
+      },
+      {
+        "screen": "Secret for decades",
+        "say": "Historians credit Bletchley Park's work with helping the Allies win the war. But it stayed secret for decades, so in his lifetime, few people knew what Turing had done."
+      },
+      {
+        "chapter": "The imitation game",
+        "screen": "Mind, 1950",
+        "say": "After the war, Turing worked on some of the first real computers. And in 1950, in the journal Mind, he published Computing Machinery and Intelligence."
+      },
+      {
+        "screen": "Change the question",
+        "say": "He argued that can machines think was too vague to answer. So he replaced it with a game he called the imitation game."
+      },
+      {
+        "screen": "How it works",
+        "say": "A judge chats by typed messages with two hidden players, one human and one machine. The judge asks anything they like, and then decides which is the human. If the machine is mistaken for a person often enough, it has played the game well."
+      },
+      {
+        "screen": "A prediction",
+        "say": "Turing predicted that in about fifty years, machines would play well enough that an average judge would have no more than a seventy percent chance of guessing right after five minutes."
+      },
+      {
+        "screen": "Answering the critics",
+        "say": "He also answered objections in advance. Machines can't be creative. Machines only do what we tell them. Some of his replies still appear in AI debates today."
+      },
+      {
+        "chapter": "A tragic end",
+        "screen": "1952",
+        "say": "In 1952, Turing reported a burglary at his home to the police. During the investigation, he revealed a relationship with a man. At the time, homosexual acts were a crime in Britain."
+      },
+      {
+        "screen": "Convicted",
+        "say": "He was convicted of gross indecency and, instead of prison, accepted hormone treatment that was then used as a so-called chemical castration. His security clearance was removed."
+      },
+      {
+        "screen": "1954",
+        "say": "In June 1954, Turing was found dead at his home, aged forty-one. An inquest ruled it suicide by cyanide poisoning, though some historians have questioned that conclusion."
+      },
+      {
+        "screen": "An apology, decades late",
+        "say": "In 2009, the British Prime Minister formally apologised for how he was treated. In 2013, he received a royal pardon. In 2021, his face appeared on Britain's fifty-pound note."
+      },
+      {
+        "chapter": "Arguing with the test",
+        "screen": "Is it a good test?",
+        "say": "Turing's test became famous, and controversial. Critics argued that fooling a judge isn't the same as thinking."
+      },
+      {
+        "screen": "The Chinese Room",
+        "say": "In 1980, philosopher John Searle described a person in a room following rules to answer questions in Chinese, without understanding a word. Could a computer pass the test the same way, he asked, without understanding anything?"
+      },
+      {
+        "screen": "Contests and tricks",
+        "say": "Over the years, contests ran versions of the test. Some programs did well by using tricks, like pretending to be a teenager who doesn't speak English well, to hide their mistakes."
+      },
+      {
+        "chapter": "Has AI passed?",
+        "screen": "2025",
+        "say": "Then came large language models. In 2025, researchers at UC San Diego ran a careful three-way version of Turing's test with hundreds of participants, in a study that hadn't yet been peer reviewed."
+      },
+      {
+        "screen": "73 percent",
+        "say": "When one of the newest chatbots was told to adopt a humanlike persona, people picked it as the human seventy-three percent of the time, more often than they picked the real humans."
+      },
+      {
+        "screen": "The caveat",
+        "say": "Without that persona prompt, it did much worse. And as Searle would point out, sounding human in a five-minute chat doesn't settle whether it understands anything."
+      },
+      {
+        "chapter": "The real lesson",
+        "screen": "Turing's legacy",
+        "say": "Turing gave us the idea of the universal computer, helped win a war, and asked the question that started AI. He did all of it before he turned forty-two."
+      },
+      {
+        "screen": "The question remains",
+        "say": "His test may have been passed, by some measures. But his deeper question, what does it mean for a machine to think, is more alive now than ever."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "That's AI Turning Points. Next, the night a free research preview started an AI race. Subscribe so you don't miss it."
+      }
+    ]
+  },
+  {
+    "id": "tp08-chatgpt-launch",
+    "format": "landscape",
+    "pillar": "AI Turning Points",
+    "footer": "AI Turning Points · Episode 8 · Narrated with an AI voice",
+    "title": "The Research Preview That Started the AI Race",
+    "thumbnail": {
+      "text": "Nov 30, 2022",
+      "kicker": "AI Turning Points · Episode 8",
+      "tag": "ChatGPT"
+    },
+    "description": "On November 30, 2022, OpenAI quietly released a free research preview called ChatGPT. Within about two months, it had an estimated hundred million monthly users, and the biggest tech companies in the world were racing to catch up.\n\nThis is the story of the launch: what made it different, the scramble that followed, the $100 billion demo mistake, and what changed for everyone.\n\nAI TURNING POINTS (series)\nEp 1: The Move That Broke the Best Human Player Alive\nEp 2: The 1966 Chatbot People Couldn't Stop Confiding In\nEp 3: The Paper With a Joke Title That Built Modern AI\nEp 4: How an Amateur Beat a Superhuman AI\nEp 5: The Day a Computer Beat the World Chess Champion\nEp 6: The Bedroom Experiment That Started the AI Boom\nEp 7: The Question That Started AI\nEp 8: The Research Preview That Started the AI Race (this video)\n\nCHAPTERS\n{chapters}\n\nSOURCES\n- OpenAI, \"Introducing ChatGPT\" (Nov 30, 2022)\n- Reuters, \"ChatGPT sets record for fastest-growing user base\" (Feb 2023), citing a UBS study of Similarweb data\n- Coverage of Google's Bard announcement and Alphabet's share fall (Feb 8, 2023): NPR, Fortune\n- OpenAI, \"GPT-4\" (Mar 14, 2023)\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #ChatGPT #AIhistory",
+    "tags": [
+      "ChatGPT launch",
+      "history of ChatGPT",
+      "ChatGPT",
+      "OpenAI",
+      "AI race",
+      "Google Bard",
+      "AI history",
+      "how ChatGPT started",
+      "artificial intelligence",
+      "AI documentary",
+      "AI Turning Points"
+    ],
+    "segments": [
+      {
+        "chapter": "A quiet launch",
+        "screen": "Nov 30, 2022",
+        "say": "On November the thirtieth, 2022, OpenAI posted a short announcement. It was releasing a chatbot called ChatGPT as a free research preview, to get feedback and learn about its strengths and weaknesses."
+      },
+      {
+        "screen": "Not a big event",
+        "say": "There was no glitzy launch event. The model behind it wasn't brand new either. It was built on technology that had existed in some form for a couple of years."
+      },
+      {
+        "screen": "Then everything changed",
+        "say": "But within days, it was everywhere. And within weeks, it had triggered the biggest technology race in years. This is how it happened."
+      },
+      {
+        "chapter": "Why it was different",
+        "screen": "Just a chat box",
+        "say": "Large language models weren't new. Developers had been using them through technical tools. What changed was the packaging: a simple chat box, free, that anyone could use."
+      },
+      {
+        "screen": "Trained to chat",
+        "say": "ChatGPT had also been tuned to follow instructions and hold a conversation, using feedback from people who rated its answers. It admitted some mistakes, refused some requests, and answered follow-up questions."
+      },
+      {
+        "screen": "Anyone could try it",
+        "say": "Suddenly, people who had never touched AI could ask it to write a poem, explain a tax rule, fix their code, or plan a holiday. And they shared the results everywhere."
+      },
+      {
+        "chapter": "The fastest growth ever",
+        "screen": "One million",
+        "say": "OpenAI's chief executive, Sam Altman, said it passed a million users within about five days."
+      },
+      {
+        "screen": "100 million",
+        "say": "By January 2023, analysts at the bank UBS estimated it had reached a hundred million monthly active users, about two months after launch. They said they couldn't remember a consumer app growing that fast."
+      },
+      {
+        "screen": "Servers at capacity",
+        "say": "Demand was so high that users regularly saw messages saying the service was at capacity. In February 2023, OpenAI launched a paid subscription."
+      },
+      {
+        "chapter": "The scramble",
+        "screen": "Code red",
+        "say": "The biggest companies in tech were caught off guard. The New York Times reported that Google's leadership declared a code red, treating ChatGPT as a serious threat to its search business."
+      },
+      {
+        "screen": "Microsoft goes big",
+        "say": "In January 2023, Microsoft announced a new multi-year, multi-billion-dollar investment in OpenAI. Within weeks, it began adding the technology to its Bing search engine."
+      },
+      {
+        "chapter": "A costly mistake",
+        "screen": "February 8, 2023",
+        "say": "Google responded with its own chatbot, Bard. But a promotional example showed Bard giving an incorrect answer about which telescope took the first pictures of a planet outside our solar system."
+      },
+      {
+        "screen": "$100 billion",
+        "say": "When the error was spotted, shares in Google's parent company Alphabet fell about nine percent in a day, wiping roughly a hundred billion dollars off its market value."
+      },
+      {
+        "screen": "The lesson",
+        "say": "It was a vivid reminder of a problem with every chatbot: they can state false things with total confidence. That problem hasn't gone away."
+      },
+      {
+        "chapter": "A new model",
+        "screen": "March 2023",
+        "say": "On March fourteenth, 2023, OpenAI released GPT-4, a more capable model that could also accept images as input. Other companies released and improved their own models in rapid succession."
+      },
+      {
+        "screen": "Regulators react",
+        "say": "Regulators moved too. In March 2023, Italy's data protection authority temporarily blocked ChatGPT over privacy concerns, until OpenAI made changes. Governments around the world began working on AI rules."
+      },
+      {
+        "chapter": "What changed",
+        "screen": "School and work",
+        "say": "Schools had to rethink homework and exams. Workplaces started writing AI policies. Writers, artists and news organisations raised concerns, and lawsuits, about how AI was trained on their work."
+      },
+      {
+        "screen": "Everyday tool",
+        "say": "And for millions of people, AI stopped being science fiction and became an everyday tool for writing, learning and getting things done."
+      },
+      {
+        "chapter": "The real lesson",
+        "screen": "Access, not invention",
+        "say": "Here's the twist. ChatGPT's breakthrough wasn't mainly a new invention. The key ideas, like the transformer from episode three, already existed. The breakthrough was putting them in front of everyone."
+      },
+      {
+        "screen": "Use it wisely",
+        "say": "That's both the opportunity and the challenge. Powerful tools, in everyone's hands, that can be very helpful and confidently wrong. Knowing how they work is now a basic skill."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "That's AI Turning Points. If you want to understand how these chatbots actually work, watch How AI Actually Works on this channel. And subscribe for more."
+      }
+    ]
+  }
+]

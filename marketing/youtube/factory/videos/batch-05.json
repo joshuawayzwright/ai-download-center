@@ -1,0 +1,182 @@
+[
+  {
+    "id": "049-what-is-generative-ai",
+    "pillar": "AI Explained",
+    "title": "What is generative AI? Explained in 40 seconds #Shorts",
+    "description": "Generative AI makes new text, images, audio or video by learning patterns from huge amounts of examples. What it is, and what it isn't. Narrated with an AI voice.\n\n#AI #GenerativeAI #AIexplained #Shorts",
+    "tags": ["what is generative AI", "generative AI explained", "gen AI", "AI explained", "AI for beginners", "what is AI"],
+    "segments": [
+      {"screen": "What is generative AI?", "say": "Everyone says generative AI. So what does it actually mean?"},
+      {"screen": "It makes new things", "say": "Generative AI is AI that makes something new: text, images, audio, code or video, instead of just sorting or labelling what already exists."},
+      {"screen": "Learned from examples", "say": "It learns patterns from huge numbers of examples. Then, when you give it a prompt, it produces something that fits those patterns."},
+      {"screen": "Not copy and paste", "say": "It usually isn't copying a single source. It's building a new output from patterns. But it can still repeat things it saw often."},
+      {"screen": "Not always right", "say": "Because it's generating, not looking things up, it can produce something that sounds or looks right and isn't."},
+      {"screen": "A creative tool", "say": "Think of it as a fast first-draft machine. You still check and edit. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "050-free-ai-chatbots",
+    "pillar": "Practical AI",
+    "title": "What free AI chatbots can and can't do #Shorts",
+    "description": "Most big AI chatbots have a free version. What you usually get, what's usually limited, and how to check before you rely on it. Plans change often, so check the provider's current page. Narrated with an AI voice.\n\n#AI #ChatGPT #AItools #Shorts",
+    "tags": ["how to use ChatGPT for free", "free AI chatbot", "free AI tools", "ChatGPT free vs paid", "AI tools", "AI tips"],
+    "segments": [
+      {"screen": "Is free AI enough?", "say": "Most big AI chatbots have a free version. Is it enough for you? Here's how to tell."},
+      {"screen": "What you usually get", "say": "Free plans usually give you everyday chat, writing help and quick answers. For many people, that covers most of what they need."},
+      {"screen": "What's usually limited", "say": "What's usually limited is how much you can use it, access to the newest or biggest model, and extras like large file uploads or image making."},
+      {"screen": "Check the data settings", "say": "Also check the data settings. On some free plans, your chats may be used to improve the product unless you turn that off."},
+      {"screen": "Plans change often", "say": "Plans and limits change often, so check the provider's own pricing page, not a video from last year. Including this one."},
+      {"screen": "Start free, then decide", "say": "Start free, notice where you hit the limits, then decide if paying is worth it. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "051-who-was-alan-turing",
+    "pillar": "AI History",
+    "title": "Who was Alan Turing? The father of AI in 45 seconds #Shorts",
+    "description": "Alan Turing described the idea behind modern computers in 1936, helped break German codes in the Second World War, and in 1950 asked whether machines could think. Narrated with an AI voice.\n\n#AI #AlanTuring #AIhistory #Shorts",
+    "tags": ["Alan Turing", "who was Alan Turing", "father of AI", "AI history", "Turing test", "history of AI"],
+    "segments": [
+      {"screen": "Who was Alan Turing?", "say": "Alan Turing is often called the father of computer science and AI. Here's why, in forty-five seconds."},
+      {"screen": "1936: the idea", "say": "In 1936, he described a simple imaginary machine that could carry out any step-by-step calculation. That idea underpins every computer today."},
+      {"screen": "Codebreaker", "say": "During the Second World War, he worked at Bletchley Park in Britain, helping to break German codes, including messages encrypted by the Enigma machine."},
+      {"screen": "1950: can machines think?", "say": "In 1950, he asked whether machines could think, and proposed a test to find out, now known as the Turing test."},
+      {"screen": "A tragic end", "say": "In 1952, he was prosecuted for being gay, which was then a crime in Britain. He died in 1954, aged forty-one. He was pardoned in 2013."},
+      {"screen": "His questions live on", "say": "Every time you talk to an AI chatbot, you're living inside his question. Follow for more AI history."}
+    ]
+  },
+  {
+    "id": "052-what-is-the-turing-test",
+    "pillar": "AI History",
+    "title": "What is the Turing test, and has AI passed it? #Shorts",
+    "description": "Alan Turing proposed the imitation game in 1950. How the test works, why people argue about it, and what recent studies with chatbots found. Narrated with an AI voice.\n\n#AI #TuringTest #AIexplained #Shorts",
+    "tags": ["Turing test", "what is the Turing test", "has AI passed the Turing test", "Alan Turing", "AI explained", "AI history"],
+    "segments": [
+      {"screen": "The Turing test", "say": "What is the Turing test, and has AI actually passed it?"},
+      {"screen": "The imitation game", "say": "In 1950, Alan Turing proposed a game. A judge chats by text with a person and a machine, without seeing either, and tries to tell which is which."},
+      {"screen": "Fool the judge", "say": "If the judge can't reliably tell them apart, the machine has done well. Turing suggested this instead of arguing about what thinking means."},
+      {"screen": "Recent results", "say": "In a 2025 study by researchers at UC San Diego, people chatting with one of the latest chatbots often picked it as the human."},
+      {"screen": "Does it prove anything?", "say": "Critics say the test measures how convincing something sounds, not whether it understands. Sounding human isn't the same as thinking."},
+      {"screen": "Still debated", "say": "So, has AI passed? By some versions of the test, arguably yes. What that means is still debated. Follow for more AI history."}
+    ]
+  },
+  {
+    "id": "053-what-is-an-ai-winter",
+    "pillar": "AI History",
+    "title": "What was the AI winter? When AI almost died #Shorts",
+    "description": "Twice, AI hype crashed and funding dried up: the AI winters of the 1970s and late 1980s. Why it happened, and the lesson for today. Narrated with an AI voice.\n\n#AI #AIhistory #AIexplained #Shorts",
+    "tags": ["AI winter", "what is an AI winter", "history of AI", "AI history", "AI hype", "AI explained"],
+    "segments": [
+      {"screen": "The AI winter", "say": "Twice in history, AI nearly died. These were called AI winters."},
+      {"screen": "Big promises", "say": "In the 1950s and 60s, researchers predicted human-level machines within a generation. Funding poured in."},
+      {"screen": "Winter one", "say": "By the 1970s, results fell far short. Critical government reviews, like Britain's 1973 Lighthill report, led to deep funding cuts."},
+      {"screen": "Winter two", "say": "In the 1980s, a boom in expert systems, programs built from hand-written rules, ended in another crash by the end of the decade."},
+      {"screen": "What changed", "say": "AI came back when three things lined up: much more data, much faster computers, and better ways to train neural networks."},
+      {"screen": "The lesson", "say": "The lesson? Hype moves faster than results. Judge AI by what it actually does. Follow for more AI history."}
+    ]
+  },
+  {
+    "id": "054-what-is-an-llm",
+    "pillar": "AI Explained",
+    "title": "What is an LLM? Large language models explained #Shorts",
+    "description": "LLM stands for large language model: the kind of AI behind chatbots like ChatGPT, Claude and Gemini. What the words mean, and what it's good and bad at. Narrated with an AI voice.\n\n#AI #LLM #AIexplained #Shorts",
+    "tags": ["what is an LLM", "large language model explained", "LLM explained", "how ChatGPT works", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "What is an LLM?", "say": "What is an LLM? It's the kind of AI behind most chatbots. Here's what the letters mean."},
+      {"screen": "Large", "say": "Large means it's trained on an enormous amount of text and has billions of internal settings, called parameters."},
+      {"screen": "Language", "say": "Language means it works with words. It reads your text and writes text back, one small piece at a time."},
+      {"screen": "Model", "say": "Model means it's a mathematical system that has learned patterns, in this case, how language tends to fit together."},
+      {"screen": "Good and bad at", "say": "LLMs are good at drafting, summarising and explaining. They're weaker at exact facts, maths and anything after their training data, unless they can search."},
+      {"screen": "Use it wisely", "say": "So treat an LLM like a fast, well-read assistant that still needs checking. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "055-what-is-agi",
+    "pillar": "AI Explained",
+    "title": "What is AGI, and are we close? #Shorts",
+    "description": "AGI, artificial general intelligence, usually means AI that can handle most tasks a person can. Why there's no agreed definition, and why predictions vary so much. Narrated with an AI voice.\n\n#AI #AGI #AIexplained #Shorts",
+    "tags": ["what is AGI", "artificial general intelligence", "AGI explained", "future of AI", "AI explained", "AI news"],
+    "segments": [
+      {"screen": "What is AGI?", "say": "You keep hearing about AGI. What is it, and are we close?"},
+      {"screen": "General, not narrow", "say": "AGI stands for artificial general intelligence. It usually means AI that can do most tasks a person can, not just one narrow job."},
+      {"screen": "No agreed definition", "say": "Here's the catch. There's no single agreed definition. Different companies and researchers use the term in different ways."},
+      {"screen": "Predictions vary", "say": "That's why predictions range from a few years to many decades. People are often measuring different things."},
+      {"screen": "Watch what it does", "say": "A better question is: what can today's AI reliably do, and what can't it? That's easier to check than a label."},
+      {"screen": "Skip the hype", "say": "Be wary of anyone who claims to know exactly when AGI arrives. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "056-can-you-copyright-ai-art",
+    "pillar": "AI Safety",
+    "title": "Can you copyright AI art? What US law says #Shorts",
+    "description": "In the US, copyright protects human authorship. The US Copyright Office's 2025 report says purely AI-generated material isn't protected, but human creative contributions can be. Rules differ by country. Not legal advice. Narrated with an AI voice.\n\n#AI #Copyright #AIart #Shorts",
+    "tags": ["can you copyright AI art", "AI copyright", "AI art copyright", "US Copyright Office AI", "AI for creators", "AI rules"],
+    "segments": [
+      {"screen": "Can you copyright AI art?", "say": "If you make an image with AI, do you own the copyright? In the US, the answer is mostly no. Here's why."},
+      {"screen": "Human authorship", "say": "US copyright protects work made by humans. The US Copyright Office says that applies to AI content too."},
+      {"screen": "Prompts alone", "say": "In a 2025 report, it said that typing prompts alone usually isn't enough to make you the author of what the AI produces."},
+      {"screen": "What can count", "say": "But your own creative work can be protected, like your own drawing, or how you select, arrange or edit material."},
+      {"screen": "Other countries differ", "say": "Other countries have different rules, and this area is still changing. For anything important, get proper legal advice."},
+      {"screen": "Add your own work", "say": "The safest path: put real human creativity into what you make. Follow for more AI rules explained."}
+    ]
+  },
+  {
+    "id": "057-what-is-a-system-prompt",
+    "pillar": "AI Explained",
+    "title": "What is a system prompt? The hidden instructions in every chatbot #Shorts",
+    "description": "A system prompt is the set of instructions an AI app gives the model before your message. What it does, and how to write your own. Narrated with an AI voice.\n\n#AI #PromptEngineering #AIexplained #Shorts",
+    "tags": ["what is a system prompt", "system prompt explained", "custom instructions", "prompt engineering", "AI explained", "AI tips"],
+    "segments": [
+      {"screen": "Hidden instructions", "say": "Every AI chatbot gets instructions before you type anything. That's the system prompt."},
+      {"screen": "What it is", "say": "A system prompt is a set of instructions the app gives the model first, like who it is, what tone to use, and what to avoid."},
+      {"screen": "Why it matters", "say": "That's why the same model can feel different in different apps. Each app gives it different background instructions."},
+      {"screen": "You can set one", "say": "Many chatbots let you add your own, often called custom instructions. Tell it your job, your audience, and the style you like."},
+      {"screen": "Keep it short", "say": "Keep it short and specific. For example: I'm a plumber, keep answers under a hundred words, and use Australian spelling."},
+      {"screen": "Better by default", "say": "Set it once, and every answer starts closer to what you want. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "058-how-ai-translation-works",
+    "pillar": "AI Explained",
+    "title": "How AI translation actually works #Shorts",
+    "description": "Modern AI translation learns from millions of sentences translated by people. Why it's often good, where it slips, and when you still need a human. Narrated with an AI voice.\n\n#AI #Translation #AIexplained #Shorts",
+    "tags": ["how AI translation works", "AI translation", "machine translation explained", "Google Translate AI", "AI explained", "AI in everyday life"],
+    "segments": [
+      {"screen": "How AI translates", "say": "How does AI translate between languages so well now?"},
+      {"screen": "Learning from pairs", "say": "It learns from huge numbers of sentences that people have already translated, and picks up how meaning carries across languages."},
+      {"screen": "Whole sentences", "say": "Modern systems look at the whole sentence, or even the whole paragraph, not word by word. That's why the results sound more natural."},
+      {"screen": "Where it slips", "say": "It still slips on slang, jokes, names, and languages with less training data. And it can sound fluent while getting the meaning wrong."},
+      {"screen": "When to use a human", "say": "For contracts, medical information, or anything where a mistake really matters, use a qualified human translator."},
+      {"screen": "Great for the gist", "say": "For everyday messages and getting the gist, it's brilliant. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "059-ai-image-prompts",
+    "pillar": "Practical AI",
+    "title": "The 4-part prompt for better AI images #Shorts",
+    "description": "Vague prompts give generic images. A four-part formula for AI image prompts: subject, setting, style and framing. Narrated with an AI voice.\n\n#AI #AIart #PromptEngineering #Shorts",
+    "tags": ["AI image prompts", "how to write AI image prompts", "AI art tips", "text to image", "prompt engineering", "AI tools"],
+    "segments": [
+      {"screen": "Better AI images", "say": "Getting boring AI images? Use this four-part prompt."},
+      {"screen": "1. Subject", "say": "One, the subject. Be specific. Not a dog, but an old golden retriever with a grey muzzle."},
+      {"screen": "2. Setting", "say": "Two, the setting. Where and when? On a beach at sunrise, or in a cosy kitchen at night."},
+      {"screen": "3. Style", "say": "Three, the style. Photo, watercolour, flat illustration or 3D render. Add the mood, like calm or dramatic."},
+      {"screen": "4. Framing", "say": "Four, the framing. Close-up or wide shot, and the shape, like square or vertical for phones."},
+      {"screen": "Then refine", "say": "Then change one part at a time to improve it. And check the tool's rules on real people and brands. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "060-how-ai-transcription-works",
+    "pillar": "Practical AI",
+    "title": "How AI turns speech into text, and where it goes wrong #Shorts",
+    "description": "AI transcription listens to audio and predicts the words. How it works, why names and accents trip it up, and how to get cleaner transcripts. Narrated with an AI voice.\n\n#AI #Transcription #AItools #Shorts",
+    "tags": ["AI transcription", "speech to text", "how speech recognition works", "AI captions", "AI tools", "practical AI"],
+    "segments": [
+      {"screen": "Speech to text", "say": "How does AI turn your voice into text? And why does it still get names wrong?"},
+      {"screen": "Sound to words", "say": "Speech-to-text models learn from thousands of hours of recorded speech with matching text, and learn which sounds go with which words."},
+      {"screen": "It predicts", "say": "Like chatbots, they predict. They pick the most likely words for what they hear, using the surrounding words as clues."},
+      {"screen": "Where it slips", "say": "That's why unusual names, technical terms, strong background noise and people talking over each other cause mistakes."},
+      {"screen": "Cleaner results", "say": "For cleaner transcripts, use a decent mic, reduce background noise, and add names and terms to the tool's custom vocabulary if it has one."},
+      {"screen": "Always proofread", "say": "Then proofread anything you'll publish or rely on. Follow for more practical AI."}
+    ]
+  }
+]
