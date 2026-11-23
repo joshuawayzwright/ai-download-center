@@ -13,7 +13,7 @@ The full design is in [docs/AI-ORG-DESIGN.md](../../docs/AI-ORG-DESIGN.md). The 
 | Board Console web app (`web/`): approvals, org chart, policy check, decision log, finance, kill switches | Done, published as a private app; 4 build tests |
 | Tool gateway (`src/gateway.js`): Gmail, Stripe, HubSpot and Linear actions behind the policy engine, run from the Board Console | Done; 11 gateway tests plus a mocked end-to-end browser run. Live connector results not yet observed |
 | Agents filing requests on their own schedule | **Not built.** Today Claude files requests on request (see below) |
-| Board envelope (spend caps, burn cap, cash floor) | **Defaults, not confirmed by the owner.** Until `constitution.board.owner_confirmed` is `true`, every T2+ action requires Board approval |
+| Board envelope (spend caps, burn cap, cash floor) | Confirmed by the owner on 2026-11-23 at US$300/month burn cap, US$500 cash floor, T3 above US$100, T4 above US$500 |
 
 ## Commands
 
