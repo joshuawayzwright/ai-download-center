@@ -6,7 +6,7 @@ independent backends passed (five admissions/one denial); cleanup left zero Auth
 counters. Customer chat, the SQL policy and provider signup remain closed.
 Auth `site_url` is `https://thesoloserviceprovider.com.au` and
 `password_min_length` is 12. See [the deployment record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
-and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+and structured evidence (moved to private records).
 Existing SMTP configuration, OTP template installation, delivery/recovery,
 signed-in browser and cost acceptance remain prerequisites. Hosted lock-timeout
 and storage-failure checks remain unverified. The original execution outcome at

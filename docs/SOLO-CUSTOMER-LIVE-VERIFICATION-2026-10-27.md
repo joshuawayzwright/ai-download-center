@@ -17,10 +17,10 @@ automated and closed-gate browser checks from signed-in website acceptance.
 authoritative for current status; the results and deployment below belong to
 this earlier zero-provider-call cycle.
 
-This record extends the [server-key evidence](evidence/solo-server-key-2026-10-27.json)
+This record extends the server-key evidence (moved to private records)
 and follows the existing [hosted verification harness](SOLO-HOSTED-CUSTOMER-VERIFICATION.md).
 Sanitized machine-readable results are in
-[the live verification evidence](evidence/solo-customer-live-verification-2026-10-27.json).
+the live verification evidence (moved to private records).
 
 ## Controlled setup
 

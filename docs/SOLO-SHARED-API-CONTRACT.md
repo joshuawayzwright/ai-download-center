@@ -33,8 +33,8 @@ This verification made no new model calls or hosted SQL writes. The read-only
 prior Gemini successes. Production still points to maintenance deployment
 `dpl_9KijhLqwcEABqisC59RiLYJgyeV8`. See
 [browser-isolation evidence](SOLO-BROWSER-ISOLATION-2026-10-27.md),
-[sanitized results](evidence/solo-browser-isolation-2026-10-27.json) and
-[desktop screenshot](evidence/solo-browser-preview-2026-10-27.jpg). The earlier
+sanitized results (moved to private records) and
+desktop screenshot (moved to private records). The earlier
 real Gemini evidence remains distinct from this no-inference browser cycle.
 
 Endpoint: `POST https://thesoloserviceprovider.com.au/api/solo-chat` (future production; currently unavailable while the production site is in maintenance).

@@ -8,7 +8,7 @@ database backends verified five admissions/one denial; guarded cleanup left
 zero Auth counters. Chat and provider signup remain closed. Auth `site_url`
 now uses `https://thesoloserviceprovider.com.au` and `password_min_length` is
 12. See [the deployment record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
-and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+and structured evidence (moved to private records).
 SMTP/OTP delivery, live onboarding/recovery, signed-in browser acceptance and
 cost controls remain open.
 
@@ -187,7 +187,7 @@ pass 30 and 26 cases respectively.
   disabled, missing/cross-origin mutations are rejected, method restrictions
   hold, existing account status remains disabled, same-origin logout clears both
   cookie slots, and customer chat remains closed.
-- [Sanitized HTTP/source evidence](evidence/solo-onboarding-preview-2026-10-28.json)
+- Sanitized HTTP/source evidence (moved to private records)
   contains hashes and exact result scope. The temporary preview share was revoked
   after verification; the returned protection-bypass map is empty. No claim is
   made that already cached cookies were independently tested for invalidation.

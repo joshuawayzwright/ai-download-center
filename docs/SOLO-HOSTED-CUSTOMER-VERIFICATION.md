@@ -64,7 +64,7 @@ returned account GET **200** with all three status booleans false and
 private/no-store caching, refresh POST **503 `auth_disabled`**, and dummy
 customer Bearer chat POST **503 `customer_disabled`**; marker
 `SOLO_CUSTOMER_CONFIG_DISABLED_PASS`. Sanitized results are recorded in
-[server-key evidence](evidence/solo-server-key-2026-10-27.json).
+server-key evidence (moved to private records).
 
 [CI run 40476932755](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40476932755)
 passed **132 API/browser/smoke + 21 SQL = 153 tests**, zero failures or skipped

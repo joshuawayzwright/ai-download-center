@@ -42,7 +42,7 @@ Terms now have one main landmark, eight numbered sections, a contents navigation
 
 **Automated checks:** [CI 40508107002](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40508107002) passed the existing **158 JavaScript + 21 SQL tests = 179**, with zero failures or skips; logs were inspected. [Repository quality 40508106970](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40508106970) and [catalogue checks 40508107154](https://github.com/joshuawayzwright/ai-download-center/actions/runs/40508107154) also passed. These checks do not establish sale-ready deliverables or paid fulfilment.
 
-Evidence: [sanitized verification record](evidence/solo-catalogue-and-policies-2026-10-27.json), [Terms screenshot](evidence/solo-terms-preview-2026-10-27.jpg), [collection screenshot](evidence/solo-launch-collection-preview-2026-10-27.jpg).
+Evidence: sanitized verification record (moved to private records), Terms screenshot (moved to private records), collection screenshot (moved to private records).
 
 ## Boundaries and remaining work
 

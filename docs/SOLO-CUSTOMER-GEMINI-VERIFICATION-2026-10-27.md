@@ -10,7 +10,7 @@ their client output was lost. **Four actual Gemini requests were made in total**
 all four records remain counted.
 
 The source of this report is the
-[sanitized verification JSON](evidence/solo-customer-gemini-verification-2026-10-27.json).
+sanitized verification JSON (moved to private records).
 The earlier [Auth/quota verification](SOLO-CUSTOMER-LIVE-VERIFICATION-2026-10-27.md)
 remains a separate completed cycle with zero model calls and 11 retained
 admission-only reservations.

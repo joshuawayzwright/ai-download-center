@@ -7,7 +7,7 @@ release gates and the database chat policy remain disabled. This completes the
 database dependency; it does not establish public signup or a complete SOLO AI
 launch.
 
-Structured evidence: [hosted Auth admission results](evidence/solo-auth-admission-hosted-2026-10-28.json).
+Structured evidence: hosted Auth admission results (moved to private records).
 Earlier failures: [migration connector history](SOLO-MIGRATION-CONNECTOR-BLOCKER-2026-10-28.md).
 
 ## Applied change and authentication path

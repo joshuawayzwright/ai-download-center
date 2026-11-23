@@ -98,7 +98,7 @@ Captured console errors were from the browser extension; no application-origin
 error appeared in the inspected log sample. This is not exhaustive runtime-error
 monitoring or screen-reader/contrast certification.
 
-![Verified protected desktop conversation page](evidence/solo-browser-preview-2026-10-27.jpg)
+!Verified protected desktop conversation page (moved to private records)
 
 ## State preserved
 
@@ -128,4 +128,4 @@ binding code in a live signed-in browser. No customer credential is retained in
 the current workspace; real browser sign-in requires the supported secure
 credential-entry path. Do not recreate accounts or infrastructure for that gate.
 
-Machine-readable results: [sanitized evidence](evidence/solo-browser-isolation-2026-10-27.json).
+Machine-readable results: sanitized evidence (moved to private records).

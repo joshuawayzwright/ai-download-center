@@ -12,7 +12,7 @@ zero Auth counters, disabled chat and unchanged memberships, request ledger
 and session count.
 
 See [the current deployment and verification record](SOLO-AUTH-ADMISSION-DEPLOYMENT-2026-10-28.md)
-and [structured evidence](evidence/solo-auth-admission-hosted-2026-10-28.json).
+and structured evidence (moved to private records).
 The managed history timestamp differs from the source filename
 `20261028010000_solo_auth_admission.sql`; do not blindly reapply, rename or
 repair history to make them match.
