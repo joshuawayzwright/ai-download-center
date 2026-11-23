@@ -269,10 +269,13 @@ def thumbnail(spec: dict, pillar: str) -> Image.Image:
     while size > 90:
         f = ImageFont.truetype(find_font(HEAD_FONT), size)
         lines = wrap(d, " ".join(words), f, tw - 220)
-        if len(lines) <= 2 and len(lines) * size * 0.95 <= th - 300:
+        widest = max(d.textlength(line, font=f) for line in lines)
+        # keep the headline between the kicker (y~170) and the tag (y=th-150)
+        if len(lines) <= 2 and widest <= tw - 220 and len(lines) * size * 0.95 <= th - 340:
             break
         size -= 8
-    y = (th - len(lines) * size * 0.95) / 2 + 20
+    top, bottom = 170, th - 150 if spec.get("tag") else th - 70
+    y = top + (bottom - top - len(lines) * size * 0.95) / 2 - size * 0.08
     for i, line in enumerate(lines):
         d.text((96, y + i * size * 0.95), line, font=f, fill=GOLD if i == len(lines) - 1 else INK)
     if spec.get("tag"):
