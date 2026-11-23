@@ -67,7 +67,56 @@ public final class SoloApi {
   }
 
   /** Connected apps this client knows how to show. */
-  static final java.util.List<String> KNOWN_CONNECTORS = java.util.Collections.singletonList("google_calendar");
+  static final java.util.List<String> KNOWN_CONNECTORS = java.util.Collections.unmodifiableList(java.util.Arrays.asList(
+      "google_calendar", "google_contacts", "google_tasks", "google_drive", "google_maps"));
+
+  /** A change SOLO proposed that waits for the user's Confirm (an opaque, single-use server token). */
+  public static final class Action {
+    public final String token;
+    public final String provider;
+    public final String title;
+    public final java.util.List<String> lines;
+    public final String confirmLabel;
+
+    public Action(String token, String provider, String title, java.util.List<String> lines, String confirmLabel) {
+      this.token = token;
+      this.provider = provider;
+      this.title = title;
+      this.lines = java.util.Collections.unmodifiableList(lines);
+      this.confirmLabel = confirmLabel;
+    }
+  }
+
+  static final int MAX_ACTIONS = 3;
+
+  static String cleanLine(String value, int max) {
+    String text = value == null ? "" : value.replaceAll("[\\x00-\\x1f\\x7f]", " ").trim();
+    return text.length() > max ? text.substring(0, max) : text;
+  }
+
+  /** Reads {@code actions: [{token, provider, title, lines, confirmLabel}]}; malformed cards are dropped. */
+  static java.util.List<Action> parseActions(JSONObject json) {
+    java.util.List<Action> out = new java.util.ArrayList<>();
+    org.json.JSONArray array = json == null ? null : json.optJSONArray("actions");
+    if (array == null) return out;
+    for (int i = 0; i < array.length() && out.size() < MAX_ACTIONS; i++) {
+      JSONObject a = array.optJSONObject(i);
+      if (a == null) continue;
+      String token = a.optString("token", "");
+      String provider = a.optString("provider", "");
+      String title = cleanLine(a.optString("title", ""), 80);
+      String label = cleanLine(a.optString("confirmLabel", "Confirm"), 30);
+      if (!token.matches("v1\\.[A-Za-z0-9_-]{20,8000}") || !KNOWN_CONNECTORS.contains(provider) || title.isEmpty()) continue;
+      java.util.List<String> lines = new java.util.ArrayList<>();
+      org.json.JSONArray l = a.optJSONArray("lines");
+      for (int j = 0; l != null && j < l.length() && lines.size() < 6; j++) {
+        String line = cleanLine(l.optString(j, ""), 200);
+        if (!line.isEmpty()) lines.add(line);
+      }
+      out.add(new Action(token, provider, title, lines, label.isEmpty() ? "Confirm" : label));
+    }
+    return out;
+  }
 
   /** Reads {@code connectors: ["google_calendar"]}, keeping only known names. */
   static java.util.List<String> parseConnectors(JSONObject json) {
@@ -119,6 +168,8 @@ public final class SoloApi {
     public final java.util.List<Source> sources;
     /** Connected apps read for this reply, e.g. {@code google_calendar}. Never null. */
     public java.util.List<String> connectors = java.util.Collections.emptyList();
+    /** Changes waiting for the user's Confirm. Never null. */
+    public java.util.List<Action> actions = java.util.Collections.emptyList();
 
     private Result(boolean ok, int status, String reply, String error, String code, Integer remainingDaily,
         boolean truncated, String partial, java.util.List<Source> sources) {
@@ -327,6 +378,7 @@ public final class SoloApi {
         if (!r.ok) return Result.failure(200, r.error, r.code, partial.toString());
         Result done = Result.success(200, r.reply, r.remainingDaily, json.optBoolean("truncated", false), r.sources);
         done.connectors = parseConnectors(json);
+        done.actions = parseActions(json);
         return done;
       }
       case "tool": {

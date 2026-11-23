@@ -27,16 +27,44 @@ data class ChatMessage(
   val sources: List<Source> = emptyList(),
   /** Connected apps read for this reply, e.g. "google_calendar". */
   val connectors: List<String> = emptyList(),
+  /** Changes SOLO proposed in this reply; each runs only if the user taps Confirm. */
+  val actions: List<ActionCard> = emptyList(),
 )
 
-/** An app the account can connect in Settings → Connected apps. */
-data class ConnectedApp(val provider: String, val name: String, val connected: Boolean)
+enum class ActionState { PENDING, RUNNING, DONE, FAILED, CANCELLED }
+
+/** A Confirm card: [token] is the server's single-use confirmation; it never runs by itself. */
+data class ActionCard(
+  val token: String,
+  val provider: String,
+  val title: String,
+  val lines: List<String>,
+  val confirmLabel: String,
+  val state: ActionState = ActionState.PENDING,
+  /** The server's result text after Confirm, e.g. "Added ... to your Google Calendar." */
+  val result: String? = null,
+  /** An https link to what was made, e.g. the new Google Doc. */
+  val url: String? = null,
+)
+
+/** An app the account can connect in Settings → Connected apps. [builtin] apps need no sign-in. */
+data class ConnectedApp(
+  val provider: String,
+  val name: String,
+  val connected: Boolean,
+  val access: String = "",
+  val builtin: Boolean = false,
+)
 
 /** What a reply's connector note says, e.g. "Checked your Google Calendar". */
 object Connectors {
   @JvmStatic
   fun label(provider: String): String = when (provider) {
     "google_calendar" -> "Checked your Google Calendar"
+    "google_contacts" -> "Checked your Google Contacts"
+    "google_tasks" -> "Checked your Google Tasks"
+    "google_drive" -> "Opened your Google Drive files"
+    "google_maps" -> "Checked Google Maps"
     else -> "Checked a connected app"
   }
 }

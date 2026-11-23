@@ -88,6 +88,17 @@ unfinished features as live.
 an account deletion URL as well as the in-app option, for example
 https://thesoloserviceprovider.com.au/privacy.html#solo-ai with the deletion steps.
 
+## Release notes: 1.3.0
+
+Paste into "What's new" for the 1.3.0 release (en-AU, under 500 characters):
+
+```
+New for Pro testers: connect Google Contacts, Tasks and Drive (only files you pick), add Calendar bookings, and ask about travel times and places with Google Maps. SOLO never changes anything without your tap on Confirm.
+```
+
+Play Console: before this goes beyond testers, update Data safety for contacts, calendar,
+tasks and files the user picks; each is read on the server for that user's reply, not stored.
+
 ## Release notes: 1.2.1
 
 Paste into "What's new" for the 1.2.1 release (en-AU, under 500 characters):

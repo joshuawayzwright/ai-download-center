@@ -230,4 +230,28 @@ public class SoloApiTest {
     assertTrue(r.ok);
     assertTrue(r.connectors.isEmpty());
   }
+
+  @Test public void confirmCardsAreReadAndMalformedOnesDropped() throws Exception {
+    JSONObject done = new JSONObject(("{\"reply\":\"Tap Confirm.\",\"actions\":["
+        + "{\"token\":\"%T\",\"provider\":\"google_tasks\",\"title\":\"Add to Google Tasks\",\"lines\":[\"Call Dave\",\"Due Sun, 29 Nov 2026\"],\"confirmLabel\":\"Add task\"},"
+        + "{\"token\":\"not-a-token\",\"provider\":\"google_tasks\",\"title\":\"x\"},"
+        + "{\"token\":\"%T\",\"provider\":\"gmail\",\"title\":\"x\"},"
+        + "{\"token\":\"%T\",\"provider\":\"google_drive\",\"title\":\"\"}]}").replace("%T", "v1.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+    java.util.List<SoloApi.Action> actions = SoloApi.parseActions(done);
+    assertEquals(1, actions.size());
+    assertEquals("google_tasks", actions.get(0).provider);
+    assertEquals(java.util.Arrays.asList("Call Dave", "Due Sun, 29 Nov 2026"), actions.get(0).lines);
+    assertEquals("Add task", actions.get(0).confirmLabel);
+  }
+
+  @Test public void streamedDoneCarriesConfirmCards() throws Exception {
+    StringBuilder deltas = new StringBuilder();
+    SoloApi.Result r = stream(sse(
+        "event: confirm\ndata: {\"token\":\"v1.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}",
+        "event: done\ndata: {\"reply\":\"Tap Confirm to add it.\",\"actions\":[{\"token\":\"v1.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"provider\":\"google_calendar\",\"title\":\"Add to Google Calendar\",\"lines\":[\"Smith quote\"],\"confirmLabel\":\"Add booking\"}]}"),
+        deltas);
+    assertTrue(r.ok);
+    assertEquals(1, r.actions.size());
+    assertEquals("Add booking", r.actions.get(0).confirmLabel);
+  }
 }

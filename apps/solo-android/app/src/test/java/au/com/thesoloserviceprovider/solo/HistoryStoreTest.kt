@@ -79,4 +79,19 @@ class HistoryStoreTest {
     val loaded = store.parse(store.encode(listOf(thread)))
     assertEquals(listOf("google_calendar"), loaded[0].messages[0].connectors)
   }
+
+  @Test fun confirmCardsSurviveSaveAndLoadAndARunningCardIsPendingAgain() {
+    val token = "v1." + "A".repeat(40)
+    val cards = listOf(
+      ActionCard(token, "google_calendar", "Add to Google Calendar", listOf("Smith quote"), "Add booking", ActionState.RUNNING),
+      ActionCard(token.replace('A', 'B'), "google_drive", "Create a Google Doc", listOf("Quote"), "Create Doc", ActionState.DONE,
+        "Created it.", "https://docs.google.com/document/d/X"))
+    val m = ChatMessage("1", Role.SOLO, "Tap Confirm.", actions = cards)
+    val store = HistoryStore(File("unused.json"))
+    val loaded = store.parse(store.encode(listOf(ChatThread("t", "Plan", 1L, listOf(m), emptyList()))))[0].messages[0].actions
+    assertEquals(ActionState.PENDING, loaded[0].state)
+    assertEquals(ActionState.DONE, loaded[1].state)
+    assertEquals("https://docs.google.com/document/d/X", loaded[1].url)
+    assertEquals("Created it.", loaded[1].result)
+  }
 }

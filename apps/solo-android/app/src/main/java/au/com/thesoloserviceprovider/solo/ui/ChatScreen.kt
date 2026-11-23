@@ -136,6 +136,7 @@ fun SoloApp(vm: ChatViewModel) {
       onDeleteAccount = vm::deleteAccount,
       onConnect = vm::connect,
       onDisconnect = vm::disconnect,
+      onPickFiles = vm::pickDriveFiles,
     )
   } else {
     ModalNavigationDrawer(
@@ -165,6 +166,8 @@ fun SoloApp(vm: ChatViewModel) {
         onCreateAccount = { openAccount(AccountMode.CREATE) },
         onRecheck = vm::checkService,
         onCopied = { copy(context, it); if (Build.VERSION.SDK_INT < 33) scope.launch { snackbar.showSnackbar("Copied") } },
+        onConfirmAction = vm::confirmAction,
+        onCancelAction = vm::cancelAction,
       )
     }
   }
@@ -203,6 +206,8 @@ private fun ChatScaffold(
   onCreateAccount: () -> Unit,
   onRecheck: () -> Unit,
   onCopied: (String) -> Unit,
+  onConfirmAction: (String, String) -> Unit = { _, _ -> },
+  onCancelAction: (String, String) -> Unit = { _, _ -> },
 ) {
   val context = LocalContext.current
   val haptics = LocalHapticFeedback.current
@@ -288,6 +293,8 @@ private fun ChatScaffold(
                 onOpenSource = { url -> openLink(context, url) },
                 onRegenerate = onRegenerate,
                 onReport = { onReport(m) },
+                onConfirmAction = { token -> onConfirmAction(m.id, token) },
+                onCancelAction = { token -> onCancelAction(m.id, token) },
               )
             }
           }

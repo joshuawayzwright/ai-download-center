@@ -254,4 +254,32 @@ public class AccountApiTest {
       assertEquals("google_calendar", body.getString("provider"));
     }
   }
+
+  @Test public void confirmedActionsRunOnceThroughTheServerAndKeepOnlyHttpsLinks() throws Exception {
+    AccountApi.ActionResult done = AccountApi.toActionResult(new AccountApi.Response(200, new JSONObject(
+        "{\"ok\":true,\"code\":\"done\",\"message\":\"Added it.\",\"url\":\"https://calendar.google.com/e\"}"), null));
+    assertTrue(done.ok);
+    assertEquals("https://calendar.google.com/e", done.url);
+    AccountApi.ActionResult unsafe = AccountApi.toActionResult(new AccountApi.Response(200, new JSONObject(
+        "{\"ok\":true,\"message\":\"Added it.\",\"url\":\"javascript:alert(1)\"}"), null));
+    assertNull(unsafe.url);
+    AccountApi.ActionResult failed = AccountApi.toActionResult(new AccountApi.Response(200, new JSONObject(
+        "{\"ok\":false,\"code\":\"not_done\",\"message\":\"Google Tasks could not do that. Nothing was changed.\"}"), null));
+    assertFalse(failed.ok);
+    assertEquals("Google Tasks could not do that. Nothing was changed.", failed.message);
+    assertFalse(AccountApi.toActionResult(new AccountApi.Response(0, null, null)).ok);
+    try (TinyHttpServer server = new TinyHttpServer(200, "application/json", "{\"ok\":true,\"message\":\"Done.\"}")) {
+      AccountApi api = new AccountApi("http://127.0.0.1:" + server.port() + "/api/solo-chat", "test");
+      assertTrue(api.execute("acc-token-123", "v1.token").ok);
+      JSONObject body = new JSONObject(server.requests.get(0).body);
+      assertEquals("execute", body.getString("action"));
+      assertEquals("v1.token", body.getString("token"));
+      assertEquals("Bearer acc-token-123", server.requests.get(0).headers.get("authorization"));
+    }
+  }
+
+  @Test public void theDrivePickerLinkIsAccepted() {
+    assertTrue(AccountApi.isConnectLink("https://thesoloserviceprovider.com.au/api/solo-connect?pick=v1.abc"));
+    assertFalse(AccountApi.isConnectLink("https://thesoloserviceprovider.com.au/api/solo-connect?evil=1"));
+  }
 }
