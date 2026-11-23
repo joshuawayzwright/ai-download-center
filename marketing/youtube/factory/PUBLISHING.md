@@ -186,3 +186,32 @@ Topics came from vidIQ keyword research (rising and high-demand AI searches). Ke
 If this session isn't running, publish each draft in vidIQ on its day.
 
 **TikTok + Instagram** (owner approved 22 Nov; 2 a day, 9:30am and 6:30pm Brisbane = 23:30 and 08:30 UTC; TikTok public, comments on, AI-generated label on): Shorts 025–048 run 4–15 Dec 2026 (025 at 3 Dec 23:30 UTC through 048 at 15 Dec 08:30 UTC). They are scheduled in vidIQ, so they go out on their own.
+
+### 23 Nov 2026, 08:05 UTC run: batch 03 day 1 (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 025 | What is MCP in AI? The plug that connects AI to your apps | https://www.youtube.com/watch?v=hwr-IJpmVZw |
+| 026 | How AI video generators actually work | https://www.youtube.com/watch?v=n4goCJxpKUI |
+| 027 | 4 signs a video was made with AI | https://www.youtube.com/watch?v=7umLkFq8RHw |
+
+026 arrived with no tags; they were re-added.
+
+### Batch 05 (049–060) and four long-form videos: approved 23 Nov 2026
+
+All 16 are in vidIQ storage with YouTube drafts (public, category 28). The long-form drafts carry their thumbnails. Scheduled tasks in this session publish at 08:05 UTC (6:05pm Brisbane):
+
+| Day | Videos | vidIQ postIds |
+|---|---|---|
+| 1 Dec | 049 Generative AI · 050 Free AI chatbots · 051 Alan Turing | 6a6ec537 · b0fd9dcc · cddefb50 |
+| 2 Dec | 052 Turing test · 053 AI winter · 054 What is an LLM | 9efccb00 · cf287c45 · 06346bae |
+| 3 Dec | 055 AGI · 056 AI art copyright · 057 System prompts · **How AI Actually Works (8:00)** | 38ff978c · e1332493 · 8d9637ed · 9a2c9629 |
+| 4 Dec | 058 AI translation · 059 AI image prompts · 060 AI transcription | c24db732 · 9b60bc4e · f70bb5ff |
+| 5 Dec | AI Turning Points ep 6 (scheduled earlier) | 62226846 |
+| 6 Dec | **The Entire History of AI (8:43)** | 5aa7f818 |
+| 10 Dec | **AI Turning Points ep 7: Alan Turing (4:33)** | 9e7e80aa |
+| 13 Dec | **AI Turning Points ep 8: the ChatGPT launch (3:50)** | 6aa04111 |
+
+TikTok + Instagram: Shorts 049–060 are scheduled in vidIQ for 16–21 Dec, 2 a day (23:30 and 08:30 UTC), with the same settings as before.
+
+The episode 5 and 6 drafts now carry corrected thumbnails: the tag box no longer overlaps two-line headlines (render.py fix).
