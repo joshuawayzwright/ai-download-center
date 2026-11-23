@@ -88,6 +88,14 @@ unfinished features as live.
 an account deletion URL as well as the in-app option, for example
 https://thesoloserviceprovider.com.au/privacy.html#solo-ai with the deletion steps.
 
+## Release notes: 1.2.1
+
+Paste into "What's new" for the 1.2.1 release (en-AU, under 500 characters):
+
+```
+Sharper SOLO AI icon: the picture on the home screen and beside replies now shows its full rounded frame.
+```
+
 ## Release notes: 1.2.0
 
 Paste into "What's new" for the 1.2.0 release (en-AU, under 500 characters):
