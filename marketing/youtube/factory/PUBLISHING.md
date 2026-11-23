@@ -186,3 +186,13 @@ Topics came from vidIQ keyword research (rising and high-demand AI searches). Ke
 If this session isn't running, publish each draft in vidIQ on its day.
 
 **TikTok + Instagram** (owner approved 22 Nov; 2 a day, 9:30am and 6:30pm Brisbane = 23:30 and 08:30 UTC; TikTok public, comments on, AI-generated label on): Shorts 025–048 run 4–15 Dec 2026 (025 at 3 Dec 23:30 UTC through 048 at 15 Dec 08:30 UTC). They are scheduled in vidIQ, so they go out on their own.
+
+### 23 Nov 2026, 08:05 UTC run: batch 03 day 1 (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 025 | What is MCP in AI? The plug that connects AI to your apps | https://www.youtube.com/watch?v=hwr-IJpmVZw |
+| 026 | How AI video generators actually work | https://www.youtube.com/watch?v=n4goCJxpKUI |
+| 027 | 4 signs a video was made with AI | https://www.youtube.com/watch?v=7umLkFq8RHw |
+
+026 arrived with no tags; they were re-added.
