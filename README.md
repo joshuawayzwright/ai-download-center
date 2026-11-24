@@ -10,23 +10,9 @@ A public directory for discovering major AI models, assistants, self-hosted tool
 
 **Maintainer and support:** [hello@thesoloserviceprovider.com.au](mailto:hello@thesoloserviceprovider.com.au)
 
-## Current portfolio status — updated 17 November 2026
+## Other work in this repository
 
-The public AI directory is live on GitHub Pages. This repository also contains commercial SOLO development source; a working directory deployment does not establish that those separate products are released.
-
-| Area | Source | Current status |
-| --- | --- | --- |
-| AI Download Center | Repository root | Live public directory; latest audited Pages deployment succeeded. |
-| The Solo Service Provider shop | Live at [thesoloserviceprovider.com.au/shop/](https://thesoloserviceprovider.com.au/shop/) | **On sale.** Checked 17 November 2026: 16 products are listed with Buy Now, from A$9 to A$79, through a live Stripe checkout. See the current SOLO status (moved to private records). The live shop's source is not in this repository; [powerhouse-website/](powerhouse-website/) holds the older coming-soon build. |
-| SOLO AI assistant | Private `solo-commerce` repository (API and website); database migrations in [supabase/](supabase/) | Still marked COMING SOON on the live site and not a public service. The old copy in `powerhouse-website/` was retired on 19 November 2026; see [its README](powerhouse-website/README.md). |
-| SOLO customer access | [Draft PR #34](https://github.com/joshuawayzwright/ai-download-center/pull/34) | Login/session and durable quota implementation is under review, not merged. Live customer login, hosted concurrency and customer Gemini conversation remain unverified. |
-| Android work | [Master release checklist](https://github.com/joshuawayzwright/ai-download-center/issues/31) | Source/build work exists; Google Play publication is not verified. |
-
-The earlier owner-authenticated two-turn Gemini conversation is documented in [private API verification](docs/SOLO-PRIVATE-CHAT-VERIFICATION-2026-10-27.md). It is separate from customer authentication or a public AI launch. The customer branch records 148 automated checks; those checks do not close the remaining live customer gates.
-
-Use the **current section of [master issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31)** for release decisions; its later evidence supersedes older execution logs. The commercial Supabase project is separate from WrightWayz. Existing charity and commercial identities, data, payments and governance remain separate.
-
-Directory featured listings are a separate offer from the withdrawn A$79 Marketing Kit. This information refresh does not activate, deactivate or substitute any payment link.
+This repository also holds development source for [The Solo Service Provider](https://thesoloserviceprovider.com.au/), a separate business, including its SOLO AI app. Its release status is tracked in [master issue #31](https://github.com/joshuawayzwright/ai-download-center/issues/31). SOLO's data, payments and governance are kept separate from the directory and from WrightWayz, a not-for-profit association.
 
 ## Features
 
@@ -34,14 +20,14 @@ Directory featured listings are a separate offer from the withdrawn A$79 Marketi
 - Filter by category such as LLM, chatbot, assistant, self-hosted, image, video, and audio
 - Showcase official website and project links
 - Search live public Hugging Face models alongside the hand-picked listings
-- 983 listings: 112 hand-picked tools and 871 community model cards imported from Hugging Face, all checked by the catalog validator
+- 988 listings (24 November 2026): 117 hand-picked tools and 871 community model cards imported from Hugging Face, all checked by the catalog validator. Hand-picked listings link to the official source; community cards link to their Hugging Face page.
 - Mobile-friendly landing page and catalog layout
 - Easy extension through the JSON-based catalog
-- AI Field Notes channel launch kit and in-browser video brief builder
+- Video planning kit and in-browser video brief builder for the @JoshWrightAI YouTube channel
 
 ## YouTube channel workspace
 
-Open [Creator Studio](creator-studio.html) to plan videos for the proposed AI Field Notes channel. The browser-based planner drafts scripts and upload assets for faceless narration, on-camera, or screen-demo formats. The complete positioning, bio, content pillars, first-video plan, and launch checklist are in [youtube-channel-kit.md](youtube-channel-kit.md).
+Open [Creator Studio](creator-studio.html) to plan videos for the [@JoshWrightAI](https://www.youtube.com/@JoshWrightAI) YouTube channel. The browser-based planner drafts scripts and upload assets for faceless narration, on-camera, or screen-demo formats. The complete positioning, bio, content pillars, first-video plan, and launch checklist are in [youtube-channel-kit.md](youtube-channel-kit.md).
 
 The planner is a template-based production aid. It does not generate footage, call an AI model, create a YouTube account, or publish videos. Verify facts and cite primary sources before publishing.
 

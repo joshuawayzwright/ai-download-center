@@ -295,7 +295,7 @@ async function searchLiveModels(query, pageUrl = null) {
     if (error.name === 'AbortError' || requestId !== liveSearchRequest) return;
     setLiveSearchStatus(loadingNextPage
       ? 'Could not load more live models. You can retry.'
-      : 'Live model search is unavailable; curated results are still shown.');
+      : 'Live model search is unavailable; hand-picked listings are still shown.');
   } finally {
     if (requestId === liveSearchRequest) loadMoreModels.disabled = false;
   }
