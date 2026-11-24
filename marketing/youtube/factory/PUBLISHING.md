@@ -215,3 +215,13 @@ All 16 are in vidIQ storage with YouTube drafts (public, category 28). The long-
 TikTok + Instagram: Shorts 049–060 are scheduled in vidIQ for 16–21 Dec, 2 a day (23:30 and 08:30 UTC), with the same settings as before.
 
 The episode 5 and 6 drafts now carry corrected thumbnails: the tag box no longer overlaps two-line headlines (render.py fix).
+
+### 24 Nov 2026, 08:05 UTC run: batch 03 day 2 (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 028 | Is AI reading your job application? | https://www.youtube.com/watch?v=_La7r1XKwNY |
+| 029 | How AI clipping tools pick your best moments | https://www.youtube.com/watch?v=mGiRXfqNdB4 |
+| 030 | AI influencers: what they are and the labels you need | https://www.youtube.com/watch?v=7Ivym7j9fkU |
+
+All three arrived with no tags; they were re-added.
