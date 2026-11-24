@@ -5,6 +5,7 @@ import { evaluate, Controls } from './policy.js';
 import { budgetSplit, thompsonAllocate, monteCarloRunway, unitEconomics } from './finance.js';
 import { evaluateGate } from './lifecycle.js';
 import { buildRequest, ACTIONS } from './gateway.js';
+import { planBatch, toWrites } from './planner.js';
 import { readFileSync } from 'node:fs';
 
 const org = loadOrg();
@@ -91,7 +92,27 @@ if (cmd === 'validate') {
       process.exitCode = 1;
     }
   }
+} else if (cmd === 'plan') {
+  // Scheduled runs: check a list of intents against the gateway, policy, kill switches and the
+  // requests already in the Board Console, and print the database writes to file them.
+  //   ai-org plan intents.json [--existing requests.json] [--controls controls.json]
+  // requests.json and controls.json may be raw Board Console reads ({id, data} entries) or plain objects.
+  const args = process.argv.slice(3);
+  const flag = (name) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
+  const read = (f, fallback) => (f ? JSON.parse(readFileSync(f, 'utf8')) : fallback);
+  const unwrap = (x) => (x && typeof x === 'object' && 'data' in x && 'id' in x ? { id: x.id, ...x.data } : x);
+  try {
+    const intents = read(args[0]);
+    const existingRaw = read(flag('--existing'), []);
+    const existing = (Array.isArray(existingRaw) ? existingRaw : existingRaw.documents ?? []).map(unwrap);
+    const controls = unwrap(read(flag('--controls'), {}));
+    const plan = planBatch(org, controls, intents, existing);
+    console.log(JSON.stringify({ halted: plan.halted ?? null, writes: toWrites(plan), skipped: plan.skipped }, null, 2));
+  } catch (e) {
+    console.error(`Plan failed: ${e.message}`);
+    process.exitCode = 1;
+  }
 } else {
-  console.error('usage: ai-org <validate|chart|simulate|propose>');
+  console.error('usage: ai-org <validate|chart|simulate|propose|plan>');
   process.exitCode = 2;
 }
