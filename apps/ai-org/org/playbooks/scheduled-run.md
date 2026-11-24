@@ -29,7 +29,7 @@ This is the playbook for the unattended Claude session that runs on a schedule. 
      - Read each one's customer name, email, and the custom fields (tool name, tool website) from its checkout session.
    - **GitHub (eng, ops)**
      - Failed runs on `main` in the last 2 days for any workflow.
-     - Open issues labeled or titled as featured-listing requests with no reply.
+     - Open issues with no reply: featured-listing requests and tool submissions (titles starting `[Submit]`).
    - **Linear (all)**
      - Open issues in `Wrightwayz-org`, so the run doesn't file work that's already tracked.
 3. **Decide.** Only file an action when a signal clearly calls for it:
@@ -41,6 +41,7 @@ This is the playbook for the unattended Claude session that runs on a schedule. 
    | Payment `past_due` or `unpaid` | `support` | `task.create`: "Follow up failed payment for <tool name>", priority 2 |
    | Failed workflow on `main` | `eng` | `task.create`: "Fix failing <workflow> on main", with the run URL, priority 2 |
    | Unanswered featured-listing issue older than 1 day | `sales` | `task.create`: "Reply to featured-listing request #<n>", priority 3 |
+| Unanswered tool submission issue (title starts with `[Submit]`) older than 1 day | `ops` | `task.create`: "Review tool submission #<n>: <tool name>", with the issue URL, priority 3. Reviewing means checking it against the catalog rules and validator, then listing it or replying with the reason |
    | Monday run only | `fpa` | `task.create`: "Weekly numbers: <date>". Description: active featured subscriptions, trials, MRR in USD, new and cancelled this week. Every number comes from Stripe. Priority 4 |
 
    - Skip any signal that an open Linear issue already covers.
