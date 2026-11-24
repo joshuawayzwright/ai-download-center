@@ -8,8 +8,9 @@
     "definition": "Monthly recurring revenue from featured-listing sponsors who renewed at least once"
   },
   "board": {
-    "owner_confirmed": false,
-    "note": "Envelope values below are conservative defaults. Until owner_confirmed is true, every T2+ action requires Board approval.",
+    "owner_confirmed": true,
+    "confirmed_on": "2026-11-23",
+    "note": "Confirmed by the owner at these values on 2026-11-23. T2 actions within these limits run without Board approval; T3 needs the owning executive plus a co-signer; T4 always needs the Board.",
     "monthly_burn_cap_usd": 300,
     "cash_floor_usd": 500,
     "max_commitment_months_without_board": 12

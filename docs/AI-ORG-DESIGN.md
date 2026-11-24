@@ -1,6 +1,6 @@
 # Self-Improving AI Organization: Design
 
-**Status:** design plus control-plane skeleton (`apps/ai-org`). Board envelope values are defaults awaiting owner confirmation.
+**Status:** design plus control-plane skeleton (`apps/ai-org`) and Board Console. Board envelope confirmed by the owner on 2026-11-23.
 **Applied to:** AI Download Center (featured listings, US$99/month). Operating jurisdiction: Australia.
 
 ## 1. Principles
@@ -199,7 +199,7 @@ The Board Console then runs the action through the Board's own claude.ai connect
 
 ## 15. Next phase
 
-1. Owner confirms the Board envelope (`owner_confirmed: true`) or edits the values.
-2. Choose the Stripe account and Linear team in the Board Console's Connections view.
+1. Done: the owner confirmed the Board envelope on 2026-11-23.
+2. Done: choose the Stripe account and Linear team in the Board Console's Connections view.
 3. Run the first revenue loop (Marketing → Compliance → Sales → Support) at T1/T2 with the existing `.claude/agents` as workers.
 4. Stand up Eval Lab golden sets before enabling any automatic agent promotion.
