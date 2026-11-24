@@ -17,9 +17,10 @@ Handoff note from the session of 18–24 November 2026. Read this first when pic
 | #68 | Business email on config, footer, privacy and terms; mobile number removed from terms and README; CI check updated |
 | #81 | New guide pages `chatgpt-alternatives.html` (13 tools) and `ai-voice-video-tools.html` (10 tools), added to the home guide grid, `sitemap.xml` and the build allowlist |
 | #92 | Guide pages `ai-agent-builders.html`, `open-source-llms.html`, `ai-tools-for-small-business.html`, `open-source-android-apps.html` |
-| (this PR) | Guide pages `ai-model-apis.html`, `offline-ai-tools.html`, `ai-tools-for-students.html` (15 guides in total) |
+| #93 | Guide pages `ai-model-apis.html`, `offline-ai-tools.html`, `ai-tools-for-students.html` |
+| (next PR) | 'More guides' links on every guide (`scripts/link-guides.py`); 14 new verified catalog entries (meeting note takers, presentation makers, writing tools); guides `ai-meeting-notetakers.html`, `ai-presentation-makers.html`, `ai-writing-tools.html` (17 guides in total) |
 
-How a new guide page is wired in: copy the `local-ai-apps.html` structure, add the file to `PUBLIC_FILES` in `scripts/build-public-site.py`, add a `<url>` to `sitemap.xml`, and add a card to the `#guides` grid in `index.html`. Use only hand-picked catalog entries (no `source` field) for facts.
+How a new guide page is wired in: copy the `local-ai-apps.html` structure, add the file to `PUBLIC_FILES` in `scripts/build-public-site.py`, add a `<url>` to `sitemap.xml`, add a card to the `#guides` grid in `index.html`, then run `python3 scripts/link-guides.py` to refresh the 'More guides' list on every guide. Use only hand-picked catalog entries (no `source` field) for facts.
 
 ## Sponsor outreach (wave 1)
 
@@ -45,5 +46,5 @@ Full email texts are in the owner's Google Drive ("AI Download Center sponsor em
 
 ## Ideas not started
 
-- More guide pages need more hand-picked catalog entries first; most curated entries are now covered by a guide.
+- More guide pages need more hand-picked catalog entries first. Copy.ai was checked and left out (it is now a sales/GTM platform, not a writing tool).
 - "Loop 1" missed-call text-back service for local businesses: outreach kit and a Google Sheet lead tracker exist in the owner's Drive ("Missed-Call Text-Back Lead Tracker"); it needs a separate domain and a paid platform, so it is parked.
