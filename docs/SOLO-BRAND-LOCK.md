@@ -3,7 +3,8 @@
 **Status:** Brand identity approved; individual source-image crops prepared separately for QA. Do not substitute the temporary SVG designs or low-resolution screenshot fragments for these assets.
 
 ## Primary marks
-- Commercial business: gold/steel angular S emblem, **SOLO — SERVICE PROVIDER**.
+- Commercial business: round gold badge reading **THE SOLO SERVICE PROVIDER** (approved by the owner on 10 November 2026). Master: `powerhouse-website/assets/approved-stage/business-badge-logo.png` (1254 × 1254).
+- Previous business mark: gold/steel angular S emblem, **SOLO — SERVICE PROVIDER**. Existing website and app uses remain until they are deliberately replaced.
 - Product: gold/blue hooded robotic SOLO AI emblem, **SOLO AI — YOUR AI GUIDE. ALWAYS ON.**
 - Keep these marks distinct; the business icon is not the SOLO AI assistant icon.
 
@@ -41,5 +42,5 @@ Brand board: **approved**. Extracted crop package: **created locally, requires v
 - **Navigation and business identity:** Use the separate approved metallic-gold business emblem, not the SOLO AI guardian.
 - **SOLO AI page and assistant:** Use the approved SOLO AI icon/guardian consistently.
 - **No founder photograph** on the homepage or About section.
-- **Asset gate:** Existing PNG extractions are small crops (SOLO AI emblem 349×306, business emblem 285×282), so do not upscale them into a full-width hero and claim HD. Obtain or prepare a true high-resolution approved master and inspect at Samsung mobile and desktop before replacing production.
+- **Asset gate:** Existing PNG extractions are small crops (SOLO AI emblem 349×306, angular-S business emblem 285×282), so do not upscale them into a full-width hero and claim HD. Obtain or prepare a true high-resolution approved master and inspect at Samsung mobile and desktop before replacing production.
 - **Deployment:** Do not promote any mockup or temporary SVG interpretation as the approved brand. Preserve checkout and current live site until asset QA passes.
