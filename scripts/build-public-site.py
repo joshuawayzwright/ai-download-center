@@ -10,6 +10,7 @@ PUBLIC_FILES = (
     'free-ai-tools.html', 'free-ai-explained.html',
     'chatgpt-alternatives.html', 'ai-voice-video-tools.html',
     'ai-agent-builders.html', 'open-source-llms.html', 'ai-tools-for-small-business.html', 'open-source-android-apps.html',
+    'ai-model-apis.html', 'offline-ai-tools.html', 'ai-tools-for-students.html',
     'privacy.html', 'terms.html',
     'app.js', 'config.js', 'analytics.js', 'newsletter.js', 'hf-classify.js', 'creator-studio.js',
     'styles.css', 'guide.css', 'creator-studio.css', 'favicon.svg', 'og-image.png',
