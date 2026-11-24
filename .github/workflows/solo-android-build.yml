@@ -19,7 +19,7 @@ jobs:
         working-directory: apps/solo-android
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           # Robolectric's Android 16 (API 36) sandbox requires Java 21.
