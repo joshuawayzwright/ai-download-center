@@ -12,14 +12,14 @@ The full design is in [docs/AI-ORG-DESIGN.md](../../docs/AI-ORG-DESIGN.md). The 
 | Policy engine, kill switches, ledger, memory, message bus, conflict ladder, scorecards, promotion gate, finance, stage gates | Done, 41 unit tests |
 | Board Console web app (`web/`): approvals, org chart, policy check, decision log, finance, kill switches | Done, published as a private app; 4 build tests |
 | Tool gateway (`src/gateway.js`): Gmail, Stripe, HubSpot and Linear actions behind the policy engine, run from the Board Console | Done; 11 gateway tests plus a mocked end-to-end browser run. Live connector results not yet observed |
-| Agents filing requests on their own schedule | **Not built.** Today Claude files requests on request (see below) |
+| Scheduled agent run (`src/planner.js`, `org/playbooks/scheduled-run.md`) | Done; 5 planner tests. A scheduled Claude session files requests; the Board still presses Run |
 | Board envelope (spend caps, burn cap, cash floor) | Confirmed by the owner on 2026-11-23 at US$300/month burn cap, US$500 cash floor, T3 above US$100, T4 above US$500 |
 
 ## Commands
 
 ```bash
 cd apps/ai-org
-npm test            # 56 tests, Node 22+, no dependencies
+npm test            # 61 tests, Node 22+, no dependencies
 npm run validate    # structural checks on the org config
 npm run chart       # print the reporting hierarchy
 npm run simulate    # demo: policy decisions, unit economics, allocation, cash scenarios, a stage gate
@@ -60,6 +60,23 @@ To file an action, write an intent file and check it:
 ```
 
 `node src/cli.js propose intent.json` prints `{id, request}`. Store `request` in the app's database at `requests/<id>`; Claude can do this with the artifact data tool.
+
+## Scheduled agent run
+
+A scheduled Claude session follows [`org/playbooks/scheduled-run.md`](org/playbooks/scheduled-run.md). It reads the business's state from Stripe, GitHub and Linear (all read-only), decides what each agent would do, and files those actions in the Board Console. It never runs anything: the Board presses Run.
+
+`src/planner.js` enforces the run's limits:
+
+- Only `task.create`, `email.draft` and `crm.update` can be filed. Refunds, coupons and sent emails always need a person to start them.
+- Nothing is filed while an L2 or L4 kill switch is active, and nothing is filed for a paused agent.
+- An intent is skipped if its id, or its exact action, matches a request that's already open.
+- At most 5 requests per run.
+- Every intent still passes gateway validation and the policy engine.
+
+```bash
+node src/cli.js plan intents.json --existing existing.json --controls controls.json
+# → {"halted": null, "writes": [...], "skipped": [...]}; send "writes" as one database batch
+```
 
 ## Board Console app
 
