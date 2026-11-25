@@ -151,6 +151,7 @@ class SoloAppUiTest {
         path == "/api/solo-connect" && method == "GET" -> apps()
         path == "/api/solo-connect" -> when (JSONObject(body).optString("action")) {
           "disconnect" -> { calendarConnected.set(false); apps() }
+          "execute" -> json(200, """{"ok":true,"code":"done","message":"Added \"Call Dave\" to Google Tasks."}""")
           else -> json(200, """{"url":"https://thesoloserviceprovider.com.au/api/solo-connect?start=v1.test"}""")
         }
         else -> arrayOf("404", "text/plain", "not found")
@@ -545,7 +546,7 @@ class SoloAppUiTest {
     compose.onNodeWithTag("connector-google_calendar-action").performClick()
     waitForText("Disconnect Google Calendar?")
     compose.onNodeWithTag("confirm-disconnect").performClick()
-    waitForText("Read-only. Plan your week around real bookings")
+    waitForText("Connect", substring = false)
     val disconnect = lastAction("disconnect", "/api/solo-connect")!!
     assertEquals("Bearer access-1", disconnect.headers["authorization"])
     assertEquals("google_calendar", JSONObject(disconnect.body).getString("provider"))
@@ -604,5 +605,46 @@ class SoloAppUiTest {
     waitForText("Read aloud needs a voice on your phone")
     waitForDescription("Read aloud")
     assertEquals(null, lastSpoken())
+  }
+
+  @Test fun aProposedChangeRunsOnlyAfterConfirm() {
+    accountsOn.set(true)
+    connectorsOn.set(true)
+    calendarConnected.set(true)
+    start()
+    waitForText("Sign in to chat with SOLO AI")
+    compose.onNodeWithText("Sign in").performClick()
+    signIn()
+    waitForText("Plan my week")
+    val token = "v1." + "A".repeat(40)
+    chatResponse = arrayOf("200", "text/event-stream",
+      "event: delta\ndata: {\"text\":\"Tap Confirm to add it.\"}\n\n" +
+        "event: done\ndata: {\"reply\":\"Tap Confirm to add it.\",\"actions\":[{\"token\":\"$token\",\"provider\":\"google_tasks\",\"title\":\"Add to Google Tasks\",\"lines\":[\"Call Dave\"],\"confirmLabel\":\"Add task\"}]}\n\n")
+    send("Remind me to call Dave")
+    waitForText("Add to Google Tasks")
+    assertEquals("nothing runs before Confirm", null, lastAction("execute", "/api/solo-connect"))
+    compose.onNodeWithTag("action-confirm").performClick()
+    waitForText("Added \"Call Dave\" to Google Tasks.")
+    val execute = JSONObject(lastAction("execute", "/api/solo-connect")!!.body)
+    assertEquals(token, execute.getString("token"))
+    compose.onNodeWithTag("action-confirm").assertDoesNotExist()
+    compose.waitUntil(20000) { historyText()?.contains("\"state\":\"DONE\"") == true }
+  }
+
+  @Test fun cancellingAProposedChangeSendsNothing() {
+    accountsOn.set(true)
+    connectorsOn.set(true)
+    start()
+    waitForText("Sign in to chat with SOLO AI")
+    compose.onNodeWithText("Sign in").performClick()
+    signIn()
+    waitForText("Plan my week")
+    chatResponse = arrayOf("200", "text/event-stream",
+      "event: done\ndata: {\"reply\":\"Tap Confirm to create it.\",\"actions\":[{\"token\":\"v1.${"B".repeat(40)}\",\"provider\":\"google_drive\",\"title\":\"Create a Google Doc\",\"lines\":[\"Quote 1043\"],\"confirmLabel\":\"Create Doc\"}]}\n\n")
+    send("Make the quote a doc")
+    waitForText("Create a Google Doc")
+    compose.onNodeWithTag("action-cancel").performClick()
+    waitForText("Cancelled. Nothing was changed.")
+    assertEquals(null, lastAction("execute", "/api/solo-connect"))
   }
 }

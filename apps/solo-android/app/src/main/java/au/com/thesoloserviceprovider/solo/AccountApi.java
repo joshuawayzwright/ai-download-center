@@ -338,11 +338,65 @@ public final class AccountApi {
     public final String provider;
     public final String name;
     public final boolean connected;
+    /** What SOLO may do with it, e.g. "Read-only". */
+    public final String access;
+    /** Built in (no sign-in), e.g. Google Maps. */
+    public final boolean builtin;
 
     App(String provider, String name, boolean connected) {
+      this(provider, name, connected, "", false);
+    }
+
+    App(String provider, String name, boolean connected, String access, boolean builtin) {
       this.provider = provider;
       this.name = name;
       this.connected = connected;
+      this.access = access;
+      this.builtin = builtin;
+    }
+  }
+
+  /** The result of running a change the user confirmed. */
+  public static final class ActionResult {
+    public final boolean ok;
+    public final String message;
+    public final String url;
+
+    ActionResult(boolean ok, String message, String url) {
+      this.ok = ok;
+      this.message = message;
+      this.url = url;
+    }
+  }
+
+  /** Runs a confirmed change. The server checks the account, and runs each confirmation once. */
+  public ActionResult execute(String accessToken, String token) {
+    try {
+      return toActionResult(call("POST", connectUrl, new JSONObject().put("action", "execute").put("token", token), accessToken));
+    } catch (JSONException e) {
+      return new ActionResult(false, "Couldn't prepare the request.", null);
+    }
+  }
+
+  /** Package-private for tests. Only https links are kept. */
+  static ActionResult toActionResult(Response r) {
+    if (r.status == 0) return new ActionResult(false, "Can't reach SOLO AI. Check your connection and try again.", null);
+    String message = r.json == null ? null : SoloApi.cleanLine(r.json.optString(r.status == 200 ? "message" : "error", ""), 300);
+    if (message == null || message.isEmpty()) {
+      message = r.status == 200 ? "Done." : "That couldn't be done (HTTP " + r.status + "). Nothing was changed.";
+    }
+    String url = r.json == null ? "" : r.json.optString("url", "");
+    boolean ok = r.status == 200 && r.json != null && r.json.optBoolean("ok", false);
+    return new ActionResult(ok, message, SoloApi.isSafeSourceUrl(url) ? url : null);
+  }
+
+  /** The browser link to Google's file picker for Drive, or the error to show. */
+  public ConnectStart pick(String accessToken, String provider) {
+    try {
+      Response r = call("POST", connectUrl, new JSONObject().put("action", "pick").put("provider", provider), accessToken);
+      return toConnectStart(r);
+    } catch (JSONException e) {
+      return new ConnectStart(null, "Couldn't prepare the request.", 0);
     }
   }
 
@@ -417,7 +471,8 @@ public final class AccountApi {
     try {
       java.net.URI uri = new java.net.URI(url);
       return "https".equals(uri.getScheme()) && uri.getUserInfo() == null && uri.getHost() != null
-          && "/api/solo-connect".equals(uri.getPath()) && uri.getRawQuery() != null && uri.getRawQuery().startsWith("start=");
+          && "/api/solo-connect".equals(uri.getPath()) && uri.getRawQuery() != null
+          && (uri.getRawQuery().startsWith("start=") || uri.getRawQuery().startsWith("pick="));
     } catch (Exception e) {
       return false;
     }
@@ -434,7 +489,9 @@ public final class AccountApi {
         String provider = a.optString("provider", "");
         String name = a.optString("name", "").replaceAll("[\\x00-\\x1f\\x7f]", " ").trim();
         if (!SoloApi.KNOWN_CONNECTORS.contains(provider) || name.isEmpty() || name.length() > 60) continue;
-        apps.add(new App(provider, name, a.optBoolean("connected", false)));
+        String accessText = a.optString("access", "").replaceAll("[\\x00-\\x1f\\x7f]", " ").trim();
+        if (accessText.length() > 120) accessText = accessText.substring(0, 120);
+        apps.add(new App(provider, name, a.optBoolean("connected", false), accessText, a.optBoolean("builtin", false)));
       }
       return new Connections(true, r.json.optBoolean("pro", false), apps, 200, null, null);
     }

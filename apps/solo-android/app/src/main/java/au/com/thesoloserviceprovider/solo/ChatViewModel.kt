@@ -131,7 +131,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     }
     _state.update {
       it.copy(connectorsAvailable = true, connectorsPro = c.pro,
-        connectedApps = c.apps.map { a -> ConnectedApp(a.provider, a.name, a.connected) })
+        connectedApps = c.apps.map { a -> ConnectedApp(a.provider, a.name, a.connected, a.access, a.builtin) })
     }
   }
 
@@ -164,6 +164,51 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
     } finally {
       _state.update { it.copy(connectorBusy = null) }
     }
+  }
+
+  /** Opens Google's file picker so the user chooses which Drive files SOLO may open. */
+  suspend fun pickDriveFiles(): String? = withContext(Dispatchers.IO) {
+    _state.update { it.copy(connectorBusy = "google_drive") }
+    try {
+      val token = currentAccessToken() ?: run { notify("Sign in again to pick files."); return@withContext null }
+      val start = account.pick(token, "google_drive")
+      if (start.url == null) notify(start.error ?: "Couldn't open Google Drive. Please try again.")
+      start.url
+    } finally {
+      _state.update { it.copy(connectorBusy = null) }
+    }
+  }
+
+  // ---- Confirm cards ---------------------------------------------------------------
+
+  private fun updateAction(messageId: String, token: String, change: (ActionCard) -> ActionCard) {
+    _state.update { s ->
+      s.copy(messages = s.messages.map { m ->
+        if (m.id != messageId) m else m.copy(actions = m.actions.map { if (it.token == token) change(it) else it })
+      })
+    }
+  }
+
+  /** The user tapped Confirm: ask the server to make the change (it runs each card once). */
+  fun confirmAction(messageId: String, token: String) {
+    val card = _state.value.messages.firstOrNull { it.id == messageId }?.actions?.firstOrNull { it.token == token } ?: return
+    if (card.state != ActionState.PENDING) return
+    updateAction(messageId, token) { it.copy(state = ActionState.RUNNING) }
+    viewModelScope.launch(Dispatchers.IO) {
+      val access = currentAccessToken()
+      val result = if (access == null) AccountApi.ActionResult(false, "Sign in again, then tap Confirm.", null)
+        else account.execute(access, token)
+      updateAction(messageId, token) {
+        it.copy(state = if (result.ok) ActionState.DONE else if (access == null) ActionState.PENDING else ActionState.FAILED,
+          result = result.message, url = result.url)
+      }
+      withContext(Dispatchers.Main) { saveCurrent(_state.value.messages) }
+    }
+  }
+
+  fun cancelAction(messageId: String, token: String) {
+    updateAction(messageId, token) { if (it.state == ActionState.PENDING) it.copy(state = ActionState.CANCELLED) else it }
+    saveCurrent(_state.value.messages)
   }
 
   fun disconnect(provider: String) {
@@ -434,7 +479,8 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
       conversation.commit(sent, r.reply)
       val reply = ChatMessage(UUID.randomUUID().toString(), Role.SOLO, r.reply,
         requestId = if (signedIn) sent.requestId else null, truncated = r.truncated,
-        sources = r.sources.map { Source(it.title, it.url) }, connectors = r.connectors.toList())
+        sources = r.sources.map { Source(it.title, it.url) }, connectors = r.connectors.toList(),
+        actions = r.actions.map { ActionCard(it.token, it.provider, it.title, it.lines.toList(), it.confirmLabel) })
       val messages = current + reply
       _state.update {
         it.copy(messages = messages, sending = false, streamingText = "", toolNote = null,

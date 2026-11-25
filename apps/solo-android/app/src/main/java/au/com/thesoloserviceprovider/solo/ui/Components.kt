@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,10 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.TaskAlt
+import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Mic
@@ -246,6 +251,8 @@ fun SoloMessage(
   onRegenerate: () -> Unit,
   onReport: () -> Unit,
   onOpenSource: (String) -> Unit = {},
+  onConfirmAction: (String) -> Unit = {},
+  onCancelAction: (String) -> Unit = {},
 ) {
   Row(Modifier.fillMaxWidth()) {
     SoloAvatar(30.dp)
@@ -263,7 +270,9 @@ fun SoloMessage(
           color = Solo.Steel, modifier = Modifier.padding(top = 8.dp))
       }
       if (message.sources.isNotEmpty()) SourcesRow(message.sources, onOpenSource)
-      for (provider in message.connectors) ConnectorNote(au.com.thesoloserviceprovider.solo.Connectors.label(provider), top = 10.dp)
+      for (provider in message.connectors) ConnectorNote(au.com.thesoloserviceprovider.solo.Connectors.label(provider), top = 10.dp, provider = provider)
+      for (action in message.actions) ActionCardView(action, onConfirm = { onConfirmAction(action.token) },
+        onCancel = { onCancelAction(action.token) }, onOpen = onOpenSource)
       Row(Modifier.padding(top = 2.dp), verticalAlignment = Alignment.CenterVertically) {
         ActionIcon(Icons.Outlined.ContentCopy, "Copy reply", onCopy)
         ActionIcon(if (speaking) Icons.Outlined.StopCircle else Icons.AutoMirrored.Outlined.VolumeUp,
@@ -276,11 +285,76 @@ fun SoloMessage(
   }
 }
 
-/** A small note that a connected app (for example Google Calendar) was read for this reply. */
+/** The icon for a connected app. */
+fun connectorIcon(provider: String?): androidx.compose.ui.graphics.vector.ImageVector = when (provider) {
+  "google_contacts" -> Icons.Outlined.Contacts
+  "google_tasks" -> Icons.Outlined.TaskAlt
+  "google_drive" -> Icons.Outlined.Folder
+  "google_maps" -> Icons.Outlined.Map
+  else -> Icons.Outlined.CalendarMonth
+}
+
+/**
+ * A change SOLO proposed. Nothing happens until the user taps the confirm button; the server
+ * then makes the change once and the card shows the result.
+ */
 @Composable
-fun ConnectorNote(text: String, top: androidx.compose.ui.unit.Dp = 0.dp) {
+fun ActionCardView(card: au.com.thesoloserviceprovider.solo.ActionCard, onConfirm: () -> Unit, onCancel: () -> Unit,
+  onOpen: (String) -> Unit) {
+  val state = card.state
+  Column(
+    Modifier.padding(top = 12.dp).fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Solo.Surface)
+      .border(1.dp, if (state == au.com.thesoloserviceprovider.solo.ActionState.PENDING) Solo.Gold else Solo.Outline, RoundedCornerShape(16.dp))
+      .padding(14.dp).testTag("action-card"),
+  ) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      Icon(connectorIcon(card.provider), contentDescription = null, tint = Solo.Gold, modifier = Modifier.size(18.dp))
+      Spacer(Modifier.width(8.dp))
+      Text(card.title, style = MaterialTheme.typography.titleSmall, color = Solo.Text)
+    }
+    for ((i, line) in card.lines.withIndex()) {
+      Text(line, style = if (i == 0) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium,
+        color = if (i == 0) Solo.Text else Solo.TextMuted, modifier = Modifier.padding(top = if (i == 0) 8.dp else 2.dp))
+    }
+    when (state) {
+      au.com.thesoloserviceprovider.solo.ActionState.PENDING -> Row(Modifier.padding(top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+        androidx.compose.material3.Button(onClick = onConfirm, modifier = Modifier.testTag("action-confirm"),
+          colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Solo.Gold, contentColor = Solo.OnGold)) {
+          Text(card.confirmLabel)
+        }
+        Spacer(Modifier.width(8.dp))
+        androidx.compose.material3.TextButton(onClick = onCancel, modifier = Modifier.testTag("action-cancel")) {
+          Text("Cancel", color = Solo.TextMuted)
+        }
+      }
+      au.com.thesoloserviceprovider.solo.ActionState.RUNNING -> Row(Modifier.padding(top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+        androidx.compose.material3.CircularProgressIndicator(strokeWidth = 2.dp, color = Solo.Gold, modifier = Modifier.size(18.dp))
+        Spacer(Modifier.width(10.dp))
+        Text("Working on it…", style = MaterialTheme.typography.bodyMedium, color = Solo.TextMuted)
+      }
+      au.com.thesoloserviceprovider.solo.ActionState.CANCELLED ->
+        Text("Cancelled. Nothing was changed.", style = MaterialTheme.typography.bodyMedium, color = Solo.TextMuted,
+          modifier = Modifier.padding(top = 10.dp))
+      else -> {
+        Text((if (state == au.com.thesoloserviceprovider.solo.ActionState.DONE) "✓ " else "") + (card.result ?: ""),
+          style = MaterialTheme.typography.bodyMedium,
+          color = if (state == au.com.thesoloserviceprovider.solo.ActionState.DONE) Solo.Text else Solo.Error,
+          modifier = Modifier.padding(top = 10.dp).testTag("action-result"))
+        card.url?.let { url ->
+          androidx.compose.material3.TextButton(onClick = { onOpen(url) }, contentPadding = PaddingValues(0.dp)) {
+            Text("Open", color = Solo.Gold)
+          }
+        }
+      }
+    }
+  }
+}
+
+/** A small note that a connected app (for example Google Calendar) was used for this reply. */
+@Composable
+fun ConnectorNote(text: String, top: androidx.compose.ui.unit.Dp = 0.dp, provider: String? = null) {
   Row(Modifier.padding(top = top, bottom = 6.dp).testTag("connector-note"), verticalAlignment = Alignment.CenterVertically) {
-    Icon(Icons.Outlined.CalendarMonth, contentDescription = null, tint = Solo.TextMuted,
+    Icon(connectorIcon(provider), contentDescription = null, tint = Solo.TextMuted,
       modifier = Modifier.size(16.dp))
     Spacer(Modifier.width(6.dp))
     Text(text, style = MaterialTheme.typography.labelMedium, color = Solo.TextMuted)

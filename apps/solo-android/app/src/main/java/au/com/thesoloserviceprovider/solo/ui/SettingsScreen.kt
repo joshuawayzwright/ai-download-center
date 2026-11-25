@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Login
 import androidx.compose.material.icons.outlined.Mail
@@ -68,6 +67,7 @@ fun SettingsScreen(
   onDeleteAccount: suspend () -> String? = { null },
   onConnect: suspend (String) -> String? = { null },
   onDisconnect: (String) -> Unit = {},
+  onPickFiles: suspend () -> String? = { null },
 ) {
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
@@ -119,29 +119,33 @@ fun SettingsScreen(
         Section("Connected apps") {
           for (app in state.connectedApps) {
             val busy = state.connectorBusy == app.provider
+            fun openUrl(url: String) =
+              context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addCategory(Intent.CATEGORY_BROWSABLE))
             ConnectorRow(
               name = app.name,
+              icon = connectorIcon(app.provider),
               detail = when {
-                app.connected -> "Connected · read-only"
                 !state.connectorsPro -> "Available on SOLO AI Pro"
-                else -> "Read-only. Plan your week around real bookings"
+                app.builtin -> "Built in · ${app.access}"
+                app.connected -> "Connected · ${app.access}"
+                else -> app.access.ifEmpty { "Not connected" }
               },
               action = when {
-                busy -> null
+                busy || app.builtin -> null
                 app.connected -> "Disconnect"
                 state.connectorsPro -> "Connect"
                 else -> null
               },
               busy = busy,
               tag = "connector-${app.provider}",
+              extra = if (app.provider == "google_drive" && app.connected && state.connectorsPro && !busy) "Pick files" else null,
+              onExtra = { scope.launch { onPickFiles()?.let(::openUrl) } },
             ) {
               if (app.connected) confirmDisconnect = app
-              else scope.launch { onConnect(app.provider)?.let { url ->
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addCategory(Intent.CATEGORY_BROWSABLE))
-              } }
+              else scope.launch { onConnect(app.provider)?.let(::openUrl) }
             }
           }
-          Text("SOLO AI can only read what you connect, never change it. Disconnect at any time.",
+          Text("SOLO AI never changes anything without your tap on Confirm. Disconnect at any time.",
             style = MaterialTheme.typography.bodySmall, color = Solo.TextMuted,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 14.dp))
         }
@@ -216,7 +220,7 @@ fun SettingsScreen(
     AlertDialog(
       onDismissRequest = { confirmDisconnect = null },
       title = { Text("Disconnect ${app.name}?") },
-      text = { Text("SOLO AI will delete its stored key straight away and ask Google to cancel it. You can connect again later.") },
+      text = { Text("SOLO AI will delete its stored key for ${app.name} straight away and ask Google to cancel it. You can connect again later.") },
       confirmButton = {
         TextButton(modifier = Modifier.testTag("confirm-disconnect"), onClick = { confirmDisconnect = null; onDisconnect(app.provider) }) {
           Text("Disconnect", color = Solo.Error)
@@ -266,16 +270,21 @@ private fun Item(icon: ImageVector, title: String, detail: String? = null, tag: 
 }
 
 @Composable
-private fun ConnectorRow(name: String, detail: String, action: String?, busy: Boolean, tag: String, onClick: () -> Unit) {
+private fun ConnectorRow(name: String, icon: androidx.compose.ui.graphics.vector.ImageVector, detail: String, action: String?,
+  busy: Boolean, tag: String, extra: String? = null, onExtra: () -> Unit = {}, onClick: () -> Unit) {
   Row(
     Modifier.testTag(tag).fillMaxWidth().heightIn(min = 64.dp).padding(horizontal = 16.dp, vertical = 10.dp),
     verticalAlignment = Alignment.CenterVertically,
   ) {
-    Icon(Icons.Outlined.CalendarMonth, contentDescription = null, tint = Solo.TextMuted, modifier = Modifier.size(22.dp))
+    Icon(icon, contentDescription = null, tint = Solo.TextMuted, modifier = Modifier.size(22.dp))
     Spacer(Modifier.width(16.dp))
     Column(Modifier.weight(1f)) {
       Text(name, style = MaterialTheme.typography.bodyLarge, color = Solo.Text)
       Text(detail, style = MaterialTheme.typography.bodySmall, color = Solo.TextMuted)
+      extra?.let {
+        TextButton(onClick = onExtra, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+          modifier = Modifier.testTag("$tag-extra")) { Text(it, color = Solo.Gold) }
+      }
     }
     when {
       busy -> CircularProgressIndicator(strokeWidth = 2.dp, color = Solo.Gold, modifier = Modifier.size(20.dp))

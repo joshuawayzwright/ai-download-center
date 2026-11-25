@@ -54,6 +54,15 @@ class HistoryStore(private val file: File) {
             put("sources", sources)
           }
           if (m.connectors.isNotEmpty()) put("connectors", JSONArray(m.connectors))
+          if (m.actions.isNotEmpty()) {
+            val actions = JSONArray()
+            for (a in m.actions) actions.put(JSONObject().put("token", a.token).put("provider", a.provider)
+              .put("title", a.title).put("lines", JSONArray(a.lines)).put("confirmLabel", a.confirmLabel)
+              // A card that was mid-run when the app closed is shown as pending again; the server runs it once.
+              .put("state", (if (a.state == ActionState.RUNNING) ActionState.PENDING else a.state).name)
+              .apply { a.result?.let { put("result", it) }; a.url?.let { put("url", it) } })
+            put("actions", actions)
+          }
         })
       }
       val history = JSONArray()
@@ -62,6 +71,19 @@ class HistoryStore(private val file: File) {
         .put("messages", messages).put("history", history))
     }
     return JSONObject().put("version", 1).put("threads", array).toString()
+  }
+
+  /** Saved Confirm cards are re-checked on load, like replies from the server. */
+  private fun parseActions(m: JSONObject): List<ActionCard> {
+    val cards = SoloApi.parseActions(m)
+    val saved = m.optJSONArray("actions") ?: return emptyList()
+    return cards.mapIndexed { i, a ->
+      val raw = (0 until saved.length()).map { saved.optJSONObject(it) }.firstOrNull { it?.optString("token") == a.token }
+      val state = runCatching { ActionState.valueOf(raw?.optString("state", "PENDING") ?: "PENDING") }.getOrDefault(ActionState.PENDING)
+      val url = raw?.optString("url")?.takeIf { SoloApi.isSafeSourceUrl(it) }
+      ActionCard(a.token, a.provider, a.title, a.lines, a.confirmLabel, state,
+        raw?.optString("result")?.ifEmpty { null }?.let { SoloApi.cleanLine(it, 300) }, url)
+    }
   }
 
   /** Saved sources are re-checked on load; anything not a well-formed https link is dropped. */
@@ -87,6 +109,7 @@ class HistoryStore(private val file: File) {
           error = m.optString("error").ifEmpty { null },
           sources = parseSources(m),
           connectors = SoloApi.parseConnectors(m),
+          actions = parseActions(m),
         )
       }
       val h = t.getJSONArray("history")
