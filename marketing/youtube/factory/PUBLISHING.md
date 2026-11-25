@@ -251,3 +251,20 @@ The old per-day tasks were deleted. New tasks publish at 08:05 UTC (6:05pm Brisb
 | 27 Nov | 052–060 (9 Shorts) |
 
 That empties the approved queue. TikTok and Instagram stay at 2 a day through 21 Dec. Keeping 10 a day after 27 Nov needs batch 06 (owner approval required).
+
+### 25 Nov 2026, 08:06 UTC run: 10 Shorts (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 037 | How AI chatbots actually work, in 40 seconds | https://www.youtube.com/watch?v=TyFToOF3DWY |
+| 038 | Practise for a job interview with AI: 3 steps | https://www.youtube.com/watch?v=8ff7N6y94D0 |
+| 039 | Using a free AI API key? Check these 4 things first | https://www.youtube.com/watch?v=9NRWjfkCr7w |
+| 040 | What you actually need to build an AI agent | https://www.youtube.com/watch?v=Dyh4WeWG_aU |
+| 041 | Turn your documents into an AI knowledge base | https://www.youtube.com/watch?v=N6yqfkWM4pM |
+| 042 | What AI video editing can do, and what it can't | https://www.youtube.com/watch?v=oAPaKTTIfZE |
+| 043 | Can AI make a video game for you? | https://www.youtube.com/watch?v=SYDb-Fn81yc |
+| 044 | What is vibe coding? | https://www.youtube.com/watch?v=L7acYdedO6g |
+| 045 | How to fact-check an AI answer in 60 seconds | https://www.youtube.com/watch?v=JajU4tR82p4 |
+| 046 | How much electricity does AI really use? | https://www.youtube.com/watch?v=8YrWfsjrEws |
+
+039 arrived with no tags; they were re-added.
