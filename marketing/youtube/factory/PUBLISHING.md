@@ -215,3 +215,56 @@ All 16 are in vidIQ storage with YouTube drafts (public, category 28). The long-
 TikTok + Instagram: Shorts 049–060 are scheduled in vidIQ for 16–21 Dec, 2 a day (23:30 and 08:30 UTC), with the same settings as before.
 
 The episode 5 and 6 drafts now carry corrected thumbnails: the tag box no longer overlaps two-line headlines (render.py fix).
+
+### 24 Nov 2026, 08:05 UTC run: batch 03 day 2 (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 028 | Is AI reading your job application? | https://www.youtube.com/watch?v=_La7r1XKwNY |
+| 029 | How AI clipping tools pick your best moments | https://www.youtube.com/watch?v=mGiRXfqNdB4 |
+| 030 | AI influencers: what they are and the labels you need | https://www.youtube.com/watch?v=7Ivym7j9fkU |
+
+All three arrived with no tags; they were re-added.
+
+### 25 Nov 2026, 06:23 UTC: max uploads (owner's instruction: "max uploads every day")
+
+The window that opened 24 Nov 08:00 UTC had 7 of 10 slots left, so the rest of batch 03 and the first long-form video went out now. All public, tags intact.
+
+| # | Title | YouTube |
+|---|---|---|
+| 031 | Can AI build your website? | https://www.youtube.com/watch?v=Gbsz882wmqc |
+| 032 | 3 rules for using AI in your business safely | https://www.youtube.com/watch?v=gKIqtUnJSYQ |
+| 033 | Why AI model names are so confusing | https://www.youtube.com/watch?v=orVRu6yHplI |
+| 034 | How to compare two AI models yourself | https://www.youtube.com/watch?v=ryrKvxQpZJs |
+| 035 | What free AI tools really cost you | https://www.youtube.com/watch?v=SWrqTNtMzGg |
+| 036 | Making AI Shorts? Don't break these YouTube rules | https://www.youtube.com/watch?v=wnU6lCx_31I |
+| LF01 | How AI Actually Works: A Complete Beginner's Guide (8:01) | https://www.youtube.com/watch?v=ORKoW6vfn1c |
+
+### New YouTube schedule: 10 a day (replaces the 3-a-day tasks above)
+
+The old per-day tasks were deleted. New tasks publish at 08:05 UTC (6:05pm Brisbane):
+
+| Day | Videos |
+|---|---|
+| 25 Nov | 037–046 (10 Shorts) |
+| 26 Nov | 047, 048, Turning Points ep 5 + ep 6, The Entire History of AI, Turning Points ep 7 + ep 8, 049, 050, 051 |
+| 27 Nov | 052–060 (9 Shorts) |
+
+That empties the approved queue. TikTok and Instagram stay at 2 a day through 21 Dec. Keeping 10 a day after 27 Nov needs batch 06 (owner approval required).
+
+### 25 Nov 2026, 08:06 UTC run: 10 Shorts (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 037 | How AI chatbots actually work, in 40 seconds | https://www.youtube.com/watch?v=TyFToOF3DWY |
+| 038 | Practise for a job interview with AI: 3 steps | https://www.youtube.com/watch?v=8ff7N6y94D0 |
+| 039 | Using a free AI API key? Check these 4 things first | https://www.youtube.com/watch?v=9NRWjfkCr7w |
+| 040 | What you actually need to build an AI agent | https://www.youtube.com/watch?v=Dyh4WeWG_aU |
+| 041 | Turn your documents into an AI knowledge base | https://www.youtube.com/watch?v=N6yqfkWM4pM |
+| 042 | What AI video editing can do, and what it can't | https://www.youtube.com/watch?v=oAPaKTTIfZE |
+| 043 | Can AI make a video game for you? | https://www.youtube.com/watch?v=SYDb-Fn81yc |
+| 044 | What is vibe coding? | https://www.youtube.com/watch?v=L7acYdedO6g |
+| 045 | How to fact-check an AI answer in 60 seconds | https://www.youtube.com/watch?v=JajU4tR82p4 |
+| 046 | How much electricity does AI really use? | https://www.youtube.com/watch?v=8YrWfsjrEws |
+
+039 arrived with no tags; they were re-added.
