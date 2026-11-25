@@ -225,3 +225,29 @@ The episode 5 and 6 drafts now carry corrected thumbnails: the tag box no longer
 | 030 | AI influencers: what they are and the labels you need | https://www.youtube.com/watch?v=7Ivym7j9fkU |
 
 All three arrived with no tags; they were re-added.
+
+### 25 Nov 2026, 06:23 UTC: max uploads (owner's instruction: "max uploads every day")
+
+The window that opened 24 Nov 08:00 UTC had 7 of 10 slots left, so the rest of batch 03 and the first long-form video went out now. All public, tags intact.
+
+| # | Title | YouTube |
+|---|---|---|
+| 031 | Can AI build your website? | https://www.youtube.com/watch?v=Gbsz882wmqc |
+| 032 | 3 rules for using AI in your business safely | https://www.youtube.com/watch?v=gKIqtUnJSYQ |
+| 033 | Why AI model names are so confusing | https://www.youtube.com/watch?v=orVRu6yHplI |
+| 034 | How to compare two AI models yourself | https://www.youtube.com/watch?v=ryrKvxQpZJs |
+| 035 | What free AI tools really cost you | https://www.youtube.com/watch?v=SWrqTNtMzGg |
+| 036 | Making AI Shorts? Don't break these YouTube rules | https://www.youtube.com/watch?v=wnU6lCx_31I |
+| LF01 | How AI Actually Works: A Complete Beginner's Guide (8:01) | https://www.youtube.com/watch?v=ORKoW6vfn1c |
+
+### New YouTube schedule: 10 a day (replaces the 3-a-day tasks above)
+
+The old per-day tasks were deleted. New tasks publish at 08:05 UTC (6:05pm Brisbane):
+
+| Day | Videos |
+|---|---|
+| 25 Nov | 037–046 (10 Shorts) |
+| 26 Nov | 047, 048, Turning Points ep 5 + ep 6, The Entire History of AI, Turning Points ep 7 + ep 8, 049, 050, 051 |
+| 27 Nov | 052–060 (9 Shorts) |
+
+That empties the approved queue. TikTok and Instagram stay at 2 a day through 21 Dec. Keeping 10 a day after 27 Nov needs batch 06 (owner approval required).
