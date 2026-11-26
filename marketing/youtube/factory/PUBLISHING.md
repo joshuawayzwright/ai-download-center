@@ -268,3 +268,20 @@ That empties the approved queue. TikTok and Instagram stay at 2 a day through 21
 | 046 | How much electricity does AI really use? | https://www.youtube.com/watch?v=8YrWfsjrEws |
 
 039 arrived with no tags; they were re-added.
+
+### 26 Nov 2026, 08:06 UTC run: 10 videos (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 047 | Write better emails with AI: the 3-step method | https://www.youtube.com/watch?v=jhZKdhGPeao |
+| 048 | Your AI chatbot might remember you | https://www.youtube.com/watch?v=rFzWc_QgcXM |
+| TP05 | The Day a Computer Beat the World Chess Champion | https://www.youtube.com/watch?v=Hi7bDV4-Xbo |
+| TP06 | The Bedroom Experiment That Started the AI Boom | https://www.youtube.com/watch?v=B14Zl9LwslA |
+| LF02 | The Entire History of AI, From Turing to ChatGPT (8:44) | https://www.youtube.com/watch?v=kTw0wGsAwJ8 |
+| TP07 | The Question That Started AI: Alan Turing's Imitation Game | https://www.youtube.com/watch?v=T6It6RKhos4 |
+| TP08 | The Research Preview That Started the AI Race | https://www.youtube.com/watch?v=BxH8Lmkyw60 |
+| 049 | What is generative AI? | https://www.youtube.com/watch?v=lD2CZRWf85M |
+| 050 | What free AI chatbots can and can't do | https://www.youtube.com/watch?v=VGkRRVMviCU |
+| 051 | Who was Alan Turing? | https://www.youtube.com/watch?v=pm9L9FYT09k |
+
+047, 050, 051, TP05, TP07 and LF02 arrived with no tags; they were re-added.
