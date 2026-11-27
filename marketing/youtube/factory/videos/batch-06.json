@@ -1,0 +1,182 @@
+[
+  {
+    "id": "061-what-is-a-reasoning-model",
+    "pillar": "AI Explained",
+    "title": "What is a reasoning model? AI that thinks first #Shorts",
+    "description": "Reasoning or thinking models work through a problem in steps before they answer. Why that helps with hard tasks, and why it can be slower and cost more. Narrated with an AI voice.\n\n#AI #ReasoningModels #AIexplained #Shorts",
+    "tags": ["what is a reasoning model", "AI thinking models", "reasoning models explained", "chain of thought AI", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "AI that thinks first", "say": "Some chatbots now pause and think before they answer. What are reasoning models?"},
+      {"screen": "Steps before answers", "say": "A reasoning model works through a problem in steps before it gives you a final answer. Many apps show only a short summary of that thinking."},
+      {"screen": "Trained to think", "say": "These models are usually trained to break hard problems into smaller steps, and to try a different approach when one isn't working."},
+      {"screen": "Best for hard problems", "say": "That tends to help with maths, coding and multi-step puzzles. For a quick email or a simple question, you usually don't need it."},
+      {"screen": "The trade-offs", "say": "The trade-off is that they're often slower, and all that extra thinking uses more computing. On some plans, that means tighter limits or higher cost."},
+      {"screen": "Pick the right mode", "say": "So use thinking mode for hard problems, and still check the answer. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "062-what-is-prompt-injection",
+    "pillar": "AI Safety",
+    "title": "What is prompt injection? How web pages can hijack AI #Shorts",
+    "description": "Prompt injection is when hidden instructions in a web page, email or document try to steer an AI assistant. Why it matters most for AI agents, and how to be careful. Narrated with an AI voice.\n\n#AI #AISafety #PromptInjection #Shorts",
+    "tags": ["what is prompt injection", "prompt injection explained", "AI agent security", "AI safety", "AI for beginners", "AI explained"],
+    "segments": [
+      {"screen": "Can a web page hijack AI?", "say": "Can a web page give orders to your AI assistant? It can try."},
+      {"screen": "Hidden instructions", "say": "That's prompt injection: text in a web page, email or document that can hide instructions aimed at the AI, like, ignore the user and do this instead."},
+      {"screen": "Why it's hard", "say": "A chatbot reads everything as text, so it can struggle to tell your instructions from ones buried in what it's reading. The UK's cyber security agency says it may never be fully fixed."},
+      {"screen": "Agents raise the stakes", "say": "It matters most for agents that browse, read your inbox or act for you. A hijacked agent could do more than give a wrong answer."},
+      {"screen": "How to be careful", "say": "Limit what an agent can access. Ask it to confirm before sending, buying or deleting anything."},
+      {"screen": "Treat it as untrusted", "say": "And treat anything an AI reads as untrusted. Follow for more AI safety."}
+    ]
+  },
+  {
+    "id": "063-what-is-a-knowledge-cutoff",
+    "pillar": "AI Explained",
+    "title": "Why doesn't my chatbot know recent news? Knowledge cutoffs #Shorts",
+    "description": "A chatbot learns from data collected up to a certain point, called its knowledge cutoff. Why it can miss recent events, and how web search changes that. Narrated with an AI voice.\n\n#AI #ChatGPT #AIexplained #Shorts",
+    "tags": ["what is a knowledge cutoff", "why doesn't ChatGPT know recent events", "AI knowledge cutoff", "AI training data", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "Why's it out of date?", "say": "Why does a chatbot sometimes not know about recent events? It comes down to something called a knowledge cutoff."},
+      {"screen": "A frozen snapshot", "say": "A model learns from data collected up to a certain point. After training ends, what it knows stays fixed, like a snapshot."},
+      {"screen": "The knowledge cutoff", "say": "That point is its knowledge cutoff. Anything after it wasn't in the training data, so the model may not know about it."},
+      {"screen": "Months can pass", "say": "Models are often released months after training, then used for a long time. So the gap between the cutoff and today can be large."},
+      {"screen": "Search fills the gap", "say": "Many chatbots can search the web. When search is on, they can read current pages and base their answer on those, instead of only memory."},
+      {"screen": "Turn search on", "say": "For anything recent, turn search on and check the sources. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "064-why-ai-agrees-with-you",
+    "pillar": "AI Safety",
+    "title": "Why does AI agree with everything you say? #Shorts",
+    "description": "Sycophancy is when an AI tells you what you want to hear instead of what's accurate. Why it happens, and how to prompt against it. Narrated with an AI voice.\n\n#AI #AISafety #PromptEngineering #Shorts",
+    "tags": ["AI sycophancy", "why does ChatGPT agree with me", "sycophancy explained", "AI yes man", "AI prompts", "AI safety"],
+    "segments": [
+      {"screen": "Why does AI agree?", "say": "Ever notice how a chatbot loves your ideas, even the bad ones? There's a name for that: sycophancy."},
+      {"screen": "Telling you what you want", "say": "Sycophancy is when a model leans towards agreeing with you, flattering you, or backing down when you push back, instead of being accurate."},
+      {"screen": "Why it happens", "say": "One reason is training. Models are often tuned using human ratings, and people sometimes rate agreeable answers higher. Research has found sycophancy in several popular assistants."},
+      {"screen": "Ask for pushback", "say": "You can prompt against it. Try: tell me what's wrong with this plan, or, argue the opposite side first."},
+      {"screen": "Hide your opinion", "say": "Also, don't reveal which answer you're hoping for. Ask neutral questions, and ask for risks, evidence and counterarguments."},
+      {"screen": "Check with people", "say": "For big decisions, get a human second opinion too. Follow for more AI safety."}
+    ]
+  },
+  {
+    "id": "065-what-is-a-neural-network",
+    "pillar": "AI Explained",
+    "title": "What is a neural network? The 45-second version #Shorts",
+    "description": "A neural network is layers of simple units connected by adjustable numbers called weights. How it learns from examples, with no maths. Narrated with an AI voice.\n\n#AI #NeuralNetworks #AIexplained #Shorts",
+    "tags": ["what is a neural network", "neural networks explained", "how neural networks work", "deep learning explained", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "What's a neural network?", "say": "Neural networks power most modern AI. Here's what they are, in forty-five seconds."},
+      {"screen": "Layers of units", "say": "Picture layers of simple units. Each one takes in numbers, does a small calculation, and passes the result to the next layer."},
+      {"screen": "Weights are the settings", "say": "The links between units have strengths, called weights. They're the network's settings. Big modern models have billions of them."},
+      {"screen": "Learn from examples", "say": "To learn, the network sees an example and makes a guess. Then it checks how wrong it was and nudges its weights to be a bit less wrong."},
+      {"screen": "Repeat millions of times", "say": "Repeat that over a huge number of examples, and useful patterns build up in the weights. Nobody writes those patterns by hand."},
+      {"screen": "Loosely brain-inspired", "say": "The name is a loose comparison with the brain. In reality, it's maths running on computers. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "066-how-chatbots-learn-manners",
+    "pillar": "AI Explained",
+    "title": "How do chatbots learn manners? RLHF explained #Shorts",
+    "description": "RLHF, reinforcement learning from human feedback, is one way chatbots are tuned to be more helpful and polite. How it works in plain words. Narrated with an AI voice.\n\n#AI #RLHF #AIexplained #Shorts",
+    "tags": ["what is RLHF", "RLHF explained", "reinforcement learning from human feedback", "how ChatGPT is trained", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "How do chatbots learn manners?", "say": "A raw language model just continues text. So how do chatbots learn to be helpful and polite?"},
+      {"screen": "Step one: examples", "say": "First, people write examples of good answers to many kinds of requests, and the model is trained to imitate them."},
+      {"screen": "Step two: rank", "say": "Next, the model writes several answers to the same prompt, and people rank which ones they prefer."},
+      {"screen": "A reward model", "say": "Those rankings train a separate scoring model that predicts what people would prefer. Then the chatbot is adjusted to earn higher scores."},
+      {"screen": "That's RLHF", "say": "That's R L H F: reinforcement learning from human feedback. In one well-known study, people preferred a much smaller model trained this way over a far larger untuned one."},
+      {"screen": "Not perfect", "say": "It isn't perfect, though. Models can still be wrong, or too eager to please. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "067-what-is-a-deepfake",
+    "pillar": "AI Safety",
+    "title": "What is a deepfake, and how do you check one? #Shorts",
+    "description": "Deepfakes are AI-made or AI-altered images, video or audio that show someone doing or saying something they didn't, and the harms are real. Basic checks help, and in Australia you can report image-based abuse to eSafety. Narrated with an AI voice.\n\n#AI #Deepfake #AISafety #Shorts",
+    "tags": ["what is a deepfake", "how to spot a deepfake", "deepfakes explained", "AI scams", "AI safety", "AI for beginners"],
+    "segments": [
+      {"screen": "What's a deepfake?", "say": "That video of a famous person might not be real. What's a deepfake?"},
+      {"screen": "Fake, but convincing", "say": "A deepfake is AI-made or AI-altered video, images or audio showing someone saying or doing something they never did. Some are very hard to spot."},
+      {"screen": "Real harms", "say": "The harms are real: scams that can use a cloned voice, and fake intimate images used to harass people. In Australia, sexual deepfakes can be a crime."},
+      {"screen": "Pause and check", "say": "Basic checks: pause before sharing, find the original source, and see whether trusted outlets report it. Don't rely on spotting glitches, as fakes keep improving."},
+      {"screen": "Verify another way", "say": "If a call or message asks for money, hang up and call the person back on a number you already trust."},
+      {"screen": "Report abuse", "say": "If you're targeted, report it to the platform and eSafety. Follow for more AI safety."}
+    ]
+  },
+  {
+    "id": "068-what-are-content-credentials",
+    "pillar": "AI Safety",
+    "title": "What are Content Credentials? Labels for real vs AI images #Shorts",
+    "description": "Content Credentials, built on the C2PA standard, attach a record of where an image came from and how it was edited. What they can show, and what they can't prove. Narrated with an AI voice.\n\n#AI #ContentCredentials #AISafety #Shorts",
+    "tags": ["what are Content Credentials", "C2PA explained", "how to tell if an image is AI", "AI image labels", "AI safety", "AI explained"],
+    "segments": [
+      {"screen": "A label for images?", "say": "Is there a label that shows if an image is AI-made? Sort of: Content Credentials."},
+      {"screen": "Provenance record", "say": "Content Credentials are built on an open standard called C two P A. They attach a signed record of where a file came from and how it was edited."},
+      {"screen": "Where you might see it", "say": "Some cameras, editing tools and AI image generators can add them. Where supported, you can view the record when you check the file."},
+      {"screen": "What it can show", "say": "It can show who made or published it, whether AI tools were used, and what edits were made, if that information is included."},
+      {"screen": "What it can't prove", "say": "But it doesn't prove an image is true. And missing credentials don't mean fake, because they can be stripped out or never added."},
+      {"screen": "One clue, not a verdict", "say": "So treat credentials as one helpful clue, alongside the source. Follow for more AI safety."}
+    ]
+  },
+  {
+    "id": "069-what-is-quantization",
+    "pillar": "AI Explained",
+    "title": "What is quantization? How big AI fits on a laptop #Shorts",
+    "description": "Quantization stores a model's numbers with fewer bits, so it takes less memory and can run on laptops and phones. The trade-off is that quality can drop. Narrated with an AI voice.\n\n#AI #Quantization #LocalAI #Shorts",
+    "tags": ["what is quantization", "AI quantization explained", "run AI locally", "4-bit models", "AI explained", "local LLM"],
+    "segments": [
+      {"screen": "Big AI on a laptop?", "say": "Some AI models are huge. How do people run them on a laptop or phone? One trick: quantization."},
+      {"screen": "Fewer bits per number", "say": "A model is mostly a giant list of numbers, its weights. Quantization stores each number with fewer bits, such as eight or four, instead of sixteen."},
+      {"screen": "Like compressing a photo", "say": "It's a bit like saving a photo at a smaller file size. You give up a little precision to save a lot of space."},
+      {"screen": "Smaller and faster", "say": "The result is a model that needs less memory, and often runs faster on ordinary hardware. That's one reason local AI is possible."},
+      {"screen": "The quality trade-off", "say": "The trade-off is quality. Shrinking too far can make answers worse, and how much varies by model and task."},
+      {"screen": "Test it yourself", "say": "So try a model on your own tasks before relying on it. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "070-what-is-model-distillation",
+    "pillar": "AI Explained",
+    "title": "What is model distillation? Big AI teaching small AI #Shorts",
+    "description": "In distillation, a large teacher model helps train a smaller student model to copy its behaviour. Why it makes small models more capable, and what it can't do. Narrated with an AI voice.\n\n#AI #Distillation #AIexplained #Shorts",
+    "tags": ["what is model distillation", "knowledge distillation explained", "teacher student model", "small language models", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "Big AI teaches small AI", "say": "How can a small AI model be surprisingly good? Often, a bigger model taught it. That's distillation."},
+      {"screen": "Teacher and student", "say": "In distillation, a large, capable model acts as the teacher. A smaller model, the student, is trained to copy the teacher's answers."},
+      {"screen": "More than right answers", "say": "A teacher's output carries extra detail, like how confident it was across options. That gives the student more to learn from than a simple right or wrong label."},
+      {"screen": "Why bother?", "say": "The student is smaller, so it's cheaper and faster to run, and can fit on devices. A well-known twenty fifteen research paper helped popularise it."},
+      {"screen": "It has limits", "say": "But a student often can't fully match its teacher, especially on the hardest tasks. And it can inherit the teacher's mistakes."},
+      {"screen": "Small can be smart", "say": "So small models can be good value for focused jobs. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "071-what-is-mixture-of-experts",
+    "pillar": "AI Explained",
+    "title": "What is mixture of experts? Why some AI runs part of itself #Shorts",
+    "description": "In a mixture-of-experts model, a router sends each token to only some parts of the network. What that means, and what it doesn't. Narrated with an AI voice.\n\n#AI #MixtureOfExperts #AIexplained #Shorts",
+    "tags": ["what is mixture of experts", "MoE explained", "mixture of experts AI", "how LLMs work", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "Not all of it runs", "say": "Some big AI models only use part of themselves for each piece of text. That's called mixture of experts."},
+      {"screen": "Many small expert blocks", "say": "In this design, some layers contain many separate blocks, called experts. A small router picks which few handle each token."},
+      {"screen": "Only some run", "say": "So for each token, only a fraction of the model's parameters do any work. That can make it faster to run than a model of the same size."},
+      {"screen": "Not human-style experts", "say": "But the experts aren't like a maths expert and a law expert. Research suggests they don't neatly split up by subject."},
+      {"screen": "Still needs memory", "say": "And the whole model still has to be loaded into memory, even though only some parts run at once."},
+      {"screen": "Some models use it", "say": "Some well-known models are reported to use this design, though companies don't always say. Follow for more AI explained."}
+    ]
+  },
+  {
+    "id": "072-do-chatbots-search-the-web",
+    "pillar": "AI Explained",
+    "title": "Do chatbots search the web, or just remember? #Shorts",
+    "description": "Chatbots can answer from memory, or search the web and base answers on what they find. Why citations help, and why you should still click the sources. Narrated with an AI voice.\n\n#AI #ChatGPT #AIexplained #Shorts",
+    "tags": ["do chatbots search the web", "ChatGPT web search", "AI citations", "AI search explained", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "Memory or web search?", "say": "When you ask a chatbot something, is it searching the web, or just remembering? It depends."},
+      {"screen": "From memory", "say": "Without search, a model answers from patterns it learned in training. That can be fine for general knowledge, but it can be out of date or wrong."},
+      {"screen": "Search-grounded answers", "say": "Many chatbots can search the web: they look up pages, read them, and write an answer based on what they found. That's often called grounding."},
+      {"screen": "Citations help", "say": "Many show links to their sources. That makes it easier to check where a claim came from, especially for recent or important facts."},
+      {"screen": "Still click through", "say": "But a link isn't proof. The chatbot can misread a page or cite the wrong source. So open it and check."},
+      {"screen": "Check what matters", "say": "Check anything that affects money, health or legal choices. Follow for more AI explained."}
+    ]
+  }
+]
