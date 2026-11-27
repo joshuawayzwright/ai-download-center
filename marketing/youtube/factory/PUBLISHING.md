@@ -285,3 +285,19 @@ That empties the approved queue. TikTok and Instagram stay at 2 a day through 21
 | 051 | Who was Alan Turing? | https://www.youtube.com/watch?v=pm9L9FYT09k |
 
 047, 050, 051, TP05, TP07 and LF02 arrived with no tags; they were re-added.
+
+### 27 Nov 2026, 08:06 UTC run: 9 Shorts (public), approved queue now empty
+
+| # | Title | YouTube |
+|---|---|---|
+| 052 | What is the Turing test, and has AI passed it? | https://www.youtube.com/watch?v=CjTtLDH9XW8 |
+| 053 | What was the AI winter? | https://www.youtube.com/watch?v=9BsCZVYw8e0 |
+| 054 | What is an LLM? | https://www.youtube.com/watch?v=fBgPXQLuHWo |
+| 055 | What is AGI, and are we close? | https://www.youtube.com/watch?v=9GEn_VCpwUY |
+| 056 | Can you copyright AI art? | https://www.youtube.com/watch?v=qeIftNZoZ78 |
+| 057 | What is a system prompt? | https://www.youtube.com/watch?v=PM5uK8SR4vI |
+| 058 | How AI translation actually works | https://www.youtube.com/watch?v=89eKea8dyHY |
+| 059 | The 4-part prompt for better AI images | https://www.youtube.com/watch?v=fhSXNbwmwvk |
+| 060 | How AI turns speech into text | https://www.youtube.com/watch?v=Z12IBVkpJiE |
+
+053, 054, 055, 056 and 060 arrived with no tags; they were re-added. Every approved YouTube video (001–060, Turning Points 1–8, both long-form videos) is now public. Further uploads need batch 06 (owner approval required).
