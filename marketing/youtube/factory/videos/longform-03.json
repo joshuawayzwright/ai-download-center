@@ -1,0 +1,419 @@
+[
+  {
+    "id": "lf04-ai-in-everyday-life",
+    "format": "landscape",
+    "pillar": "AI in Everyday Life",
+    "footer": "AI Field Notes · Beginner's guide · Narrated with an AI voice",
+    "title": "10 Places You Already Use AI Every Day",
+    "thumbnail": {
+      "text": "Everyday AI",
+      "kicker": "Beginner's guide",
+      "tag": "10 examples"
+    },
+    "description": "You probably used AI before breakfast today. This is a plain-English tour of ten everyday tools that quietly use machine learning: spam filters, maps, phone cameras, autocomplete, recommendations, voice assistants, card fraud checks, translation, captions and photo search. For each one: what it does, how it works in general terms, and where it can go wrong.\n\nCHAPTERS\n{chapters}\n\nNOTES\n- Products change often, and companies don't publish every detail, so this video sticks to what they've said publicly and describes the rest in general terms. Features and settings vary by phone, app and country.\n- This is general information, not professional advice.\n\nSOURCES (pages checked while writing this script)\n- Google Workspace blog, Ridding Gmail of 100 million more spam messages with TensorFlow: https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow\n- Gmail Help, Report spam: https://support.google.com/mail/answer/1366858\n- Google, Google Maps 101: How AI helps predict traffic and determine routes: https://blog.google/products-and-platforms/products/maps/google-maps-101-how-ai-helps-predict-traffic-and-determine-routes/\n- Google DeepMind, Traffic prediction with advanced graph neural networks (2020): https://deepmind.google/blog/traffic-prediction-with-advanced-graph-neural-networks/\n- Google Research, Night Sight: Seeing in the Dark on Pixel Phones (includes HDR+ burst merging): https://research.google/blog/night-sight-seeing-in-the-dark-on-pixel-phones/\n- Google Research, Advances in private training for production on-device language models (Gboard): https://research.google/blog/advances-in-private-training-for-production-on-device-language-models/\n- YouTube, On YouTube's recommendation system (15 September 2021): https://blog.youtube/inside-youtube/on-youtubes-recommendation-system/\n- Visa, AI fraud detection: https://corporate.visa.com/en/solutions/visa-protect/insights/ai-fraud-detection.html\n- Google, Found in translation: More accurate, fluent sentences in Google Translate (2016): https://blog.google/products/translate/found-translation-more-accurate-fluent-sentences-google-translate/\n- Google, Higher quality neural translations for a bunch more languages: https://blog.google/products/translate/higher-quality-neural-translations-bunch-more-languages/\n- YouTube Help, Use automatic captioning: https://support.google.com/youtube/answer/6373554\n- Google Research, Improving Photo Search: A Step Across the Semantic Gap: https://research.google/blog/improving-photo-search-a-step-across-the-semantic-gap/\n- Google, Ask Photos: A new way to search your photos with Gemini (2024): https://blog.google/products/photos/ask-photos-google-io-2024/\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #AIforBeginners #AIinEverydayLife",
+    "tags": [
+      "AI in everyday life",
+      "examples of AI",
+      "where do we use AI every day",
+      "AI for beginners",
+      "what is AI",
+      "machine learning examples",
+      "everyday AI",
+      "artificial intelligence explained",
+      "how AI works",
+      "AI Field Notes"
+    ],
+    "segments": [
+      {
+        "chapter": "Intro: AI is everywhere",
+        "screen": "AI before breakfast",
+        "say": "You probably used AI before breakfast today. Not a chatbot, necessarily, just everyday tools that quietly use machine learning in the background."
+      },
+      {
+        "screen": "Ten places, one idea",
+        "say": "In this video, we'll walk through ten places you already use AI every day. For each one, I'll explain in plain English what it's doing, and where it can go wrong."
+      },
+      {
+        "screen": "Learn, then predict",
+        "say": "The common thread is simple. Most of these systems learn patterns from lots of examples, then make a prediction. A guess about spam, traffic, or the next word. Keep that in mind, and each one will make sense."
+      },
+      {
+        "screen": "Check the sources",
+        "say": "Quick note before we start. The voice you're hearing is synthetic, and the sources for everything in this video are listed in the description, so you can check them yourself."
+      },
+      {
+        "chapter": "1. Spam filters",
+        "screen": "Spam filters",
+        "say": "Number one: your email spam filter. This is one of the oldest everyday uses of machine learning. Instead of relying only on a list of banned words, many email services train a model on huge numbers of messages that people have marked as spam."
+      },
+      {
+        "screen": "Lots of small clues",
+        "say": "The model weighs lots of small clues at once, like the wording, the links and the sender. When you press report spam, that feedback can help it improve."
+      },
+      {
+        "screen": "Not perfect",
+        "say": "It still makes mistakes. Real emails sometimes end up in junk, and some junk slips through. So check your spam folder now and then, especially if you're expecting something important."
+      },
+      {
+        "chapter": "2. Maps and traffic",
+        "screen": "Maps and traffic",
+        "say": "Number two: maps and traffic. When your map app says you'll arrive in twenty-three minutes, that's a prediction. Google has explained that Maps combines historical traffic patterns with live conditions, and uses machine learning to estimate travel times."
+      },
+      {
+        "screen": "Roads as a graph",
+        "say": "Google's DeepMind has also described treating the road network as a graph, so that traffic on connecting roads can affect the estimate too. Google says it also uses aggregated location data to understand what traffic is doing right now."
+      },
+      {
+        "screen": "Still a prediction",
+        "say": "Remember, it's still a prediction. A crash up ahead, or sudden rain, can change everything, which is why the arrival time keeps updating while you drive."
+      },
+      {
+        "chapter": "3. Phone cameras",
+        "screen": "Phone cameras",
+        "say": "Number three: your phone camera. Phone cameras have small lenses, so they lean heavily on software. Google's Pixel phones, for example, take a quick burst of frames when you press the shutter, then align and merge them to reduce noise and handle bright and dark areas better."
+      },
+      {
+        "screen": "Night modes",
+        "say": "Night modes extend the same merging idea to dark scenes. On some phones, machine learning also helps preview the final look while you frame the shot. Other phone makers use their own versions of similar tricks."
+      },
+      {
+        "screen": "A computed result",
+        "say": "The catch is that the photo isn't a single moment. It's a computed result, so software can occasionally smooth away fine detail or make odd choices. What you get is the camera's best guess at what you saw."
+      },
+      {
+        "chapter": "4. Autocomplete",
+        "screen": "Autocomplete",
+        "say": "Number four: autocomplete and predictive text. Every time your keyboard suggests the next word, a small language model is guessing what you're likely to type, based on patterns in language."
+      },
+      {
+        "screen": "A model on your phone",
+        "say": "Google has published research on Gboard's next-word prediction. It describes a compact model that runs on the phone, trained in a way that keeps typing data on the device. Other keyboards work differently, so details vary."
+      },
+      {
+        "screen": "A tiny chatbot cousin",
+        "say": "Here's the link to chatbots. A chatbot also predicts the next small piece of text, again and again. Your keyboard is a tiny cousin of the same idea, just far smaller and with far less training."
+      },
+      {
+        "chapter": "5. Recommendations",
+        "screen": "Recommendations",
+        "say": "Number five: recommendations. Video apps, music apps and online shops often suggest what to watch, play or buy next. These are machine learning systems that predict what you'll want."
+      },
+      {
+        "screen": "What the signals are",
+        "say": "YouTube has said its signals include what you watch and for how long, likes and dislikes, shares, and survey answers. It also compares your habits with similar viewers. Other platforms use their own mix, and none publishes every detail."
+      },
+      {
+        "screen": "Your habits shape it",
+        "say": "That means your habits shape your feed. If you watch something once out of curiosity, expect more like it. You can usually adjust it, by removing items from your history or telling the app you're not interested."
+      },
+      {
+        "chapter": "6. Voice assistants",
+        "screen": "Voice assistants",
+        "say": "Number six: voice assistants, like Siri, Alexa and Google Assistant, and the voice typing on your phone. When you speak, speech recognition turns your voice into text."
+      },
+      {
+        "screen": "Words to action",
+        "say": "Then another system works out what you meant, and decides what to do, like setting a timer or playing a song. How much of that happens on your device, and how much in the cloud, varies by product and settings."
+      },
+      {
+        "screen": "Where it trips up",
+        "say": "Accents, background noise and unusual names can still trip them up. And many voice assistants listen for a wake word, so it's worth checking your privacy settings and any saved recordings."
+      },
+      {
+        "screen": "A practical tip",
+        "say": "A practical tip: if a voice assistant keeps mishearing you, try speaking a little more slowly, or check the language and accent settings."
+      },
+      {
+        "chapter": "7. Card fraud checks",
+        "screen": "Card fraud checks",
+        "say": "Number seven: fraud detection on your bank card. Behind the scenes, card payments are often checked by machine learning models in a fraction of a second, before the payment goes through."
+      },
+      {
+        "screen": "Spotting the unusual",
+        "say": "Visa, for example, describes screening transactions within milliseconds using real-time AI risk scores, and learning normal customer behaviour so it can flag unusual activity. Banks and other card networks run their own systems, so specifics differ."
+      },
+      {
+        "screen": "False alarms",
+        "say": "The downside is false alarms. Sometimes a genuine purchase gets blocked. When your bank asks you to confirm a payment, that may be the system at work. Check using your bank's official app, or the number on your card, rather than a link in a message."
+      },
+      {
+        "chapter": "8. Translation",
+        "screen": "Translation",
+        "say": "Number eight: translation. Google moved Translate to neural machine translation in 2016, which translates whole sentences at a time rather than piece by piece. Many translation tools now use similar approaches."
+      },
+      {
+        "screen": "Learning meaning",
+        "say": "A model learns from huge amounts of text in different languages, picking up how meaning is expressed in each one. That's why it can handle a whole sentence, not just swap words one by one."
+      },
+      {
+        "screen": "Good, not perfect",
+        "say": "It's very handy for a menu or a sign, but Google has acknowledged its translations aren't perfect. For anything important, like legal or medical text, get a qualified human translator."
+      },
+      {
+        "screen": "Translate it back",
+        "say": "A handy trick is to translate your result back into English. If the meaning has changed a lot, the translation may not be reliable."
+      },
+      {
+        "chapter": "9. Automatic captions",
+        "screen": "Automatic captions",
+        "say": "Number nine: automatic captions. On YouTube and many other video apps, captions can be generated by speech recognition, which is machine learning that turns spoken audio into text."
+      },
+      {
+        "screen": "Helpful, but fallible",
+        "say": "They help people who are deaf or hard of hearing, and anyone watching with the sound off. YouTube itself says quality varies, and accents, background noise and poor audio can all cause errors."
+      },
+      {
+        "screen": "Check the captions",
+        "say": "If you're making videos, review the captions and fix mistakes, especially names and technical words. Accurate captions matter, because some viewers depend on them, and many others just find them easier to follow."
+      },
+      {
+        "screen": "A machine's best guess",
+        "say": "As a viewer, if the captions look odd, remember it's a machine's best guess at what was said, not a transcript someone checked."
+      },
+      {
+        "chapter": "10. Photo search",
+        "screen": "Photo search",
+        "say": "Number ten: searching your photos. In many photo apps, you can type dog, beach or birthday and find matching pictures, even though you never labelled them."
+      },
+      {
+        "screen": "Computer vision",
+        "say": "That's computer vision, a kind of machine learning trained to recognise what's in an image. Google Photos, for example, has used it for years, and has added newer features that use its Gemini models to understand more natural questions."
+      },
+      {
+        "screen": "Check your settings",
+        "say": "It won't always get things right. When Google first announced Ask Photos, it said the feature was experimental. Many photo apps can also group pictures by face, so it's worth knowing which settings control that."
+      },
+      {
+        "chapter": "What this means for you",
+        "screen": "Ten places and more",
+        "say": "So that's ten places, and there are plenty more. AI isn't a single thing you switch on. It's a set of tools that predict, sort and recognise, built into products you already use."
+      },
+      {
+        "screen": "You're already an AI user",
+        "say": "What does that mean for you? First, you've been using AI for years, which makes the newer chatbots a lot less mysterious. Second, these tools are predictions, not certainties, so a little checking goes a long way. And it helps to ask one question of any AI feature: what is it predicting, and what happens if it's wrong?"
+      },
+      {
+        "screen": "Know your data",
+        "say": "Third, notice what data these tools use. Location, voice, photos and typing can all feed AI features, and many apps let you review those settings. A few minutes in your privacy settings is time well spent."
+      },
+      {
+        "screen": "Thanks for watching",
+        "say": "If you found this useful, subscribe to AI Field Notes, and have a look at my video on how AI actually works, and my guide to using AI safely. Thanks for watching."
+      }
+    ]
+  },
+  {
+    "id": "lf05-how-to-use-ai-safely",
+    "format": "landscape",
+    "pillar": "AI Safety",
+    "footer": "AI Field Notes · Safety guide · Narrated with an AI voice",
+    "title": "How to Use AI Safely: Privacy, Scams and Mistakes to Avoid",
+    "thumbnail": {
+      "text": "Use AI safely",
+      "kicker": "Safety guide",
+      "tag": "Privacy · Scams"
+    },
+    "description": "A plain-English guide to using AI tools without getting burned: what not to paste into a chatbot, data and training settings, checking answers and hallucinations, voice-clone and deepfake scams, AI-polished phishing, the family safe word, protecting your accounts and API keys, children and AI, and a simple checklist.\n\nCHAPTERS\n{chapters}\n\nOFFICIAL HELP (Australia)\n- Scamwatch (National Anti-Scam Centre, ACCC): https://www.scamwatch.gov.au\n- eSafety Commissioner: https://www.esafety.gov.au\n- ReportCyber and scam advice (Australian Cyber Security Centre): https://www.cyber.gov.au\n- IDCARE (national identity and cyber support service): https://www.idcare.org\nIf you're outside Australia, your own government's consumer protection or cyber safety agency will have similar services.\n\nIMPORTANT\nThis is general information, not legal or professional advice. Products, settings and policies change often, so check each provider's own pages.\n\nSOURCES (pages checked while writing this script)\n- OpenAI Help, Data controls FAQ (Improve the model for everyone; temporary chat): https://help.openai.com/en/articles/7730893-data-controls-faq\n- OpenAI, Why language models hallucinate: https://openai.com/index/why-language-models-hallucinate/\n- CHOICE, AI voice scams: What you need to know (code word, calling back on a known number): https://www.choice.com.au/data-protection-and-privacy/protecting-your-data/data-privacy-and-safety/articles/ai-voice-scams\n- GitHub Docs, Best practices for preventing data leaks (revoking exposed secrets; push protection): https://docs.github.com/en/code-security/getting-started/best-practices-for-preventing-data-leaks-in-your-organization\n- IDCARE, About and What is IDCARE: https://www.idcare.org/about\n- eSafety Commissioner's published material on AI chatbots and companions (see the eSafety site above for the current advice for parents).\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #AISafety #Scams",
+    "tags": [
+      "how to use AI safely",
+      "AI safety",
+      "AI privacy",
+      "AI scams",
+      "voice cloning scam",
+      "family safe word",
+      "ChatGPT privacy",
+      "AI for beginners",
+      "AI hallucinations",
+      "AI Field Notes"
+    ],
+    "segments": [
+      {
+        "chapter": "Intro: using AI with care",
+        "screen": "Use AI with care",
+        "say": "AI tools can be very useful, if you use them with some care. But there are real risks, from what you share with a chatbot, to scams that use AI to sound convincing. This video covers the main ones, in plain English."
+      },
+      {
+        "screen": "General information only",
+        "say": "A quick note first. This is general information, not legal or professional advice. Rules and products differ and change, so I'll point you to official sources, including Australia's Scamwatch and the eSafety Commissioner."
+      },
+      {
+        "screen": "What we'll cover",
+        "say": "We'll go through what not to paste into chatbots, data settings, checking answers, voice clone scams, phishing, the family safe word, protecting accounts, kids and AI, and finish with a simple checklist."
+      },
+      {
+        "chapter": "What not to paste",
+        "screen": "What not to paste",
+        "say": "First, what not to paste into a chatbot. A good rule of thumb: don't type anything you wouldn't be comfortable having someone else read."
+      },
+      {
+        "screen": "Keep these private",
+        "say": "That means passwords, one-time codes, bank logins, card numbers, and identity documents, like a passport or driver licence. It also means other people's private details, and confidential material from work or your business."
+      },
+      {
+        "screen": "Swap in placeholders",
+        "say": "If you need help with a document that has sensitive details, remove or replace them first. Swap real names for placeholders, like Customer A, and round the numbers. You usually still get a useful answer."
+      },
+      {
+        "screen": "Check workplace rules",
+        "say": "And check your workplace rules. Some employers have policies about which AI tools you can use, and what you can put into them."
+      },
+      {
+        "chapter": "Training and data settings",
+        "screen": "Data settings",
+        "say": "Next, data settings. Many AI services keep your conversations, and some may use them to improve their models, depending on the product, the plan and your settings."
+      },
+      {
+        "screen": "One example",
+        "say": "For example, OpenAI's help pages say that on personal ChatGPT accounts, there's a setting called Improve the model for everyone, which you can turn off in data controls. They also describe a temporary chat mode that isn't used to improve their models."
+      },
+      {
+        "screen": "Check every tool",
+        "say": "Other providers have their own versions, with different names and defaults, and these change over time. So take a few minutes to open the privacy or data settings of each tool you use, and read what they say."
+      },
+      {
+        "screen": "Not a vault",
+        "say": "Even with training off, don't treat a chatbot like a vault. The safest habit is not to share what you can't afford to expose."
+      },
+      {
+        "chapter": "Check the answers",
+        "screen": "Check the answers",
+        "say": "Then, check the answers. AI chatbots can state things confidently that are simply wrong. This is often called hallucination."
+      },
+      {
+        "screen": "Why it happens",
+        "say": "OpenAI has published a paper explaining why. In short, models learn by predicting text, and standard tests tend to reward guessing over admitting uncertainty. So a confident answer isn't proof of a correct one."
+      },
+      {
+        "screen": "High-stakes topics",
+        "say": "Be extra careful with medical, legal, financial and safety questions, and with names, quotes, statistics and links. Chatbots can produce sources and quotes that look real but aren't."
+      },
+      {
+        "screen": "Verify what matters",
+        "say": "To check an answer, look up the claim on an official or reputable source, or compare with a second source. If you can't verify it, don't rely on it."
+      },
+      {
+        "chapter": "Voice clones and deepfakes",
+        "screen": "Voice clones",
+        "say": "Now, scams. AI can be used to clone a voice from a sample of someone's voice, and to make fake images and videos, called deepfakes. Scammers can use these to impersonate someone you trust, like a family member, or a boss."
+      },
+      {
+        "screen": "A typical scam call",
+        "say": "A typical version is a call from a number you don't recognise, in a voice that sounds like your son or daughter, saying they're in trouble and need money urgently. They'll usually push you to pay in unusual ways, like gift cards, crypto or a bank transfer."
+      },
+      {
+        "screen": "Stop, hang up, call back",
+        "say": "What can you do? Stop, and don't act under pressure. Hang up, then call the person back on the number you already have for them. Ask a question only they could answer. Today's fakes can be convincing, so don't rely on spotting glitches in a voice or video."
+      },
+      {
+        "chapter": "The family safe word",
+        "screen": "The family safe word",
+        "say": "One of the simplest defences is a family safe word. It's a word or phrase that only your family knows, which you agree in advance, and use if someone calls asking for urgent help or money."
+      },
+      {
+        "screen": "Who suggests it",
+        "say": "Australian consumer group CHOICE suggests agreeing a code word or a question and answer with loved ones, and security companies suggest it too. It isn't a guarantee, but it adds a check that a cloned voice can't easily pass."
+      },
+      {
+        "screen": "Choose it well",
+        "say": "Pick something random and memorable, not a pet's name or a street you grew up on, which could be found online. Share it in person, and don't put it in a message. Make sure older relatives know about it too."
+      },
+      {
+        "screen": "Works for business too",
+        "say": "The same idea works for small businesses too: agree a call-back rule before anyone approves a payment change or urgent transfer."
+      },
+      {
+        "chapter": "AI phishing emails",
+        "screen": "What is phishing?",
+        "say": "Phishing is when a scammer pretends to be someone legitimate, like your bank or a delivery company, to trick you into clicking a link or handing over details. It can arrive by email, text, phone call or fake website."
+      },
+      {
+        "screen": "Cleaner scam messages",
+        "say": "AI can help scammers write cleaner, more convincing messages, in many languages, tailored to the target. So the old advice, look for spelling mistakes, isn't enough on its own."
+      },
+      {
+        "screen": "What still works",
+        "say": "What still works? Pressure, like urgent deadlines and threats. Requests for money, gift cards or codes. And links or attachments you weren't expecting. Don't click. Go to the official app or website yourself, or call the number on the back of your card."
+      },
+      {
+        "screen": "Report it",
+        "say": "If you've been scammed, or you're not sure, report it. In Australia, Scamwatch, at scamwatch dot gov dot au, takes reports. If you've lost money, contact your bank straight away."
+      },
+      {
+        "chapter": "Accounts and API keys",
+        "screen": "Protect your accounts",
+        "say": "Protect your accounts too. Use a unique password for each important account, ideally with a password manager, and turn on multi-factor authentication or passkeys where offered."
+      },
+      {
+        "screen": "Secure your AI logins",
+        "say": "Your AI accounts matter too. Chat history can contain personal or business information, so secure those logins like your email."
+      },
+      {
+        "screen": "What's an API key?",
+        "say": "If you build with AI, or connect tools to AI services, you may have an API key. That's a secret that lets software use a service, often on your account and your bill. Never paste it into a chatbot, a public forum, a screenshot, or code you share online."
+      },
+      {
+        "screen": "If a key leaks",
+        "say": "Keep keys in a secrets manager or environment settings, not in your code. If one is exposed, revoke it straight away and create a new one. GitHub, for example, offers secret scanning and push protection to catch exposed credentials."
+      },
+      {
+        "chapter": "Children and AI",
+        "screen": "Children and AI",
+        "say": "Now, children and AI. Not every AI tool is designed for children. Australia's eSafety Commissioner has published advice warning that AI chatbots and companions can pose risks to children and young people."
+      },
+      {
+        "screen": "AI companions",
+        "say": "AI companion apps, which act like a friend or partner, are one focus. eSafety has warned about risks including harmful content, dangerous advice, and overuse."
+      },
+      {
+        "screen": "What parents can do",
+        "say": "So what can you do? Talk with your kids about what they're using and why. Check the age guidance and settings on each app, and use parental controls where they exist. And let them know they can come to you if something upsets them."
+      },
+      {
+        "screen": "Guides for parents",
+        "say": "eSafety has guides and resources for parents at esafety dot gov dot au. It's worth a look."
+      },
+      {
+        "chapter": "Where to get help",
+        "screen": "Where to report",
+        "say": "If something goes wrong, here's where to go in Australia. Scamwatch, run by the National Anti-Scam Centre within the ACCC, is where you can report scams and learn about them. The address is scamwatch dot gov dot au."
+      },
+      {
+        "screen": "Lost money or details",
+        "say": "If you've lost money or personal information, contact your bank straight away. The Australian Cyber Security Centre's ReportCyber service takes cybercrime reports, and IDCARE offers support for people affected by identity theft and scams."
+      },
+      {
+        "screen": "Online safety help",
+        "say": "For online safety concerns, including harmful content and online abuse, the eSafety Commissioner at esafety dot gov dot au has information, and ways to report problems. In an emergency, call triple zero."
+      },
+      {
+        "screen": "Not legal advice",
+        "say": "Outside Australia, your own government's consumer protection or cyber safety agency usually has similar services. All of this is general information, not legal advice."
+      },
+      {
+        "chapter": "Your safety checklist",
+        "screen": "The checklist",
+        "say": "Let's finish with a simple checklist. One: don't paste passwords, codes, financial details, identity documents, or other people's private information into a chatbot."
+      },
+      {
+        "screen": "Settings and checking",
+        "say": "Two: check your data settings in each AI tool. Three: verify anything important, especially facts, sources, and medical, legal or money advice."
+      },
+      {
+        "screen": "Scam call rules",
+        "say": "Four: if a call, video or message asks for urgent money or codes, stop, hang up, and check using a number you already have. Five: set up a family safe word."
+      },
+      {
+        "screen": "Links and logins",
+        "say": "Six: don't click links in unexpected messages. Go to the official site or app yourself. Seven: use unique passwords and multi-factor authentication, and never share API keys."
+      },
+      {
+        "screen": "Kids and reporting",
+        "say": "Eight: talk with your kids about the AI tools they use. Nine: know where to report, like Scamwatch and the eSafety Commissioner. AI is a useful tool, and a little care keeps it that way."
+      },
+      {
+        "screen": "Thanks for watching",
+        "say": "If this helped, subscribe to AI Field Notes for more plain-English AI guides. Thanks for watching."
+      }
+    ]
+  }
+]
