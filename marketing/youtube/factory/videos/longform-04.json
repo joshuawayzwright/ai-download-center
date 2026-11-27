@@ -1,0 +1,282 @@
+[
+  {
+    "id": "lf06-ai-terms-explained",
+    "format": "landscape",
+    "pillar": "AI Explained",
+    "footer": "AI Field Notes · Beginner's guide · Narrated with an AI voice",
+    "title": "25 AI Terms Everyone Should Know, Explained Simply",
+    "thumbnail": {
+      "text": "25 AI terms",
+      "kicker": "Beginner's guide",
+      "tag": "Plain English"
+    },
+    "description": "AI comes with a lot of jargon. This is a plain-English glossary of 25 AI terms, each with a simple definition and an everyday comparison. No maths, no assumed knowledge.\n\nTerms covered: AI, machine learning, neural network, training, model, parameters, large language model, generative AI, token, context window, prompt, temperature, hallucination, bias, deepfake, fine-tuning, RAG, embedding, multimodal, agent, inference, GPU, open-weights, alignment and AGI.\n\nCHAPTERS\n{chapters}\n\nMORE FROM AI FIELD NOTES\n- How AI Actually Works: A Complete Beginner's Guide\n- AI Turning Points: the moments that built modern AI (playlist on the channel)\n- Shorts on backpropagation, AI alignment, AI bias and more\n\nSOURCES\n- Buolamwini & Gebru, \"Gender Shades: Intersectional Accuracy Disparities in Commercial Gender Classification\", Proceedings of Machine Learning Research 81 (2018)\n- Lewis et al., \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks\", arXiv:2005.11401 (2020)\n- Open Source Initiative, \"The Open Source AI Definition 1.0\" and FAQ (open weights compared with open source AI)\n- Mistral AI documentation, \"Concept deep dive: sampling and temperature\"\n- IBM, \"CPU vs. GPU for machine learning\"\n\nDefinitions are simplified for beginners, and how terms are used can vary between companies and researchers. Narrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #AIexplained #AIforBeginners",
+    "tags": [
+      "AI terms explained",
+      "AI glossary",
+      "AI terms for beginners",
+      "AI jargon explained",
+      "what is a token in AI",
+      "what is RAG",
+      "what is a large language model",
+      "AI explained",
+      "AI for beginners",
+      "AI Field Notes"
+    ],
+    "segments": [
+      {
+        "chapter": "The basics",
+        "screen": "25 AI terms",
+        "say": "AI comes with a lot of jargon. Tokens, parameters, hallucinations, RAG. If you've ever nodded along without quite knowing what they mean, this video is for you. Over the next few minutes, I'll explain twenty-five AI terms, each with a plain definition and an everyday comparison. No maths needed. Let's start with the basics."
+      },
+      {
+        "screen": "1. Artificial intelligence",
+        "say": "Number one, artificial intelligence, or AI. It means getting computers to do tasks that normally need human intelligence, like understanding language, recognising pictures or making decisions. Think of AI as a big toolbox. A spam filter and a chatbot are very different tools, but they live in the same box."
+      },
+      {
+        "screen": "2. Machine learning",
+        "say": "Number two, machine learning. Instead of writing step-by-step rules, you show a computer lots of examples and let it find the patterns itself. It's how a child learns what a dog is: not from a definition, but from meeting lots of dogs. Most modern AI is machine learning."
+      },
+      {
+        "screen": "3. Neural network",
+        "say": "Number three, neural network. This is the main design behind modern AI: layers of simple units that pass numbers to each other. The name comes from a loose comparison with the brain, but it's really maths. Picture a huge panel of dials, where each dial slightly changes the final answer."
+      },
+      {
+        "chapter": "How models learn",
+        "screen": "4. Training",
+        "say": "Now, how models learn. Number four, training. This is the learning phase. The network sees an example, makes a guess, checks how wrong it was, and adjusts its dials a little. Do that millions of times and it gets good. Training is like practising with an answer key, over and over."
+      },
+      {
+        "screen": "5. Model",
+        "say": "Number five, model. A model is what you end up with after training: the finished system you can actually use. Training is the school, and the model is the graduate. When people say ChatGPT, Claude or Gemini, they often mean the model working behind the chat window."
+      },
+      {
+        "screen": "6. Parameters",
+        "say": "Number six, parameters. These are the numbers inside a model that training adjusts: the dials, often called weights. Big modern models have billions of them. More parameters can mean more ability, but size isn't everything. The quality of the training matters a lot too."
+      },
+      {
+        "chapter": "Language models",
+        "screen": "7. Large language model",
+        "say": "Next, the language models behind chatbots. Number seven, large language model, or LLM. It's a neural network trained on a huge amount of text to predict what comes next. Think of autocomplete on a massive scale, except it can write essays, answer questions and explain ideas. ChatGPT, Claude and Gemini are all built on large language models."
+      },
+      {
+        "screen": "8. Generative AI",
+        "say": "Number eight, generative AI. This is AI that creates new content, like text, images, audio, code or video, rather than only sorting or labelling what already exists. A critic reviews paintings. A generative model paints one. It learns the patterns, then produces something new that fits them."
+      },
+      {
+        "screen": "9. Token",
+        "say": "Number nine, token. Models don't read whole words. They read tokens, which are small chunks of text. A common word might be one token, and a long or unusual word might be split into several. Tokens are the Lego bricks of language, and AI services often use them to measure usage and cost."
+      },
+      {
+        "screen": "10. Context window",
+        "say": "Number ten, context window. This is how much text a model can pay attention to at once: your messages, its replies, and any documents you share. Think of it as the model's desk. Only so many papers fit, and in a very long chat, the oldest ones can slide off."
+      },
+      {
+        "chapter": "Talking to AI",
+        "screen": "11. Prompt",
+        "say": "Now, talking to AI. Number eleven, prompt. A prompt is whatever you type to the AI: a question, an instruction, or an example. It's like briefing a freelancer. The more clearly you explain who it's for, what you need, and what good looks like, the better the result."
+      },
+      {
+        "screen": "12. Temperature",
+        "say": "Number twelve, temperature. This is a setting, mostly found in developer tools, that controls how random the model's word choices are. Low temperature gives safer, more predictable answers. High temperature gives more varied, surprising ones. Think of a creativity dial, from careful to adventurous."
+      },
+      {
+        "chapter": "When AI goes wrong",
+        "screen": "13. Hallucination",
+        "say": "Now, when AI goes wrong. Number thirteen, hallucination. That's when an AI states something false, like a fake quote, a made-up book or a wrong statistic, in a confident tone. It happens because the model predicts likely-sounding text rather than checking facts. It's like a confident friend who'd rather guess than admit they don't know. So check anything important."
+      },
+      {
+        "screen": "14. Bias",
+        "say": "Number fourteen, bias. AI can pick up unfair patterns from its training data, its labels or its design. It's like learning from a lopsided textbook. A well-known 2018 study of commercial gender classification systems found much higher error rates for darker-skinned women than for lighter-skinned men. Testing on diverse groups helps catch this."
+      },
+      {
+        "screen": "15. Deepfake",
+        "say": "Number fifteen, deepfake. That's AI-made or AI-edited audio, images or video that realistically shows a real person saying or doing something they never did. It's a modern forgery. Before you share something shocking, check the original source, and see whether trusted outlets are reporting it too."
+      },
+      {
+        "chapter": "Making AI better",
+        "screen": "16. Fine-tuning",
+        "say": "Now, making AI better. Number sixteen, fine-tuning. This means taking a model that's already trained and training it a bit more on a smaller, specialised set of examples, such as legal documents or a company's support chats. It's like a family doctor taking a specialist course."
+      },
+      {
+        "screen": "17. RAG",
+        "say": "Number seventeen, RAG, short for retrieval-augmented generation. The system first looks up relevant documents, then hands them to the model to write its answer. It's an open-book exam, instead of answering from memory. It can help with up-to-date or company-specific information, and it can reduce made-up answers, but it doesn't remove them."
+      },
+      {
+        "screen": "18. Embedding",
+        "say": "Number eighteen, embedding. An embedding is a list of numbers that captures the meaning of a word, sentence or image, so similar things get similar numbers. Picture a map where related ideas live in the same neighbourhood. Embeddings power search by meaning, and they're often how RAG finds the right documents."
+      },
+      {
+        "chapter": "Beyond text",
+        "screen": "19. Multimodal",
+        "say": "Now, beyond plain text. Number nineteen, multimodal. A multimodal model handles more than one kind of input or output, such as text, images, audio and sometimes video. Instead of only reading, it can also look and listen. You could photograph a menu in another language and ask what's vegetarian."
+      },
+      {
+        "screen": "20. Agent",
+        "say": "Number twenty, agent. An AI agent doesn't just answer. It takes several steps toward a goal, using tools like web search, code, or other apps. A chatbot suggests ideas. An agent can go away and do the research, draft the document and fill in the form. It's wise to keep a person checking the important steps."
+      },
+      {
+        "chapter": "Running AI",
+        "screen": "21. Inference",
+        "say": "Now, running AI. Number twenty-one, inference. This is using a trained model to produce an answer, so every time you send a chat message, that's inference. Training is studying for the exam. Inference is sitting it. Training is the big up-front effort, while inference happens for every user, every time."
+      },
+      {
+        "screen": "22. GPU",
+        "say": "Number twenty-two, GPU, short for graphics processing unit. It's a chip that does thousands of small calculations at the same time, which is exactly what neural networks need. An ordinary processor is a few master chefs. A GPU is a kitchen with thousands of cooks doing simple jobs together."
+      },
+      {
+        "screen": "23. Open-weights",
+        "say": "Number twenty-three, open-weights. Some companies publish a model's trained parameters, so anyone can download it, run it and adapt it. That's not always the same as fully open source, where the training code and data details are shared too. It's like being handed the finished cake. You can reshape it, but you might not get the full recipe."
+      },
+      {
+        "chapter": "Safety and the big goal",
+        "screen": "24. Alignment",
+        "say": "Finally, safety and the big goal. Number twenty-four, alignment. This means getting AI to do what people actually intend, and to be safe, honest and helpful. It's the old genie problem: make a careless wish, and you get what you said, not what you meant. Companies use human feedback and written guidelines, but it's still an active research problem."
+      },
+      {
+        "screen": "25. AGI",
+        "say": "And number twenty-five, AGI, or artificial general intelligence. It usually means AI that can do most tasks a person can, not just one narrow job. There's no single agreed definition, so predictions vary wildly. Think of the difference between a calculator and a colleague who can learn any job. Be wary of anyone who claims to know exactly when it will arrive."
+      },
+      {
+        "chapter": "Putting it together",
+        "screen": "How they connect",
+        "say": "Let's connect the dots. A neural network is trained on data. The result is a model, with billions of parameters. Run on GPUs, that model does inference whenever you send it a prompt. Your text is split into tokens, and the context window limits how much it can see at once."
+      },
+      {
+        "screen": "Use them wisely",
+        "say": "From there, you can add RAG for facts from your own documents, fine-tuning for a specialist style, and agents for multi-step jobs. And always remember hallucinations and bias, so check what matters before you rely on it."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "That's twenty-five terms, and now you can follow most AI conversations. If this helped, subscribe for more plain-English AI. And if you want to go deeper, watch How AI Actually Works on this channel."
+      }
+    ]
+  },
+  {
+    "id": "tp10-watson-jeopardy",
+    "format": "landscape",
+    "pillar": "AI Turning Points",
+    "footer": "AI Turning Points · Episode 10 · Narrated with an AI voice",
+    "title": "The Computer That Beat Jeopardy!'s Greatest Champions",
+    "thumbnail": {
+      "text": "What is Toronto?",
+      "kicker": "AI Turning Points · Episode 10",
+      "tag": "IBM Watson, 2011"
+    },
+    "description": "In February 2011, IBM's Watson took on Ken Jennings and Brad Rutter on Jeopardy! and won. This is the story of how it was built, the famous Toronto mistake, Ken Jennings' computer overlords joke, and what happened when IBM tried to take Watson into healthcare.\n\nAI TURNING POINTS (series)\nEp 1: The Move That Broke the Best Human Player Alive\nEp 2: The 1966 Chatbot People Couldn't Stop Confiding In\nEp 3: The Paper With a Joke Title That Built Modern AI\nEp 4: How an Amateur Beat a Superhuman AI\nEp 5: The Day a Computer Beat the World Chess Champion\nEp 6: The Bedroom Experiment That Started the AI Boom\nEp 7: The Question That Started AI\nEp 8: The Research Preview That Started the AI Race\nEp 9: The Protein Puzzle AI Solved\nEp 10: The Computer That Beat Jeopardy!'s Greatest Champions (this video)\n\nCHAPTERS\n{chapters}\n\nSOURCES\n- IBM, \"Watson, Jeopardy! champion\" (IBM history pages)\n- Ferrucci et al., \"Building Watson: An Overview of the DeepQA Project\", AI Magazine 31(3) (2010)\n- Coverage of the February 2011 match and the Final Jeopardy Toronto answer: NPR, eWeek, CIO Insight, CTV News\n- Coverage of Ken Jennings' Final Jeopardy remark: CBC, InfoWorld, NBC New York\n- The Cancer Letter, \"Audit: Lynda Chin's abandoned $62 million IBM Watson collaboration didn't follow standard procedures\" (Feb 2017), and The Register (Feb 2017)\n- Coverage of IBM's sale of Watson Health data and analytics assets to Francisco Partners (Jan 21, 2022): TechCrunch, Fierce Healthcare, TechTarget, STAT\n\nSubscribe for the next AI Turning Points episode.\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #IBMWatson #AIhistory",
+    "tags": [
+      "IBM Watson Jeopardy",
+      "Watson vs Ken Jennings",
+      "Watson Jeopardy 2011",
+      "What is Toronto Watson",
+      "DeepQA",
+      "IBM Watson Health",
+      "AI history",
+      "artificial intelligence",
+      "AI documentary",
+      "AI Turning Points"
+    ],
+    "segments": [
+      {
+        "chapter": "A TV challenge",
+        "screen": "Man vs machine",
+        "say": "In February 2011, American TV viewers tuned in to the quiz show Jeopardy! for an unusual contest. Two of the greatest champions in the show's history were up against a computer. Its name was Watson, and by the end of the week, the result had made headlines around the world."
+      },
+      {
+        "screen": "A hard test",
+        "say": "Jeopardy! is a hard test for a machine. The clues are full of puns, riddles and wordplay, and you only have seconds to buzz in. On Jeopardy!, the host reads a clue, and contestants must respond in the form of a question. A search engine can find pages that contain your words. Jeopardy! demands one exact answer."
+      },
+      {
+        "chapter": "Building Watson",
+        "screen": "After Deep Blue",
+        "say": "The idea came from IBM. After Deep Blue beat the world chess champion in 1997, which we covered in episode five, IBM Research went looking for another grand challenge. According to IBM, a researcher named David Ferrucci pitched the Jeopardy idea to management in 2006."
+      },
+      {
+        "screen": "Project DeepQA",
+        "say": "Ferrucci led the team that built the software, called DeepQA. IBM says it took about five years to perfect, and its own research paper describes a core team of about twenty researchers."
+      },
+      {
+        "chapter": "How Watson worked",
+        "screen": "Not online",
+        "say": "Here's the surprising part. During the game, Watson wasn't connected to the internet. It ran on a room-sized system of ten racks, about ninety servers and nearly three thousand processor cores, and it relied on a huge store of text loaded in beforehand, such as encyclopedias and news articles."
+      },
+      {
+        "screen": "Many guesses at once",
+        "say": "DeepQA didn't rely on one clever trick. It read the clue, worked out what kind of answer was wanted, and generated lots of possible answers. For each one, it searched its text for evidence and scored how well the evidence fit."
+      },
+      {
+        "screen": "Knowing what it knows",
+        "say": "Then it ranked the candidates and attached a confidence level. Watson would only buzz in if it was confident enough. That sense of how sure it was mattered as much as the answers themselves."
+      },
+      {
+        "chapter": "The match",
+        "screen": "Ken and Brad",
+        "say": "The opponents were Ken Jennings and Brad Rutter. Jennings had won a record seventy-four games in a row, and IBM describes the pair as the show's two foremost all-time champions."
+      },
+      {
+        "screen": "Three nights",
+        "say": "The contest was played over two games, shown across three nights in mid-February 2011, with Alex Trebek hosting."
+      },
+      {
+        "screen": "The final score",
+        "say": "When it was over, Watson had won seventy-seven thousand, one hundred and forty-seven dollars. Jennings finished with twenty-four thousand, and Rutter with twenty-one thousand, six hundred. Watson's winnings went to charity."
+      },
+      {
+        "chapter": "What is Toronto?",
+        "screen": "The famous mistake",
+        "say": "But Watson wasn't perfect, and one of the most famous moments of the contest was a mistake. In the first game's Final Jeopardy round, the category was U.S. Cities."
+      },
+      {
+        "screen": "The clue",
+        "say": "The clue described a city whose largest airport is named for a World War Two hero, and whose second largest is named for a World War Two battle. The right answer was Chicago, with O'Hare and Midway. Watson answered: What is Toronto, with five question marks."
+      },
+      {
+        "screen": "Why Toronto?",
+        "say": "Those question marks showed Watson had very little confidence, and it had wagered only nine hundred and forty-seven dollars. Ferrucci suggested possible reasons, like the fact that there are towns called Toronto in the United States, and that Toronto's baseball team plays in the American League. Watson still went on to win."
+      },
+      {
+        "chapter": "Computer overlords",
+        "screen": "Jennings's reply",
+        "say": "At the end of the final game, Ken Jennings did something that also became famous. Beneath his Final Jeopardy answer, he wrote: I for one welcome our new computer overlords. It was a joke borrowed from The Simpsons."
+      },
+      {
+        "screen": "Gracious in defeat",
+        "say": "Jennings was gracious afterwards. He later wrote that quiz show contestant might be the first job made redundant by Watson, but he was sure it wouldn't be the last."
+      },
+      {
+        "chapter": "After the show",
+        "screen": "Watson goes to work",
+        "say": "After the win, IBM wanted Watson to do more than win quiz shows. Healthcare became a big bet. IBM launched a Watson Health business in 2015, and, according to news reports, spent billions buying health data companies to build it."
+      },
+      {
+        "screen": "Harder than a quiz",
+        "say": "It turned out to be much harder than a quiz show. Medical records are messy, and treatment advice is high stakes. In January 2017, a University of Texas audit reported that MD Anderson Cancer Center had spent more than sixty-two million dollars on a Watson cancer project that was not in clinical use. The audit examined how contracts were handled, not the science itself."
+      },
+      {
+        "screen": "The sale, 2022",
+        "say": "In January 2022, IBM agreed to sell the data and analytics assets of Watson Health to the investment firm Francisco Partners. The price wasn't disclosed, and coverage at the time described the business as having fallen short of expectations."
+      },
+      {
+        "screen": "Not the end",
+        "say": "That doesn't mean the technology was useless. Finding evidence in huge piles of text is still something many AI tools do. But the story showed the gap between a brilliant demo and a product people can rely on."
+      },
+      {
+        "chapter": "The real lesson",
+        "screen": "A narrow genius",
+        "say": "So what was Watson? It was extraordinary at one task: answering quiz clues. It didn't understand the world the way a person does, and it couldn't hold a conversation or write an essay. It was a specialist, not a general intelligence."
+      },
+      {
+        "screen": "Demo vs product",
+        "say": "The lesson is one we keep re-learning. A stunning demo is not the same as a reliable product. A system that dominates a controlled game can still struggle in the messy real world. That's a useful habit when you hear big AI claims today: ask what it was tested on, and how it does on messy, real jobs."
+      },
+      {
+        "screen": "The next leap",
+        "say": "The next big leap came when the transformer, from episode three, led to chatbots that could talk about almost anything. That's the story of episode eight."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "That's AI Turning Points. If you enjoyed it, subscribe so you don't miss the next one."
+      }
+    ]
+  }
+]
