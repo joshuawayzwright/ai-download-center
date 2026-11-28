@@ -317,3 +317,20 @@ That empties the approved queue. TikTok and Instagram stay at 2 a day through 21
 After 2 Dec the approved YouTube queue is empty again. TikTok and Instagram stay on their existing schedule through 21 Dec; batches 06–08 are not on TikTok or Instagram yet.
 
 Review notes: script 095 and its description were reworded so the narrator voice is described as an open-source voice trained on openly licensed recordings, not Josh's real voice. Episode 10's description lists episode 9 under its final title.
+
+### 28 Nov 2026, 08:06 UTC run: batches 06–08 day 1 (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 061 | What is a reasoning model? | https://www.youtube.com/watch?v=Tfwa5fyNegI |
+| 062 | What is prompt injection? | still processing at log time (postId e0f2453f) |
+| 063 | Why doesn't my chatbot know recent news? | https://www.youtube.com/watch?v=6xrNKrcWULA |
+| 064 | Why does AI agree with everything you say? | https://www.youtube.com/watch?v=sFvTvKcdrLY |
+| 065 | What is a neural network? | https://www.youtube.com/watch?v=w0YQCbzGW3Y |
+| 066 | How do chatbots learn manners? RLHF explained | https://www.youtube.com/watch?v=WRb5Z6gFr1o |
+| 067 | What is a deepfake, and how do you check one? | https://www.youtube.com/watch?v=7_4ozLCelyw |
+| 068 | What are Content Credentials? | https://www.youtube.com/watch?v=PoY05zQxUS0 |
+| LF03 | How AI Chatbots Are Trained, Step by Step (8:45) | https://www.youtube.com/watch?v=AioLXlqK00M |
+| TP09 | The 50-Year Puzzle That AlphaFold Took On (5:58) | https://www.youtube.com/watch?v=RNH8XxOh7yU |
+
+066 and TP09 arrived with no tags; they were re-added.
