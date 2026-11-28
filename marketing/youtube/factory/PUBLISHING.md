@@ -301,3 +301,19 @@ That empties the approved queue. TikTok and Instagram stay at 2 a day through 21
 | 060 | How AI turns speech into text | https://www.youtube.com/watch?v=Z12IBVkpJiE |
 
 053, 054, 055, 056 and 060 arrived with no tags; they were re-added. Every approved YouTube video (001–060, Turning Points 1–8, both long-form videos) is now public. Further uploads need batch 06 (owner approval required).
+
+### Batches 06–08 (061–096) and 6 long-form videos: approved 28 Nov 2026 ("Approve, 10 a day")
+
+42 videos rendered, uploaded to vidIQ storage, and drafted as public YouTube posts (category 28). The 6 long-form drafts carry their thumbnails. Draft postIds and revisions are in `factory/out/b678-drafts.txt` (gitignored). Scheduled tasks in this session publish at 08:05 UTC (6:05pm Brisbane):
+
+| Day | Videos |
+|---|---|
+| 28 Nov | 061–068, *How AI Chatbots Are Trained, Step by Step* (8:44), AI Turning Points ep 9: AlphaFold (5:57) |
+| 29 Nov | 069–077, *10 Places You Already Use AI Every Day* (8:12) |
+| 30 Nov | 078–086, *How to Use AI Safely* (8:40) |
+| 1 Dec | 087–095, *25 AI Terms Everyone Should Know* (9:18) |
+| 2 Dec | 096, AI Turning Points ep 10: Watson on Jeopardy! (5:29) |
+
+After 2 Dec the approved YouTube queue is empty again. TikTok and Instagram stay on their existing schedule through 21 Dec; batches 06–08 are not on TikTok or Instagram yet.
+
+Review notes: script 095 and its description were reworded so the narrator voice is described as an open-source voice trained on openly licensed recordings, not Josh's real voice. Episode 10's description lists episode 9 under its final title.
