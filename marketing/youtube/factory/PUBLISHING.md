@@ -323,7 +323,7 @@ Review notes: script 095 and its description were reworded so the narrator voice
 | # | Title | YouTube |
 |---|---|---|
 | 061 | What is a reasoning model? | https://www.youtube.com/watch?v=Tfwa5fyNegI |
-| 062 | What is prompt injection? | still processing at log time (postId e0f2453f) |
+| 062 | What is prompt injection? | https://www.youtube.com/watch?v=Ba2BzX0SIYg |
 | 063 | Why doesn't my chatbot know recent news? | https://www.youtube.com/watch?v=6xrNKrcWULA |
 | 064 | Why does AI agree with everything you say? | https://www.youtube.com/watch?v=sFvTvKcdrLY |
 | 065 | What is a neural network? | https://www.youtube.com/watch?v=w0YQCbzGW3Y |
