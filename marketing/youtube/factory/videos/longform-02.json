@@ -1,0 +1,368 @@
+[
+  {
+    "id": "lf03-how-chatbots-are-trained",
+    "format": "landscape",
+    "pillar": "AI Explained",
+    "footer": "AI Field Notes · Beginner's guide · Narrated with an AI voice",
+    "title": "How AI Chatbots Are Trained, Step by Step",
+    "thumbnail": {
+      "text": "Chatbot training",
+      "kicker": "Beginner's guide",
+      "tag": "7 steps"
+    },
+    "description": "How does a chatbot like ChatGPT, Claude or Gemini actually get made? A plain-English walk through the general recipe, step by step, with no maths.\n\nWe cover collecting data, tokenising, pre-training (predicting the next token), the computing power and chips involved, fine-tuning, human feedback (RLHF), safety testing and red-teaming, deployment and inference, and why a chatbot doesn't learn from your chat in real time.\n\nDetails differ between companies, and many don't publish them, so this is the general picture, not any one company's exact process.\n\nCHAPTERS\n{chapters}\n\nMORE FROM AI FIELD NOTES\n- How AI Actually Works: A Complete Beginner's Guide (on this channel)\n- AI Turning Points: the moments that built modern AI (playlist on the channel)\n- Shorts on tokens, context windows, embeddings and more\n\nSOURCES\n- OpenAI, \"Aligning language models to follow instructions\" (InstructGPT), Jan 27, 2022: human demonstrations, human rankings, reward model, and the finding that people preferred the 1.3 billion parameter InstructGPT over the 175 billion parameter GPT-3\n- Brown et al., \"Language Models are Few-Shot Learners\" (GPT-3), arXiv 2005.14165 (2020): autoregressive pre-training, and tasks given through text prompts without gradient updates or fine-tuning\n- OpenAI Help Center, \"What are tokens and how to count them\": what tokens are, and the rough 100 tokens to 75 words guide for English\n- OpenAI, \"OpenAI's Approach to External Red Teaming for AI Models and Systems\" (arXiv 2503.16431) and the OpenAI Red Teaming Network announcement (2023)\n- Sharma et al., \"Towards Understanding Sycophancy in Language Models\", Anthropic (2023)\n- Anthropic, \"Claude's Character\": AI-generated preference data used in character training\n- OpenAI, \"Memory and new controls for ChatGPT\" and the OpenAI Help Center memory FAQ: how memory works, and the \"improve the model for everyone\" data control\n- Dubey et al., \"The Llama 3 Herd of Models\" (2024): an example of public reporting on training scale (about 15 trillion tokens, up to 16,000 GPUs)\n- UK National Cyber Security Centre, \"Prompt injection is not SQL injection (it may be worse)\" (Dec 2025)\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #HowAIWorks #AIforBeginners",
+    "tags": [
+      "how AI chatbots are trained",
+      "how ChatGPT is trained",
+      "how are LLMs trained",
+      "how AI is trained",
+      "pre-training explained",
+      "RLHF explained",
+      "AI training explained",
+      "AI for beginners",
+      "AI explained",
+      "AI Field Notes"
+    ],
+    "segments": [
+      {
+        "chapter": "How a chatbot gets made",
+        "screen": "Where did it learn?",
+        "say": "You type a question, and a chatbot answers in seconds. But where did it learn to do that? Somebody trained it, in a long process with surprisingly clear steps. Let's walk through it, with no maths."
+      },
+      {
+        "screen": "Three big phases",
+        "say": "Details differ between companies, and many don't publish them, so I'll describe the general recipe. Think of it as three big phases: learning from text, learning to be helpful, and learning to be safe."
+      },
+      {
+        "chapter": "Step 1: Collecting data",
+        "screen": "Step 1: Collect text",
+        "say": "Step one is collecting data. A language model learns from text, so developers gather a huge amount of it: web pages, books, articles, computer code, and sometimes licensed or specially written material."
+      },
+      {
+        "screen": "Cleaning it up",
+        "say": "That raw text is messy. So it gets cleaned: duplicates are removed, low-quality pages are filtered out, and some harmful or private material is screened. The quality of this step matters a lot."
+      },
+      {
+        "screen": "A live debate",
+        "say": "Where the data comes from is also a live debate. Writers, artists and publishers have raised concerns, and there have been lawsuits about how AI is trained on their work."
+      },
+      {
+        "screen": "The data has an end date",
+        "say": "The data also has an end date. The model only sees text collected up to a certain point, which is why chatbots have a knowledge cutoff and may not know about very recent events unless they can search."
+      },
+      {
+        "chapter": "Step 2: Tokenising",
+        "screen": "Step 2: Tokenise",
+        "say": "Computers work with numbers, not words. So step two is tokenising: chopping text into small pieces called tokens, and giving each piece a number."
+      },
+      {
+        "screen": "What is a token?",
+        "say": "A token can be a whole word, part of a word, or punctuation. A common word might be one token, while a long or unusual word might be split into several. Spaces can change how text is split, too."
+      },
+      {
+        "screen": "Text becomes numbers",
+        "say": "As a rough guide for English, a hundred tokens is roughly seventy-five words. After this step, all that text has become a very long stream of numbers the model can work with."
+      },
+      {
+        "chapter": "Step 3: Pre-training",
+        "screen": "Step 3: Pre-training",
+        "say": "Now the main event: pre-training. The task is simple to state. Given some text, predict the next token. Over and over, across a vast amount of text."
+      },
+      {
+        "screen": "Like autocomplete, scaled up",
+        "say": "If that sounds like the autocomplete on your phone, it's a distant cousin. The difference is scale: far more text, far more adjustable numbers, and a design called the transformer that handles long passages well."
+      },
+      {
+        "screen": "Starting from nonsense",
+        "say": "At the start, the model is a neural network with a huge number of adjustable numbers, often billions, called weights, set more or less randomly. Its first guesses are nonsense."
+      },
+      {
+        "screen": "Guess, check, nudge",
+        "say": "Each time, the training process compares the model's guess with the real next token, measures how wrong it was, and nudges the weights so that guess would be a little better next time."
+      },
+      {
+        "screen": "Patterns emerge",
+        "say": "Repeat that an enormous number of times, and something remarkable happens. To predict text well, the model has to pick up grammar, facts, writing styles and how ideas connect. Nobody programs those in by hand."
+      },
+      {
+        "screen": "The base model",
+        "say": "The result is called a base model. It's very good at continuing text, but it isn't yet a helpful assistant. Ask it a question, and it might just continue with more questions."
+      },
+      {
+        "chapter": "Compute and chips",
+        "screen": "Enormous computing power",
+        "say": "All of this takes enormous computing power. Training a large model means doing a staggering number of small calculations, so developers use large clusters of specialised chips, often graphics processors, called G P Us."
+      },
+      {
+        "screen": "Thousands of chips",
+        "say": "For the biggest models, developers have reported using thousands of chips working together for a long time, with a lot of electricity. That's why only a limited number of organisations train the largest models from scratch."
+      },
+      {
+        "screen": "Cost doesn't stop there",
+        "say": "Training is a huge up-front effort. But running the model for every user afterwards also needs a lot of computing capacity, just spread out over time."
+      },
+      {
+        "chapter": "Step 4: Fine-tuning",
+        "screen": "Step 4: Fine-tuning",
+        "say": "Step four is fine-tuning. Developers take the base model and train it further on a much smaller, carefully chosen set of examples: good conversations, with questions and helpful answers written by people."
+      },
+      {
+        "screen": "Smaller, but powerful",
+        "say": "This stage usually needs far less data and computing power than pre-training, because the model already knows language. It's learning how to behave, not what words are."
+      },
+      {
+        "screen": "Shaping an assistant",
+        "say": "This teaches the model the shape of an assistant: follow instructions, answer the question, and keep the right tone. It's the same model underneath, with its behaviour reshaped."
+      },
+      {
+        "screen": "Or a specialist",
+        "say": "Fine-tuning can also specialise a model for a job, like writing code, or answering customer questions for one business."
+      },
+      {
+        "chapter": "Step 5: Human feedback",
+        "screen": "Step 5: Human feedback",
+        "say": "Step five is learning from human feedback. This is often called R L H F, short for reinforcement learning from human feedback. First, the model writes several answers to the same prompt."
+      },
+      {
+        "screen": "People rank answers",
+        "say": "Then people rank those answers from best to worst. Those rankings are used to train a separate reward model, a scoring system that learns to predict which answers people would prefer."
+      },
+      {
+        "screen": "Does it work?",
+        "say": "Finally, the chatbot is adjusted to produce answers that score higher. In OpenAI's InstructGPT research in 2022, people preferred answers from a model with one point three billion parameters, tuned this way, over the original one hundred seventy-five billion parameter GPT-3."
+      },
+      {
+        "screen": "Side effects",
+        "say": "It's not magic, though. Human feedback can nudge a model towards pleasing people, which is one reason chatbots can be too agreeable. Some companies also use AI-generated feedback for parts of this stage."
+      },
+      {
+        "chapter": "Step 6: Safety testing",
+        "screen": "Step 6: Red-teaming",
+        "say": "Step six is safety testing. Before release, developers try to find what could go wrong. One method is red-teaming: people, often including outside experts, deliberately try to make the model misbehave."
+      },
+      {
+        "screen": "Probing for problems",
+        "say": "They probe for things like harmful instructions, bias, made-up facts, and ways around the model's safeguards. Outside experts can bring knowledge, like medicine or law, that a development team may lack."
+      },
+      {
+        "screen": "Hidden instructions",
+        "say": "Developers also test for unreliable behaviour: does it make up facts, refuse reasonable requests, or follow hidden instructions from web pages? That last one is called prompt injection, and it's a hard problem."
+      },
+      {
+        "screen": "Findings feed back",
+        "say": "What they find feeds back into the model and its safeguards: more training, extra filters, and rules about what it should refuse. Some developers publish results in documents often called system cards."
+      },
+      {
+        "screen": "No test catches everything",
+        "say": "No test catches everything, though. That's why models keep getting updated after release, and why you should still check anything important."
+      },
+      {
+        "chapter": "Step 7: Deployment and inference",
+        "screen": "Step 7: Deployment",
+        "say": "Step seven is deployment. The trained model is packaged up and put on servers, behind an app or a service that other software can connect to. Now it's time for inference."
+      },
+      {
+        "screen": "Training vs inference",
+        "say": "Inference just means using the trained model. Training is the long, expensive learning phase. Inference is the model answering your question, and it happens every time anyone sends a message."
+      },
+      {
+        "screen": "One token at a time",
+        "say": "When you send a message, your text is tokenised, fed into the model, and the model predicts the first token of its reply, then the next, and the next. That's why answers appear gradually."
+      },
+      {
+        "screen": "Hidden system prompts",
+        "say": "Before your message reaches the model, the app often adds hidden instructions of its own, called a system prompt, which is one reason the same model can feel different in different apps."
+      },
+      {
+        "screen": "Tools at this stage",
+        "say": "Many chatbots can also use tools at this stage, like searching the web or running code. That helps with recent information and calculations, because the model's built-in knowledge stops at its training cutoff."
+      },
+      {
+        "chapter": "Why it doesn't learn from your chat",
+        "screen": "Does it learn from me?",
+        "say": "Here's a question people ask. If I correct a chatbot, does it learn from me? In the moment, no. During a normal chat, the model's weights don't change. Training is over."
+      },
+      {
+        "screen": "Context, not learning",
+        "say": "What looks like learning is just context. Your messages sit in the context window, the text the model can see right now. So it can follow your correction for the rest of that conversation."
+      },
+      {
+        "screen": "Memory is notes",
+        "say": "Start a fresh chat, and that context is gone. Some apps have a memory feature, but that usually works by saving short notes about you and adding them to future chats. That's different from retraining the model."
+      },
+      {
+        "screen": "Check your data settings",
+        "say": "Companies may also use some chats to help train future versions, depending on the service and your settings. Check the data controls, and don't paste anything sensitive."
+      },
+      {
+        "screen": "Learning vs using",
+        "say": "So the difference is simple. Training is when the model learns, and it happens before release. Inference is when the model is used, and during it, the model itself stays fixed."
+      },
+      {
+        "chapter": "The whole pipeline",
+        "screen": "Steps 1 to 3",
+        "say": "Let's put it together. One: collect and clean a huge amount of text. Two: turn it into tokens. Three: pre-train the model to predict the next token, using enormous computing power."
+      },
+      {
+        "screen": "Steps 4 to 7",
+        "say": "Four: fine-tune it on good examples. Five: use human feedback to make its answers more helpful. Six: test and red-team it for safety. Seven: deploy it, and run inference every time you ask a question."
+      },
+      {
+        "screen": "Strengths and weak spots",
+        "say": "That also explains the strengths and the weak spots. It learned patterns from a vast amount of text, so it's great at language. But it's predicting, not looking things up, so it can still be confidently wrong."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "If this helped, subscribe for more plain-English AI. And for the bigger picture, watch How AI Actually Works on this channel."
+      }
+    ]
+  },
+  {
+    "id": "tp09-alphafold",
+    "format": "landscape",
+    "pillar": "AI Turning Points",
+    "footer": "AI Turning Points · Episode 9 · Narrated with an AI voice",
+    "title": "The 50-Year Puzzle That AlphaFold Took On",
+    "thumbnail": {
+      "text": "AlphaFold",
+      "kicker": "AI Turning Points · Episode 9",
+      "tag": "Nobel 2024"
+    },
+    "description": "In late 2020, a computer program from DeepMind predicted the 3D shapes of proteins with an accuracy biologists had been chasing for about fifty years. In 2024, the work won a share of the Nobel Prize in Chemistry.\n\nThis is the story of AlphaFold: the protein folding problem, the blind competition called CASP, the 2020 result, the free database of predicted structures, and the Nobel Prize awarded to Demis Hassabis and John Jumper, shared with David Baker.\n\nAI TURNING POINTS (series)\nEp 1: The Move That Broke the Best Human Player Alive\nEp 2: The 1966 Chatbot People Couldn't Stop Confiding In\nEp 3: The Paper With a Joke Title That Built Modern AI\nEp 4: How an Amateur Beat a Superhuman AI\nEp 5: The Day a Computer Beat the World Chess Champion\nEp 6: The Bedroom Experiment That Started the AI Boom\nEp 7: The Question That Started AI\nEp 8: The Research Preview That Started the AI Race\nEp 9: The 50-Year Puzzle That AlphaFold Took On (this video)\n\nCHAPTERS\n{chapters}\n\nSOURCES\n- Google DeepMind, \"AlphaFold: a solution to a 50-year-old grand challenge in biology\" (Nov 30, 2020): CASP14 median scores of 92.4 and 87.0 GDT, the CASP founding in 1994, Anfinsen (1972) and Levinthal (1969), about 170,000 training structures\n- Jumper et al., \"Highly accurate protein structure prediction with AlphaFold\", Nature (published online July 15, 2021)\n- EMBL-EBI and DeepMind, AlphaFold Protein Structure Database launch announcement (July 22, 2021): more than 350,000 structures, including the human proteome\n- Google DeepMind, \"AlphaFold reveals the structure of the protein universe\" (July 28, 2022): more than 200 million structures, 500,000+ researchers in 190 countries at that point\n- The Nobel Prize in Chemistry 2024, press release and summary, Royal Swedish Academy of Sciences (Oct 9, 2024): prize shares, Baker's 2003 designed protein, more than two million AlphaFold2 users in 190 countries\n- Google DeepMind, \"Demis Hassabis and John Jumper awarded Nobel Prize in Chemistry\" (Oct 9, 2024)\n- Review article, \"Has DeepMind's AlphaFold Solved the Protein Folding Problem?\", BioTechniques (2022): the cautious view\n- EMBL-EBI AlphaFold training materials: how the per-residue confidence score (pLDDT) works, and why flexible regions score low\n\nNarrated with an AI voice. Visuals are animated text and graphics. Spotted an error? Tell me in the comments and I'll pin the correction.\n\n#AI #AlphaFold #AIhistory",
+    "tags": [
+      "AlphaFold",
+      "AlphaFold explained",
+      "protein folding problem",
+      "DeepMind AlphaFold",
+      "Nobel Prize in Chemistry 2024",
+      "Demis Hassabis",
+      "John Jumper",
+      "CASP14",
+      "AI in science",
+      "AI history",
+      "AI Turning Points"
+    ],
+    "segments": [
+      {
+        "chapter": "A 50-year puzzle",
+        "screen": "Late 2020",
+        "say": "In late 2020, the organisers of a protein-prediction competition said a computer program had done something biologists had waited about fifty years to see. It could predict the shapes of proteins, often almost as accurately as lab experiments."
+      },
+      {
+        "screen": "Enter AlphaFold",
+        "say": "That program was AlphaFold, from the AI company DeepMind. This is the story of the protein folding problem, the competition that measured it, and how the work won a Nobel Prize."
+      },
+      {
+        "chapter": "The protein folding problem",
+        "screen": "Machines of life",
+        "say": "Proteins are the tiny machines of life. They digest your food, carry oxygen in your blood, and fight infections. Each one starts as a chain of building blocks called amino acids."
+      },
+      {
+        "screen": "Shape is function",
+        "say": "That chain then folds up into a specific three-dimensional shape, and the shape decides what the protein can do. Get the shape wrong, and the machine doesn't work."
+      },
+      {
+        "screen": "Slow lab work",
+        "say": "Scientists can work out shapes in the lab with specialised techniques. But for many proteins, it's often slow and expensive."
+      },
+      {
+        "screen": "Anfinsen, 1972",
+        "say": "So here was the dream. Could you predict the shape from the chain alone? In 1972, chemist Christian Anfinsen suggested, in his Nobel Prize speech, that the amino acid sequence should fully determine the structure."
+      },
+      {
+        "screen": "Levinthal's paradox",
+        "say": "The catch is the number of possibilities. In 1969, Cyrus Levinthal estimated that a typical protein could, in theory, fold in around ten to the power of three hundred different ways. Trying them all is hopeless, yet real proteins fold very quickly."
+      },
+      {
+        "chapter": "CASP: the blind test",
+        "screen": "CASP, 1994",
+        "say": "In 1994, researchers John Moult and Krzysztof Fidelis started a competition to measure progress. It's called CASP, and it's held every two years."
+      },
+      {
+        "screen": "A blind test",
+        "say": "The key is that it's blind. Organisers gather proteins whose structures have been worked out in the lab, but not yet made public. Teams around the world predict the shapes, and only then are the real answers revealed."
+      },
+      {
+        "screen": "Scored out of 100",
+        "say": "Predictions are scored from zero to one hundred on a measure called G D T, which roughly captures how closely the predicted structure matches the real one. A score around ninety is informally seen as competitive with lab experiments."
+      },
+      {
+        "screen": "First AlphaFold, 2018",
+        "say": "In 2018, an early version of AlphaFold achieved the highest accuracy among entrants at the thirteenth CASP. That was impressive, but its scores were still well short of the roughly ninety that matches lab results."
+      },
+      {
+        "chapter": "CASP14, 2020",
+        "screen": "A new system",
+        "say": "Then came the fourteenth CASP, in 2020. DeepMind entered a completely different system from its 2018 one, trained on around a hundred and seventy thousand known structures from a public database, plus large collections of protein sequences."
+      },
+      {
+        "screen": "92.4",
+        "say": "The results were striking. Across all targets, AlphaFold's median score was ninety-two point four. On the hardest targets, the ones with no close known relatives, its median was still eighty-seven."
+      },
+      {
+        "screen": "Above the mark",
+        "say": "That's above the informal ninety mark that John Moult, CASP's co-founder, described as competitive with lab methods. The organisers recognised AlphaFold as the best-performing method, and DeepMind announced the result on November the thirtieth, 2020."
+      },
+      {
+        "screen": "Solved? Not so fast",
+        "say": "DeepMind described it as a solution to a fifty-year grand challenge in biology. Some researchers were more careful: a prediction isn't an experiment, and not every protein or situation was suddenly cracked."
+      },
+      {
+        "chapter": "The AlphaFold database",
+        "screen": "Published, then shared",
+        "say": "What happened next mattered just as much. In July 2021, DeepMind published the method in the journal Nature. A week later, with EMBL's European Bioinformatics Institute, it launched the AlphaFold Protein Structure Database."
+      },
+      {
+        "screen": "Free for anyone",
+        "say": "It started with more than three hundred and fifty thousand predicted structures, including the whole human proteome, the complete catalogue of human proteins. And it was free for anyone to search and download."
+      },
+      {
+        "screen": "200 million structures",
+        "say": "In July 2022, the database grew to more than two hundred million predicted structures, covering nearly all the proteins catalogued by science. DeepMind said more than half a million researchers from a hundred and ninety countries had already used it."
+      },
+      {
+        "screen": "Confidence scores",
+        "say": "Predictions come with a confidence score for each part of the structure, because some regions, especially flexible ones, are much harder to predict. A prediction is a very useful starting point, but not a replacement for experiments."
+      },
+      {
+        "chapter": "The 2024 Nobel Prize",
+        "screen": "October 9, 2024",
+        "say": "On October 9, 2024, the Royal Swedish Academy of Sciences announced the Nobel Prize in Chemistry. Half went to David Baker, for computational protein design."
+      },
+      {
+        "screen": "Hassabis and Jumper",
+        "say": "The other half went jointly to Demis Hassabis and John Jumper, of Google DeepMind, for protein structure prediction. They were central to the AlphaFold work."
+      },
+      {
+        "screen": "The other side of the coin",
+        "say": "Baker's work was the other side of the coin. Predicting a protein's shape from its chain is one task. Baker went the opposite way: designing new proteins that nature never made. In 2003, he designed one unlike any other known protein."
+      },
+      {
+        "screen": "Virtually all proteins",
+        "say": "The committee said AlphaFold two has been able to predict the structure of virtually all the two hundred million proteins researchers have identified."
+      },
+      {
+        "chapter": "What changed, and the limits",
+        "screen": "A lookup, not a wait",
+        "say": "So what has AlphaFold changed? For many proteins, biologists can now look up a predicted shape in seconds and use it to plan better experiments. The committee said more than two million people in a hundred and ninety countries have used it."
+      },
+      {
+        "screen": "It has limits",
+        "say": "But AlphaFold has limits. It mostly predicts a single structure; it doesn't by itself explain how a protein moves, or how it behaves inside a living cell. Scientists still need experiments to test ideas."
+      },
+      {
+        "chapter": "The bigger lesson",
+        "screen": "Why it worked",
+        "say": "There's a bigger lesson too. One reason AlphaFold succeeded was a long-running benchmark, CASP, public data on known structures, and an AI approach that learned patterns from them. Clear targets plus good data can be powerful."
+      },
+      {
+        "screen": "From contest to Nobel",
+        "say": "In 2020, a competition built to track slow progress produced a result that gave biologists a powerful new tool. In 2024, that work earned a Nobel Prize. And the database is still open to anyone."
+      },
+      {
+        "screen": "Subscribe",
+        "say": "That's AI Turning Points. If you want the basics of how neural networks learn, watch How AI Actually Works on this channel. And subscribe so you don't miss the next episode."
+      }
+    ]
+  }
+]

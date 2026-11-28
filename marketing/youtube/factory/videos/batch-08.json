@@ -1,0 +1,482 @@
+[
+  {
+    "id": "085-who-coined-artificial-intelligence",
+    "pillar": "AI History",
+    "title": "Who coined the term artificial intelligence? #Shorts",
+    "description": "The phrase artificial intelligence first appeared in a 1955 proposal by John McCarthy and three colleagues, for a summer workshop at Dartmouth College in 1956. Here's the story in under a minute. Narrated with an AI voice.\n\n#AI #AIhistory #JohnMcCarthy #Shorts",
+    "tags": [
+      "who coined artificial intelligence",
+      "John McCarthy",
+      "Dartmouth workshop 1956",
+      "history of AI",
+      "AI history",
+      "who invented AI"
+    ],
+    "segments": [
+      {
+        "screen": "Who named AI?",
+        "say": "Who came up with the name artificial intelligence? Meet a young mathematician called John McCarthy."
+      },
+      {
+        "screen": "A 1955 proposal",
+        "say": "In 1955, McCarthy and three colleagues, Marvin Minsky, Nathaniel Rochester and Claude Shannon, wrote a proposal."
+      },
+      {
+        "screen": "A summer project",
+        "say": "It called for a two-month study of artificial intelligence at Dartmouth College in 1956. It's widely seen as the phrase's first appearance in print."
+      },
+      {
+        "screen": "Ten people, one summer",
+        "say": "They hoped a small group could make real progress in a single summer. Spoiler: the problems were far harder."
+      },
+      {
+        "screen": "The 1956 workshop",
+        "say": "The workshop ran in the summer of 1956. Many people mark it as the moment AI became a field of its own."
+      },
+      {
+        "screen": "A name that stuck",
+        "say": "And the name has stuck for decades. Follow for more AI history."
+      }
+    ]
+  },
+  {
+    "id": "086-what-was-the-perceptron",
+    "pillar": "AI History",
+    "title": "What was the perceptron? The 1958 machine that learned #Shorts",
+    "description": "In 1958, Frank Rosenblatt's perceptron made headlines as a machine that learned by doing. The hype, the 1969 book that criticised it, and why its core idea came back. Narrated with an AI voice.\n\n#AI #AIhistory #NeuralNetworks #Shorts",
+    "tags": [
+      "what is the perceptron",
+      "Frank Rosenblatt",
+      "perceptron explained",
+      "Minsky Papert Perceptrons",
+      "AI history",
+      "first neural network"
+    ],
+    "segments": [
+      {
+        "screen": "The first neural network?",
+        "say": "In 1958, a machine called the perceptron made headlines for learning. What was it?"
+      },
+      {
+        "screen": "Frank Rosenblatt, 1958",
+        "say": "Psychologist Frank Rosenblatt built it, with US Navy backing. It was a single layer of artificial neurons that learned from its mistakes."
+      },
+      {
+        "screen": "Huge hype",
+        "say": "A New York Times headline called it a new Navy device that learns by doing. The hype was huge."
+      },
+      {
+        "screen": "The 1969 book",
+        "say": "In 1969, Marvin Minsky and Seymour Papert published a book, Perceptrons, showing that single-layer perceptrons can't learn some simple patterns."
+      },
+      {
+        "screen": "Interest faded",
+        "say": "The book is often blamed for stalling neural network research, though historians say it was one factor among several."
+      },
+      {
+        "screen": "The idea returned",
+        "say": "Later, multi-layer networks trained with backpropagation overcame those limits. Follow for more AI history."
+      }
+    ]
+  },
+  {
+    "id": "087-when-watson-won-jeopardy",
+    "pillar": "AI History",
+    "title": "When IBM Watson won Jeopardy! What it was and wasn't #Shorts",
+    "description": "In February 2011, IBM's Watson beat Jeopardy! champions Ken Jennings and Brad Rutter. How it worked, the famous Toronto mistake, and what Watson wasn't. Narrated with an AI voice.\n\n#AI #IBMWatson #AIhistory #Shorts",
+    "tags": [
+      "IBM Watson Jeopardy",
+      "Watson Jeopardy 2011",
+      "what was IBM Watson",
+      "Ken Jennings Watson",
+      "AI history",
+      "history of AI"
+    ],
+    "segments": [
+      {
+        "screen": "A computer on Jeopardy!",
+        "say": "In February 2011, a computer took on two of the greatest Jeopardy champions. What was IBM Watson?"
+      },
+      {
+        "screen": "Ken and Brad",
+        "say": "Over three nights, Watson beat Ken Jennings and Brad Rutter, finishing with seventy-seven thousand dollars. They had twenty-four thousand and twenty-one thousand six hundred."
+      },
+      {
+        "screen": "Not on the internet",
+        "say": "During the game, it wasn't online. It searched text stored on its own servers, scored possible answers, and buzzed in when confident."
+      },
+      {
+        "screen": "The Toronto slip",
+        "say": "It wasn't flawless. In Final Jeopardy, category U.S. Cities, it answered Toronto. The right answer was Chicago."
+      },
+      {
+        "screen": "What it wasn't",
+        "say": "Watson didn't understand the world like a person. It was a clever question-answering system for one quiz show, not a general intelligence."
+      },
+      {
+        "screen": "Big demo, harder reality",
+        "say": "IBM later hoped to bring its ideas to healthcare, but results were mixed. Follow for more AI history."
+      }
+    ]
+  },
+  {
+    "id": "088-who-is-geoffrey-hinton",
+    "pillar": "AI History",
+    "title": "Who is Geoffrey Hinton? The Nobel winner warning about AI #Shorts",
+    "description": "Geoffrey Hinton helped make neural networks work, shared the 2018 Turing Award and the 2024 Nobel Prize in Physics, and now speaks publicly about AI risk. Narrated with an AI voice.\n\n#AI #GeoffreyHinton #AIhistory #Shorts",
+    "tags": [
+      "who is Geoffrey Hinton",
+      "Geoffrey Hinton Nobel Prize",
+      "godfather of AI",
+      "Hinton AI warning",
+      "backpropagation",
+      "AI history"
+    ],
+    "segments": [
+      {
+        "screen": "Who is Geoffrey Hinton?",
+        "say": "Who is Geoffrey Hinton, the so-called godfather of AI, and why is he now warning about it?"
+      },
+      {
+        "screen": "Backpropagation, 1986",
+        "say": "In 1986, he co-authored a paper that helped popularise backpropagation, a way to train neural networks with many layers."
+      },
+      {
+        "screen": "Turing Award, 2018",
+        "say": "In 2018, he shared the Turing Award, computing's top prize, with Yoshua Bengio and Yann LeCun, for work on deep learning."
+      },
+      {
+        "screen": "Nobel Prize, 2024",
+        "say": "In 2024, he shared the Nobel Prize in Physics with John Hopfield, for foundational discoveries enabling machine learning with artificial neural networks."
+      },
+      {
+        "screen": "The warnings",
+        "say": "In 2023, he left Google, saying he wanted to speak freely about AI's risks, including misuse by bad actors."
+      },
+      {
+        "screen": "A live debate",
+        "say": "Other leading researchers see those risks differently, so it's an open debate. Follow for more AI history."
+      }
+    ]
+  },
+  {
+    "id": "089-the-chinese-room-argument",
+    "pillar": "AI History",
+    "title": "The Chinese Room argument explained in 45 seconds #Shorts",
+    "description": "In 1980, philosopher John Searle imagined a man in a room following rules to answer questions in Chinese, without understanding any of it. Why it still matters for chatbots. Narrated with an AI voice.\n\n#AI #ChineseRoom #AIhistory #Shorts",
+    "tags": [
+      "Chinese Room argument",
+      "John Searle Chinese Room",
+      "does AI understand",
+      "Chinese Room explained",
+      "AI philosophy",
+      "AI history"
+    ],
+    "segments": [
+      {
+        "screen": "The Chinese Room",
+        "say": "Can a computer truly understand language, or does it just shuffle symbols? One famous thought experiment asks exactly that."
+      },
+      {
+        "screen": "John Searle, 1980",
+        "say": "In 1980, philosopher John Searle imagined himself locked in a room with a rulebook for Chinese symbols. He doesn't speak Chinese."
+      },
+      {
+        "screen": "Rules in, answers out",
+        "say": "Questions in Chinese are passed in. He follows the rules and passes out perfect answers. From outside, the room seems to understand Chinese."
+      },
+      {
+        "screen": "But who understands?",
+        "say": "Searle's point: he understands nothing. So following rules, like a computer program does, isn't the same as understanding."
+      },
+      {
+        "screen": "The pushback",
+        "say": "Critics replied that the whole system, room and rulebook together, might understand. Philosophers still argue about it."
+      },
+      {
+        "screen": "Still relevant",
+        "say": "It matters again with fluent chatbots. Is sounding fluent the same as understanding? Follow for more AI history."
+      }
+    ]
+  },
+  {
+    "id": "090-what-is-backpropagation",
+    "pillar": "AI Explained",
+    "title": "What is backpropagation? How AI learns from mistakes #Shorts",
+    "description": "Backpropagation is how a neural network works out which of its connections caused a mistake, so it can adjust them. Explained in plain words, no maths. Narrated with an AI voice.\n\n#AI #Backpropagation #AIexplained #Shorts",
+    "tags": [
+      "what is backpropagation",
+      "backpropagation explained",
+      "how neural networks learn",
+      "how AI learns",
+      "AI explained",
+      "neural networks for beginners"
+    ],
+    "segments": [
+      {
+        "screen": "How does AI learn?",
+        "say": "How does a neural network learn from its mistakes? The answer is called backpropagation."
+      },
+      {
+        "screen": "1. Make a guess",
+        "say": "First, the network makes a guess. Say it looks at a photo and says dog, when it's really a cat."
+      },
+      {
+        "screen": "2. Measure the error",
+        "say": "Next, we measure how wrong it was. That gap is called the error, or the loss."
+      },
+      {
+        "screen": "3. Trace the blame",
+        "say": "Then backpropagation works backwards through the network, working out how much each connection contributed to the mistake."
+      },
+      {
+        "screen": "4. Nudge the weights",
+        "say": "Each connection is nudged slightly in the direction that would have shrunk the error. Repeat that millions of times, and the network improves."
+      },
+      {
+        "screen": "Thousands of dials",
+        "say": "Think of tuning thousands of dials after every wrong answer. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "091-what-is-ai-alignment",
+    "pillar": "AI Explained",
+    "title": "What is AI alignment? Explained simply #Shorts",
+    "description": "AI alignment is about getting AI systems to do what people actually intend, safely and honestly. Why it's harder than it sounds, in plain words. Narrated with an AI voice.\n\n#AI #AIalignment #AIexplained #Shorts",
+    "tags": [
+      "what is AI alignment",
+      "AI alignment explained",
+      "AI safety",
+      "aligned AI",
+      "AI explained",
+      "AI for beginners"
+    ],
+    "segments": [
+      {
+        "screen": "What is AI alignment?",
+        "say": "What does AI alignment mean? In plain words, it's getting AI to do what people actually intend."
+      },
+      {
+        "screen": "Words versus intent",
+        "say": "That's harder than it sounds. A system can follow your instructions exactly, and still miss what you meant."
+      },
+      {
+        "screen": "A simple example",
+        "say": "Ask an assistant to get more clicks, and it might write misleading headlines. Technically a success, but not what you wanted."
+      },
+      {
+        "screen": "How it's done today",
+        "say": "Today, companies tune chatbots using human feedback and written guidelines about what's helpful and what to refuse. It helps, but isn't perfect."
+      },
+      {
+        "screen": "Still an open problem",
+        "say": "Researchers are still working on making AI reliably honest, safe, and in line with a wide range of human values."
+      },
+      {
+        "screen": "Why it matters",
+        "say": "The more capable AI becomes, the more this matters. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "092-where-ai-bias-comes-from",
+    "pillar": "AI Explained",
+    "title": "Where does AI bias come from? 3 causes #Shorts",
+    "description": "AI isn't born biased. Bias usually creeps in through training data, labels and design choices. A real example: the 2018 Gender Shades study by Joy Buolamwini and Timnit Gebru. Narrated with an AI voice.\n\n#AI #AIbias #AIethics #Shorts",
+    "tags": [
+      "where does AI bias come from",
+      "AI bias explained",
+      "Gender Shades",
+      "algorithmic bias",
+      "AI explained",
+      "AI ethics"
+    ],
+    "segments": [
+      {
+        "screen": "Where does AI bias come from?",
+        "say": "AI isn't born biased. So where does the bias come from? Usually, three places."
+      },
+      {
+        "screen": "1. The data",
+        "say": "One, the training data. If it leaves out some groups, or reflects past unfair decisions, the model learns those patterns."
+      },
+      {
+        "screen": "2. The labels",
+        "say": "Two, the labels. People label training data, and people bring their own judgements and blind spots."
+      },
+      {
+        "screen": "3. Design choices",
+        "say": "Three, design choices: what the system is built to do, what counts as success, and who tests it."
+      },
+      {
+        "screen": "A real example",
+        "say": "In the 2018 Gender Shades study by Joy Buolamwini and Timnit Gebru, commercial gender classifiers had error rates up to thirty-four point seven percent for darker-skinned women, versus under one percent for lighter-skinned men."
+      },
+      {
+        "screen": "What helps",
+        "say": "Better data, diverse testing and human oversight all help. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "093-what-is-the-eu-ai-act",
+    "pillar": "AI Safety",
+    "title": "What is the EU AI Act? A 45-second guide #Shorts",
+    "description": "The EU AI Act sorts AI by risk and entered into force on 1 August 2024, with obligations phasing in over several years. Dates have been adjusted since, so check official EU sources. Not legal advice. Narrated with an AI voice.\n\n#AI #EUAIAct #AIregulation #Shorts",
+    "tags": [
+      "what is the EU AI Act",
+      "EU AI Act explained",
+      "AI regulation",
+      "AI Act timeline",
+      "AI rules",
+      "AI law"
+    ],
+    "segments": [
+      {
+        "screen": "The EU AI Act",
+        "say": "The European Union has a major law for AI. What is the EU AI Act?"
+      },
+      {
+        "screen": "Risk-based rules",
+        "say": "It sorts AI by risk. Some uses are banned outright. High-risk uses, like hiring or credit, face strict rules. Chatbots face transparency rules."
+      },
+      {
+        "screen": "Phased in",
+        "say": "It entered into force on the first of August 2024, with obligations phasing in over several years. Bans and AI literacy rules came first, in February 2025."
+      },
+      {
+        "screen": "Dates have moved",
+        "say": "Most rules were due from August 2026, but the EU has since pushed some high-risk deadlines back, to December 2027 and August 2028."
+      },
+      {
+        "screen": "Beyond Europe",
+        "say": "It can also reach companies outside the EU, if their AI is used there."
+      },
+      {
+        "screen": "Check official sources",
+        "say": "Rules may change again, and this isn't legal advice. Check official EU sources. Follow for more AI rules explained."
+      }
+    ]
+  },
+  {
+    "id": "094-voice-cloning-whats-ok",
+    "pillar": "AI Safety",
+    "title": "Voice cloning: what's OK, and what's not? #Shorts",
+    "description": "AI can copy a voice from a short recording. Consent, disclosure and scams, in general terms. Laws differ by place, so check your local laws. Not legal advice. Narrated with an AI voice.\n\n#AI #VoiceCloning #AIsafety #Shorts",
+    "tags": [
+      "voice cloning legal",
+      "is voice cloning legal",
+      "AI voice cloning scams",
+      "AI voice consent",
+      "AI safety",
+      "AI rules"
+    ],
+    "segments": [
+      {
+        "screen": "Voice cloning: what's OK?",
+        "say": "AI can now copy a voice from a short recording. So what's OK, and what isn't?"
+      },
+      {
+        "screen": "1. Consent",
+        "say": "One, consent. Cloning your own voice, or someone who clearly agreed, is the safest start. Cloning someone without asking is a big problem."
+      },
+      {
+        "screen": "2. Disclosure",
+        "say": "Two, disclosure. If people might think they're hearing a real person, tell them it's AI. Many platforms ask creators to label synthetic content."
+      },
+      {
+        "screen": "3. Scams",
+        "say": "Three, scams. Criminals can clone a voice to pose as a relative or boss. A family code word, and calling back on a number you know, help."
+      },
+      {
+        "screen": "Check your local laws",
+        "say": "Rules differ by country and state, and they're changing fast. Check your local laws. This isn't legal advice."
+      },
+      {
+        "screen": "When in doubt, ask",
+        "say": "When in doubt, ask permission and be open about it. Follow for more AI rules explained."
+      }
+    ]
+  },
+  {
+    "id": "095-how-text-to-speech-works",
+    "pillar": "AI Explained",
+    "title": "How AI text-to-speech works, and the voice you're hearing #Shorts",
+    "description": "How neural text-to-speech turns written words into natural-sounding audio, including the open-source voice that narrates this channel. It was trained on openly licensed recordings and isn't Josh's real voice. Narrated with an AI voice.\n\n#AI #TextToSpeech #AIexplained #Shorts",
+    "tags": [
+      "how text to speech works",
+      "AI voice explained",
+      "neural text to speech",
+      "Piper TTS",
+      "AI explained",
+      "AI voices"
+    ],
+    "segments": [
+      {
+        "screen": "How does AI speak?",
+        "say": "How does a computer voice sound this natural? Including the one you're hearing right now."
+      },
+      {
+        "screen": "1. Text to sounds",
+        "say": "First, the text is turned into phonemes, the basic sounds of speech, so the system knows how to say each word."
+      },
+      {
+        "screen": "2. A trained network",
+        "say": "Then a neural network, trained on many hours of recorded speech with matching text, predicts how it should sound: pitch, rhythm and tone."
+      },
+      {
+        "screen": "3. Make the sound",
+        "say": "A final stage turns that prediction into an actual sound wave you can hear."
+      },
+      {
+        "screen": "This channel's voice",
+        "say": "This channel's voice is an open-source voice called Joe, running locally with a tool called Piper. It was trained on openly licensed recordings. It isn't Josh's real voice."
+      },
+      {
+        "screen": "Still imperfect",
+        "say": "It still stumbles on some names and emphasis. Follow for more AI explained."
+      }
+    ]
+  },
+  {
+    "id": "096-what-is-synthetic-data",
+    "pillar": "AI Explained",
+    "title": "What is synthetic data? AI training on AI-made data #Shorts",
+    "description": "Synthetic data is artificial data made by software or AI instead of collected from the real world. Where it helps, and the risks, including model collapse. Narrated with an AI voice.\n\n#AI #SyntheticData #AIexplained #Shorts",
+    "tags": [
+      "what is synthetic data",
+      "synthetic data explained",
+      "AI training data",
+      "model collapse",
+      "AI explained",
+      "machine learning"
+    ],
+    "segments": [
+      {
+        "screen": "AI-made training data?",
+        "say": "Can AI learn from data that AI made? That's called synthetic data."
+      },
+      {
+        "screen": "Made, not collected",
+        "say": "Synthetic data is artificial data generated by software or AI models, instead of being collected from the real world."
+      },
+      {
+        "screen": "Why use it",
+        "say": "It can fill gaps in rare situations, like unusual road scenarios for self-driving systems, and help when real records are sensitive."
+      },
+      {
+        "screen": "Training chatbots",
+        "say": "Developers also use AI to write extra practice examples to train or test other models."
+      },
+      {
+        "screen": "The risks",
+        "say": "The risks: it can copy the biases of whatever made it, and a 2024 Nature study found models trained repeatedly on AI output can degrade. It's called model collapse."
+      },
+      {
+        "screen": "Keep real data",
+        "say": "Real data is still needed as an anchor, and synthetic data isn't automatically private. Follow for more AI explained."
+      }
+    ]
+  }
+]

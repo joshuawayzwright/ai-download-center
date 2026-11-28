@@ -1,0 +1,182 @@
+[
+  {
+    "id": "073-ai-in-your-spam-filter",
+    "pillar": "AI in Everyday Life",
+    "title": "Your spam filter is AI, and it's been learning for years #Shorts",
+    "description": "Spam filters are one of the oldest everyday uses of machine learning. How they learn from examples, and why they still make mistakes. Narrated with an AI voice.\n\n#AI #MachineLearning #AIexplained #Shorts",
+    "tags": ["spam filter AI", "how spam filters work", "machine learning examples", "AI in everyday life", "AI explained", "AI for beginners"],
+    "segments": [
+      {"screen": "Your spam filter is AI", "say": "You've used AI for years without knowing it. Your spam filter is one of the oldest examples."},
+      {"screen": "Learning from examples", "say": "Instead of a fixed list of banned words, many email services train a model on huge numbers of messages already marked as spam."},
+      {"screen": "Thousands of clues", "say": "It weighs lots of small clues at once, like the wording, the links and the sender, then scores how suspicious the email looks."},
+      {"screen": "You help train it", "say": "When you press report spam, that feedback can help it improve. Rules alone can't keep up, because scammers keep changing their tricks."},
+      {"screen": "Still not perfect", "say": "It isn't perfect. Good emails sometimes land in junk, so check your spam folder now and then."},
+      {"screen": "AI you already use", "say": "So AI isn't only chatbots. It's quietly sorting your inbox right now. Follow for more AI in everyday life."}
+    ]
+  },
+  {
+    "id": "074-how-phone-autocomplete-works",
+    "pillar": "AI in Everyday Life",
+    "title": "How phone autocomplete works, and how chatbots use it #Shorts",
+    "description": "Predictive text guesses your next word from patterns in language. Chatbots build on the same basic idea at a much bigger scale. Narrated with an AI voice.\n\n#AI #Autocomplete #AIexplained #Shorts",
+    "tags": ["how autocomplete works", "predictive text explained", "next word prediction", "how chatbots work", "AI in everyday life", "AI explained"],
+    "segments": [
+      {"screen": "How does autocomplete work?", "say": "Your phone keeps guessing your next word. How, and what does that have to do with chatbots?"},
+      {"screen": "Predicting the next word", "say": "Predictive text is a language model. It has learned which words tend to follow which, so it offers the most likely next ones."},
+      {"screen": "Small, and on your phone", "say": "Keyboard models are small enough to run on a phone, and many adapt to how you type. Details vary by phone and keyboard app."},
+      {"screen": "Chatbots do this too", "say": "A chatbot uses the same basic idea. It predicts the next small piece of text, adds it, then predicts again, until you have a whole answer."},
+      {"screen": "Just much bigger", "say": "The difference is scale. A chatbot's model is far larger and trained on vastly more text."},
+      {"screen": "Same idea, bigger", "say": "So your keyboard is a tiny cousin of a chatbot. Follow for more AI in everyday life."}
+    ]
+  },
+  {
+    "id": "075-how-face-unlock-works",
+    "pillar": "AI in Everyday Life",
+    "title": "How does face unlock work on your phone? #Shorts",
+    "description": "Face unlock compares a new scan of your face with a template saved on your phone. The details, and how secure it is, vary by phone. Narrated with an AI voice.\n\n#AI #FaceUnlock #AIexplained #Shorts",
+    "tags": ["how face unlock works", "how Face ID works", "face recognition explained", "phone security", "AI in everyday life", "AI explained"],
+    "segments": [
+      {"screen": "How does face unlock work?", "say": "Your phone recognises your face in a fraction of a second. How does it actually do that?"},
+      {"screen": "First, a scan", "say": "At setup, the phone scans your face. On iPhones with Face ID, it projects thousands of invisible dots to build a depth map, and also takes an infrared image."},
+      {"screen": "A template, not a photo", "say": "A neural network turns that into a mathematical template. Apple says it stays on the device and isn't sent to Apple."},
+      {"screen": "Then it compares", "say": "Later, it makes a new scan and checks whether it's close enough to the saved template."},
+      {"screen": "It varies by phone", "say": "But phones differ. Some use depth or infrared sensors, others work differently, and security levels vary. Check your phone maker's own explanation."},
+      {"screen": "Know your phone", "say": "So face unlock is convenient, but not identical everywhere. Follow for more AI in everyday life."}
+    ]
+  },
+  {
+    "id": "076-how-recommendation-algorithms-work",
+    "pillar": "AI in Everyday Life",
+    "title": "How video apps decide what to show you next #Shorts",
+    "description": "Recommendation systems learn from signals like what you watch, like and skip, and what similar viewers enjoy. Platforms don't publish every detail. Narrated with an AI voice.\n\n#AI #Algorithm #AIexplained #Shorts",
+    "tags": ["how recommendation algorithms work", "how YouTube recommends videos", "how the algorithm works", "social media algorithm explained", "AI in everyday life", "AI explained"],
+    "segments": [
+      {"screen": "Why this video next?", "say": "How does a video app seem to know exactly what you'll watch next?"},
+      {"screen": "It learns from signals", "say": "Recommendation systems learn from signals. YouTube has said these include what you watch and for how long, plus likes, dislikes, shares and survey answers."},
+      {"screen": "Similar viewers", "say": "They also compare your habits with people who watch similar things. If those viewers enjoyed a video you haven't seen, it may be suggested to you."},
+      {"screen": "A model predicts", "say": "Then a machine learning model predicts which videos from a huge pool you're most likely to enjoy, and ranks them."},
+      {"screen": "Full details stay private", "say": "Every platform does this a little differently, and none publishes every detail, so be cautious about claims of a secret algorithm."},
+      {"screen": "You steer it", "say": "What you watch, like and skip steers what you see. Follow for more AI in everyday life."}
+    ]
+  },
+  {
+    "id": "077-how-ai-noise-cancellation-works",
+    "pillar": "AI in Everyday Life",
+    "title": "How AI noise cancellation removes background noise #Shorts",
+    "description": "AI noise suppression learns to tell a voice from background noise. It's different from the noise cancelling in headphones, and it isn't perfect. Narrated with an AI voice.\n\n#AI #NoiseCancellation #AIexplained #Shorts",
+    "tags": ["AI noise cancellation", "how noise suppression works", "AI noise cancelling calls", "background noise removal", "AI in everyday life", "AI explained"],
+    "segments": [
+      {"screen": "How does it hear only you?", "say": "On a video call, a dog barks, but the other person barely hears it. How?"},
+      {"screen": "Trained on examples", "say": "Noise suppression models are trained on clean speech mixed with all kinds of noise. They learn to separate the voice from everything else."},
+      {"screen": "Keep voice, drop rest", "say": "On a call, the model listens to your microphone audio, keeps what matches speech, and turns down the rest."},
+      {"screen": "Not the same as ANC", "say": "That's different from headphone noise cancelling, which listens to the world around you and plays sound to cancel it. Some devices may use both."},
+      {"screen": "It can still slip", "say": "It can still slip. Sounds close to speech, like background chatter, can get through, and a voice can sound a bit odd."},
+      {"screen": "Device or cloud", "say": "Whether it runs on your device or in the cloud depends on the app. Follow for more AI in everyday life."}
+    ]
+  },
+  {
+    "id": "078-how-self-driving-cars-see",
+    "pillar": "AI in Everyday Life",
+    "title": "How do self-driving cars see the road? #Shorts",
+    "description": "Self-driving systems combine cameras, radar and often lidar, then merge the data. Approaches differ between companies. Narrated with an AI voice.\n\n#AI #SelfDrivingCars #AIexplained #Shorts",
+    "tags": ["how self-driving cars work", "how self driving cars see", "lidar radar camera explained", "sensor fusion", "AI in everyday life", "AI explained"],
+    "segments": [
+      {"screen": "How do they see?", "say": "A self-driving car has no eyes. So how does it know what's on the road?"},
+      {"screen": "Cameras", "say": "Cameras give a detailed view, and AI picks out things like lane markings, traffic lights and pedestrians."},
+      {"screen": "Radar", "say": "Radar uses radio waves to measure how far away objects are, and how fast they're moving. It tends to cope well in rain and fog."},
+      {"screen": "Lidar", "say": "Lidar fires laser pulses and times the reflections to build a three-dimensional map. Waymo says its cars use lidar, cameras and radar together."},
+      {"screen": "Sensor fusion", "say": "A computer then combines all these sources, called sensor fusion, so each sensor covers another's weak spots."},
+      {"screen": "Approaches differ", "say": "Companies make different choices, and some lean more on cameras. Follow for more AI in everyday life."}
+    ]
+  },
+  {
+    "id": "079-how-ai-predicts-the-weather",
+    "pillar": "AI in Everyday Life",
+    "title": "Can AI predict the weather better than supercomputers? #Shorts",
+    "description": "Machine-learning weather models like Google DeepMind's GraphCast (published in Science, 2023) learn from decades of past weather. They sit alongside traditional physics-based forecasts. Narrated with an AI voice.\n\n#AI #Weather #AIexplained #Shorts",
+    "tags": ["AI weather forecasting", "GraphCast explained", "can AI predict the weather", "machine learning weather", "AI in everyday life", "AI explained"],
+    "segments": [
+      {"screen": "Can AI predict weather?", "say": "Can AI forecast the weather as well as giant supercomputers? In some tests, it's surprisingly close."},
+      {"screen": "The traditional way", "say": "Traditional forecasts run physics equations for the atmosphere on huge supercomputers."},
+      {"screen": "The AI way", "say": "Machine learning models take a different route. They learn patterns from decades of past weather data, then predict how the weather tends to change."},
+      {"screen": "GraphCast", "say": "Google DeepMind's GraphCast, published in Science in 2023, learned from about forty years of data. DeepMind reported it beat a leading traditional system on over ninety percent of the measures tested."},
+      {"screen": "Now in real use", "say": "In February 2025, the European forecasting centre ECMWF began running its own machine learning model operationally, alongside traditional forecasts."},
+      {"screen": "Teamwork, not takeover", "say": "These models learn from data that traditional systems help produce, so think teamwork. Follow for more AI in everyday life."}
+    ]
+  },
+  {
+    "id": "080-summarise-documents-with-ai",
+    "pillar": "Practical AI",
+    "title": "3 checks before you trust an AI summary #Shorts",
+    "description": "AI can summarise long documents quickly, but it can also miss things or get details wrong. Three quick checks before you rely on a summary. Narrated with an AI voice.\n\n#AI #AItips #ChatGPT #Shorts",
+    "tags": ["summarise documents with AI", "AI summary accuracy", "can you trust AI summaries", "how to use AI to summarise", "AI tips", "AI for beginners"],
+    "segments": [
+      {"screen": "Can you trust AI summaries?", "say": "AI can summarise a fifty page document in seconds. Can you trust it? Do these three checks."},
+      {"screen": "Check one: the details", "say": "One, spot-check the specifics. Pick a few names, dates and numbers from the summary and find them in the original."},
+      {"screen": "Check two: ask for quotes", "say": "Two, ask the AI to point to the passages behind each key point, then read those passages yourself. If it can't, be wary."},
+      {"screen": "Check three: what's missing", "say": "Three, ask what the summary left out, and read the parts that matter most, like fine print and exceptions."},
+      {"screen": "Mind your privacy", "say": "Also think before uploading private files. Check the tool's data settings first."},
+      {"screen": "Summary is a start", "say": "A summary is a map, not the territory. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "081-spot-an-ai-phishing-email",
+    "pillar": "AI Safety",
+    "title": "AI makes scam emails look real. Here's what still works #Shorts",
+    "description": "AI tools can help scammers write polished, convincing messages, so spelling mistakes are no longer a reliable warning sign. The checks that still work, and where to report scams in Australia (scamwatch.gov.au). Narrated with an AI voice.\n\n#AI #Scams #Phishing #Shorts",
+    "tags": ["how to spot a phishing email", "AI phishing", "AI scam emails", "how to spot AI scams", "AI safety", "Scamwatch"],
+    "segments": [
+      {"screen": "Scam emails got better", "say": "Scam emails used to be full of typos. AI is changing that."},
+      {"screen": "Polished and personal", "say": "AI writing tools can help scammers produce clean, convincing messages, tailored to you. So good spelling no longer means an email is safe."},
+      {"screen": "Check the pressure", "say": "What still works? First, look for pressure. Urgent deadlines, threats and surprise prizes are classic scam moves."},
+      {"screen": "Don't use their link", "say": "Second, don't use the link or number in the message. Open the official app or website yourself, or call a number you already trust."},
+      {"screen": "Never share codes", "say": "Third, never share passwords or one-time codes. Legitimate organisations don't normally ask for them."},
+      {"screen": "Report it", "say": "In Australia, report scams to Scamwatch. Follow for more AI safety."}
+    ]
+  },
+  {
+    "id": "082-ai-for-budgeting-safely",
+    "pillar": "Practical AI",
+    "title": "Use AI to plan a budget without risking your money #Shorts",
+    "description": "AI can help you structure a budget, but never paste bank logins, card numbers or account numbers into a chatbot. General information only, not financial advice. Narrated with an AI voice.\n\n#AI #Budgeting #AItips #Shorts",
+    "tags": ["AI for budgeting", "use ChatGPT for budget", "is it safe to use AI for money", "AI budget planner", "AI tips", "AI safety"],
+    "segments": [
+      {"screen": "AI for your budget?", "say": "AI can help you build a budget. But what should you never give it?"},
+      {"screen": "Never paste these", "say": "Never paste bank logins, passwords, card numbers, account numbers or one-time codes into a chatbot. It doesn't need them to help."},
+      {"screen": "Use rounded numbers", "say": "Instead, describe your situation. Give rough income, and spending by category, like rent, groceries and transport. Round the numbers if you like."},
+      {"screen": "Ask for a structure", "say": "Then ask for a simple plan, a spreadsheet layout, or ideas for where to trim. Remove names and account details from anything you paste."},
+      {"screen": "Check the maths", "say": "Chatbots can make arithmetic mistakes, so check the totals in a spreadsheet. Also check your chatbot's data settings."},
+      {"screen": "Help, not advice", "say": "AI is a planning helper, not a financial adviser. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "083-custom-ai-assistants-explained",
+    "pillar": "Practical AI",
+    "title": "Custom AI assistants explained: GPTs, Gems and Projects #Shorts",
+    "description": "Many chatbots let you save instructions and reference material as a reusable assistant. Details differ between products and change often, so check each provider's help pages. Narrated with an AI voice.\n\n#AI #CustomGPT #AItools #Shorts",
+    "tags": ["custom AI assistant", "what are custom GPTs", "Gemini Gems explained", "AI projects explained", "AI tips", "AI for beginners"],
+    "segments": [
+      {"screen": "What's a custom assistant?", "say": "You may have seen custom GPTs, Gems or Projects in a chatbot. What are they?"},
+      {"screen": "Saved instructions", "say": "In general terms, it's a chatbot setup you save and reuse. You write instructions once, like the tone, the format and who the answers are for."},
+      {"screen": "Plus reference files", "say": "Many also let you attach reference material, like a style guide or product notes, so each new chat starts with the right context."},
+      {"screen": "Good for repeat jobs", "say": "That suits repeat jobs, like drafting customer replies in your voice, or answering questions about your own notes."},
+      {"screen": "Details differ", "say": "Names, features, limits and sharing options differ between products and change often. Check your provider's help pages, and think before uploading private files."},
+      {"screen": "Set it up once", "say": "Write good instructions once, then reuse them. Follow for more practical AI."}
+    ]
+  },
+  {
+    "id": "084-what-is-ai-slop",
+    "pillar": "AI Explained",
+    "title": "What is AI slop, and how do you avoid making it? #Shorts",
+    "description": "Merriam-Webster named slop its 2025 word of the year, defining it as low-quality digital content produced in quantity by AI. Why platforms push back, and how to avoid it. Narrated with an AI voice.\n\n#AI #AIslop #AIexplained #Shorts",
+    "tags": ["what is AI slop", "AI slop explained", "slop word of the year", "YouTube inauthentic content", "AI explained", "AI content"],
+    "segments": [
+      {"screen": "What is AI slop?", "say": "You've probably seen the word slop. What does it mean, and how do you avoid making it?"},
+      {"screen": "Low effort, mass produced", "say": "Merriam-Webster picked slop as its 2025 word of the year, defining it as low-quality digital content, usually produced in quantity with AI."},
+      {"screen": "Why platforms push back", "say": "Platforms push back too. In July 2025, YouTube renamed a policy to inauthentic content, covering mass-produced, repetitive videos that can't be monetised."},
+      {"screen": "Avoid it: add yourself", "say": "To avoid making slop, add something only you have: real experience, a point of view, or original research."},
+      {"screen": "Check and vary it", "say": "Fact-check everything, edit the draft, and make each piece genuinely different instead of stamping out one template."},
+      {"screen": "Be upfront", "say": "And say when AI helped. Quality beats quantity. Follow for more AI explained."}
+    ]
+  }
+]

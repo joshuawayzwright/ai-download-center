@@ -268,3 +268,69 @@ That empties the approved queue. TikTok and Instagram stay at 2 a day through 21
 | 046 | How much electricity does AI really use? | https://www.youtube.com/watch?v=8YrWfsjrEws |
 
 039 arrived with no tags; they were re-added.
+
+### 26 Nov 2026, 08:06 UTC run: 10 videos (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 047 | Write better emails with AI: the 3-step method | https://www.youtube.com/watch?v=jhZKdhGPeao |
+| 048 | Your AI chatbot might remember you | https://www.youtube.com/watch?v=rFzWc_QgcXM |
+| TP05 | The Day a Computer Beat the World Chess Champion | https://www.youtube.com/watch?v=Hi7bDV4-Xbo |
+| TP06 | The Bedroom Experiment That Started the AI Boom | https://www.youtube.com/watch?v=B14Zl9LwslA |
+| LF02 | The Entire History of AI, From Turing to ChatGPT (8:44) | https://www.youtube.com/watch?v=kTw0wGsAwJ8 |
+| TP07 | The Question That Started AI: Alan Turing's Imitation Game | https://www.youtube.com/watch?v=T6It6RKhos4 |
+| TP08 | The Research Preview That Started the AI Race | https://www.youtube.com/watch?v=BxH8Lmkyw60 |
+| 049 | What is generative AI? | https://www.youtube.com/watch?v=lD2CZRWf85M |
+| 050 | What free AI chatbots can and can't do | https://www.youtube.com/watch?v=VGkRRVMviCU |
+| 051 | Who was Alan Turing? | https://www.youtube.com/watch?v=pm9L9FYT09k |
+
+047, 050, 051, TP05, TP07 and LF02 arrived with no tags; they were re-added.
+
+### 27 Nov 2026, 08:06 UTC run: 9 Shorts (public), approved queue now empty
+
+| # | Title | YouTube |
+|---|---|---|
+| 052 | What is the Turing test, and has AI passed it? | https://www.youtube.com/watch?v=CjTtLDH9XW8 |
+| 053 | What was the AI winter? | https://www.youtube.com/watch?v=9BsCZVYw8e0 |
+| 054 | What is an LLM? | https://www.youtube.com/watch?v=fBgPXQLuHWo |
+| 055 | What is AGI, and are we close? | https://www.youtube.com/watch?v=9GEn_VCpwUY |
+| 056 | Can you copyright AI art? | https://www.youtube.com/watch?v=qeIftNZoZ78 |
+| 057 | What is a system prompt? | https://www.youtube.com/watch?v=PM5uK8SR4vI |
+| 058 | How AI translation actually works | https://www.youtube.com/watch?v=89eKea8dyHY |
+| 059 | The 4-part prompt for better AI images | https://www.youtube.com/watch?v=fhSXNbwmwvk |
+| 060 | How AI turns speech into text | https://www.youtube.com/watch?v=Z12IBVkpJiE |
+
+053, 054, 055, 056 and 060 arrived with no tags; they were re-added. Every approved YouTube video (001–060, Turning Points 1–8, both long-form videos) is now public. Further uploads need batch 06 (owner approval required).
+
+### Batches 06–08 (061–096) and 6 long-form videos: approved 28 Nov 2026 ("Approve, 10 a day")
+
+42 videos rendered, uploaded to vidIQ storage, and drafted as public YouTube posts (category 28). The 6 long-form drafts carry their thumbnails. Draft postIds and revisions are in `factory/out/b678-drafts.txt` (gitignored). Scheduled tasks in this session publish at 08:05 UTC (6:05pm Brisbane):
+
+| Day | Videos |
+|---|---|
+| 28 Nov | 061–068, *How AI Chatbots Are Trained, Step by Step* (8:44), AI Turning Points ep 9: AlphaFold (5:57) |
+| 29 Nov | 069–077, *10 Places You Already Use AI Every Day* (8:12) |
+| 30 Nov | 078–086, *How to Use AI Safely* (8:40) |
+| 1 Dec | 087–095, *25 AI Terms Everyone Should Know* (9:18) |
+| 2 Dec | 096, AI Turning Points ep 10: Watson on Jeopardy! (5:29) |
+
+After 2 Dec the approved YouTube queue is empty again. TikTok and Instagram stay on their existing schedule through 21 Dec; batches 06–08 are not on TikTok or Instagram yet.
+
+Review notes: script 095 and its description were reworded so the narrator voice is described as an open-source voice trained on openly licensed recordings, not Josh's real voice. Episode 10's description lists episode 9 under its final title.
+
+### 28 Nov 2026, 08:06 UTC run: batches 06–08 day 1 (public)
+
+| # | Title | YouTube |
+|---|---|---|
+| 061 | What is a reasoning model? | https://www.youtube.com/watch?v=Tfwa5fyNegI |
+| 062 | What is prompt injection? | https://www.youtube.com/watch?v=Ba2BzX0SIYg |
+| 063 | Why doesn't my chatbot know recent news? | https://www.youtube.com/watch?v=6xrNKrcWULA |
+| 064 | Why does AI agree with everything you say? | https://www.youtube.com/watch?v=sFvTvKcdrLY |
+| 065 | What is a neural network? | https://www.youtube.com/watch?v=w0YQCbzGW3Y |
+| 066 | How do chatbots learn manners? RLHF explained | https://www.youtube.com/watch?v=WRb5Z6gFr1o |
+| 067 | What is a deepfake, and how do you check one? | https://www.youtube.com/watch?v=7_4ozLCelyw |
+| 068 | What are Content Credentials? | https://www.youtube.com/watch?v=PoY05zQxUS0 |
+| LF03 | How AI Chatbots Are Trained, Step by Step (8:45) | https://www.youtube.com/watch?v=AioLXlqK00M |
+| TP09 | The 50-Year Puzzle That AlphaFold Took On (5:58) | https://www.youtube.com/watch?v=RNH8XxOh7yU |
+
+066 and TP09 arrived with no tags; they were re-added.
